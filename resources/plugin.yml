@@ -1,0 +1,29 @@
+name: ${project.name}
+main: com.poixson.backrooms.BackroomsPlugin
+version: ${project.version}
+api-version: ${spigot-short-version}
+load: STARTUP
+authors: [ lorenzop ]
+website: ${project.url}
+description: ${project.description}
+commands:
+    backrooms:
+        description: "Commands to administrate the backrooms: generate, clear"
+        usage: "Usage: /backrooms reload"
+permission-message: "You don't have permission to use this command."
+permissions:
+    backrooms.*:
+        default: op
+        children:
+            backrooms.reload: true
+            backrooms.generate: true
+            backrooms.clear: true
+    backrooms.reload:
+        default: op
+        description: Reload scripts.
+    backrooms.generate:
+        default: op
+        description: Generate an area of the world.
+    backrooms.clear:
+        default: op
+        description: Clear the area (CAUTION!)
