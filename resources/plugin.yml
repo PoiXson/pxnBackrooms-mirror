@@ -3,6 +3,7 @@ main: com.poixson.backrooms.BackroomsPlugin
 version: ${project.version}
 api-version: ${spigot-short-version}
 load: STARTUP
+depend: [ Multiverse-Core, pxnCommonBukkit, ScriptKit ]
 authors: [ lorenzop ]
 website: ${project.url}
 description: ${project.description}
