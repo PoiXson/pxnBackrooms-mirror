@@ -1,0 +1,8 @@
+Generator debug info
+--------------------
+
+RPW version:  4.5.2 on Linux
+Java version: OpenJDK Runtime Environment 17.0.1
+MC+assets v.: 1.18.1
+
+Generated:    2022/02/23
