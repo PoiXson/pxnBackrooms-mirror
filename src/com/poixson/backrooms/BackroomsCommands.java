@@ -3,8 +3,8 @@ package com.poixson.backrooms;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.poixson.common.tools.commands.pxnBukkitCommand;
-import com.poixson.common.tools.commands.pxnBukkitCommandsHelper;
+import com.poixson.commonbukkit.tools.commands.pxnBukkitCommand;
+import com.poixson.commonbukkit.tools.commands.pxnBukkitCommandsHelper;
 
 
 public class BackroomsCommands extends pxnBukkitCommandsHelper {
