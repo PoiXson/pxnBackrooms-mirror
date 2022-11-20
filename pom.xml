@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Sun Feb 27 03:44:07 AM EST 2022 -->
+<!-- Generated: Sun Nov 20 01:13:28 AM EST 2022 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<name>Backrooms</name>
 	<artifactId>backrooms</artifactId>
@@ -21,19 +21,19 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<!-- Maven Plugins -->
-		<maven-resources-plugin-version>3.2.0</maven-resources-plugin-version>
-		<maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
-		<maven-jar-plugin-version>3.2.0</maven-jar-plugin-version>
+		<maven-resources-plugin-version>3.3.0</maven-resources-plugin-version>
+		<maven-compiler-plugin-version>3.10.1</maven-compiler-plugin-version>
+		<maven-jar-plugin-version>3.3.0</maven-jar-plugin-version>
 		<maven-source-plugin-version>3.2.1</maven-source-plugin-version>
 		<maven-eclipse-plugin-version>2.10</maven-eclipse-plugin-version>
 		<git-commit-id-version>4.9.10</git-commit-id-version>
-		<maven-shade-plugin-version>3.2.4</maven-shade-plugin-version>
+		<maven-shade-plugin-version>3.4.1</maven-shade-plugin-version>
 
 		<!-- Dependencies -->
-		<spigot-short-version>1.18</spigot-short-version>
-		<spigot-api-version>1.18.1-R0.1-SNAPSHOT</spigot-api-version>
+		<spigot-short-version>1.19</spigot-short-version>
+		<spigot-api-version>1.19.1-R0.1-SNAPSHOT</spigot-api-version>
 		<common-core-version>4.0.0-SNAPSHOT</common-core-version>
-		<common-bukkit-version>0.1.0-SNAPSHOT</common-bukkit-version>
+		<common-bukkit-version>4.0.0-SNAPSHOT</common-bukkit-version>
 		<scriptkit-version>0.1.0-SNAPSHOT</scriptkit-version>
 		<rhino-version>1.7.14</rhino-version>
 
@@ -52,24 +52,16 @@
 		<url>https://ci.poixson.com</url>
 	</ciManagement>
 	<build>
-		<directory>target</directory>
-		<outputDirectory>target</outputDirectory>
+		<directory>target/</directory>
+		<sourceDirectory>src/</sourceDirectory>
+		<outputDirectory>target/classes/</outputDirectory>
 		<finalName>${project.name}-${project.version}</finalName>
-		<sourceDirectory>${project.basedir}/src</sourceDirectory>
 		<resources>
 			<resource>
-				<directory>${project.basedir}/resources</directory>
+				<directory>resources/</directory>
 				<filtering>true</filtering>
 				<includes>
 					<include>plugin.yml</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>scripts/*.js</include>
-					<include>pxnBackrooms.zip</include>
 				</includes>
 			</resource>
 		</resources>
@@ -152,7 +144,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<dotGitDirectory>.git/</dotGitDirectory>
 				</configuration>
 			</plugin>
 
