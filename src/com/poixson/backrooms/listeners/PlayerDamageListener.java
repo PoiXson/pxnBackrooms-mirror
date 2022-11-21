@@ -1,25 +1,12 @@
 package com.poixson.backrooms.listeners;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.utils.NumberUtils;
-import com.poixson.utils.Utils;
 
 
 public class PlayerDamageListener implements Listener {
@@ -38,6 +25,7 @@ public class PlayerDamageListener implements Listener {
 
 
 
+/*
 	@EventHandler(priority=EventPriority.NORMAL)
 	public void onPlayerDamage(final EntityDamageEvent event) {
 		final Entity entity = event.getEntity();
@@ -119,6 +107,7 @@ for (int i=0; i<10; i++) {
 		final Location spawn = world.getSpawnLocation();
 		player.teleport(spawn);
 	}
+*/
 
 
 

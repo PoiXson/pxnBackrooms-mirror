@@ -14,13 +14,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.poixson.backrooms.listeners.PlayerDamageListener;
-import com.poixson.scriptkit.api.ChunkGeneratorFactory;
-import com.poixson.scriptkit.api.ScriptChunkGenerator;
-import com.poixson.scriptkit.api.ScriptKitAPI;
-import com.poixson.utils.Utils;
 
 
-public class BackroomsPlugin extends JavaPlugin implements ChunkGeneratorFactory {
+public class BackroomsPlugin extends JavaPlugin {
 	public static final String LOG_PREFIX  = "[Backrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + "[Backrooms] " + ChatColor.WHITE;
 	public static final Logger log = Logger.getLogger("Minecraft");
@@ -47,9 +43,6 @@ public class BackroomsPlugin extends JavaPlugin implements ChunkGeneratorFactory
 				path.mkdirs();
 			}
 		}
-		// world generator
-		ScriptKitAPI.GetAPI()
-			.addGenFactory(GENERATOR_NAME, this);
 		// commands listener
 		{
 			final BackroomsCommands listener = new BackroomsCommands(this);
@@ -71,14 +64,11 @@ public class BackroomsPlugin extends JavaPlugin implements ChunkGeneratorFactory
 
 	@Override
 	public void onDisable() {
-		// world generator
-		ScriptKitAPI.GetAPI()
-			.removeGenFactory(GENERATOR_NAME);
 		// commands listener
 		{
-			final BackroomsCommands listener = this.commandListener.getAndSet(null);
-			if (listener != null)
-				listener.unregister();
+//			final BackroomsCommands listener = this.commandListener.getAndSet(null);
+//			if (listener != null)
+//				listener.unregister();
 		}
 		// stop listeners
 		HandlerList.unregisterAll(this);
@@ -94,47 +84,15 @@ public class BackroomsPlugin extends JavaPlugin implements ChunkGeneratorFactory
 
 
 
-	// -------------------------------------------------------------------------------
-	// chunk generator
-
-
-
-	// factory
-	@Override
-	public ScriptChunkGenerator newInstance(final String worldName, final String argsStr) {
-		log.info(
-			String.format(
-				"%sWorld <%s> using generator <%s> %s",
-				LOG_PREFIX,
-				worldName,
-				GENERATOR_NAME,
-				argsStr
-			)
-		);
-//TODO
-		final String pathLoc = (new File(this.getDataFolder(), "scripts")).toString();
-		final String pathRes = "scripts";
-		final String filename = "backrooms.js";
-		final ScriptChunkGenerator gen =
-			new ScriptChunkGenerator(
-				this,
-				worldName, argsStr,
-				pathLoc, pathRes,
-				filename
-			);
-		return gen;
-	}
-
-
-
-	// generator
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 		log.info(String.format("%sWorld <%s> using generator <%s> %s",
 			LOG_PREFIX, worldName, GENERATOR_NAME, argsStr));
 		this.worldName.set(worldName);
-		return ScriptKitAPI.GetAPI()
-				.getChunkGenerator(GENERATOR_NAME, worldName, argsStr);
+//TODO
+return null;
+//		return ScriptKitAPI.GetAPI()
+//				.getChunkGenerator(GENERATOR_NAME, worldName, argsStr);
 	}
 
 
@@ -143,9 +101,9 @@ public class BackroomsPlugin extends JavaPlugin implements ChunkGeneratorFactory
 
 
 
-	public String getBackroomsWorldName() {
-		return this.worldName.get();
-	}
+//	public String getBackroomsWorldName() {
+//		return this.worldName.get();
+//	}
 
 	public boolean isBackroomsWorld(final Player player) {
 		if (player == null) throw new NullPointerException();
@@ -156,9 +114,11 @@ public class BackroomsPlugin extends JavaPlugin implements ChunkGeneratorFactory
 		return this.isBackroomsWorld(world.getName());
 	}
 	public boolean isBackroomsWorld(final String worldName) {
-		if (Utils.isEmpty(worldName)) throw new NullPointerException();
-		return ScriptKitAPI.GetAPI()
-				.hasChunkGenerator(worldName);
+//TODO
+return false;
+//		if (Utils.isEmpty(worldName)) throw new NullPointerException();
+//		return ScriptKitAPI.GetAPI()
+//				.hasChunkGenerator(worldName);
 	}
 
 
