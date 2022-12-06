@@ -14,6 +14,10 @@ import me.auburn.FastNoiseLiteD;
 
 public class TreePopulator extends BlockPopulator {
 
+	//TODO
+	public static final Material TRUNK  = Material.BIRCH_LOG;
+	public static final Material LEAVES = Material.BIRCH_LEAVES;
+
 	protected final FastNoiseLiteD noise;
 
 	protected final int chunkY;
@@ -102,7 +106,7 @@ public class TreePopulator extends BlockPopulator {
 							zz = (z + iz) - size_half;
 							yy = y + iy + 3;
 							if (Material.AIR.equals(region.getType(xx, yy, zz))) {
-								region.setType(xx, yy, zz, Material.BIRCH_LEAVES);
+								region.setType(xx, yy, zz, LEAVES);
 								final BlockData block = region.getBlockData(xx, yy, zz);
 								final Leaves leaves = (Leaves) block;
 								leaves.setPersistent(true);
@@ -115,7 +119,7 @@ public class TreePopulator extends BlockPopulator {
 		}
 		// trunk
 		for (int iy=0; iy<size_tree; iy++) {
-			region.setType(x, y+iy, z, Material.BIRCH_LOG);
+			region.setType(x, y+iy, z, TRUNK);
 		}
 	}
 

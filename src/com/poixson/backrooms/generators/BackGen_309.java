@@ -26,6 +26,10 @@ public class BackGen_309 extends BackroomsGenerator {
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
 
+	public static final Material STONE_BLOCK = Material.STONE;
+	public static final Material GRASS_BLOCK = Material.GRASS_BLOCK;
+	public static final Material PATH_BLOCK  = Material.DIRT_PATH;
+
 	protected final FastNoiseLiteD noiseGround;
 	protected final FastNoiseLiteD noiseTrees;
 	protected final FastNoiseLiteD noisePath;
@@ -68,7 +72,7 @@ public class BackGen_309 extends BackroomsGenerator {
 				chunk.setBlock(x, BASE_Y-1, z, Material.BEDROCK);
 				// stone
 				for (int i=0; i<BASE_H; i++) {
-					chunk.setBlock(x, BASE_Y+i, z, Material.STONE);
+					chunk.setBlock(x, BASE_Y+i, z, STONE_BLOCK);
 				}
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
@@ -82,9 +86,9 @@ public class BackGen_309 extends BackroomsGenerator {
 				for (int i=0; i<elevation; i++) {
 					if (i >= elevation-1) {
 						if (this.pathTrace.isPath(xx, zz, PATH_WIDTH)) {
-							chunk.setBlock(x, base_y+i, z, Material.DIRT_PATH);
+							chunk.setBlock(x, base_y+i, z, PATH_BLOCK);
 						} else {
-							chunk.setBlock(x, base_y+i, z, Material.GRASS_BLOCK);
+							chunk.setBlock(x, base_y+i, z, GRASS_BLOCK);
 						}
 					} else {
 						chunk.setBlock(x, base_y+i, z, Material.DIRT);
