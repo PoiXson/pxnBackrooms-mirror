@@ -1,19 +1,22 @@
 package com.poixson.backrooms;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.poixson.backrooms.listeners.PlayerDamageListener;
+import com.poixson.backrooms.generators.BackGen_000;
+import com.poixson.backrooms.generators.BackGen_009;
+import com.poixson.backrooms.generators.BackGen_011;
+import com.poixson.backrooms.generators.BackGen_309;
+import com.poixson.backrooms.generators.BackroomsGenerator;
 
 
 public class BackroomsPlugin extends JavaPlugin {
@@ -24,11 +27,15 @@ public class BackroomsPlugin extends JavaPlugin {
 	public static final String GENERATOR_NAME = "Backrooms";
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
-	protected final AtomicReference<String> worldName = new AtomicReference<String>(null);
+	protected final AtomicBoolean enableScripts = new AtomicBoolean(false);
+//	protected final AtomicReference<String> worldName = new AtomicReference<String>(null);
 
-	// listeners
-	protected final AtomicReference<BackroomsCommands>   commandListener = new AtomicReference<BackroomsCommands>(null);
-	protected final AtomicReference<PlayerDamageListener> damageListener = new AtomicReference<PlayerDamageListener>(null);
+	// world generators
+	protected final HashMap<Integer, BackroomsGenerator> generators = new HashMap<Integer, BackroomsGenerator>();
+
+//	// listeners
+//	protected final AtomicReference<BackroomsCommands>   commandListener = new AtomicReference<BackroomsCommands>(null);
+//	protected final AtomicReference<PlayerDamageListener> damageListener = new AtomicReference<PlayerDamageListener>(null);
 
 
 
@@ -38,11 +45,11 @@ public class BackroomsPlugin extends JavaPlugin {
 			throw new RuntimeException("Plugin instance already enabled?");
 		{
 			final File path = new File(this.getDataFolder(), "scripts");
-			if (!path.isDirectory()) {
-				log.info(CHAT_PREFIX + "Creating directory: " + path.toString());
-				path.mkdirs();
-			}
+			this.enableScripts.set(
+				path.isDirectory()
+			);
 		}
+/*
 		// commands listener
 		{
 			final BackroomsCommands listener = new BackroomsCommands(this);
@@ -60,19 +67,24 @@ public class BackroomsPlugin extends JavaPlugin {
 				HandlerList.unregisterAll(previous);
 			pm.registerEvents(listener, this);
 		}
+*/
+//		final PluginManager pm = Bukkit.getPluginManager();
+//		pm.registerEvents(new DecayListener(), this);
 	}
 
 	@Override
 	public void onDisable() {
+/*
 		// commands listener
 		{
-//			final BackroomsCommands listener = this.commandListener.getAndSet(null);
-//			if (listener != null)
-//				listener.unregister();
+			final BackroomsCommands listener = this.commandListener.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
 		}
+*/
 		// stop listeners
 		HandlerList.unregisterAll(this);
-		this.damageListener.set(null);
+//		this.damageListener.set(null);
 		// stop schedulers
 		try {
 			Bukkit.getScheduler()
@@ -84,20 +96,39 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 
+	// -------------------------------------------------------------------------------
+
+
+
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
+		if (!worldName.startsWith("level"))
+			throw new RuntimeException("Invalid world name, must be level#");
 		log.info(String.format("%sWorld <%s> using generator <%s> %s",
 			LOG_PREFIX, worldName, GENERATOR_NAME, argsStr));
-		this.worldName.set(worldName);
-//TODO
-return null;
-//		return ScriptKitAPI.GetAPI()
-//				.getChunkGenerator(GENERATOR_NAME, worldName, argsStr);
+		final int level = Integer.parseInt(worldName.substring(5));
+		// existing generator
+		{
+			final BackroomsGenerator gen = this.generators.get(Integer.valueOf(level));
+			if (gen != null)
+				return gen;
+		}
+		// new generator instance
+		{
+			final BackroomsGenerator gen;
+			switch (level) {
+			case 0:   gen = new BackGen_000(this); break;
+			case 9:   gen = new BackGen_009(this); break;
+			case 11:  gen = new BackGen_011(this); break;
+			case 309: gen = new BackGen_309(this); break;
+			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+			}
+			final BackroomsGenerator existing = this.generators.putIfAbsent(Integer.valueOf(level), gen);
+			if (existing != null)
+				return existing;
+			return gen;
+		}
 	}
-
-
-
-	// -------------------------------------------------------------------------------
 
 
 
@@ -105,6 +136,7 @@ return null;
 //		return this.worldName.get();
 //	}
 
+/*
 	public boolean isBackroomsWorld(final Player player) {
 		if (player == null) throw new NullPointerException();
 		return this.isBackroomsWorld(player.getWorld());
@@ -120,6 +152,7 @@ return false;
 //		return ScriptKitAPI.GetAPI()
 //				.hasChunkGenerator(worldName);
 	}
+*/
 
 
 
