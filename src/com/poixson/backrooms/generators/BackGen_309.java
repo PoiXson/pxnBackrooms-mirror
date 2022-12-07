@@ -60,6 +60,12 @@ public class BackGen_309 extends BackroomsGenerator {
 		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
 	}
 
+	@Override
+	public void unload() {
+		super.unload();
+		this.pathCache.set(null);
+	}
+
 
 
 	@Override
