@@ -74,6 +74,11 @@ public class BackroomsPlugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		// unload generators
+		for (final BackroomsGenerator gen : this.generators.values()) {
+			gen.unload();
+		}
+		this.generators.clear();
 /*
 		// commands listener
 		{
