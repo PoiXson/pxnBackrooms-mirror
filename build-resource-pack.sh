@@ -7,7 +7,11 @@ fi
 
 
 \pushd  "resources/pack/"  >/dev/null  || exit 1
-	\zip -r -9  ../pxnBackrooms-resourcepack.zip *  || exit 1
+#TODO: remove excludes
+	\zip -r -9  ../pxnBackrooms-resourcepack.zip *  \
+		--exclude */redstone_lamp.png     \
+		--exclude */redstone_lamp_on.png  \
+			|| exit 1
 \popd >/dev/null
 
 
