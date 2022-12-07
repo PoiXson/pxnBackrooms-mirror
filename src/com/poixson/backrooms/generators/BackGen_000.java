@@ -1,9 +1,13 @@
 package com.poixson.backrooms.generators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -35,7 +40,12 @@ public class BackGen_000 extends BackroomsGenerator {
 	public static final int BASE_Y          = 0;
 	public static final int BASEMENT_HEIGHT = 30;
 	public static final int BASEMENT_FLOOR  = 3;
-	public static final int LOBBY_HEIGHT    = 6;
+
+	public static final int LOBBY_HEIGHT = 6;
+
+	public static final int PATH_FLOOR    = 3;
+	public static final int PATH_WIDTH    = 3;
+	public static final int PATH_CLEARING = 10;
 
 	public static final double MOIST_THRESHOLD = 0.35;
 
@@ -43,13 +53,22 @@ public class BackGen_000 extends BackroomsGenerator {
 	public static final Material BASEMENT_SUBFLOOR  = Material.DIRT;
 	public static final Material BASEMENT_FLOOR_DRY = Material.BROWN_CONCRETE_POWDER;
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
-	public static final Material LOBBY_WALL         = Material.YELLOW_TERRACOTTA;
+
+	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
 
 	protected final FastNoiseLiteD noiseMoist;
 	protected final FastNoiseLiteD noiseBasementWalls;
 	protected final FastNoiseLiteD noiseLobbyWalls;
+	protected final FastNoiseLiteD noisePath;
+	protected final FastNoiseLiteD noisePathGround;
+	protected final FastNoiseLiteD noiseTrees;
 
 	protected final HashMap<String, ArrayList<Location>> playerLights = new HashMap<String, ArrayList<Location>>();
+
+	protected final TreePopulator treePop;
+	protected final PathTracer pathTrace;
+	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
+			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
 
 
 
@@ -78,6 +97,22 @@ public class BackGen_000 extends BackroomsGenerator {
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
 		this.noiseLobbyWalls.setRotationType3D(RotationType3D.ImproveXYPlanes);
+		// path
+		this.noisePath = new FastNoiseLiteD();
+		this.noisePath.setFrequency(0.01f);
+		// path ground
+		this.noisePathGround = new FastNoiseLiteD();
+		this.noisePathGround.setFrequency(0.002f);
+		this.noisePathGround.setFractalType(FractalType.Ridged);
+		this.noisePathGround.setFractalOctaves(3);
+		this.noisePathGround.setFractalGain(0.5f);
+		this.noisePathGround.setFractalLacunarity(2.0f);
+		// tree noise
+		this.noiseTrees = new FastNoiseLiteD();
+		this.noiseTrees.setFrequency(0.2f);
+		// populators
+		this.treePop = new TreePopulator309(this.noiseTrees, BASE_Y+BASEMENT_HEIGHT+LOBBY_HEIGHT+8);
+		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
 	}
 
 	@Override
@@ -93,6 +128,7 @@ public class BackGen_000 extends BackroomsGenerator {
 			}
 			this.playerLights.clear();
 		}
+		this.pathCache.set(null);
 	}
 
 
@@ -109,8 +145,11 @@ public class BackGen_000 extends BackroomsGenerator {
 				// basement
 				this.generateBasement(chunkX, chunkZ, chunk, x, y, z, xx, zz);
 				y += BASEMENT_HEIGHT;
-				// main lobby
+				// 0 main lobby
 				this.generateLobby(chunkX, chunkZ, chunk, x, y, z, xx, zz);
+				y += LOBBY_HEIGHT + 3;
+				// 309 woods path
+				this.generateWoodsPath(chunkX, chunkZ, chunk, x, y, z, xx, zz);
 			}
 		}
 	}
@@ -206,6 +245,78 @@ public class BackGen_000 extends BackroomsGenerator {
 				chunk.setBlock(x, y+6, z, Material.STONE);
 			}
 		}
+	}
+
+	protected void generateWoodsPath(final int chunkX, final int chunkZ, final ChunkData chunk,
+			final int x, int y, final int z, final int xx, final int zz) {
+		chunk.setBlock(x, y, z, Material.BEDROCK);
+		y++;
+		// stone
+		for (int i=0; i<PATH_FLOOR; i++) {
+			chunk.setBlock(x, y+i, z, Material.STONE);
+		}
+		final double ground;
+		{
+			final double g = this.noisePathGround.getNoise(xx, zz);
+			ground = 1.0f + (g < 0.0f ? g * 0.6f : g);
+		}
+		y += 3;
+		// dirt
+		final int elevation = (int) (ground * 2.5f); // 0 to 5
+		for (int i=0; i<elevation; i++) {
+			if (i >= elevation-1) {
+				if (this.pathTrace.isPath(xx, zz, PATH_WIDTH)) {
+					chunk.setBlock(x, y+i, z, Material.DIRT_PATH);
+				} else {
+					chunk.setBlock(x, y+i, z, Material.GRASS_BLOCK);
+				}
+			} else {
+				chunk.setBlock(x, y+i, z, Material.DIRT);
+			}
+		}
+	}
+
+
+
+	@Override
+	public List<BlockPopulator> getDefaultPopulators(final World world) {
+		return Arrays.asList(
+			this.treePop
+		);
+	}
+
+	public class TreePopulator309 extends TreePopulator {
+
+		public TreePopulator309(final FastNoiseLiteD noise, final int chunkY) {
+			super(noise, chunkY);
+		}
+
+		public boolean isTree(final int x, final int z) {
+			if (!super.isTree(x, z))
+				return false;
+			if (BackGen_000.this.pathTrace.isPath(x, z, PATH_CLEARING))
+				return false;
+			return true;
+		}
+
+	}
+
+
+
+	public ConcurrentHashMap<Integer, Double> getPathCacheMap() {
+		// existing
+		{
+			final ConcurrentHashMap<Integer, Double> cache = this.pathCache.get();
+			if (cache != null)
+				return cache;
+		}
+		// new instance
+		{
+			final ConcurrentHashMap<Integer, Double> cache = new ConcurrentHashMap<Integer, Double>();
+			if (this.pathCache.compareAndSet(null, cache))
+				return cache;
+		}
+		return this.getPathCacheMap();
 	}
 
 

@@ -76,8 +76,8 @@ public class TreePopulator extends BlockPopulator {
 		int y = 0;
 		{
 			for (int yy=0; yy<10; yy++) {
-				if (Material.AIR.equals(region.getType(x, yy, z))) {
-					y = yy;
+				if (Material.AIR.equals(region.getType(x, this.chunkY+yy, z))) {
+					y = this.chunkY + yy;
 					break;
 				}
 			}

@@ -15,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.poixson.backrooms.generators.BackGen_000;
 import com.poixson.backrooms.generators.BackGen_009;
 import com.poixson.backrooms.generators.BackGen_011;
-import com.poixson.backrooms.generators.BackGen_309;
 import com.poixson.backrooms.generators.BackroomsGenerator;
 
 
@@ -117,10 +116,9 @@ public class BackroomsPlugin extends JavaPlugin {
 		{
 			final BackroomsGenerator gen;
 			switch (level) {
-			case 0:   gen = new BackGen_000(this); break;
-			case 9:   gen = new BackGen_009(this); break;
-			case 11:  gen = new BackGen_011(this); break;
-			case 309: gen = new BackGen_309(this); break;
+			case 0:  gen = new BackGen_000(this); break;
+			case 9:  gen = new BackGen_009(this); break;
+			case 11: gen = new BackGen_011(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 			}
 			final BackroomsGenerator existing = this.generators.putIfAbsent(Integer.valueOf(level), gen);
