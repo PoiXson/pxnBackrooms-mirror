@@ -28,14 +28,12 @@ public class BackroomsPlugin extends JavaPlugin {
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
 	protected final AtomicBoolean enableScripts = new AtomicBoolean(false);
-//	protected final AtomicReference<String> worldName = new AtomicReference<String>(null);
 
 	// world generators
 	protected final HashMap<Integer, BackroomsGenerator> generators = new HashMap<Integer, BackroomsGenerator>();
 
 //	// listeners
 //	protected final AtomicReference<BackroomsCommands>   commandListener = new AtomicReference<BackroomsCommands>(null);
-//	protected final AtomicReference<PlayerDamageListener> damageListener = new AtomicReference<PlayerDamageListener>(null);
 
 
 
@@ -68,8 +66,6 @@ public class BackroomsPlugin extends JavaPlugin {
 			pm.registerEvents(listener, this);
 		}
 */
-//		final PluginManager pm = Bukkit.getPluginManager();
-//		pm.registerEvents(new DecayListener(), this);
 	}
 
 	@Override
@@ -87,14 +83,13 @@ public class BackroomsPlugin extends JavaPlugin {
 				listener.unregister();
 		}
 */
-		// stop listeners
-		HandlerList.unregisterAll(this);
-//		this.damageListener.set(null);
 		// stop schedulers
 		try {
 			Bukkit.getScheduler()
 				.cancelTasks(this);
 		} catch (Exception ignore) {}
+		// stop listeners
+		HandlerList.unregisterAll(this);
 		if (!instance.compareAndSet(this, null))
 			throw new RuntimeException("Disable wrong instance of plugin?");
 	}
@@ -134,30 +129,6 @@ public class BackroomsPlugin extends JavaPlugin {
 			return gen;
 		}
 	}
-
-
-
-//	public String getBackroomsWorldName() {
-//		return this.worldName.get();
-//	}
-
-/*
-	public boolean isBackroomsWorld(final Player player) {
-		if (player == null) throw new NullPointerException();
-		return this.isBackroomsWorld(player.getWorld());
-	}
-	public boolean isBackroomsWorld(final World world) {
-		if (world == null) throw new NullPointerException();
-		return this.isBackroomsWorld(world.getName());
-	}
-	public boolean isBackroomsWorld(final String worldName) {
-//TODO
-return false;
-//		if (Utils.isEmpty(worldName)) throw new NullPointerException();
-//		return ScriptKitAPI.GetAPI()
-//				.hasChunkGenerator(worldName);
-	}
-*/
 
 
 

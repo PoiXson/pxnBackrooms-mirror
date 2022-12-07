@@ -4,9 +4,8 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.NumberUtils;
-
-import me.auburn.FastNoiseLiteD;
 
 
 public class PathTracer {

@@ -12,9 +12,8 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
-
-import me.auburn.FastNoiseLiteD;
-import me.auburn.FastNoiseLiteD.FractalType;
+import com.poixson.utils.FastNoiseLiteD;
+import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
 // forest

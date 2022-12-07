@@ -9,7 +9,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import me.auburn.FastNoiseLiteD;
+import com.poixson.utils.FastNoiseLiteD;
 
 
 public class TreePopulator extends BlockPopulator {

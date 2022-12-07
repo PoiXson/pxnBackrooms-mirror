@@ -25,9 +25,4 @@ public class BackGen_009 extends BackroomsGenerator {
 
 
 
-	// ----------------------------------------
-	// noise
-
-
-
 }
