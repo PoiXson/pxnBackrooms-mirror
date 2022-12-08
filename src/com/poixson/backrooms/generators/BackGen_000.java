@@ -144,6 +144,13 @@ public class BackGen_000 extends BackroomsGenerator {
 	public void generateSurface(
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
+		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
+		this.noiseMoist.setSeed(seed);
+		this.noiseBasementWalls.setSeed(seed);
+		this.noiseLobbyWalls.setSeed(seed);
+		this.noisePath.setSeed(seed);
+		this.noisePathGround.setSeed(seed);
+		this.noiseTrees.setSeed(seed);
 		int xx, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
