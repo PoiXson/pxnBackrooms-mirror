@@ -14,19 +14,21 @@ import com.poixson.utils.FastNoiseLiteD;
 
 public class TreePopulator extends BlockPopulator {
 
-	//TODO
-	public static final Material TRUNK  = Material.BIRCH_LOG;
-	public static final Material LEAVES = Material.BIRCH_LEAVES;
-
 	protected final FastNoiseLiteD noise;
 
 	protected final int chunkY;
 
+	protected final Material trunk;
+	protected final Material leaves;
 
 
-	public TreePopulator(final FastNoiseLiteD noise, final int chunkY) {
+
+	public TreePopulator(final FastNoiseLiteD noise, final int chunkY,
+			final Material trunk, final Material leaves) {
 		this.noise  = noise;
 		this.chunkY  = chunkY;
+		this.trunk  = trunk;
+		this.leaves = leaves;
 	}
 
 
@@ -106,7 +108,7 @@ public class TreePopulator extends BlockPopulator {
 							zz = (z + iz) - size_half;
 							yy = y + iy + 3;
 							if (Material.AIR.equals(region.getType(xx, yy, zz))) {
-								region.setType(xx, yy, zz, LEAVES);
+								region.setType(xx, yy, zz, this.leaves);
 								final BlockData block = region.getBlockData(xx, yy, zz);
 								final Leaves leaves = (Leaves) block;
 								leaves.setPersistent(true);
@@ -119,7 +121,7 @@ public class TreePopulator extends BlockPopulator {
 		}
 		// trunk
 		for (int iy=0; iy<size_tree; iy++) {
-			region.setType(x, y+iy, z, TRUNK);
+			region.setType(x, y+iy, z, this.trunk);
 		}
 	}
 
