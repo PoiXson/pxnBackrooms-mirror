@@ -32,18 +32,22 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
-// lobby / basement
+// 309 | Path
+//   0 | Lobby
+//  -1 | Basement
 public class BackGen_000 extends BackroomsGenerator {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 
-	public static final int BASE_Y          = 0;
+	public static final int SUBFLOOR = 3;
+
+	public static final int BASEMENT_Y      = 0;
 	public static final int BASEMENT_HEIGHT = 30;
-	public static final int BASEMENT_FLOOR  = 3;
 
-	public static final int LOBBY_HEIGHT = 6;
+	public static final int LOBBY_Y      = 31;
+	public static final int LOBBY_HEIGHT = 11;
 
-	public static final int PATH_FLOOR    = 3;
+	public static final int PATH_Y        = 54;
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
 
@@ -55,6 +59,9 @@ public class BackGen_000 extends BackroomsGenerator {
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
 
 	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
+
+	public static final Material PATH_TREE_TRUNK  = Material.BIRCH_LOG;
+	public static final Material PATH_TREE_LEAVES = Material.BIRCH_LEAVES;
 
 	protected final FastNoiseLiteD noiseMoist;
 	protected final FastNoiseLiteD noiseBasementWalls;
@@ -111,7 +118,7 @@ public class BackGen_000 extends BackroomsGenerator {
 		this.noiseTrees = new FastNoiseLiteD();
 		this.noiseTrees.setFrequency(0.2f);
 		// populators
-		this.treePop = new TreePopulator309(this.noiseTrees, BASE_Y+BASEMENT_HEIGHT+LOBBY_HEIGHT+8);
+		this.treePop = new TreePopulator309(this.noiseTrees, PATH_Y);
 		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
 	}
 
@@ -134,55 +141,55 @@ public class BackGen_000 extends BackroomsGenerator {
 
 
 	@Override
-	public void generateSurface(final WorldInfo worldInfo, final Random random,
+	public void generateSurface(
+			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
-		int xx, y, zz;
+		int xx, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				xx = x + (chunkX * 16);
 				zz = z + (chunkZ * 16);
-				y = BASE_Y;
 				// basement
-				this.generateBasement(chunkX, chunkZ, chunk, x, y, z, xx, zz);
-				y += BASEMENT_HEIGHT;
+				this.generateBasement(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 0 main lobby
-				this.generateLobby(chunkX, chunkZ, chunk, x, y, z, xx, zz);
-				y += LOBBY_HEIGHT + 3;
+				this.generateLobby(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 309 woods path
-				this.generateWoodsPath(chunkX, chunkZ, chunk, x, y, z, xx, zz);
+				this.generateWoodsPath(chunkX, chunkZ, chunk, x, z, xx, zz);
 			}
 		}
 	}
 
-	protected void generateBasement(final int chunkX, final int chunkZ, final ChunkData chunk,
-			final int x, int y, final int z, final int xx, final int zz) {
+	protected void generateBasement(
+			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final int x, final int z, final int xx, final int zz) {
+		int y = BASEMENT_Y;
 		// basement floor
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
-		for (int yy=0; yy<BASEMENT_FLOOR; yy++) {
+		for (int yy=0; yy<SUBFLOOR; yy++) {
 			chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
 		}
-		y += BASEMENT_FLOOR;
+		y += SUBFLOOR;
 		final double moist = this.noiseMoist.getNoise(xx, zz);
 		final boolean isWet = (moist > MOIST_THRESHOLD);
-		if (isWet) {
-			chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
-		} else {
-			chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
-		}
-		// basement walls
 		final double value = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
 		final boolean isWall = (value > 0.8 && value < 0.95);
 		if (isWall) {
-			final int h = BASEMENT_HEIGHT - BASEMENT_FLOOR - 3;
+			// basement walls
+			final int h = BASEMENT_HEIGHT - SUBFLOOR - 2;
 			for (int yy=0; yy<h; yy++) {
-				if (yy > 5) {
+				if (yy > 6) {
 					chunk.setBlock(x, y+yy, z, Material.BEDROCK);
 				} else {
 					chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
 				}
 			}
 		} else {
+			if (isWet) {
+				chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
+			} else {
+				chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
+			}
 			// basement lights
 			final int modX10 = Math.abs(xx) % 10;
 			final int modZ10 = Math.abs(zz) % 10;
@@ -204,63 +211,72 @@ public class BackGen_000 extends BackroomsGenerator {
 			}
 		}
 		// basement ceiling
-		y = BASEMENT_HEIGHT;
-		chunk.setBlock(x, y,   z, Material.BEDROCK);
-		chunk.setBlock(x, y-2, z, Material.BEDROCK);
-		if (isWet) {
-			chunk.setBlock(x, y-1, z, Material.WATER);
+		y += BASEMENT_HEIGHT - SUBFLOOR - 1;
+		chunk.setBlock(x, y-1, z, Material.BEDROCK);
+		if (isWet && !isWall) {
+			chunk.setBlock(x, y, z, Material.WATER);
 		} else {
-			chunk.setBlock(x, y-1, z, Material.STONE);
+			chunk.setBlock(x, y, z, Material.STONE);
 		}
 	}
 
-	protected void generateLobby(final int chunkX, final int chunkZ, final ChunkData chunk,
-			final int x, int y, final int z, final int xx, final int zz) {
+	protected void generateLobby(
+			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final int x, final int z, final int xx, final int zz) {
+		int y = LOBBY_Y;
 		// lobby floor
-		chunk.setBlock(x, y+1, z, Material.LIGHT_GRAY_WOOL);
-		y += 2;
-		// lobby walls
+		chunk.setBlock(x, y, z, Material.BEDROCK);
+		y++;
+		for (int yy=0; yy<SUBFLOOR; yy++) {
+			chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
+		}
+		y += SUBFLOOR;
 		final double value = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
 		final boolean isWall = (value > 0.38 && value < 0.5);
 		if (isWall) {
-			for (int yy=0; yy<LOBBY_HEIGHT+1; yy++) {
+			// lobby walls
+			final int h = LOBBY_HEIGHT - SUBFLOOR;
+			for (int yy=0; yy<h; yy++) {
 				chunk.setBlock(x, y+yy, z, LOBBY_WALL);
 			}
 		} else {
+			chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
+			y += 6;
 			final int modX6 = Math.abs(xx) % 7;
 			final int modZ6 = Math.abs(zz) % 7;
 			if (modZ6 == 0 && modX6 < 2) {
 				// ceiling lights
-				chunk.setBlock(x, y+5, z, Material.REDSTONE_LAMP);
-				final BlockData block = chunk.getBlockData(x, y+5, z);
+				chunk.setBlock(x, y, z, Material.REDSTONE_LAMP);
+				final BlockData block = chunk.getBlockData(x, y, z);
 				((Lightable)block).setLit(true);
-				chunk.setBlock(x, y+5, z, block);
-				chunk.setBlock(x, y+6, z, Material.REDSTONE_BLOCK);
+				chunk.setBlock(x, y,   z, block);
+				chunk.setBlock(x, y+1, z, Material.REDSTONE_BLOCK);
 			} else {
 				// ceiling
-				chunk.setBlock(x, y+5, z, Material.SMOOTH_STONE_SLAB);
-				final BlockData block = chunk.getBlockData(x, y+5, z);
+				chunk.setBlock(x, y, z, Material.SMOOTH_STONE_SLAB);
+				final BlockData block = chunk.getBlockData(x, y, z);
 				((Slab)block).setType(Slab.Type.TOP);
-				chunk.setBlock(x, y+5, z, block);
-				chunk.setBlock(x, y+6, z, Material.STONE);
+				chunk.setBlock(x, y,   z, block);
+				chunk.setBlock(x, y+1, z, Material.STONE);
 			}
 		}
 	}
 
-	protected void generateWoodsPath(final int chunkX, final int chunkZ, final ChunkData chunk,
-			final int x, int y, final int z, final int xx, final int zz) {
+	protected void generateWoodsPath(
+			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final int x, final int z, final int xx, final int zz) {
+		int y = PATH_Y;
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
-		// stone
-		for (int i=0; i<PATH_FLOOR; i++) {
+		for (int i=0; i<SUBFLOOR; i++) {
 			chunk.setBlock(x, y+i, z, Material.STONE);
 		}
+		y += SUBFLOOR;
 		final double ground;
 		{
 			final double g = this.noisePathGround.getNoise(xx, zz);
 			ground = 1.0f + (g < 0.0f ? g * 0.6f : g);
 		}
-		y += 3;
 		// dirt
 		final int elevation = (int) (ground * 2.5f); // 0 to 5
 		for (int i=0; i<elevation; i++) {
@@ -288,7 +304,11 @@ public class BackGen_000 extends BackroomsGenerator {
 	public class TreePopulator309 extends TreePopulator {
 
 		public TreePopulator309(final FastNoiseLiteD noise, final int chunkY) {
-			super(noise, chunkY);
+			super(
+				noise, chunkY,
+				PATH_TREE_TRUNK,
+				PATH_TREE_LEAVES
+			);
 		}
 
 		public boolean isTree(final int x, final int z) {
@@ -346,8 +366,8 @@ public class BackGen_000 extends BackroomsGenerator {
 		if (from.getBlockX() == toX && from.getBlockZ() == toZ)
 			return;
 		// basement level
-		if (toY < BASE_Y                ) return;
-		if (toY > BASE_Y+BASEMENT_HEIGHT) return;
+		if (toY < BASEMENT_Y                ) return;
+		if (toY > BASEMENT_Y+BASEMENT_HEIGHT) return;
 		final ArrayList<Location> lights = this.getPlayerLightsList(player);
 		// turn off lights
 		{
