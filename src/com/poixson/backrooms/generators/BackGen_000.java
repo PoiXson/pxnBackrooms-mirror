@@ -24,6 +24,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -33,6 +34,7 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
 // 309 | Path
+//   5 | Hotel
 //   0 | Lobby
 //  -1 | Basement
 public class BackGen_000 extends BackroomsGenerator {
@@ -47,6 +49,9 @@ public class BackGen_000 extends BackroomsGenerator {
 	public static final int LOBBY_Y      = 31;
 	public static final int LOBBY_HEIGHT = 11;
 
+	public static final int HOTEL_Y      = 43;
+	public static final int HOTEL_HEIGHT = 11;
+
 	public static final int PATH_Y        = 54;
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
@@ -60,11 +65,14 @@ public class BackGen_000 extends BackroomsGenerator {
 
 	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
 
+	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
+
 	public static final Material PATH_TREE_TRUNK  = Material.BIRCH_LOG;
 	public static final Material PATH_TREE_LEAVES = Material.BIRCH_LEAVES;
 
 	protected final FastNoiseLiteD noiseMoist;
 	protected final FastNoiseLiteD noiseBasementWalls;
+	protected final FastNoiseLiteD noiseHotelWalls;
 	protected final FastNoiseLiteD noiseLobbyWalls;
 	protected final FastNoiseLiteD noisePath;
 	protected final FastNoiseLiteD noisePathGround;
@@ -104,6 +112,14 @@ public class BackGen_000 extends BackroomsGenerator {
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
 		this.noiseLobbyWalls.setRotationType3D(RotationType3D.ImproveXYPlanes);
+		// hotel walls
+		this.noiseHotelWalls = new FastNoiseLiteD();
+		this.noiseHotelWalls.setFrequency(0.02);
+		this.noiseHotelWalls.setFractalOctaves(1);
+		this.noiseHotelWalls.setCellularJitter(0.3);
+		this.noiseHotelWalls.setNoiseType(NoiseType.Cellular);
+		this.noiseHotelWalls.setFractalType(FractalType.PingPong);
+		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		// path
 		this.noisePath = new FastNoiseLiteD();
 		this.noisePath.setFrequency(0.01f);
@@ -148,10 +164,14 @@ public class BackGen_000 extends BackroomsGenerator {
 		this.noiseMoist.setSeed(seed);
 		this.noiseBasementWalls.setSeed(seed);
 		this.noiseLobbyWalls.setSeed(seed);
+		this.noiseHotelWalls.setSeed(seed);
 		this.noisePath.setSeed(seed);
 		this.noisePathGround.setSeed(seed);
 		this.noiseTrees.setSeed(seed);
 		int xx, zz;
+		// pre-generate
+		final HashMap<Dxy, HotelDAO> prehotel = this.pregenerateHotel(chunkX, chunkZ);
+		// generate
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				xx = x + (chunkX * 16);
@@ -160,6 +180,8 @@ public class BackGen_000 extends BackroomsGenerator {
 				this.generateBasement(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 0 main lobby
 				this.generateLobby(chunkX, chunkZ, chunk, x, z, xx, zz);
+				// hotel
+				this.generateHotel(prehotel, chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 309 woods path
 				this.generateWoodsPath(chunkX, chunkZ, chunk, x, z, xx, zz);
 			}
@@ -267,6 +289,37 @@ public class BackGen_000 extends BackroomsGenerator {
 				chunk.setBlock(x, y+1, z, Material.STONE);
 			}
 		}
+	}
+
+
+
+	public enum HotelType {
+		HALL,
+		ROOM,
+		WALL
+	};
+	public class HotelDAO {
+		public final double value;
+		public HotelType type;
+		public HotelDAO(final double value) {
+			this.value = value;
+			if (value > 0.65)
+				this.type = HotelType.HALL;
+			else
+				this.type = HotelType.ROOM;
+		}
+	}
+
+
+
+	protected HashMap<Dxy, HotelDAO> pregenerateHotel(
+			final int chunkX, final int chunkZ) {
+		final HashMap<Dxy, HotelDAO> prehotel = new HashMap<Dxy, HotelDAO>();
+		return prehotel;
+	}
+	protected void generateHotel(final HashMap<Dxy, HotelDAO> prehotel,
+			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final int x, final int z, final int xx, final int zz) {
 	}
 
 	protected void generateWoodsPath(
