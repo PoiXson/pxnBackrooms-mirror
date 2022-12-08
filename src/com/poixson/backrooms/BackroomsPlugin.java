@@ -122,8 +122,6 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 	public int noclip(final int from) {
-		if (from == Integer.MIN_VALUE)
-			return 0;
 		final HashMap<Integer, Integer> chance = new HashMap<Integer, Integer>();
 		switch (from) {
 		case 0: // lobby
@@ -138,25 +136,38 @@ public class BackroomsPlugin extends JavaPlugin {
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  2 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
+			break;
 		case 5: // hotel
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
 			chance.put(Integer.valueOf(  -1 ), Integer.valueOf( 15 )); // basement
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
+			break;
 		case 9: // suburbs
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  5 )); // path
+			break;
 		case 11: // city
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
 			chance.put(Integer.valueOf(  -1 ), Integer.valueOf( 10 )); // basement
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  5 )); // suburbs
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
+			break;
 		case 309: // path
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 10 )); // lobby
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 15 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
+			break;
+		default:
+			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 50 )); // lobby
+			chance.put(Integer.valueOf(  -1 ), Integer.valueOf(  5 )); // basement
+			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  5 )); // hotel
+			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  5 )); // suburbs
+			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  5 )); // city
+			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  5 )); // path
+			break;
 		}
 		if (chance.isEmpty())
 			return 0;
