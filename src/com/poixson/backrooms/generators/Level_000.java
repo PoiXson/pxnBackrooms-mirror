@@ -88,16 +88,16 @@ public class Level_000 extends BackroomsGenerator {
 			if (modZ6 == 0 && modX6 < 2) {
 				// ceiling lights
 				chunk.setBlock(x, y, z, Material.REDSTONE_LAMP);
-				final BlockData block = chunk.getBlockData(x, y, z);
-				((Lightable)block).setLit(true);
-				chunk.setBlock(x, y,   z, block);
+					final BlockData block = chunk.getBlockData(x, y, z);
+					((Lightable)block).setLit(true);
+					chunk.setBlock(x, y,   z, block);
 				chunk.setBlock(x, y+1, z, Material.REDSTONE_BLOCK);
 			} else {
 				// ceiling
 				chunk.setBlock(x, y, z, Material.SMOOTH_STONE_SLAB);
-				final BlockData block = chunk.getBlockData(x, y, z);
-				((Slab)block).setType(Slab.Type.TOP);
-				chunk.setBlock(x, y,   z, block);
+					final Slab slab = (Slab) chunk.getBlockData(x, y, z);
+					slab.setType(Slab.Type.TOP);
+					chunk.setBlock(x, y,   z, slab);
 				chunk.setBlock(x, y+1, z, Material.STONE);
 			}
 		}
