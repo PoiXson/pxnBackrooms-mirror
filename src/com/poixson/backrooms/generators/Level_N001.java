@@ -131,18 +131,18 @@ public class Level_N001 extends BackroomsGenerator {
 			final int modX10 = Math.abs(xx) % 10;
 			final int modZ10 = Math.abs(zz) % 10;
 			if (modZ10 == 0) {
-				if (modX10 < 5) {
+				if (modX10 < 3 || modX10 > 7) {
 					chunk.setBlock(x, y+5, z, Material.REDSTONE_LAMP);
 					switch (modX10) {
-					case 0:
-					case 4:
+					case 0: chunk.setBlock(x, y+6, z, Material.BEDROCK);       break;
+					case 1:
+					case 9: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
+					case 2:
+					case 8:
 						for (int yy=0; yy<3; yy++) {
 							chunk.setBlock(x, y+yy+6, z, Material.CHAIN);
 						}
 						break;
-					case 1:
-					case 3: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
-					case 2: chunk.setBlock(x, y+6, z, Material.BEDROCK);       break;
 					}
 				}
 			}
@@ -170,6 +170,7 @@ public class Level_N001 extends BackroomsGenerator {
 				return list;
 		}
 		// cleanup
+//TODO: improve this
 		if (this.playerLights.size() % 5 == 0) {
 			final Iterator<String> it = this.playerLights.keySet().iterator();
 			while (it.hasNext()) {
@@ -234,8 +235,8 @@ public class Level_N001 extends BackroomsGenerator {
 		final World world = player.getWorld();
 		final int r = BASEMENT_LIGHT_RADIUS;
 		final int rr = r * 2;
-		final int fx = (Math.floorDiv(toX, 10) * 10) + 2;
-		final int fz =  Math.floorDiv(toZ, 10) * 10;
+		final int fx = Math.floorDiv(toX, 10) * 10;
+		final int fz = Math.floorDiv(toZ, 10) * 10;
 		int xx, zz;
 		for (int z=0; z<rr; z+=10) {
 			zz = (fz + z) - r;
