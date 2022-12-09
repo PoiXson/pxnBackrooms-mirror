@@ -16,7 +16,7 @@ public class Level_309 extends BackroomsGenerator {
 
 	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
 
-	public static final int PATH_Y        = 54;
+	public static final int PATH_Y        = 55;
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
 

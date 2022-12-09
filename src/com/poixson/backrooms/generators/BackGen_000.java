@@ -74,7 +74,8 @@ if (chunkZ % 6 == 0) return;
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
 		return Arrays.asList(
-			this.level_309.treePop
+			this.level_309.treePop,
+			this.level_005.roomPop
 		);
 	}
 

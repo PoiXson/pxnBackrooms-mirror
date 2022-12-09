@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -22,9 +26,11 @@ public class Level_005 extends BackroomsGenerator {
 	public static final int HOTEL_HEIGHT = 11;
 
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
-	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_LOG;
+	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 
 	protected final FastNoiseLiteD noiseHotelWalls;
+
+	public final HotelRoomPopulator roomPop;
 
 
 
@@ -38,6 +44,8 @@ public class Level_005 extends BackroomsGenerator {
 		this.noiseHotelWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseHotelWalls.setFractalType(FractalType.PingPong);
 		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
+		// populators
+		this.roomPop = new HotelRoomPopulator();
 	}
 
 
@@ -62,14 +70,16 @@ public class Level_005 extends BackroomsGenerator {
 		WALL
 	};
 	public class HotelDAO {
+//TODO: add wall_1_away
 		public final double value;
 		public HotelType type;
 		public HotelDAO(final double value) {
 			this.value = value;
-			if (value > 0.65)
+			if (value > 0.65) {
 				this.type = HotelType.HALL;
-			else
+			} else {
 				this.type = HotelType.ROOM;
+			}
 		}
 	}
 
@@ -123,6 +133,7 @@ public class Level_005 extends BackroomsGenerator {
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
 		int y = HOTEL_Y;
+		chunk.setBlock(x, y+11, z, Material.STONE);
 		// hotel floor
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
@@ -137,15 +148,50 @@ public class Level_005 extends BackroomsGenerator {
 		// hall floor
 		switch (dao.type) {
 		case WALL:
-			for (int yy=0; yy<3; yy++) {
+			for (int yy=0; yy<7; yy++) {
 				chunk.setBlock(x, y+yy, z, HOTEL_WALL);
 			}
 			break;
 		case ROOM:
-//			chunk.setBlock(x, y, z, Material.STONE);
+			// ceiling
+			chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
 			break;
 		case HALL:
 			chunk.setBlock(x, y, z, HOTEL_FLOOR);
+			final Directional tile = (Directional) chunk.getBlockData(x, y, z);
+			if (z % 2 == 0) {
+				if (x % 2 == 0) tile.setFacing(BlockFace.NORTH);
+				else            tile.setFacing(BlockFace.WEST);
+			} else {
+				if (x % 2 == 0) tile.setFacing(BlockFace.EAST);
+				else            tile.setFacing(BlockFace.SOUTH);
+			}
+			chunk.setBlock(x, y, z, tile);
+			// ceiling light
+			if (xx % 5 == 0 && zz % 5 == 0) {
+				chunk.setBlock(x, y+6, z, Material.REDSTONE_LAMP);
+				final Lightable lamp = (Lightable) chunk.getBlockData(x, y+6, z);
+				lamp.setLit(true);
+				chunk.setBlock(x, y+6, z, lamp);
+				chunk.setBlock(x, y+7, z, Material.REDSTONE_BLOCK);
+			// ceiling
+			} else {
+				final HotelDAO daoN = prehotel.get(new Dxy(x, z-1));
+				final HotelDAO daoS = prehotel.get(new Dxy(x, z+1));
+				final HotelDAO daoE = prehotel.get(new Dxy(x+1, z));
+				final HotelDAO daoW = prehotel.get(new Dxy(x-1, z));
+				if (HotelType.WALL.equals(daoN.type)
+				||  HotelType.WALL.equals(daoS.type)
+				||  HotelType.WALL.equals(daoE.type)
+				||  HotelType.WALL.equals(daoW.type) ) {
+					chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
+				} else {
+					chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE_SLAB);
+						final Slab slab = (Slab) chunk.getBlockData(x, y+6, z);
+						slab.setType(Slab.Type.TOP);
+						chunk.setBlock(x, y+6, z, slab);
+				}
+			}
 			break;
 		}
 	}
