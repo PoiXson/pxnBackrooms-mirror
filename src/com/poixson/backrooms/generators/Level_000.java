@@ -19,6 +19,8 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 public class Level_000 extends BackroomsGenerator {
 
+	public static final boolean BUILD_ROOF = true;
+
 	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
 
 	public static final int LOBBY_Y      = 31;
@@ -83,22 +85,24 @@ public class Level_000 extends BackroomsGenerator {
 		} else {
 			chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
 			y += 6;
-			final int modX6 = Math.abs(xx) % 7;
-			final int modZ6 = Math.abs(zz) % 7;
-			if (modZ6 == 0 && modX6 < 2) {
-				// ceiling lights
-				chunk.setBlock(x, y, z, Material.REDSTONE_LAMP);
-					final BlockData block = chunk.getBlockData(x, y, z);
-					((Lightable)block).setLit(true);
-					chunk.setBlock(x, y,   z, block);
-				chunk.setBlock(x, y+1, z, Material.REDSTONE_BLOCK);
-			} else {
-				// ceiling
-				chunk.setBlock(x, y, z, Material.SMOOTH_STONE_SLAB);
-					final Slab slab = (Slab) chunk.getBlockData(x, y, z);
-					slab.setType(Slab.Type.TOP);
-					chunk.setBlock(x, y,   z, slab);
-				chunk.setBlock(x, y+1, z, Material.STONE);
+			if (BUILD_ROOF) {
+				final int modX6 = Math.abs(xx) % 7;
+				final int modZ6 = Math.abs(zz) % 7;
+				if (modZ6 == 0 && modX6 < 2) {
+					// ceiling lights
+					chunk.setBlock(x, y, z, Material.REDSTONE_LAMP);
+						final BlockData block = chunk.getBlockData(x, y, z);
+						((Lightable)block).setLit(true);
+						chunk.setBlock(x, y,   z, block);
+					chunk.setBlock(x, y+1, z, Material.REDSTONE_BLOCK);
+				} else {
+					// ceiling
+					chunk.setBlock(x, y, z, Material.SMOOTH_STONE_SLAB);
+						final Slab slab = (Slab) chunk.getBlockData(x, y, z);
+						slab.setType(Slab.Type.TOP);
+						chunk.setBlock(x, y,   z, slab);
+					chunk.setBlock(x, y+1, z, Material.STONE);
+				}
 			}
 		}
 	}

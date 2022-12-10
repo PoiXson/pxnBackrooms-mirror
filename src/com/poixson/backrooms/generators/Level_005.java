@@ -20,6 +20,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 public class Level_005 extends BackroomsGenerator {
 
+	public static final boolean BUILD_ROOF = true;
+
 	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
 
 	public static final int HOTEL_Y      = 43;
@@ -133,7 +135,8 @@ public class Level_005 extends BackroomsGenerator {
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
 		int y = HOTEL_Y;
-		chunk.setBlock(x, y+11, z, Material.STONE);
+		if (BUILD_ROOF)
+			chunk.setBlock(x, y+11, z, Material.STONE);
 		// hotel floor
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
@@ -154,7 +157,8 @@ public class Level_005 extends BackroomsGenerator {
 			break;
 		case ROOM:
 			// ceiling
-			chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
+			if (BUILD_ROOF)
+				chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
 			break;
 		case HALL:
 			chunk.setBlock(x, y, z, HOTEL_FLOOR);
@@ -167,29 +171,31 @@ public class Level_005 extends BackroomsGenerator {
 				else            tile.setFacing(BlockFace.SOUTH);
 			}
 			chunk.setBlock(x, y, z, tile);
-			// ceiling light
-			if (xx % 5 == 0 && zz % 5 == 0) {
-				chunk.setBlock(x, y+6, z, Material.REDSTONE_LAMP);
-				final Lightable lamp = (Lightable) chunk.getBlockData(x, y+6, z);
-				lamp.setLit(true);
-				chunk.setBlock(x, y+6, z, lamp);
-				chunk.setBlock(x, y+7, z, Material.REDSTONE_BLOCK);
-			// ceiling
-			} else {
-				final HotelDAO daoN = prehotel.get(new Dxy(x, z-1));
-				final HotelDAO daoS = prehotel.get(new Dxy(x, z+1));
-				final HotelDAO daoE = prehotel.get(new Dxy(x+1, z));
-				final HotelDAO daoW = prehotel.get(new Dxy(x-1, z));
-				if (HotelType.WALL.equals(daoN.type)
-				||  HotelType.WALL.equals(daoS.type)
-				||  HotelType.WALL.equals(daoE.type)
-				||  HotelType.WALL.equals(daoW.type) ) {
-					chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
+			if (BUILD_ROOF) {
+				// ceiling light
+				if (xx % 5 == 0 && zz % 5 == 0) {
+					chunk.setBlock(x, y+6, z, Material.REDSTONE_LAMP);
+					final Lightable lamp = (Lightable) chunk.getBlockData(x, y+6, z);
+					lamp.setLit(true);
+					chunk.setBlock(x, y+6, z, lamp);
+					chunk.setBlock(x, y+7, z, Material.REDSTONE_BLOCK);
+				// ceiling
 				} else {
-					chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE_SLAB);
-						final Slab slab = (Slab) chunk.getBlockData(x, y+6, z);
-						slab.setType(Slab.Type.TOP);
-						chunk.setBlock(x, y+6, z, slab);
+					final HotelDAO daoN = prehotel.get(new Dxy(x, z-1));
+					final HotelDAO daoS = prehotel.get(new Dxy(x, z+1));
+					final HotelDAO daoE = prehotel.get(new Dxy(x+1, z));
+					final HotelDAO daoW = prehotel.get(new Dxy(x-1, z));
+					if (HotelType.WALL.equals(daoN.type)
+					||  HotelType.WALL.equals(daoS.type)
+					||  HotelType.WALL.equals(daoE.type)
+					||  HotelType.WALL.equals(daoW.type) ) {
+						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
+					} else {
+						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE_SLAB);
+							final Slab slab = (Slab) chunk.getBlockData(x, y+6, z);
+							slab.setType(Slab.Type.TOP);
+							chunk.setBlock(x, y+6, z, slab);
+					}
 				}
 			}
 			break;

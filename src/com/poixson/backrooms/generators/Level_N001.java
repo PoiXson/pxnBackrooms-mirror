@@ -25,6 +25,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 public class Level_N001 extends BackroomsGenerator {
 
+	public static final boolean BUILD_ROOF = true;
+
 	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
 
 	public static final int BASEMENT_Y      = 0;
@@ -149,11 +151,13 @@ public class Level_N001 extends BackroomsGenerator {
 		}
 		// basement ceiling
 		y += BASEMENT_HEIGHT - SUBFLOOR - 1;
-		chunk.setBlock(x, y-1, z, Material.BEDROCK);
-		if (isWet && !isWall) {
-			chunk.setBlock(x, y, z, Material.WATER);
-		} else {
-			chunk.setBlock(x, y, z, Material.STONE);
+		if (BUILD_ROOF) {
+			chunk.setBlock(x, y-1, z, Material.BEDROCK);
+			if (isWet && !isWall) {
+				chunk.setBlock(x, y, z, Material.WATER);
+			} else {
+				chunk.setBlock(x, y, z, Material.STONE);
+			}
 		}
 	}
 
