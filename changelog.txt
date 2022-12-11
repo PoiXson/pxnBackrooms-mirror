@@ -1,1 +1,12 @@
 pxnBackrooms - Backrooms world generator for minecraft
+
+
+2022-12-11 - 0.1.1
+==================
+* initial release
+* finished level 0, -1, 5, and 309
+* todo: add portals and holes
+* todo: add a radio station at end of the path
+* todo: fix hotel lights
+* todo: add furnature to hotel rooms
+* hotel rooms generating with a bed and tables only
