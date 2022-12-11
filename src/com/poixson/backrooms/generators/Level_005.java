@@ -31,6 +31,7 @@ public class Level_005 extends BackroomsGenerator {
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 
 	protected final FastNoiseLiteD noiseHotelWalls;
+	protected final FastNoiseLiteD noiseHotelRooms;
 
 	public final HotelRoomPopulator roomPop;
 
@@ -46,8 +47,12 @@ public class Level_005 extends BackroomsGenerator {
 		this.noiseHotelWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseHotelWalls.setFractalType(FractalType.PingPong);
 		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
+		// hotel rooms
+		this.noiseHotelRooms = new FastNoiseLiteD();
+		this.noiseHotelRooms.setFrequency(0.008);
+		this.noiseHotelRooms.setFractalOctaves(1);
 		// populators
-		this.roomPop = new HotelRoomPopulator();
+		this.roomPop = new HotelRoomPopulator(this.noiseHotelRooms);
 	}
 
 
@@ -154,11 +159,6 @@ public class Level_005 extends BackroomsGenerator {
 			for (int yy=0; yy<7; yy++) {
 				chunk.setBlock(x, y+yy, z, HOTEL_WALL);
 			}
-			break;
-		case ROOM:
-			// ceiling
-			if (BUILD_ROOF)
-				chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
 			break;
 		case HALL:
 			chunk.setBlock(x, y, z, HOTEL_FLOOR);

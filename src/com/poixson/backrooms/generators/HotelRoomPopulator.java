@@ -1,5 +1,8 @@
 package com.poixson.backrooms.generators;
 
+import static com.poixson.commonbukkit.utils.LocationUtils.Rotate;
+import static com.poixson.commonbukkit.utils.LocationUtils.RotateXZ;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -8,21 +11,32 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Door;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
+import com.poixson.commonbukkit.tools.BlockPlotter;
 import com.poixson.tools.dao.Insew;
 import com.poixson.tools.dao.Ixy;
+import com.poixson.tools.dao.Ixywd;
+import com.poixson.utils.FastNoiseLiteD;
 
 
 public class HotelRoomPopulator extends BlockPopulator {
 
+	public static final boolean BUILD_ROOF = Level_005.BUILD_ROOF;
+
+	protected final FastNoiseLiteD noiseHotelRooms;
 
 
-	public HotelRoomPopulator() {
+
+	public HotelRoomPopulator(final FastNoiseLiteD noiseHotelRooms) {
+		this.noiseHotelRooms = noiseHotelRooms;
 	}
 
 
@@ -115,7 +129,8 @@ public class HotelRoomPopulator extends BlockPopulator {
 
 
 
-	public void buildHotelRooms(final Insew dao, final int y, final LimitedRegion region, double room_size) {
+	public void buildHotelRooms(final Insew dao, final int y,
+			final LimitedRegion region, double room_size) {
 		final int total_ns = dao.s - dao.n;
 		final int total_ew = dao.e - dao.w;
 		final int rooms_deep = (int) Math.floor( ((double)total_ns) / room_size );
@@ -126,6 +141,7 @@ public class HotelRoomPopulator extends BlockPopulator {
 		final int rooms_wide_half = (int)Math.floor( ((double)rooms_wide) * 0.5 );
 		int room_x, room_z;
 		int w, d;
+		BlockFace direction;
 		final int extra_x = (total_ew - (rooms_wide * room_width)) + 1;
 		final int extra_z = (total_ns - (rooms_deep * room_depth)) + 1;
 		for (int iz=0; iz<rooms_deep; iz++) {
@@ -141,99 +157,294 @@ public class HotelRoomPopulator extends BlockPopulator {
 				room_x = dao.w + (ix * w);
 				if (ix == rooms_wide_half) w      += extra_x;
 				if (ix >  rooms_wide_half) room_x += extra_x;
-				this.buildHotelRoom(room_x, y, room_z, w, d, region);
+				// north
+				if (iz == 0) {
+					// north-west
+					if (ix == 0) {
+						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+							direction = BlockFace.NORTH;
+						} else {
+							direction = BlockFace.WEST;
+						}
+					} else
+					// north-east
+					if (ix == rooms_wide-1) {
+						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+							direction = BlockFace.NORTH;
+						} else {
+							direction = BlockFace.EAST;
+						}
+					} else {
+						direction = BlockFace.NORTH;
+					}
+				} else
+				// south
+				if (iz == rooms_deep-1) {
+					// south-west
+					if (ix == 0) {
+						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+							direction = BlockFace.SOUTH;
+						} else {
+							direction = BlockFace.WEST;
+						}
+					} else
+					// south-east
+					if (ix == rooms_wide-1) {
+						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+							direction = BlockFace.SOUTH;
+						} else {
+							direction = BlockFace.EAST;
+						}
+					} else {
+						direction = BlockFace.SOUTH;
+					}
+				// east/west
+				} else {
+					if (ix == 0) {
+						direction = BlockFace.WEST;
+					} else {
+						direction = BlockFace.EAST;
+					}
+				}
+				this.buildHotelRoom(room_x, y, room_z, w, d, direction, region);
 			}
 		}
 	}
+
+
 
 	public enum HotelRoomType {
 		EMPTY,
 		WALL,
 		DOOR,
 		DOOR_INSET,
+		BED,
+		LAMP,
 	}
 
-	public void buildHotelRoom(final int x, final int y, final int z, final int w, final int d, final LimitedRegion region) {
-		final HashMap<Ixy, HotelRoomType> room = new HashMap<Ixy, HotelRoomType>();
-		final int wh = (int) Math.floor( ((double)w) * 0.5 );
-//		final int dh = (int) Math.floor( ((double)d) * 0.5 );
-		int xx, zz;
-		HotelRoomType type;
+
+
+	public class HotelRoomDAO {
+
+		public final double value;
+		public HotelRoomType type;
+		public Material block_wall;
+		public Material block_carpet;
+		public Material block_bed;
+
+		public HotelRoomDAO(final double value, final HotelRoomType type,
+				final Material block_wall, final Material block_carpet, final Material block_bed) {
+			this.type  = type;
+			this.value = value;
+			this.block_wall   = block_wall;
+			this.block_carpet = block_carpet;
+			this.block_bed    = block_bed;
+		}
+
+	}
+
+
+
+	public void buildHotelRoom(final int x, final int y, final int z, final int w, final int d,
+			final BlockFace direction, final LimitedRegion region) {
+		final Ixywd loc = RotateXZ(new Ixywd(x, z, w, d), direction);
+		final int wh = (int) Math.floor( ((double)loc.w) * 0.5 );
+		final int dh = (int) Math.floor( ((double)loc.d) * 0.5 );
+		double value = this.noiseHotelRooms.getNoise(x, z);
+		// wall
+		final Material block_wall;
+		switch ( (int)Math.round(((1.0+value)*0.5) * 20.0) ) {
+		case 0:  block_wall = Material.WHITE_TERRACOTTA;      break;
+		case 1:  block_wall = Material.ORANGE_TERRACOTTA;     break;
+		case 2:  block_wall = Material.MAGENTA_TERRACOTTA;    break;
+		case 3:  block_wall = Material.LIGHT_BLUE_TERRACOTTA; break;
+		case 4:  block_wall = Material.YELLOW_TERRACOTTA;     break;
+		case 5:  block_wall = Material.LIME_TERRACOTTA;       break;
+		case 6:  block_wall = Material.PINK_TERRACOTTA;       break;
+		case 7:  block_wall = Material.GRAY_TERRACOTTA;       break;
+		case 8:  block_wall = Material.LIGHT_GRAY_TERRACOTTA; break;
+		case 9:  block_wall = Material.CYAN_TERRACOTTA;       break;
+		case 10: block_wall = Material.PURPLE_TERRACOTTA;     break;
+		case 11: block_wall = Material.BLUE_TERRACOTTA;       break;
+		case 12: block_wall = Material.BROWN_TERRACOTTA;      break;
+		case 13: block_wall = Material.GREEN_TERRACOTTA;      break;
+		case 14: block_wall = Material.RED_TERRACOTTA;        break;
+		case 15: block_wall = Material.BLACK_TERRACOTTA;      break;
+		default: block_wall = Material.STRIPPED_BIRCH_LOG;    break;
+		}
+		// carpet
+		final Material block_carpet;
+		switch ( (int)Math.round(((1.0+value)*0.5) * 18.0) ) {
+		case 0:  block_carpet = Material.WHITE_WOOL;      break;
+		case 1:  block_carpet = Material.ORANGE_WOOL;     break;
+		case 2:  block_carpet = Material.MAGENTA_WOOL;    break;
+		case 3:  block_carpet = Material.LIGHT_BLUE_WOOL; break;
+		case 4:  block_carpet = Material.YELLOW_WOOL;     break;
+		case 5:  block_carpet = Material.LIME_WOOL;       break;
+		case 6:  block_carpet = Material.PINK_WOOL;       break;
+		case 7:  block_carpet = Material.GRAY_WOOL;       break;
+		case 8:  block_carpet = Material.LIGHT_GRAY_WOOL; break;
+		case 9:  block_carpet = Material.CYAN_WOOL;       break;
+		case 10: block_carpet = Material.PURPLE_WOOL;     break;
+		case 11: block_carpet = Material.BLUE_WOOL;       break;
+		case 12: block_carpet = Material.BROWN_WOOL;      break;
+		case 13: block_carpet = Material.GREEN_WOOL;      break;
+		case 14: block_carpet = Material.RED_WOOL;        break;
+		case 15: block_carpet = Material.BLACK_WOOL;      break;
+		default: block_carpet = Material.SPRUCE_PLANKS;   break;
+		}
+		// bed
+		final Material block_bed;
+		switch ( (int)Math.round(((1.0+value)*0.5) * 16.0) ) {
+		case 0:  block_bed = Material.WHITE_BED;      break;
+		case 1:  block_bed = Material.ORANGE_BED;     break;
+		case 2:  block_bed = Material.MAGENTA_BED;    break;
+		case 3:  block_bed = Material.LIGHT_BLUE_BED; break;
+		case 4:  block_bed = Material.YELLOW_BED;     break;
+		case 5:  block_bed = Material.LIME_BED;       break;
+		case 6:  block_bed = Material.PINK_BED;       break;
+		case 7:  block_bed = Material.GRAY_BED;       break;
+		case 8:  block_bed = Material.LIGHT_GRAY_BED; break;
+		case 9:  block_bed = Material.CYAN_BED;       break;
+		case 10: block_bed = Material.PURPLE_BED;     break;
+		case 11: block_bed = Material.BLUE_BED;       break;
+		case 12: block_bed = Material.BROWN_BED;      break;
+		case 13: block_bed = Material.GREEN_BED;      break;
+		case 14: block_bed = Material.RED_BED;        break;
+		case 15: block_bed = Material.BLACK_BED;      break;
+		default: block_bed = Material.RED_BED;        break;
+		}
 		// pregen room
-		for (int iz=0; iz<d; iz++) {
-			for (int ix=0; ix<w; ix++) {
+		final HashMap<Ixy, HotelRoomDAO> room = new HashMap<Ixy, HotelRoomDAO>();
+		HotelRoomType type;
+		for (int iz=0; iz<loc.d; iz++) {
+			for (int ix=0; ix<loc.w; ix++) {
+				value = this.noiseHotelRooms.getNoise(x+ix, z+iz);
 				type = HotelRoomType.EMPTY;
 				// wall
-				if (ix == 0 || ix == w-1
-				||  iz == 0 || iz == d-1 )
+				if (ix == 0 || ix == loc.w-1
+				||  iz == 0 || iz == loc.d-1 ) {
 					type = HotelRoomType.WALL;
+				}
+				if (ix == wh && iz == dh) {
+					type = HotelRoomType.LAMP;
+				}
 				// door
 				if (iz == 0) {
-					if (ix == wh)
+					if (ix == wh) {
 						type = HotelRoomType.DOOR;
-					else
-					if (ix == wh-1
-					||  ix == wh+1)
+					}
+					if (ix == wh-1 || ix == wh+1) {
 						type = HotelRoomType.DOOR_INSET;
+					}
 				}
-				room.put(new Ixy(ix, iz), type);
+				// bed
+				if (ix == wh && iz == loc.d-2) {
+					type = HotelRoomType.BED;
+				}
+				room.put(
+					new Ixy(ix, iz),
+					new HotelRoomDAO(value, type, block_wall, block_carpet, block_bed)
+				);
 			}
 		}
 		// build room
+		HotelRoomDAO dao;
 		Door door;
 		Orientable log;
-		for (int iz=0; iz<d; iz++) {
-			zz = iz + z;
-			for (int ix=0; ix<w; ix++) {
-				xx = ix + x;
-				type = room.get(new Ixy(ix, iz));
-				if (!HotelRoomType.WALL.equals(type))
-					region.setType(xx, y, zz, Material.CYAN_WOOL);
-				switch (type) {
+		Directional torch;
+		Lightable lamp;
+		Bed bed;
+		Slab slab;
+		final BlockPlotter plotter = new BlockPlotter(region, direction, x, y, z, loc.w, loc.d);
+		for (int iz=0; iz<loc.d; iz++) {
+			for (int ix=0; ix<loc.w; ix++) {
+				dao = room.get(new Ixy(ix, iz));
+				// carpet
+				if (!HotelRoomType.WALL.equals(dao.type))
+					plotter.setBlock(ix, 0, iz, dao.block_carpet);
+				switch (dao.type) {
+				case LAMP:
+					if (BUILD_ROOF) {
+						plotter.setBlock(ix, 6, iz, Material.REDSTONE_BLOCK);
+						plotter.setBlock(ix, 5, iz, Material.REDSTONE_LAMP);
+							lamp = (Lightable) plotter.getBlockData(ix, 5, iz);
+							lamp.setLit(true);
+							plotter.setBlockData(ix, 5, iz, lamp);
+					}
+					break;
 				case WALL:
-					for (int iy=0; iy<6; iy++) {
-						region.setType(xx, y+iy, zz, Material.STRIPPED_BIRCH_LOG);
+					for (int iy=0; iy<7; iy++) {
+						plotter.setBlock(ix, iy, iz, dao.block_wall);
 					}
 					break;
 				case DOOR:
 				case DOOR_INSET:
-					region.setType(xx, y, zz-1, Material.BLACK_GLAZED_TERRACOTTA);
+					plotter.setBlock(ix, 0, iz-1, Material.BLACK_GLAZED_TERRACOTTA);
 					for (int iy=1; iy<5; iy++) {
-						region.setType(xx, y+iy, zz-1, Material.AIR);
+						plotter.setBlock(ix, iy, iz-1, Material.AIR);
 					}
-					switch (type) {
-					case DOOR:
-						region.setType(xx, y+1, zz-1, Material.DARK_OAK_DOOR);
-						region.setType(xx, y+2, zz-1, Material.DARK_OAK_DOOR);
-							door = (Door) region.getBlockData(xx, y+1, zz-1);
-							door.setHalf(Bisected.Half.BOTTOM);
-							region.setBlockData(xx, y+1, zz-1, door);
-							door = (Door) region.getBlockData(xx, y+2, zz-1);
-							door.setHalf(Bisected.Half.TOP);
-							region.setBlockData(xx, y+2, zz-1, door);
-						region.setType(xx, y+3, zz, Material.STRIPPED_SPRUCE_WOOD);
-						region.setType(xx, y+4, zz, Material.STRIPPED_SPRUCE_LOG);
-							log = (Orientable) region.getBlockData(xx, y+4, zz);
-							log.setAxis(Axis.X);
-							region.setBlockData(xx, y+4, zz, log);
-						region.setType(xx, y+5, zz, Material.STRIPPED_BIRCH_LOG);
-						break;
-					case DOOR_INSET:
-						for (int iy=1; iy<4; iy++) {
-							region.setType(xx, y+iy, zz, Material.STRIPPED_SPRUCE_LOG);
-						}
-						region.setType(xx, y+4, zz, Material.STRIPPED_SPRUCE_LOG);
-							log = (Orientable) region.getBlockData(xx, y+4, zz);
-							log.setAxis(Axis.X);
-							region.setBlockData(xx, y+4, zz, log);
-						region.setType(xx, y+5, zz, Material.STRIPPED_BIRCH_LOG);
-						region.setType(xx, y+3, zz-1, Material.SOUL_WALL_TORCH);
-							final Directional torch = (Directional) region.getBlockData(xx, y+3, zz-1);
-							torch.setFacing(BlockFace.NORTH);
-							region.setBlockData(xx, y+3, zz-1, torch);
-						break;
-					default: break;
+					plotter.setBlock(ix, 4, iz, Level_005.HOTEL_WALL);
+					log = (Orientable) plotter.getBlockData(ix, 4, iz);
+					if (BlockFace.NORTH.equals(direction)
+					||  BlockFace.SOUTH.equals(direction)) {
+						log.setAxis(Axis.X);
+					} else {
+						log.setAxis(Axis.Z);
 					}
+					plotter.setBlockData(ix, 4, iz, log);
+					for (int i=0; i<2; i++) {
+						plotter.setBlock(ix, i+5, iz, dao.block_wall);
+					}
+					break;
+				default:
+					// ceiling
+					if (BUILD_ROOF) {
+						plotter.setBlock(ix, 6, iz, Material.SMOOTH_STONE);
+						plotter.setBlock(ix, 5, iz, Material.SMOOTH_STONE_SLAB);
+							slab = (Slab) plotter.getBlockData(ix, 5, iz);
+							slab.setType(Slab.Type.TOP);
+							plotter.setBlockData(ix, 5, iz, slab);
+					}
+					break;
+				}
+				switch (dao.type) {
+				case DOOR:
+					plotter.setBlock(ix, 1, iz-1, Material.DARK_OAK_DOOR);
+						door = (Door) plotter.getBlockData(ix, 1, iz-1);
+						door.setHalf(Bisected.Half.BOTTOM);
+						door.setFacing(direction);
+						plotter.setBlockData(ix, 1, iz-1, door);
+					plotter.setBlock(ix, 2, iz-1, Material.DARK_OAK_DOOR);
+						door = (Door) plotter.getBlockData(ix, 2, iz-1);
+						door.setHalf(Bisected.Half.TOP);
+						door.setFacing(direction);
+						plotter.setBlockData(ix, 2, iz-1, door);
+					plotter.setBlock(ix, 3, iz, Level_005.HOTEL_WALL);
+					break;
+				case DOOR_INSET:
+					for (int iy=1; iy<4; iy++) {
+						plotter.setBlock(ix, iy, iz, Level_005.HOTEL_WALL);
+					}
+					plotter.setBlock(ix, 3, iz-1, Material.SOUL_WALL_TORCH);
+						torch = (Directional) plotter.getBlockData(ix, 3, iz-1);
+						torch.setFacing(direction);
+						plotter.setBlockData(ix, 3, iz-1, torch);
+					break;
+				case BED:
+					plotter.setBlock(ix, 1, iz, dao.block_bed);
+						bed = (Bed) plotter.getBlockData(ix, 1, iz);
+						bed.setFacing(Rotate(direction, 0.5));
+						bed.setPart(Bed.Part.HEAD);
+						plotter.setBlockData(ix, 1, iz, bed);
+					plotter.setBlock(ix, 1, iz-1, dao.block_bed);
+						bed = (Bed) plotter.getBlockData(ix, 1, iz-1);
+						bed.setFacing(Rotate(direction, 0.5));
+						bed.setPart(Bed.Part.FOOT);
+						plotter.setBlockData(ix, 1, iz-1, bed);
+					plotter.setBlock(ix-1, 1, iz, Material.SCAFFOLDING);
+					plotter.setBlock(ix+1, 1, iz, Material.SCAFFOLDING);
+					break;
 				default: break;
 				}
 			}
