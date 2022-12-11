@@ -20,7 +20,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 public class Level_005 extends BackroomsGenerator {
 
-	public static final boolean BUILD_ROOF = true;
+	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
 
 	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
 
@@ -76,6 +76,7 @@ public class Level_005 extends BackroomsGenerator {
 		ROOM,
 		WALL
 	};
+//TODO: is this needed?
 	public class HotelDAO {
 //TODO: add wall_1_away
 		public final double value;
@@ -92,8 +93,7 @@ public class Level_005 extends BackroomsGenerator {
 
 
 
-	protected HashMap<Dxy, HotelDAO> pregenerateHotel(
-			final int chunkX, final int chunkZ) {
+	protected HashMap<Dxy, HotelDAO> pregenerateHotel(final int chunkX, final int chunkZ) {
 		final HashMap<Dxy, HotelDAO> prehotel = new HashMap<Dxy, HotelDAO>();
 		int xx, zz;
 		double value;
@@ -153,7 +153,7 @@ public class Level_005 extends BackroomsGenerator {
 		if (dao == null)
 			throw new RuntimeException("pre-generated data for hotel not found for x:"+
 				Integer.toString(x)+" z:"+Integer.toString(z));
-		// hall floor
+		Slab slab;
 		switch (dao.type) {
 		case WALL:
 			for (int yy=0; yy<7; yy++) {
@@ -192,13 +192,14 @@ public class Level_005 extends BackroomsGenerator {
 						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
 					} else {
 						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE_SLAB);
-							final Slab slab = (Slab) chunk.getBlockData(x, y+6, z);
+							slab = (Slab) chunk.getBlockData(x, y+6, z);
 							slab.setType(Slab.Type.TOP);
 							chunk.setBlock(x, y+6, z, slab);
 					}
 				}
 			}
 			break;
+		default: break;
 		}
 	}
 

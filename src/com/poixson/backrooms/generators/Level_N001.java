@@ -25,7 +25,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 public class Level_N001 extends BackroomsGenerator {
 
-	public static final boolean BUILD_ROOF = true;
+	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
 
 	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
 

@@ -20,6 +20,8 @@ import com.poixson.tools.dao.Dxy;
 //  -1 | Basement
 public class BackGen_000 extends BackroomsGenerator {
 
+	public static final boolean BUILD_ROOF = true;
+
 	public static final int SUBFLOOR = 3;
 
 	public final Level_000  level_000;
@@ -43,7 +45,8 @@ public class BackGen_000 extends BackroomsGenerator {
 	public void generateSurface(
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
-if (chunkZ % 6 == 0) return;
+if (chunkX == -1 && chunkZ == 1) return;
+//if (chunkZ % 10 == 0) return;
 		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
 		this.level_000.setSeed(seed);
 		this.level_N001.setSeed(seed);
