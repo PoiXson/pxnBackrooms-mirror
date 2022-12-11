@@ -196,6 +196,14 @@ public class Level_N001 extends BackroomsGenerator {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerMove(final PlayerMoveEvent event) {
+		// location changed
+		final Location from = event.getFrom();
+		final Location to   = event.getTo();
+		final int toX = to.getBlockX();
+		final int toY = to.getBlockY();
+		final int toZ = to.getBlockZ();
+		if (from.getBlockX() == toX && from.getBlockZ() == toZ)
+			return;
 		final Player player = event.getPlayer();
 		if (!"level0".equals(player.getWorld().getName())) {
 			// player left world
@@ -210,14 +218,6 @@ public class Level_N001 extends BackroomsGenerator {
 			}
 			return;
 		}
-		// location changed
-		final Location from = event.getFrom();
-		final Location to   = event.getTo();
-		final int toX = to.getBlockX();
-		final int toY = to.getBlockY();
-		final int toZ = to.getBlockZ();
-		if (from.getBlockX() == toX && from.getBlockZ() == toZ)
-			return;
 		// basement level
 		if (toY < BASEMENT_Y                ) return;
 		if (toY > BASEMENT_Y+BASEMENT_HEIGHT) return;
