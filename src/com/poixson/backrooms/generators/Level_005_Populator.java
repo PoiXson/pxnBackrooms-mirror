@@ -27,7 +27,7 @@ import com.poixson.tools.dao.Ixywd;
 import com.poixson.utils.FastNoiseLiteD;
 
 
-public class HotelRoomPopulator extends BlockPopulator {
+public class Level_005_Populator extends BlockPopulator {
 
 	public static final boolean BUILD_ROOF = Level_005.BUILD_ROOF;
 
@@ -35,7 +35,7 @@ public class HotelRoomPopulator extends BlockPopulator {
 
 
 
-	public HotelRoomPopulator(final FastNoiseLiteD noiseHotelRooms) {
+	public Level_005_Populator(final FastNoiseLiteD noiseHotelRooms) {
 		this.noiseHotelRooms = noiseHotelRooms;
 	}
 

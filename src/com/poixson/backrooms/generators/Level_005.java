@@ -34,7 +34,7 @@ public class Level_005 extends BackroomsGenerator {
 	protected final FastNoiseLiteD noiseHotelWalls;
 	protected final FastNoiseLiteD noiseHotelRooms;
 
-	public final HotelRoomPopulator roomPop;
+	public final Level_005_Populator roomPop;
 
 
 
@@ -53,7 +53,7 @@ public class Level_005 extends BackroomsGenerator {
 		this.noiseHotelRooms.setFrequency(0.008);
 		this.noiseHotelRooms.setFractalOctaves(1);
 		// populators
-		this.roomPop = new HotelRoomPopulator(this.noiseHotelRooms);
+		this.roomPop = new Level_005_Populator(this.noiseHotelRooms);
 	}
 
 
