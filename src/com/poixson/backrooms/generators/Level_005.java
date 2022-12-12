@@ -18,6 +18,7 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
+// 5 | hotel
 public class Level_005 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;

@@ -17,6 +17,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
+// 0 | lobby
 public class Level_000 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
@@ -27,7 +28,7 @@ public class Level_000 extends BackroomsGenerator {
 	public static final int LOBBY_HEIGHT = 11;
 
 	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
-	public static final Material LOBBY_SUBFLOOR  = Material.DIRT;
+	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
 
 	protected final FastNoiseLiteD noiseLobbyWalls;
 

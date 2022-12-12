@@ -7,7 +7,7 @@ import org.bukkit.generator.WorldInfo;
 import com.poixson.backrooms.BackroomsPlugin;
 
 
-// suburbs
+// 9 | suburbs
 public class BackGen_009 extends BackroomsGenerator {
 
 

@@ -133,7 +133,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			break;
 		case -1: // basement
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
-			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  2 )); // hotel
+			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
 			break;
@@ -161,12 +161,12 @@ public class BackroomsPlugin extends JavaPlugin {
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
 			break;
 		default:
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 50 )); // lobby
-			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  5 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  5 )); // suburbs
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  5 )); // city
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  5 )); // path
+			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
 			chance.put(Integer.valueOf(   1 ), Integer.valueOf(  1 )); // basement
+			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  1 )); // hotel
+			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  1 )); // suburbs
+			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  1 )); // city
+			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  1 )); // path
 			break;
 		}
 		if (chance.isEmpty())
@@ -190,16 +190,6 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 
-	public World getBackroomsWorld(final int level) {
-		switch (level) {
-		case 9:  return Bukkit.getWorld("level9");
-		case 11: return Bukkit.getWorld("level11");
-		}
-		return Bukkit.getWorld("level0");
-	}
-
-
-
 	// -------------------------------------------------------------------------------
 
 
@@ -207,9 +197,8 @@ public class BackroomsPlugin extends JavaPlugin {
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 		if (!worldName.startsWith("level"))
-			throw new RuntimeException("Invalid world name, must be level#");
-		log.info(String.format("%sWorld <%s> using generator <%s> %s",
-			LOG_PREFIX, worldName, GENERATOR_NAME, argsStr));
+			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
+		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevel(worldName);
 		// existing generator
 		{
