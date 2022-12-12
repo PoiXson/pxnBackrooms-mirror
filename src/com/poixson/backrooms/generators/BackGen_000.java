@@ -17,26 +17,26 @@ import com.poixson.tools.dao.Dxy;
 // 309 | Path
 //   5 | Hotel
 //   0 | Lobby
-//  -1 | Basement
+//   1 | Basement
 public class BackGen_000 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = true;
 
 	public static final int SUBFLOOR = 3;
 
-	public final Level_000  level_000;
-	public final Level_N001 level_N001;
-	public final Level_005  level_005;
-	public final Level_309  level_309;
+	public final Level_000 level_000;
+	public final Level_001 level_001;
+	public final Level_005 level_005;
+	public final Level_309 level_309;
 
 
 
 	public BackGen_000(final BackroomsPlugin plugin) {
 		super(plugin);
-		this.level_000  = new Level_000(plugin);
-		this.level_N001 = new Level_N001(plugin);
-		this.level_005  = new Level_005(plugin);
-		this.level_309  = new Level_309(plugin);
+		this.level_000 = new Level_000(plugin);
+		this.level_001 = new Level_001(plugin);
+		this.level_005 = new Level_005(plugin);
+		this.level_309 = new Level_309(plugin);
 	}
 
 
@@ -49,7 +49,7 @@ if (chunkX == -1 && chunkZ == 1) return;
 //if (chunkZ % 10 == 0) return;
 		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
 		this.level_000.setSeed(seed);
-		this.level_N001.setSeed(seed);
+		this.level_001.setSeed(seed);
 		this.level_005.setSeed(seed);
 		this.level_309.setSeed(seed);
 		// pre-generate
@@ -61,7 +61,7 @@ if (chunkX == -1 && chunkZ == 1) return;
 				xx = x + (chunkX * 16);
 				zz = z + (chunkZ * 16);
 				// basement
-				this.level_N001.generateBasement(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.level_001.generateBasement(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 0 main lobby
 				this.level_000.generateLobby(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// hotel

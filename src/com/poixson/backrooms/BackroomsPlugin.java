@@ -125,7 +125,7 @@ public class BackroomsPlugin extends JavaPlugin {
 		final HashMap<Integer, Integer> chance = new HashMap<Integer, Integer>();
 		switch (from) {
 		case 0: // lobby
-			chance.put(Integer.valueOf(  -1 ), Integer.valueOf( 25 )); // basement
+			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 25 )); // basement
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 15 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
@@ -139,7 +139,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			break;
 		case 5: // hotel
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
-			chance.put(Integer.valueOf(  -1 ), Integer.valueOf( 15 )); // basement
+			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 15 )); // basement
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
 			break;
@@ -150,7 +150,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			break;
 		case 11: // city
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
-			chance.put(Integer.valueOf(  -1 ), Integer.valueOf( 10 )); // basement
+			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 10 )); // basement
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  5 )); // suburbs
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
@@ -162,11 +162,11 @@ public class BackroomsPlugin extends JavaPlugin {
 			break;
 		default:
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 50 )); // lobby
-			chance.put(Integer.valueOf(  -1 ), Integer.valueOf(  5 )); // basement
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  5 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  5 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  5 )); // city
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  5 )); // path
+			chance.put(Integer.valueOf(   1 ), Integer.valueOf(  1 )); // basement
 			break;
 		}
 		if (chance.isEmpty())

@@ -23,7 +23,7 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
-public class Level_N001 extends BackroomsGenerator {
+public class Level_001 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
 
@@ -49,7 +49,7 @@ public class Level_N001 extends BackroomsGenerator {
 
 
 
-	public Level_N001(final BackroomsPlugin plugin) {
+	public Level_001(final BackroomsPlugin plugin) {
 		super(plugin);
 		// basement wall noise
 		this.noiseBasementWalls = new FastNoiseLiteD();
