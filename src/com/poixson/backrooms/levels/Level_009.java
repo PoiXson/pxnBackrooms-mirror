@@ -29,7 +29,7 @@ public class Level_009 extends BackroomsLevel {
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
 if (chunkX == -1 && chunkZ == 1) return;
-if (chunkZ % 10 == 0) return;
+//if (chunkX % 10 == 0 || chunkZ % 10 == 0) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				chunk.setBlock(x, 0, z, Material.BEDROCK);

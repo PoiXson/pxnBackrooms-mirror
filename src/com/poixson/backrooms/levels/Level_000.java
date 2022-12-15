@@ -85,7 +85,7 @@ public class Level_000 extends BackroomsLevel {
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
 if (chunkX == -1 && chunkZ == 1) return;
-//if (chunkZ % 10 == 0) return;
+//if (chunkX % 10 == 0 || chunkZ % 10 == 0) return;
 		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
 		this.gen_000.setSeed(seed);
 		this.gen_001.setSeed(seed);
