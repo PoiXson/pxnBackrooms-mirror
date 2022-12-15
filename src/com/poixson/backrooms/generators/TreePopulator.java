@@ -25,6 +25,7 @@ public class TreePopulator extends BlockPopulator {
 
 	public TreePopulator(final FastNoiseLiteD noise, final int chunkY,
 			final Material trunk, final Material leaves) {
+		super();
 		this.noise  = noise;
 		this.chunkY  = chunkY;
 		this.trunk  = trunk;

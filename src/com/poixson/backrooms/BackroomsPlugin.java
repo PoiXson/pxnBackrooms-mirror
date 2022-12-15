@@ -210,9 +210,9 @@ public class BackroomsPlugin extends JavaPlugin {
 		{
 			final BackroomsGenerator gen;
 			switch (level) {
-			case 0:  gen = new BackGen_000(this); break;
-			case 9:  gen = new BackGen_009(this); break;
-			case 11: gen = new BackGen_011(this); break;
+			case   0: gen = new BackGen_000(this); break;
+			case   9: gen = new BackGen_009(this); break;
+			case  11: gen = new BackGen_011(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 			}
 			final BackroomsGenerator existing = this.generators.putIfAbsent(Integer.valueOf(level), gen);

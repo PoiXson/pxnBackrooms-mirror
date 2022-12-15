@@ -36,6 +36,7 @@ public class Level_005_Populator extends BlockPopulator {
 
 
 	public Level_005_Populator(final FastNoiseLiteD noiseHotelRooms) {
+		super();
 		this.noiseHotelRooms = noiseHotelRooms;
 	}
 
