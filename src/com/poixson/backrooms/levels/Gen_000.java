@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import java.util.Random;
 
@@ -8,7 +8,6 @@ import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.WorldInfo;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -18,11 +17,10 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
 // 0 | lobby
-public class Level_000 extends BackroomsGenerator {
+public class Gen_000 extends BackroomsGenerator {
 
-	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
-
-	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
+	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
+	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 
 	public static final int LOBBY_Y      = 31;
 	public static final int LOBBY_HEIGHT = 11;
@@ -30,12 +28,13 @@ public class Level_000 extends BackroomsGenerator {
 	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
 
+	// noise
 	protected final FastNoiseLiteD noiseLobbyWalls;
 
 
 
-	public Level_000(final BackroomsPlugin plugin) {
-		super(plugin);
+	public Gen_000() {
+		super();
 		// lobby walls
 		this.noiseLobbyWalls = new FastNoiseLiteD();
 		this.noiseLobbyWalls.setFrequency(0.023);

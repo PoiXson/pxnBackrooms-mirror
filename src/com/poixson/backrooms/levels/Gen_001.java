@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.generator.WorldInfo;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -24,17 +23,15 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 1 | basement
-public class Level_001 extends BackroomsGenerator {
+public class Gen_001 extends BackroomsGenerator {
 
-	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
-
-	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
+	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
+	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 
 	public static final int BASEMENT_Y      = 0;
 	public static final int BASEMENT_HEIGHT = 30;
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
-
 	public static final double MOIST_THRESHOLD = 0.35;
 
 	public static final Material BASEMENT_WALL      = Material.MUD_BRICKS;
@@ -42,6 +39,7 @@ public class Level_001 extends BackroomsGenerator {
 	public static final Material BASEMENT_FLOOR_DRY = Material.BROWN_CONCRETE_POWDER;
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
 
+	// noise
 	protected final FastNoiseLiteD noiseBasementWalls;
 	protected final FastNoiseLiteD noiseMoist;
 
@@ -50,8 +48,8 @@ public class Level_001 extends BackroomsGenerator {
 
 
 
-	public Level_001(final BackroomsPlugin plugin) {
-		super(plugin);
+	public Gen_001() {
+		super();
 		// basement wall noise
 		this.noiseBasementWalls = new FastNoiseLiteD();
 		this.noiseBasementWalls.setFrequency(0.035);
@@ -99,7 +97,7 @@ public class Level_001 extends BackroomsGenerator {
 
 
 
-	protected void generateBasement(
+	public void generateBasement(
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
 		int y = BASEMENT_Y;

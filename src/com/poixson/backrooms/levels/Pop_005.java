@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import static com.poixson.commonbukkit.utils.LocationUtils.Rotate;
 import static com.poixson.commonbukkit.utils.LocationUtils.RotateXZ;
@@ -27,15 +27,15 @@ import com.poixson.tools.dao.Ixywd;
 import com.poixson.utils.FastNoiseLiteD;
 
 
-public class Level_005_Populator extends BlockPopulator {
+public class Pop_005 extends BlockPopulator {
 
-	public static final boolean BUILD_ROOF = Level_005.BUILD_ROOF;
+	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 
 	protected final FastNoiseLiteD noiseHotelRooms;
 
 
 
-	public Level_005_Populator(final FastNoiseLiteD noiseHotelRooms) {
+	public Pop_005(final FastNoiseLiteD noiseHotelRooms) {
 		super();
 		this.noiseHotelRooms = noiseHotelRooms;
 	}

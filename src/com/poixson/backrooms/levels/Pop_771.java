@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import java.util.Random;
 
@@ -14,15 +14,16 @@ import com.poixson.commonbukkit.tools.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 
-public class Level_771_Populator extends BlockPopulator {
+public class Pop_771 extends BlockPopulator {
 
-	public static final int ROAD_Y = BackGen_771.ROAD_Y;
+	public static final int ROAD_Y = Level_771.ROAD_Y;
 
+	// noise
 	protected final FastNoiseLiteD noiseRoadLights;
 
 
 
-	public Level_771_Populator(final FastNoiseLiteD noiseRoadLights) {
+	public Pop_771(final FastNoiseLiteD noiseRoadLights) {
 		super();
 		this.noiseRoadLights = noiseRoadLights;
 	}

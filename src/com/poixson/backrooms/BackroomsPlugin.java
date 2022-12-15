@@ -16,11 +16,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.poixson.backrooms.generators.BackGen_000;
-import com.poixson.backrooms.generators.BackGen_009;
-import com.poixson.backrooms.generators.BackGen_011;
-import com.poixson.backrooms.generators.BackGen_771;
-import com.poixson.backrooms.generators.BackroomsGenerator;
+import com.poixson.backrooms.levels.BackroomsLevel;
+import com.poixson.backrooms.levels.Level_000;
+import com.poixson.backrooms.levels.Level_009;
+import com.poixson.backrooms.levels.Level_011;
+import com.poixson.backrooms.levels.Level_771;
 import com.poixson.utils.NumberUtils;
 
 
@@ -35,7 +35,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	protected final AtomicBoolean enableScripts = new AtomicBoolean(false);
 
 	// world generators
-	protected final HashMap<Integer, BackroomsGenerator> generators = new HashMap<Integer, BackroomsGenerator>();
+	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 
 //	// listeners
 //	protected final AtomicReference<BackroomsCommands>   commandListener = new AtomicReference<BackroomsCommands>(null);
@@ -76,10 +76,10 @@ public class BackroomsPlugin extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		// unload generators
-		for (final BackroomsGenerator gen : this.generators.values()) {
-			gen.unload();
+		for (final BackroomsLevel lvl : this.backlevels.values()) {
+			lvl.unload();
 		}
-		this.generators.clear();
+		this.backlevels.clear();
 /*
 		// commands listener
 		{
@@ -210,24 +210,24 @@ public class BackroomsPlugin extends JavaPlugin {
 		final int level = this.getLevel(worldName);
 		// existing generator
 		{
-			final BackroomsGenerator gen = this.generators.get(Integer.valueOf(level));
-			if (gen != null)
-				return gen;
+			final BackroomsLevel lvl = this.backlevels.get(Integer.valueOf(level));
+			if (lvl != null)
+				return lvl;
 		}
 		// new generator instance
 		{
-			final BackroomsGenerator gen;
+			final BackroomsLevel lvl;
 			switch (level) {
-			case   0: gen = new BackGen_000(this); break;
-			case   9: gen = new BackGen_009(this); break;
-			case  11: gen = new BackGen_011(this); break;
-			case 771: gen = new BackGen_771(this); break;
+			case   0: lvl = new Level_000(this); break;
+			case   9: lvl = new Level_009(this); break;
+			case  11: lvl = new Level_011(this); break;
+			case 771: lvl = new Level_771(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 			}
-			final BackroomsGenerator existing = this.generators.putIfAbsent(Integer.valueOf(level), gen);
+			final BackroomsLevel existing = this.backlevels.putIfAbsent(Integer.valueOf(level), lvl);
 			if (existing != null)
 				return existing;
-			return gen;
+			return lvl;
 		}
 	}
 

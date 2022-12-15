@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -19,11 +19,10 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 5 | hotel
-public class Level_005 extends BackroomsGenerator {
+public class Gen_005 extends BackroomsGenerator {
 
-	public static final boolean BUILD_ROOF = BackGen_000.BUILD_ROOF;
-
-	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
+	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
+	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 
 	public static final int HOTEL_Y      = 43;
 	public static final int HOTEL_HEIGHT = 11;
@@ -31,15 +30,17 @@ public class Level_005 extends BackroomsGenerator {
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 
+	// noise
 	protected final FastNoiseLiteD noiseHotelWalls;
 	protected final FastNoiseLiteD noiseHotelRooms;
 
-	public final Level_005_Populator roomPop;
+	// populators
+	public final Pop_005 roomPop;
 
 
 
-	public Level_005(final BackroomsPlugin plugin) {
-		super(plugin);
+	public Gen_005() {
+		super();
 		// hotel walls
 		this.noiseHotelWalls = new FastNoiseLiteD();
 		this.noiseHotelWalls.setFrequency(0.02);
@@ -53,7 +54,7 @@ public class Level_005 extends BackroomsGenerator {
 		this.noiseHotelRooms.setFrequency(0.008);
 		this.noiseHotelRooms.setFractalOctaves(1);
 		// populators
-		this.roomPop = new Level_005_Populator(this.noiseHotelRooms);
+		this.roomPop = new Pop_005(this.noiseHotelRooms);
 	}
 
 
@@ -72,29 +73,29 @@ public class Level_005 extends BackroomsGenerator {
 
 
 
-	public enum HotelType {
+	public enum NodeType {
 		HALL,
 		ROOM,
 		WALL
 	};
-//TODO: is this needed?
+
 	public class HotelDAO {
 //TODO: add wall_1_away
 		public final double value;
-		public HotelType type;
+		public NodeType type;
 		public HotelDAO(final double value) {
 			this.value = value;
 			if (value > 0.65) {
-				this.type = HotelType.HALL;
+				this.type = NodeType.HALL;
 			} else {
-				this.type = HotelType.ROOM;
+				this.type = NodeType.ROOM;
 			}
 		}
 	}
 
 
 
-	protected HashMap<Dxy, HotelDAO> pregenerateHotel(final int chunkX, final int chunkZ) {
+	public HashMap<Dxy, HotelDAO> pregenerateHotel(final int chunkX, final int chunkZ) {
 		final HashMap<Dxy, HotelDAO> prehotel = new HashMap<Dxy, HotelDAO>();
 		int xx, zz;
 		double value;
@@ -122,22 +123,22 @@ public class Level_005 extends BackroomsGenerator {
 				daoNW = prehotel.get(new Dxy(x-1, z-1));
 				daoSE = prehotel.get(new Dxy(x+1, z+1));
 				daoSW = prehotel.get(new Dxy(x-1, z+1));
-				if (HotelType.ROOM.equals(dao.type)) {
-					if ((daoN  != null && HotelType.HALL.equals(daoN.type))
-					||  (daoS  != null && HotelType.HALL.equals(daoS.type))
-					||  (daoE  != null && HotelType.HALL.equals(daoE.type))
-					||  (daoW  != null && HotelType.HALL.equals(daoW.type))
-					||  (daoNE != null && HotelType.HALL.equals(daoNE.type))
-					||  (daoNW != null && HotelType.HALL.equals(daoNW.type))
-					||  (daoSE != null && HotelType.HALL.equals(daoSE.type))
-					||  (daoSW != null && HotelType.HALL.equals(daoSW.type)) )
-						dao.type = HotelType.WALL;
+				if (NodeType.ROOM.equals(dao.type)) {
+					if ((daoN  != null && NodeType.HALL.equals(daoN.type))
+					||  (daoS  != null && NodeType.HALL.equals(daoS.type))
+					||  (daoE  != null && NodeType.HALL.equals(daoE.type))
+					||  (daoW  != null && NodeType.HALL.equals(daoW.type))
+					||  (daoNE != null && NodeType.HALL.equals(daoNE.type))
+					||  (daoNW != null && NodeType.HALL.equals(daoNW.type))
+					||  (daoSE != null && NodeType.HALL.equals(daoSE.type))
+					||  (daoSW != null && NodeType.HALL.equals(daoSW.type)) )
+						dao.type = NodeType.WALL;
 				}
 			}
 		}
 		return prehotel;
 	}
-	protected void generateHotel(final HashMap<Dxy, HotelDAO> prehotel,
+	public void generateHotel(final HashMap<Dxy, HotelDAO> prehotel,
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
 		int y = HOTEL_Y;
@@ -186,10 +187,10 @@ public class Level_005 extends BackroomsGenerator {
 					final HotelDAO daoS = prehotel.get(new Dxy(x, z+1));
 					final HotelDAO daoE = prehotel.get(new Dxy(x+1, z));
 					final HotelDAO daoW = prehotel.get(new Dxy(x-1, z));
-					if (HotelType.WALL.equals(daoN.type)
-					||  HotelType.WALL.equals(daoS.type)
-					||  HotelType.WALL.equals(daoE.type)
-					||  HotelType.WALL.equals(daoW.type) ) {
+					if (NodeType.WALL.equals(daoN.type)
+					||  NodeType.WALL.equals(daoS.type)
+					||  NodeType.WALL.equals(daoE.type)
+					||  NodeType.WALL.equals(daoW.type) ) {
 						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
 					} else {
 						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE_SLAB);

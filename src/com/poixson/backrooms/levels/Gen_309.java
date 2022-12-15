@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,10 +13,9 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
 // 309 | path
-public class Level_309 extends BackroomsGenerator {
+public class Gen_309 extends BackroomsGenerator {
 
-	public static final int SUBFLOOR = BackGen_000.SUBFLOOR;
-
+	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 	public static final int PATH_Y        = 55;
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
@@ -35,8 +34,8 @@ public class Level_309 extends BackroomsGenerator {
 
 
 
-	public Level_309(final BackroomsPlugin plugin) {
-		super(plugin);
+	public Gen_309() {
+		super();
 		// path
 		this.noisePath = new FastNoiseLiteD();
 		this.noisePath.setFrequency(0.01f);
@@ -79,7 +78,7 @@ public class Level_309 extends BackroomsGenerator {
 
 
 
-	protected void generateWoodsPath(
+	public void generateWoodsPath(
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
 		int y = PATH_Y;
@@ -142,7 +141,7 @@ public class Level_309 extends BackroomsGenerator {
 		public boolean isTree(final int x, final int z) {
 			if (!super.isTree(x, z))
 				return false;
-			if (Level_309.this.pathTrace.isPath(x, z, PATH_CLEARING))
+			if (Gen_309.this.pathTrace.isPath(x, z, PATH_CLEARING))
 				return false;
 			return true;
 		}

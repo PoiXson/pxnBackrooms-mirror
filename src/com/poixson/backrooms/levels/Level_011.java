@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import java.util.Random;
 
@@ -8,16 +8,16 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 11 | city
-public class BackGen_011 extends BackroomsGenerator {
+public class Level_011 extends BackroomsLevel {
 
 
 
-	public BackGen_011(final BackroomsPlugin plugin) {
-		super(plugin);
 	}
 
 
 
+	public Level_011(final BackroomsPlugin plugin) {
+		super(plugin);
 	@Override
 	public void generateSurface(final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {

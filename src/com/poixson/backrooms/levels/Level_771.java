@@ -1,4 +1,4 @@
-package com.poixson.backrooms.generators;
+package com.poixson.backrooms.levels;
 
 import static com.poixson.commonbukkit.utils.LocationUtils.RotateAround00;
 
@@ -20,7 +20,7 @@ import com.poixson.utils.StringUtils;
 
 
 // 771 | Crossroads
-public class BackGen_771 extends BackroomsGenerator {
+public class Level_771 extends BackroomsLevel {
 
 	public static final int ROAD_Y = 200;
 
@@ -36,7 +36,7 @@ public class BackGen_771 extends BackroomsGenerator {
 
 
 
-	public BackGen_771(final BackroomsPlugin plugin) {
+	public Level_771(final BackroomsPlugin plugin) {
 		super(plugin);
 		// road lanterns
 		this.noiseRoadLights = new FastNoiseLiteD();
