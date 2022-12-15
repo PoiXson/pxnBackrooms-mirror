@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.generators.PathTracer;
-import com.poixson.backrooms.generators.TreePopulator;
+import com.poixson.commonbukkit.tools.PathTracer;
+import com.poixson.commonbukkit.tools.TreePopulator;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 
