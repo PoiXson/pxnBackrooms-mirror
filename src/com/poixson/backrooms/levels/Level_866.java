@@ -2,6 +2,7 @@ package com.poixson.backrooms.levels;
 
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.generator.WorldInfo;
 
@@ -22,6 +23,27 @@ public class Level_866 extends BackroomsLevel {
 
 	@Override
 	public void unload() {
+	}
+
+
+
+	@Override
+	public Location getSpawn(final int level) {
+		if (level != 866) throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		final int x = BackroomsPlugin.Rnd10K();
+		final int z = BackroomsPlugin.Rnd10K();
+		final int y = DIRTFIELD_Y;
+		return this.getSpawn(level, 10, x, y, z);
+	}
+	@Override
+	public int getLevelFromY(final int y) {
+		return 866;
+	}
+	public int getYFromLevel(final int level) {
+		return DIRTFIELD_Y;
+	}
+	public int getMaxYFromLevel(final int level) {
+		return 255;
 	}
 
 

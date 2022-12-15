@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
@@ -29,6 +30,27 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public void unload() {
 		this.gen_771.unload();
+	}
+
+
+
+	@Override
+	public Location getSpawn(final int level) {
+		if (level != 866) throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		final int x = BackroomsPlugin.Rnd10K();
+		final int z = BackroomsPlugin.Rnd10K();
+		final int y = ROAD_Y;
+		return this.getSpawn(level, 10, x, y, z);
+	}
+	@Override
+	public int getLevelFromY(final int y) {
+		return 771;
+	}
+	public int getYFromLevel(final int level) {
+		return ROAD_Y;
+	}
+	public int getMaxYFromLevel(final int level) {
+		return 255;
 	}
 
 

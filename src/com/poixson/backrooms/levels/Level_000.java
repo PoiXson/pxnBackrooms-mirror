@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.WorldInfo;
@@ -76,6 +77,58 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_019.unload();
 		this.gen_037.unload();
 		this.gen_309.unload();
+	}
+
+
+
+	@Override
+	public Location getSpawn(final int level) {
+		final int y, h;
+		switch (level) {
+		case   0: y = Y_000; h = H_000; break;
+		case   1: y = Y_001; h = H_001; break;
+		case   5: y = Y_005; h = H_005; break;
+		case  19: y = Y_019; h = H_019; break;
+		case  37: y = Y_037; h = H_037; break;
+		case 309: y = Y_309; h = 6;     break;
+		default: throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		}
+		final int x = BackroomsPlugin.Rnd10K();
+		final int z = BackroomsPlugin.Rnd10K();
+		return this.getSpawn(level, h, x, y, z);
+	}
+	@Override
+	public int getLevelFromY(final int y) {
+		if (y <= Y_001 + H_001) return 1;
+		if (y <= Y_000 + H_000) return 0;
+		if (y <= Y_037 + H_037) return 37;
+		if (y <= Y_005 + H_005) return 5;
+		if (y <= Y_019 + H_019) return 19;
+		return 309;
+	}
+	public int getYFromLevel(final int level) {
+		switch (level) {
+		case 0:   return Y_000;
+		case 1:   return Y_001;
+		case 5:   return Y_005;
+		case 19:  return Y_019;
+		case 37:  return Y_037;
+		case 309: return Y_309;
+		default: break;
+		}
+		throw new RuntimeException("Invalid level: "+Integer.toString(level));
+	}
+	public int getMaxYFromLevel(final int level) {
+		switch (level) {
+		case 0:   return Y_000 + H_000;
+		case 1:   return Y_001 + H_001;
+		case 5:   return Y_005 + H_005;
+		case 19:  return Y_019 + H_019;
+		case 37:  return Y_037 + H_037;
+		case 309: return 255;
+		default: break;
+		}
+		throw new RuntimeException("Invalid level: "+Integer.toString(level));
 	}
 
 
