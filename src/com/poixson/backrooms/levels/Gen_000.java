@@ -19,9 +19,10 @@ public class Gen_000 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int     SUBCEILING = Level_000.SUBCEILING;
 
-	public static final int LOBBY_Y      = 31;
-	public static final int LOBBY_HEIGHT = 11;
+	public static final int LOBBY_Y = Level_000.Y_000;
+	public static final int LOBBY_H = Level_000.H_000;
 
 	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
@@ -60,7 +61,8 @@ public class Gen_000 extends BackroomsGenerator {
 	protected void generateLobby(
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
-		int y = LOBBY_Y;
+		int y  = LOBBY_Y;
+		int cy = LOBBY_Y + SUBFLOOR + LOBBY_H;
 		// lobby floor
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
@@ -72,32 +74,37 @@ public class Gen_000 extends BackroomsGenerator {
 		final boolean isWall = (value > 0.38 && value < 0.5);
 		if (isWall) {
 			// lobby walls
-			final int h = LOBBY_HEIGHT - SUBFLOOR;
+			final int h = LOBBY_H + 1;
 			for (int yy=0; yy<h; yy++) {
 				chunk.setBlock(x, y+yy, z, LOBBY_WALL);
 			}
 		} else {
 			chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
-			y += 6;
 			if (BUILD_ROOF) {
 				final int modX6 = Math.abs(xx) % 7;
 				final int modZ6 = Math.abs(zz) % 7;
 				if (modZ6 == 0 && modX6 < 2) {
 //TODO: not near walls
 					// ceiling lights
-					chunk.setBlock(x, y, z, Material.REDSTONE_LAMP);
-						final BlockData block = chunk.getBlockData(x, y, z);
+					chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
+						final BlockData block = chunk.getBlockData(x, cy, z);
 						((Lightable)block).setLit(true);
-						chunk.setBlock(x, y,   z, block);
-					chunk.setBlock(x, y+1, z, Material.REDSTONE_BLOCK);
+						chunk.setBlock(x, cy, z, block);
+					chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 				} else {
 					// ceiling
-					chunk.setBlock(x, y, z, Material.SMOOTH_STONE_SLAB);
-						final Slab slab = (Slab) chunk.getBlockData(x, y, z);
+					chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
+						final Slab slab = (Slab) chunk.getBlockData(x, cy, z);
 						slab.setType(Slab.Type.TOP);
-						chunk.setBlock(x, y,   z, slab);
-					chunk.setBlock(x, y+1, z, Material.STONE);
+						chunk.setBlock(x, cy, z, slab);
+					chunk.setBlock(x, cy+1, z, Material.STONE);
 				}
+			}
+		}
+		if (BUILD_ROOF) {
+			cy++;
+			for (int i=1; i<SUBCEILING; i++) {
+				chunk.setBlock(x, cy+i, z, Material.STONE);
 			}
 		}
 	}

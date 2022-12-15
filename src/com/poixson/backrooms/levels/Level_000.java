@@ -25,7 +25,26 @@ public class Level_000 extends BackroomsLevel {
 
 	public static final boolean BUILD_ROOF = true;
 
-	public static final int SUBFLOOR = 3;
+	public static final int SUBFLOOR   = 3;
+	public static final int SUBCEILING = 3;
+
+	// basement
+	public static final int Y_001 = 0;
+	public static final int H_001 = 30;
+	// lobby
+	public static final int Y_000 = SUBFLOOR + Y_001 + H_001 + 1;
+	public static final int H_000 = 7;
+	// pools
+	public static final int Y_037 = SUBFLOOR + Y_000 + H_000 + SUBCEILING + 1;
+	public static final int H_037 = 10;
+	// hotel
+	public static final int Y_005 = SUBFLOOR + Y_037 + H_037 + SUBCEILING + 1;
+	public static final int H_005 = 7;
+	// attic
+	public static final int Y_019 = SUBFLOOR + Y_005 + H_005 + SUBCEILING + 1;
+	public static final int H_019 = 10;
+	// path
+	public static final int Y_309 = SUBFLOOR + Y_019 + H_019 + SUBCEILING + 1;
 
 	// generators
 	public final Gen_000 gen_000;

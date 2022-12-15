@@ -15,8 +15,8 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 // 309 | path
 public class Gen_309 extends BackroomsGenerator {
 
-	public static final int SUBFLOOR = Level_000.SUBFLOOR;
-	public static final int PATH_Y        = 55;
+	public static final int SUBFLOOR      = Level_000.SUBFLOOR;
+	public static final int PATH_Y        = Level_000.Y_309;
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
 

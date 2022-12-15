@@ -27,9 +27,10 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int     SUBCEILING = Level_000.SUBCEILING;
 
-	public static final int BASEMENT_Y      = 0;
-	public static final int BASEMENT_HEIGHT = 30;
+	public static final int BASEMENT_Y = Level_000.Y_001;
+	public static final int BASEMENT_H = Level_000.H_001;
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 	public static final double MOIST_THRESHOLD = 0.35;
@@ -91,7 +92,8 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 	public void generateBasement(
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
-		int y = BASEMENT_Y;
+		int y  = BASEMENT_Y;
+		int cy = BASEMENT_Y + SUBFLOOR + BASEMENT_H;
 		// basement floor
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
@@ -105,7 +107,7 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 		final boolean isWall = (value > 0.8 && value < 0.95);
 		if (isWall) {
 			// basement walls
-			final int h = BASEMENT_HEIGHT - SUBFLOOR - 2;
+			final int h = BASEMENT_H - 2;
 			for (int yy=0; yy<h; yy++) {
 				if (yy > 6) {
 					chunk.setBlock(x, y+yy, z, Material.BEDROCK);
@@ -131,8 +133,8 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 					case 9: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
 					case 2:
 					case 8:
-						for (int yy=0; yy<3; yy++) {
-							chunk.setBlock(x, y+yy+6, z, Material.CHAIN);
+						for (int iy=0; iy<3; iy++) {
+							chunk.setBlock(x, y+iy+6, z, Material.CHAIN);
 						}
 						break;
 					}
@@ -140,13 +142,12 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 			}
 		}
 		// basement ceiling
-		y += BASEMENT_HEIGHT - SUBFLOOR - 1;
 		if (BUILD_ROOF) {
-			chunk.setBlock(x, y-1, z, Material.BEDROCK);
+			chunk.setBlock(x, cy-1, z, Material.BEDROCK);
 			if (isWet && !isWall) {
-				chunk.setBlock(x, y, z, Material.WATER);
+				chunk.setBlock(x, cy, z, Material.WATER);
 			} else {
-				chunk.setBlock(x, y, z, Material.STONE);
+				chunk.setBlock(x, cy, z, Material.STONE);
 			}
 		}
 	}
@@ -209,8 +210,8 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 			return;
 		}
 		// basement level
-		if (toY < BASEMENT_Y                ) return;
-		if (toY > BASEMENT_Y+BASEMENT_HEIGHT) return;
+		if (toY < BASEMENT_Y           ) return;
+		if (toY > BASEMENT_Y+BASEMENT_H) return;
 		final ArrayList<Location> lights = this.getPlayerLightsList(player);
 		// turn off lights
 		{

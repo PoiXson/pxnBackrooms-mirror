@@ -21,9 +21,10 @@ public class Gen_005 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int     SUBCEILING = Level_000.SUBCEILING;
 
-	public static final int HOTEL_Y      = 43;
-	public static final int HOTEL_HEIGHT = 11;
+	public static final int HOTEL_Y = Level_000.Y_005;
+	public static final int HOTEL_H = Level_000.H_005;
 
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
@@ -135,9 +136,8 @@ public class Gen_005 extends BackroomsGenerator {
 	public void generateHotel(final HashMap<Dxy, HotelDAO> prehotel,
 			final int chunkX, final int chunkZ, final ChunkData chunk,
 			final int x, final int z, final int xx, final int zz) {
-		int y = HOTEL_Y;
-		if (BUILD_ROOF)
-			chunk.setBlock(x, y+11, z, Material.STONE);
+		int y  = HOTEL_Y;
+		int cy = HOTEL_Y + SUBFLOOR + HOTEL_H;
 		// hotel floor
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;
@@ -152,11 +152,11 @@ public class Gen_005 extends BackroomsGenerator {
 		Slab slab;
 		switch (dao.type) {
 		case WALL:
-			for (int yy=0; yy<7; yy++) {
-				chunk.setBlock(x, y+yy, z, HOTEL_WALL);
+			for (int iy=0; iy<HOTEL_H; iy++) {
+				chunk.setBlock(x, y+iy, z, HOTEL_WALL);
 			}
 			break;
-		case HALL:
+		case HALL: {
 			chunk.setBlock(x, y, z, HOTEL_FLOOR);
 			final Directional tile = (Directional) chunk.getBlockData(x, y, z);
 			if (z % 2 == 0) {
@@ -170,11 +170,11 @@ public class Gen_005 extends BackroomsGenerator {
 			if (BUILD_ROOF) {
 				// ceiling light
 				if (xx % 5 == 0 && zz % 5 == 0) {
-					chunk.setBlock(x, y+6, z, Material.REDSTONE_LAMP);
-					final Lightable lamp = (Lightable) chunk.getBlockData(x, y+6, z);
+					chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
+					final Lightable lamp = (Lightable) chunk.getBlockData(x, cy, z);
 					lamp.setLit(true);
-					chunk.setBlock(x, y+6, z, lamp);
-					chunk.setBlock(x, y+7, z, Material.REDSTONE_BLOCK);
+					chunk.setBlock(x, cy, z, lamp);
+					chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 				// ceiling
 				} else {
 					final HotelDAO daoN = prehotel.get(new Dxy(x, z-1));
@@ -185,17 +185,24 @@ public class Gen_005 extends BackroomsGenerator {
 					||  NodeType.WALL.equals(daoS.type)
 					||  NodeType.WALL.equals(daoE.type)
 					||  NodeType.WALL.equals(daoW.type) ) {
-						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE);
+						chunk.setBlock(x, cy, z, Material.SMOOTH_STONE);
 					} else {
-						chunk.setBlock(x, y+6, z, Material.SMOOTH_STONE_SLAB);
-							slab = (Slab) chunk.getBlockData(x, y+6, z);
+						chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
+							slab = (Slab) chunk.getBlockData(x, cy, z);
 							slab.setType(Slab.Type.TOP);
-							chunk.setBlock(x, y+6, z, slab);
+							chunk.setBlock(x, cy, z, slab);
 					}
 				}
 			}
 			break;
+		}
 		default: break;
+		}
+		if (BUILD_ROOF) {
+			cy++;
+			for (int i=0; i<SUBCEILING; i++) {
+				chunk.setBlock(x, cy+i, z, Material.STONE);
+			}
 		}
 	}
 
