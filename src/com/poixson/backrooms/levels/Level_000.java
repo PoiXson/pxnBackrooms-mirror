@@ -1,6 +1,6 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -18,7 +18,7 @@ import com.poixson.tools.dao.Dxy;
 // 309 | Path
 //  19 | Attic
 //   5 | Hotel
-//  37 | Pools
+//  37 | Poolrooms
 //   0 | Lobby
 //   1 | Basement
 public class Level_000 extends BackroomsLevel {
@@ -121,10 +121,11 @@ if (chunkX == -1 && chunkZ == 1) return;
 
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		return Arrays.asList(
-			this.gen_309.treePop,
-			this.gen_005.roomPop
-		);
+		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
+		if (BUILD_ROOF)
+			list.add(this.gen_309.treePop);
+		list.add(this.gen_005.roomPop);
+		return list;
 	}
 
 
