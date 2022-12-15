@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
@@ -22,7 +23,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 1 | basement
-public class Gen_001 extends BackroomsGenerator {
+public class Gen_001 extends BackroomsGenerator implements Listener {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
