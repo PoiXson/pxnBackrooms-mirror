@@ -1,12 +1,10 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Random;
-
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Slab;
-import org.bukkit.generator.WorldInfo;
+import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -46,19 +44,15 @@ public class Gen_000 extends BackroomsGenerator {
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
 		this.noiseLobbyWalls.setRotationType3D(RotationType3D.ImproveXYPlanes);
 	}
-
-
-
-	public void setSeed(final int seed) {
-		this.noiseLobbyWalls.setSeed(seed);
+	@Override
+	public void unload() {
 	}
 
 
 
 	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
+	public void setSeed(final int seed) {
+		this.noiseLobbyWalls.setSeed(seed);
 	}
 
 
@@ -89,6 +83,7 @@ public class Gen_000 extends BackroomsGenerator {
 				final int modX6 = Math.abs(xx) % 7;
 				final int modZ6 = Math.abs(zz) % 7;
 				if (modZ6 == 0 && modX6 < 2) {
+//TODO: not near walls
 					// ceiling lights
 					chunk.setBlock(x, y, z, Material.REDSTONE_LAMP);
 						final BlockData block = chunk.getBlockData(x, y, z);

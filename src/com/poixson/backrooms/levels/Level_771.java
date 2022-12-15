@@ -26,6 +26,10 @@ public class Level_771 extends BackroomsLevel {
 		// generators
 		this.gen_771 = new Gen_771();
 	}
+	@Override
+	public void unload() {
+		this.gen_771.unload();
+	}
 
 
 

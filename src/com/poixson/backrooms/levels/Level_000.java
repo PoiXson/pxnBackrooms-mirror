@@ -40,6 +40,14 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_309 = new Gen_309();
 	}
 
+	@Override
+	public void unload() {
+		this.gen_000.unload();
+		this.gen_001.unload();
+		this.gen_005.unload();
+		this.gen_309.unload();
+	}
+
 
 
 	@Override

@@ -3,7 +3,6 @@ package com.poixson.backrooms.levels;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.generator.WorldInfo;
+import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -64,10 +63,8 @@ public class Gen_001 extends BackroomsGenerator {
 		this.noiseMoist.setFractalOctaves(2);
 		this.noiseMoist.setFractalGain(2.0);
 	}
-
 	@Override
 	public void unload() {
-		super.unload();
 		synchronized (this.playerLights) {
 			for (final ArrayList<Location> list : this.playerLights.values()) {
 				for (final Location loc : list) {
@@ -82,17 +79,10 @@ public class Gen_001 extends BackroomsGenerator {
 
 
 
+	@Override
 	public void setSeed(final int seed) {
 		this.noiseBasementWalls.setSeed(seed);
 		this.noiseMoist.setSeed(seed);
-	}
-
-
-
-	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
 	}
 
 

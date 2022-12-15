@@ -40,6 +40,9 @@ public class Gen_771 extends BackroomsGenerator {
 		// populators
 		this.crossPop = new Pop_771(this.noiseRoadLights);
 	}
+	@Override
+	public void unload() {
+	}
 
 
 

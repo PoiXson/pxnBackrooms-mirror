@@ -1,16 +1,14 @@
 package com.poixson.backrooms.levels;
 
 import java.util.HashMap;
-import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Slab;
-import org.bukkit.generator.WorldInfo;
+import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -56,19 +54,15 @@ public class Gen_005 extends BackroomsGenerator {
 		// populators
 		this.roomPop = new Pop_005(this.noiseHotelRooms);
 	}
-
-
-
-	public void setSeed(final int seed) {
-		this.noiseHotelWalls.setSeed(seed);
+	@Override
+	public void unload() {
 	}
 
 
 
 	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
+	public void setSeed(final int seed) {
+		this.noiseHotelWalls.setSeed(seed);
 	}
 
 

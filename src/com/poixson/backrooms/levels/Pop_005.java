@@ -1,26 +1,16 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.commonbukkit.utils.LocationUtils.Rotate;
 import static com.poixson.commonbukkit.utils.LocationUtils.RotateXZ;
 
 import java.util.HashMap;
 import java.util.Random;
 
-import org.bukkit.Axis;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Bisected;
-import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.Lightable;
-import org.bukkit.block.data.Orientable;
-import org.bukkit.block.data.type.Bed;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.poixson.commonbukkit.tools.BlockPlotter;
 import com.poixson.tools.dao.Insew;
 import com.poixson.tools.dao.Ixy;
 import com.poixson.tools.dao.Ixywd;
@@ -30,7 +20,12 @@ import com.poixson.utils.FastNoiseLiteD;
 public class Pop_005 extends BlockPopulator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
+	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int     HOTEL_Y    = Gen_005.HOTEL_Y;
 
+	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
+
+	// noise
 	protected final FastNoiseLiteD noiseHotelRooms;
 
 
@@ -47,12 +42,13 @@ public class Pop_005 extends BlockPopulator {
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
-		final int y = Level_005.HOTEL_Y + Level_005.SUBFLOOR + 1;
+		final int y = HOTEL_Y + SUBFLOOR + 1;
 		Insew dao = this.findRoomWalls(x, y, z, region);
 		if (dao == null) dao = this.findRoomWalls(x+10, y, z+10, region);
 		if (dao == null) dao = this.findRoomWalls(x,    y, z+10, region);
 		if (dao == null) dao = this.findRoomWalls(x+10, y, z,    region);
 		if (dao == null) return;
+//TODO: alternate rooms: front desk, theater
 		this.buildHotelRooms(dao, y, region, 7.0);
 	}
 
@@ -86,7 +82,7 @@ public class Pop_005 extends BlockPopulator {
 			if (foundN == Integer.MIN_VALUE) {
 				type = region.getType(x, y, z-i);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (Level_005.HOTEL_WALL.equals(type))
+				if (HOTEL_WALL.equals(type))
 					foundN = (z - i) + 1;
 				else
 				if (!Material.AIR.equals(type)) return null;
@@ -95,7 +91,7 @@ public class Pop_005 extends BlockPopulator {
 			if (foundS == Integer.MIN_VALUE) {
 				type = region.getType(x, y, z+i);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (Level_005.HOTEL_WALL.equals(type))
+				if (HOTEL_WALL.equals(type))
 					foundS = (z + i) - 1;
 				else
 				if (!Material.AIR.equals(type)) return null;
@@ -104,7 +100,7 @@ public class Pop_005 extends BlockPopulator {
 			if (foundE == Integer.MIN_VALUE) {
 				type = region.getType(x+i, y, z);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (Level_005.HOTEL_WALL.equals(type))
+				if (HOTEL_WALL.equals(type))
 					foundE = (x + i) - 1;
 				else
 				if (!Material.AIR.equals(type)) return null;
@@ -113,7 +109,7 @@ public class Pop_005 extends BlockPopulator {
 			if (foundW == Integer.MIN_VALUE) {
 				type = region.getType(x-i, y, z);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (Level_005.HOTEL_WALL.equals(type))
+				if (HOTEL_WALL.equals(type))
 					foundW = (x - i) + 1;
 				else
 				if (!Material.AIR.equals(type)) return null;

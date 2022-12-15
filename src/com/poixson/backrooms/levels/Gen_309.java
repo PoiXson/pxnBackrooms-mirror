@@ -1,13 +1,13 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
-import org.bukkit.generator.WorldInfo;
+import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.generators.PathTracer;
+import com.poixson.backrooms.generators.TreePopulator;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 
@@ -23,10 +23,12 @@ public class Gen_309 extends BackroomsGenerator {
 	public static final Material PATH_TREE_TRUNK  = Material.BIRCH_LOG;
 	public static final Material PATH_TREE_LEAVES = Material.BIRCH_LEAVES;
 
+	// noise
 	protected final FastNoiseLiteD noisePath;
 	protected final FastNoiseLiteD noisePathGround;
 	protected final FastNoiseLiteD noiseTrees;
 
+	// populators
 	public final TreePopulator treePop;
 	public final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
@@ -53,27 +55,18 @@ public class Gen_309 extends BackroomsGenerator {
 		this.treePop = new TreePopulator309(this.noiseTrees, PATH_Y);
 		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
 	}
-
 	@Override
 	public void unload() {
-		super.unload();
 		this.pathCache.set(null);
 	}
 
 
 
+	@Override
 	public void setSeed(final int seed) {
 		this.noisePath.setSeed(seed);
 		this.noisePathGround.setSeed(seed);
 		this.noiseTrees.setSeed(seed);
-	}
-
-
-
-	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
 	}
 
 

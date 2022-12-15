@@ -19,8 +19,7 @@ public abstract class BackroomsLevel extends ChunkGenerator implements Listener 
 			.registerEvents(this, plugin);
 	}
 
-	public void unload() {
-	}
+	public abstract void unload();
 
 
 
