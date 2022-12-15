@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -309,6 +310,16 @@ public class BackroomsPlugin extends JavaPlugin {
 				return existing;
 			return lvl;
 		}
+	}
+
+
+
+	protected static final AtomicInteger Last10K = new AtomicInteger(0);
+
+	public static int Rnd10K() {
+		final int rnd = NumberUtils.GetNewRandom(0, 999, Last10K.get());
+		Last10K.set(rnd);
+		return rnd;
 	}
 
 
