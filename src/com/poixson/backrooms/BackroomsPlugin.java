@@ -10,10 +10,12 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.poixson.backrooms.levels.BackroomsLevel;
@@ -22,7 +24,9 @@ import com.poixson.backrooms.levels.Level_009;
 import com.poixson.backrooms.levels.Level_011;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
+import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.utils.NumberUtils;
+import com.poixson.utils.Utils;
 
 
 public class BackroomsPlugin extends JavaPlugin {
@@ -38,8 +42,9 @@ public class BackroomsPlugin extends JavaPlugin {
 	// world generators
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 
-//	// listeners
+	// listeners
 //	protected final AtomicReference<BackroomsCommands>   commandListener = new AtomicReference<BackroomsCommands>(null);
+	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
 
 
 
@@ -62,16 +67,16 @@ public class BackroomsPlugin extends JavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+*/
 		// player damage listener
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
-			final PlayerDamageListener previous = this.damageListener.getAndSet(listener);
+			final PlayerDamageListener previous = this.playerDamageListener.getAndSet(listener);
 			final PluginManager pm = Bukkit.getPluginManager();
 			if (previous != null)
 				HandlerList.unregisterAll(previous);
 			pm.registerEvents(listener, this);
 		}
-*/
 	}
 
 	@Override
@@ -118,11 +123,71 @@ public class BackroomsPlugin extends JavaPlugin {
 			return Integer.MIN_VALUE;
 		if (!worldName.startsWith("level"))
 			return Integer.MIN_VALUE;
-		return Integer.parseInt(worldName.substring(5));
+		final int level = Integer.parseInt(worldName.substring(5));
+		if (!isValidLevel(level))
+			return Integer.MIN_VALUE;
+		return level;
+	}
+
+	public void assertValidLevel(final int level) {
+		if (!this.isValidLevel(level))
+			throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+	}
+	public boolean isValidLevel(final int level) {
+		switch (level) {
+		case 0:
+		case 1:
+		case 5:
+		case 9:
+		case 11:
+		case 19:
+		case 37:
+		case 309:
+		case 771:
+		case 866:
+			return true;
+		default: break;
+		}
+		return false;
 	}
 
 
 
+	public World getLevelWorld(final int level) {
+		final String worldName = this.getLevelWorldName(level);
+		if (Utils.isEmpty(worldName))
+			return null;
+		return Bukkit.getWorld(worldName);
+	}
+	public String getLevelWorldName(final int level) {
+		switch (level) {
+		case 0:
+		case 1:
+		case 5:
+		case 19:
+		case 37:
+		case 309: return "level0";
+		case 9:   return "level9";
+		case 11:  return "level11";
+		case 771:  return "level771";
+		case 866:  return "level866";
+		default: break;
+		}
+		return null;
+	}
+
+
+
+	public int noclip(final Player player) {
+		final int levelFrom = this.getLevel(player);
+		final int levelTo = this.noclip(levelFrom);
+		final World world = this.getLevelWorld(levelTo);
+		if (world == null) throw new RuntimeException("Failed to find world for backrooms level: "+Integer.toString(levelTo));
+		final Location loc = world.getSpawnLocation();
+		log.info(CHAT_PREFIX+"Teleporting: "+player.getName()+" to level: "+Integer.toString(levelTo));
+		player.teleport(loc);
+		return levelTo;
+	}
 	public int noclip(final int from) {
 		final HashMap<Integer, Integer> chance = new HashMap<Integer, Integer>();
 		switch (from) {
