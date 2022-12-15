@@ -16,7 +16,9 @@ import com.poixson.tools.dao.Dxy;
 
 
 // 309 | Path
+//  19 | Attic
 //   5 | Hotel
+//  37 | Pools
 //   0 | Lobby
 //   1 | Basement
 public class Level_000 extends BackroomsLevel {
@@ -29,6 +31,8 @@ public class Level_000 extends BackroomsLevel {
 	public final Gen_000 gen_000;
 	public final Gen_001 gen_001;
 	public final Gen_005 gen_005;
+	public final Gen_019 gen_019;
+	public final Gen_037 gen_037;
 	public final Gen_309 gen_309;
 
 
@@ -38,6 +42,8 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_000 = new Gen_000();
 		this.gen_001 = new Gen_001();
 		this.gen_005 = new Gen_005();
+		this.gen_019 = new Gen_019();
+		this.gen_037 = new Gen_037();
 		this.gen_309 = new Gen_309();
 		Bukkit.getPluginManager()
 			.registerEvents(this.gen_001, plugin);
@@ -48,6 +54,8 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_000.unload();
 		this.gen_001.unload();
 		this.gen_005.unload();
+		this.gen_019.unload();
+		this.gen_037.unload();
 		this.gen_309.unload();
 	}
 
@@ -63,6 +71,8 @@ if (chunkX == -1 && chunkZ == 1) return;
 		this.gen_000.setSeed(seed);
 		this.gen_001.setSeed(seed);
 		this.gen_005.setSeed(seed);
+		this.gen_019.setSeed(seed);
+		this.gen_037.setSeed(seed);
 		this.gen_309.setSeed(seed);
 		// pre-generate
 		int xx, zz;
@@ -76,8 +86,12 @@ if (chunkX == -1 && chunkZ == 1) return;
 				this.gen_001.generateBasement(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 0 main lobby
 				this.gen_000.generateLobby(chunkX, chunkZ, chunk, x, z, xx, zz);
+				// pools
+				this.gen_037.generatePools(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// hotel
 				this.gen_005.generateHotel(prehotel, chunkX, chunkZ, chunk, x, z, xx, zz);
+				// attic
+				this.gen_019.generateAttic(chunkX, chunkZ, chunk, x, z, xx, zz);
 				// 309 woods path
 				this.gen_309.generateWoodsPath(chunkX, chunkZ, chunk, x, z, xx, zz);
 			}

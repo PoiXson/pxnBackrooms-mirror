@@ -21,6 +21,7 @@ import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
 import com.poixson.backrooms.levels.Level_011;
 import com.poixson.backrooms.levels.Level_771;
+import com.poixson.backrooms.levels.Level_866;
 import com.poixson.utils.NumberUtils;
 
 
@@ -130,42 +131,52 @@ public class BackroomsPlugin extends JavaPlugin {
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 15 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
+			chance.put(Integer.valueOf(  19 ), Integer.valueOf( 10 )); // attic
+			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 10 )); // pools
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
 			chance.put(Integer.valueOf( 771 ), Integer.valueOf( 10 )); // crossroads
+			chance.put(Integer.valueOf( 866 ), Integer.valueOf( 10 )); // dirtfield
 			break;
 		case -1: // basement
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
+			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  8 )); // suburbs
+			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  8 )); // city
+			chance.put(Integer.valueOf(  19 ), Integer.valueOf( 20 )); // attic
+			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 10 )); // pools
+			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  2 )); // path
 			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  2 )); // crossroads
+			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  5 )); // dirtfield
 			break;
 		case 5: // hotel
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
-			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 15 )); // basement
+			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 10 )); // basement
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  5 )); // crossroads
+			chance.put(Integer.valueOf(  19 ), Integer.valueOf( 15 )); // attic
+			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 20 )); // pools
+			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  5 )); // dirtfield
 			break;
 		case 9: // suburbs
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
+			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 10 )); // pools
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  5 )); // path
 			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  5 )); // crossroads
+			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  5 )); // dirtfield
 			break;
 		case 11: // city
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
-			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 10 )); // basement
+			chance.put(Integer.valueOf(   1 ), Integer.valueOf(  5 )); // basement
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  5 )); // suburbs
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  5 )); // crossroads
+			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
+			chance.put(Integer.valueOf(  37 ), Integer.valueOf(  5 )); // pools
 			break;
 		case 309: // path
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 10 )); // lobby
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 15 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
 			chance.put(Integer.valueOf( 771 ), Integer.valueOf( 20 )); // crossroads
+			chance.put(Integer.valueOf( 866 ), Integer.valueOf( 10 )); // dirtfield
 			break;
 		default:
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
@@ -173,8 +184,11 @@ public class BackroomsPlugin extends JavaPlugin {
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  1 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  1 )); // suburbs
 			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  1 )); // city
+			chance.put(Integer.valueOf(  19 ), Integer.valueOf(  1 )); // attic
+			chance.put(Integer.valueOf(  37 ), Integer.valueOf(  1 )); // pools
 			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  1 )); // path
 			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  1 )); // crossroads
+			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  1 )); // dirtfield
 			break;
 		}
 		if (chance.isEmpty())
@@ -222,6 +236,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			case   9: lvl = new Level_009(this); break;
 			case  11: lvl = new Level_011(this); break;
 			case 771: lvl = new Level_771(this); break;
+			case 866: lvl = new Level_866(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 			}
 			final BackroomsLevel existing = this.backlevels.putIfAbsent(Integer.valueOf(level), lvl);

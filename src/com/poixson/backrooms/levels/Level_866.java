@@ -8,16 +8,18 @@ import org.bukkit.generator.WorldInfo;
 import com.poixson.backrooms.BackroomsPlugin;
 
 
-// 9 | suburbs
-public class Level_009 extends BackroomsLevel {
+// dirtfield
+public class Level_866 extends BackroomsLevel {
 
-	public static final int SUBURBS_Y = 0;
+	public static final int DIRTFIELD_Y = 0;
+	public static final int SUBFLOOR = 3;
 
 
 
-	public Level_009(final BackroomsPlugin plugin) {
+	public Level_866(final BackroomsPlugin plugin) {
 		super(plugin);
 	}
+
 	@Override
 	public void unload() {
 	}
