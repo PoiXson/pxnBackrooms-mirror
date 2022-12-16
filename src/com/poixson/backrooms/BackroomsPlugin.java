@@ -1,6 +1,5 @@
 package com.poixson.backrooms;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -74,12 +73,6 @@ public class BackroomsPlugin extends JavaPlugin {
 				MakeWorld(866, seed);
 			}
 		}).runTask(this);
-		{
-			final File path = new File(this.getDataFolder(), "scripts");
-			this.enableScripts.set(
-				path.isDirectory()
-			);
-		}
 		// commands listener
 		{
 			final BackroomsCommands listener = new BackroomsCommands(this);
