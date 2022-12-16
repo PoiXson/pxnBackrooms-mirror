@@ -25,6 +25,7 @@ import com.poixson.backrooms.levels.Level_009;
 import com.poixson.backrooms.levels.Level_011;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
+import com.poixson.backrooms.listeners.BackroomsCommands;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.utils.NumberUtils;
 import com.poixson.utils.Utils;
@@ -44,7 +45,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 
 	// listeners
-//	protected final AtomicReference<BackroomsCommands>   commandListener = new AtomicReference<BackroomsCommands>(null);
+	protected final AtomicReference<BackroomsCommands>    commandListener      = new AtomicReference<BackroomsCommands>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
 
 
@@ -59,7 +60,6 @@ public class BackroomsPlugin extends JavaPlugin {
 				path.isDirectory()
 			);
 		}
-/*
 		// commands listener
 		{
 			final BackroomsCommands listener = new BackroomsCommands(this);
@@ -68,7 +68,6 @@ public class BackroomsPlugin extends JavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
-*/
 		// player damage listener
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
@@ -87,14 +86,12 @@ public class BackroomsPlugin extends JavaPlugin {
 			lvl.unload();
 		}
 		this.backlevels.clear();
-/*
 		// commands listener
 		{
 			final BackroomsCommands listener = this.commandListener.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
-*/
 		// stop schedulers
 		try {
 			Bukkit.getScheduler()
