@@ -11,14 +11,22 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.levels.BackroomsLevel;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
@@ -54,6 +62,18 @@ public class BackroomsPlugin extends JavaPlugin {
 	public void onEnable() {
 		if (!instance.compareAndSet(null, this))
 			throw new RuntimeException("Plugin instance already enabled?");
+		// create worlds (after server starts)
+		(new BukkitRunnable() {
+			@Override
+			public void run() {
+				final String seed = "11";
+				MakeWorld(  0, seed);
+				MakeWorld(  9, seed);
+				MakeWorld( 11, seed);
+				MakeWorld(771, seed);
+				MakeWorld(866, seed);
+			}
+		}).runTask(this);
 		{
 			final File path = new File(this.getDataFolder(), "scripts");
 			this.enableScripts.set(
@@ -101,6 +121,43 @@ public class BackroomsPlugin extends JavaPlugin {
 		HandlerList.unregisterAll(this);
 		if (!instance.compareAndSet(this, null))
 			throw new RuntimeException("Disable wrong instance of plugin?");
+	}
+
+
+
+	public static MultiverseCore GetMVCore() {
+		final PluginManager pm = Bukkit.getServer().getPluginManager();
+		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
+		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
+		return mvcore;
+	}
+
+	protected static void MakeWorld(final int level, final String seed) {
+		final MVWorldManager manager = GetMVCore().getMVWorldManager();
+		final String name = "level" + Integer.toString(level);
+		if (!manager.isMVWorld(name, false)) {
+			log.warning(LOG_PREFIX+"Creating backrooms level: "+Integer.toString(level));
+			if (!manager.addWorld(name, Environment.NORMAL, seed, WorldType.NORMAL, false, "pxnBackrooms", true))
+				throw new RuntimeException("Failed to create world: "+name);
+			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
+			final World world = mvworld.getCBWorld();
+			mvworld.setAlias("backrooms");
+			mvworld.setHidden(true);
+			mvworld.setAllowAnimalSpawn(true);
+			mvworld.setAllowMonsterSpawn(true);
+			mvworld.setAutoHeal(true);
+			mvworld.setBedRespawn(true);
+			mvworld.setDifficulty(Difficulty.HARD);
+			mvworld.setHunger(true);
+			mvworld.setPVPMode(true);
+			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.TRUE );
+			world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.TRUE );
+			world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
+			world.setGameRule(GameRule.KEEP_INVENTORY,       Boolean.TRUE );
+			world.setGameRule(GameRule.MOB_GRIEFING,         Boolean.FALSE);
+			world.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS, Boolean.FALSE);
+			world.setGameRule(GameRule.UNIVERSAL_ANGER,      Boolean.TRUE );
+		}
 	}
 
 
