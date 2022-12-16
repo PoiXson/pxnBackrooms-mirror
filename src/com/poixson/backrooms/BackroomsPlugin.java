@@ -250,7 +250,12 @@ public class BackroomsPlugin extends JavaPlugin {
 		final World world = this.getLevelWorld(level);
 		if (world == null) throw new RuntimeException("Failed to find world for backrooms level: "+Integer.toString(level));
 		final BackroomsLevel lvl = this.getBackroomsLevel(level);
-		Location loc = lvl.getSpawn(level);
+		Location loc = null;
+		for (int i=0; i<5; i++) {
+			loc = lvl.getSpawn(level);
+			if (loc != null)
+				break;
+		}
 		if (loc == null)
 			loc = world.getSpawnLocation();
 		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));
