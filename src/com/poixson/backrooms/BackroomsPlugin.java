@@ -176,6 +176,22 @@ public class BackroomsPlugin extends JavaPlugin {
 		}
 		return null;
 	}
+	public BackroomsLevel getBackroomsLevel(final int level) {
+		switch (level) {
+		case 0:
+		case 1:
+		case 5:
+		case 19:
+		case 37:
+		case 309: return this.backlevels.get(Integer.valueOf(0));
+		case 9:   return this.backlevels.get(Integer.valueOf(9));
+		case 11:  return this.backlevels.get(Integer.valueOf(11));
+		case 771: return this.backlevels.get(Integer.valueOf(771));
+		case 866: return this.backlevels.get(Integer.valueOf(866));
+		default: break;
+		}
+		return null;
+	}
 
 
 
