@@ -342,7 +342,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	protected static final AtomicInteger Last10K = new AtomicInteger(0);
 
 	public static int Rnd10K() {
-		final int rnd = NumberUtils.GetNewRandom(0, 999, Last10K.get());
+		final int rnd = NumberUtils.GetNewRandom(0, 9999, Last10K.get());
 		Last10K.set(rnd);
 		return rnd;
 	}
