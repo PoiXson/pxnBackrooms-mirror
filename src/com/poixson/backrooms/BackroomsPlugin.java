@@ -192,17 +192,24 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 
+	public void noclip(final Player player, final int level) {
+		if (level == Integer.MIN_VALUE) {
+			this.noclip(player);
+			return;
+		}
+		final World world = this.getLevelWorld(level);
+		if (world == null) throw new RuntimeException("Failed to find world for backrooms level: "+Integer.toString(level));
+		final BackroomsLevel lvl = this.getBackroomsLevel(level);
+		Location loc = lvl.getSpawn(level);
+		if (loc == null)
+			loc = world.getSpawnLocation();
+		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));
+		player.teleport(loc);
+	}
 	public int noclip(final Player player) {
 		final int levelFrom = this.getLevel(player);
 		final int levelTo = this.noclip(levelFrom);
-		final World world = this.getLevelWorld(levelTo);
-		if (world == null) throw new RuntimeException("Failed to find world for backrooms level: "+Integer.toString(levelTo));
-		final BackroomsLevel lvl = this.getBackroomsLevel(levelTo);
-		Location loc = lvl.getSpawn(levelTo);
-		if (loc == null)
-			loc = world.getSpawnLocation();
-		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(levelTo));
-		player.teleport(loc);
+		this.noclip(player, levelTo);
 		return levelTo;
 	}
 	public int noclip(final int from) {
