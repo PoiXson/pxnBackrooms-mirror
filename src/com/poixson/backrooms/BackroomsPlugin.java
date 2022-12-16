@@ -170,8 +170,8 @@ public class BackroomsPlugin extends JavaPlugin {
 		case 309: return "level0";
 		case 9:   return "level9";
 		case 11:  return "level11";
-		case 771:  return "level771";
-		case 866:  return "level866";
+		case 771: return "level771";
+		case 866: return "level866";
 		default: break;
 		}
 		return null;
@@ -200,8 +200,11 @@ public class BackroomsPlugin extends JavaPlugin {
 		final int levelTo = this.noclip(levelFrom);
 		final World world = this.getLevelWorld(levelTo);
 		if (world == null) throw new RuntimeException("Failed to find world for backrooms level: "+Integer.toString(levelTo));
-		final Location loc = world.getSpawnLocation();
-		log.info(CHAT_PREFIX+"Teleporting: "+player.getName()+" to level: "+Integer.toString(levelTo));
+		final BackroomsLevel lvl = this.getBackroomsLevel(levelTo);
+		Location loc = lvl.getSpawn(levelTo);
+		if (loc == null)
+			loc = world.getSpawnLocation();
+		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(levelTo));
 		player.teleport(loc);
 		return levelTo;
 	}
@@ -261,7 +264,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			chance.put(Integer.valueOf( 866 ), Integer.valueOf( 10 )); // dirtfield
 			break;
 		default:
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
+			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 10 )); // lobby
 			chance.put(Integer.valueOf(   1 ), Integer.valueOf(  1 )); // basement
 			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  1 )); // hotel
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  1 )); // suburbs
@@ -276,10 +279,11 @@ public class BackroomsPlugin extends JavaPlugin {
 		if (chance.isEmpty())
 			return 0;
 		int total = 0;
-		for (final Integer i : chance.keySet()) {
+		for (final Integer i : chance.values()) {
 			total += i;
 		}
-		final int rnd = NumberUtils.GetRandom(0, total);
+		final int total2 = total * total;
+		final int rnd = NumberUtils.GetNewRandom(0, total2, NumberUtils.GetRandom(0, total2)) % total;
 		final Iterator<Entry<Integer, Integer>> it = chance.entrySet().iterator();
 		while (it.hasNext()) {
 			final Entry<Integer, Integer> entry = it.next();
@@ -289,6 +293,7 @@ public class BackroomsPlugin extends JavaPlugin {
 				return level.intValue();
 			total -= weight;
 		}
+		log.warning(LOG_PREFIX+"Failed to find random level");
 		return 0;
 	}
 
