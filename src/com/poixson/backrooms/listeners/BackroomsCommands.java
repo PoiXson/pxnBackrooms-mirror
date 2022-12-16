@@ -1,5 +1,6 @@
-package com.poixson.backrooms;
+package com.poixson.backrooms.listeners;
 
+import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonbukkit.tools.commands.pxnBukkitCommandsHelper;
 
 
