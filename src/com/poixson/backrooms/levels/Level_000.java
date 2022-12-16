@@ -93,8 +93,8 @@ public class Level_000 extends BackroomsLevel {
 		case 309: y = Y_309; h = 6;     break;
 		default: throw new RuntimeException("Invalid level: "+Integer.toString(level));
 		}
-		final int x = BackroomsPlugin.Rnd10K();
-		final int z = BackroomsPlugin.Rnd10K();
+		final int x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+		final int z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 		return this.getSpawn(level, h, x, y, z);
 	}
 	@Override
