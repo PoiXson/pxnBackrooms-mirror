@@ -1,7 +1,7 @@
 package com.poixson.backrooms.levels;
 
 
-// 9 | suburbs
+// 9 | Suburbs
 public class Gen_009 extends BackroomsGenerator {
 
 

@@ -9,7 +9,7 @@ import org.bukkit.generator.WorldInfo;
 import com.poixson.backrooms.BackroomsPlugin;
 
 
-// 9 | suburbs
+// 9 | Suburbs
 public class Level_009 extends BackroomsLevel {
 
 	public static final int SUBURBS_Y = 0;
@@ -27,11 +27,12 @@ public class Level_009 extends BackroomsLevel {
 
 	@Override
 	public Location getSpawn(final int level) {
-		if (level != 9) throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		if (level != 9) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		final int x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 		final int z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 		return this.getSpawn(level, 10, x, SUBURBS_Y, z);
 	}
+
 	@Override
 	public int getLevelFromY(final int y) {
 		return 9;

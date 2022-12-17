@@ -58,6 +58,11 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 
+	public BackroomsPlugin() {
+	}
+
+
+
 	@Override
 	public void onEnable() {
 		if (!instance.compareAndSet(null, this))
@@ -66,13 +71,14 @@ public class BackroomsPlugin extends JavaPlugin {
 		(new BukkitRunnable() {
 			@Override
 			public void run() {
-				final String seed = "11";
-				MakeWorld(  0, seed);
-				MakeWorld(  9, seed);
-				MakeWorld( 11, seed);
-				MakeWorld(771, seed);
-				MakeWorld(866, seed);
+//TODO
+final String seed = "11";
+				MakeWorld(  0, seed); // lobby
+				MakeWorld(  9, seed); // suburbs
+				MakeWorld( 11, seed); // city
 				MakeWorld( 78, seed); // space
+				MakeWorld(771, seed); // crossroads
+				MakeWorld(866, seed); // dirtfield
 			}
 		}).runTask(this);
 		// commands listener
@@ -138,6 +144,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			final World world = mvworld.getCBWorld();
 			mvworld.setAlias("backrooms");
 			mvworld.setHidden(true);
+			mvworld.setKeepSpawnInMemory(false);
 			mvworld.setAllowAnimalSpawn(true);
 			mvworld.setAllowMonsterSpawn(true);
 			mvworld.setAutoHeal(true);

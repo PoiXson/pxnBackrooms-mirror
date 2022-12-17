@@ -20,6 +20,7 @@ import com.poixson.tools.dao.Ixywd;
 import com.poixson.utils.FastNoiseLiteD;
 
 
+// 5 | Hotel
 public class Pop_005 extends BlockPopulator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;

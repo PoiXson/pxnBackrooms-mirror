@@ -12,7 +12,7 @@ import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
-// 309 | path
+// 309 | Radio Station
 public class Gen_309 extends BackroomsGenerator {
 
 	public static final int SUBFLOOR      = Level_000.SUBFLOOR;

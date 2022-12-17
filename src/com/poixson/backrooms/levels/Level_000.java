@@ -16,7 +16,7 @@ import com.poixson.backrooms.levels.Gen_005.HotelDAO;
 import com.poixson.tools.dao.Dxy;
 
 
-// 309 | Path
+// 309 | Radio Station
 //  19 | Attic
 //   5 | Hotel
 //  37 | Poolrooms
@@ -44,26 +44,26 @@ public class Level_000 extends BackroomsLevel {
 	// attic
 	public static final int Y_019 = SUBFLOOR + Y_005 + H_005 + SUBCEILING + 1;
 	public static final int H_019 = 10;
-	// path
+	// radio station
 	public static final int Y_309 = SUBFLOOR + Y_019 + H_019 + SUBCEILING + 1;
 
 	// generators
-	public final Gen_000 gen_000;
 	public final Gen_001 gen_001;
+	public final Gen_000 gen_000;
+	public final Gen_037 gen_037;
 	public final Gen_005 gen_005;
 	public final Gen_019 gen_019;
-	public final Gen_037 gen_037;
 	public final Gen_309 gen_309;
 
 
 
 	public Level_000(final BackroomsPlugin plugin) {
 		super(plugin);
-		this.gen_000 = new Gen_000();
 		this.gen_001 = new Gen_001();
+		this.gen_000 = new Gen_000();
+		this.gen_037 = new Gen_037();
 		this.gen_005 = new Gen_005();
 		this.gen_019 = new Gen_019();
-		this.gen_037 = new Gen_037();
 		this.gen_309 = new Gen_309();
 		Bukkit.getPluginManager()
 			.registerEvents(this.gen_001, plugin);
@@ -71,11 +71,11 @@ public class Level_000 extends BackroomsLevel {
 
 	@Override
 	public void unload() {
-		this.gen_000.unload();
 		this.gen_001.unload();
+		this.gen_000.unload();
+		this.gen_037.unload();
 		this.gen_005.unload();
 		this.gen_019.unload();
-		this.gen_037.unload();
 		this.gen_309.unload();
 	}
 
@@ -94,11 +94,11 @@ public class Level_000 extends BackroomsLevel {
 		default: throw new RuntimeException("Invalid level: "+Integer.toString(level));
 		}
 		switch (level) {
-		case 0:
 		case 1:
+		case 0:
+		case 37:
 		case 5:
 		case 19:
-		case 37:
 			x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 			z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 			break;
@@ -106,10 +106,11 @@ public class Level_000 extends BackroomsLevel {
 			x = (BackroomsPlugin.Rnd10K() / 5) - 1000;
 			z = BackroomsPlugin.Rnd10K();
 			break;
-		default: throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 		return this.getSpawn(level, h, x, y, z);
 	}
+
 	@Override
 	public int getLevelFromY(final int y) {
 		if (y <= Y_001 + H_001) return 1;
@@ -121,27 +122,27 @@ public class Level_000 extends BackroomsLevel {
 	}
 	public int getYFromLevel(final int level) {
 		switch (level) {
-		case 0:   return Y_000;
 		case 1:   return Y_001;
+		case 0:   return Y_000;
+		case 37:  return Y_037;
 		case 5:   return Y_005;
 		case 19:  return Y_019;
-		case 37:  return Y_037;
 		case 309: return Y_309;
 		default: break;
 		}
-		throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 	}
 	public int getMaxYFromLevel(final int level) {
 		switch (level) {
-		case 0:   return Y_000 + H_000;
 		case 1:   return Y_001 + H_001;
+		case 0:   return Y_000 + H_000;
+		case 37:  return Y_037 + H_037;
 		case 5:   return Y_005 + H_005;
 		case 19:  return Y_019 + H_019;
-		case 37:  return Y_037 + H_037;
 		case 309: return 255;
 		default: break;
 		}
-		throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 	}
 
 
@@ -153,11 +154,11 @@ public class Level_000 extends BackroomsLevel {
 //if (chunkX == 2 && chunkZ == 2) return;
 //if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
 		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
-		this.gen_000.setSeed(seed);
 		this.gen_001.setSeed(seed);
+		this.gen_000.setSeed(seed);
+		this.gen_037.setSeed(seed);
 		this.gen_005.setSeed(seed);
 		this.gen_019.setSeed(seed);
-		this.gen_037.setSeed(seed);
 		this.gen_309.setSeed(seed);
 		// pre-generate
 		int xx, zz;
@@ -177,7 +178,7 @@ public class Level_000 extends BackroomsLevel {
 				this.gen_005.generateHotel(prehotel, chunkX, chunkZ, chunk, x, z, xx, zz);
 				// attic
 				this.gen_019.generateAttic(chunkX, chunkZ, chunk, x, z, xx, zz);
-				// 309 woods path
+				// radio station
 				this.gen_309.generateWoodsPath(chunkX, chunkZ, chunk, x, z, xx, zz);
 			}
 		}

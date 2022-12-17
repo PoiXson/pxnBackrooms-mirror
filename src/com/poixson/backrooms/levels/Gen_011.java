@@ -1,7 +1,7 @@
 package com.poixson.backrooms.levels;
 
 
-// 11 | city
+// 11 | City
 public class Gen_011 extends BackroomsGenerator {
 
 

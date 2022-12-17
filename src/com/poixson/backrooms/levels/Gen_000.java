@@ -14,7 +14,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
-// 0 | lobby
+// 0 | Lobby
 public class Gen_000 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;

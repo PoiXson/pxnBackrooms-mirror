@@ -9,7 +9,7 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
-// 19 | attic
+// 19 | Attic
 public class Gen_019 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;

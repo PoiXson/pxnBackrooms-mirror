@@ -67,7 +67,7 @@ public class BackroomsCommands implements CommandExecutor {
 				if (numargs > 1 && NumberUtils.IsNumeric(args[1])) {
 					level = Integer.parseInt(args[1]);
 					if (!this.plugin.isValidLevel(level)) {
-						sender.sendMessage(CHAT_PREFIX+"Invalid level: "+Integer.toString(level));
+						sender.sendMessage(CHAT_PREFIX+"Invalid backrooms level: "+Integer.toString(level));
 						return true;
 					}
 					i = 2;

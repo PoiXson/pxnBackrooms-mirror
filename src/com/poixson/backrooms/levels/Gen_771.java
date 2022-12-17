@@ -12,6 +12,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.StringUtils;
 
 
+// 771 | Crossroads
 public class Gen_771 extends BackroomsGenerator {
 
 	public static final int ROAD_Y = Level_771.ROAD_Y;
