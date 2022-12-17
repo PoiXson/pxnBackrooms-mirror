@@ -1,8 +1,6 @@
 package com.poixson.backrooms;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,6 +50,9 @@ public class BackroomsPlugin extends JavaPlugin {
 	// world generators
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 
+	// chance to teleport to levels
+	protected final AtomicReference<TeleportChances> tpChances = new AtomicReference<TeleportChances>(null);
+
 	// listeners
 	protected final AtomicReference<BackroomsCommands>    commandListener      = new AtomicReference<BackroomsCommands>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
@@ -89,6 +90,8 @@ final String seed = "11";
 				previous.unregister();
 			listener.register();
 		}
+		// load teleport chance
+		this.tpChances.set(TeleportChances.Load(this));
 		// player damage listener
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
@@ -279,95 +282,13 @@ final String seed = "11";
 		this.noclip(player, levelTo);
 		return levelTo;
 	}
-	public int noclip(final int from) {
-		final HashMap<Integer, Integer> chance = new HashMap<Integer, Integer>();
-		switch (from) {
-		case 0: // lobby
-			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 25 )); // basement
-			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 15 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
-			chance.put(Integer.valueOf(  19 ), Integer.valueOf( 10 )); // attic
-			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 10 )); // pools
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf( 10 )); // path
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf( 10 )); // crossroads
-			chance.put(Integer.valueOf( 866 ), Integer.valueOf( 10 )); // dirtfield
-			break;
-		case -1: // basement
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
-			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  8 )); // suburbs
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  8 )); // city
-			chance.put(Integer.valueOf(  19 ), Integer.valueOf( 20 )); // attic
-			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 10 )); // pools
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  2 )); // path
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  2 )); // crossroads
-			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  5 )); // dirtfield
-			break;
-		case 5: // hotel
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 20 )); // lobby
-			chance.put(Integer.valueOf(   1 ), Integer.valueOf( 10 )); // basement
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
-			chance.put(Integer.valueOf(  19 ), Integer.valueOf( 15 )); // attic
-			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 20 )); // pools
-			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  5 )); // dirtfield
-			break;
-		case 9: // suburbs
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
-			chance.put(Integer.valueOf(  37 ), Integer.valueOf( 10 )); // pools
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  5 )); // path
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  5 )); // crossroads
-			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  5 )); // dirtfield
-			break;
-		case 11: // city
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf(  5 )); // lobby
-			chance.put(Integer.valueOf(   1 ), Integer.valueOf(  5 )); // basement
-			chance.put(Integer.valueOf(   5 ), Integer.valueOf( 10 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
-			chance.put(Integer.valueOf(  37 ), Integer.valueOf(  5 )); // pools
-			break;
-		case 78: // space
-			break;
-		case 309: // path
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 10 )); // lobby
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 15 )); // suburbs
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf( 10 )); // city
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf( 20 )); // crossroads
-			chance.put(Integer.valueOf( 866 ), Integer.valueOf( 10 )); // dirtfield
-			break;
-		default:
-			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 10 )); // lobby
-			chance.put(Integer.valueOf(   1 ), Integer.valueOf(  1 )); // basement
-			chance.put(Integer.valueOf(   5 ), Integer.valueOf(  1 )); // hotel
-			chance.put(Integer.valueOf(   9 ), Integer.valueOf(  1 )); // suburbs
-			chance.put(Integer.valueOf(  11 ), Integer.valueOf(  1 )); // city
-			chance.put(Integer.valueOf(  19 ), Integer.valueOf(  1 )); // attic
-			chance.put(Integer.valueOf(  37 ), Integer.valueOf(  1 )); // pools
-			chance.put(Integer.valueOf( 309 ), Integer.valueOf(  1 )); // path
-			chance.put(Integer.valueOf( 771 ), Integer.valueOf(  1 )); // crossroads
-			chance.put(Integer.valueOf( 866 ), Integer.valueOf(  1 )); // dirtfield
-			break;
-		}
-		if (chance.isEmpty())
+	public int noclip(final int level_from) {
+		final TeleportChances chances = this.tpChances.get();
+		if (chances == null) {
+			log.warning(LOG_PREFIX+"teleport chance weights not loaded");
 			return 0;
-		int total = 0;
-		for (final Integer i : chance.values()) {
-			total += i;
 		}
-		final int total2 = total * total;
-		final int rnd = NumberUtils.GetNewRandom(0, total2, NumberUtils.GetRandom(0, total2)) % total;
-		final Iterator<Entry<Integer, Integer>> it = chance.entrySet().iterator();
-		while (it.hasNext()) {
-			final Entry<Integer, Integer> entry = it.next();
-			final Integer level  = entry.getKey();
-			final Integer weight = entry.getValue();
-			if (total - weight <= rnd)
-				return level.intValue();
-			total -= weight;
-		}
-		log.warning(LOG_PREFIX+"Failed to find random level");
-		return 0;
+		return chances.getDestinationLevel(level_from);
 	}
 
 
