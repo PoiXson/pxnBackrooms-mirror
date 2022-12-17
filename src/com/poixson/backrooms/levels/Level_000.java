@@ -83,18 +83,31 @@ public class Level_000 extends BackroomsLevel {
 
 	@Override
 	public Location getSpawn(final int level) {
-		final int y, h;
+		final int x, y, z, h;
 		switch (level) {
 		case   0: y = Y_000; h = H_000; break;
 		case   1: y = Y_001; h = H_001; break;
 		case   5: y = Y_005; h = H_005; break;
 		case  19: y = Y_019; h = H_019; break;
 		case  37: y = Y_037; h = H_037; break;
-		case 309: y = Y_309; h = 6;     break;
+		case 309: y = Y_309; h = 10;    break;
 		default: throw new RuntimeException("Invalid level: "+Integer.toString(level));
 		}
-		final int x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
-		final int z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+		switch (level) {
+		case 0:
+		case 1:
+		case 5:
+		case 19:
+		case 37:
+			x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+			z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+			break;
+		case 309:
+			x = (BackroomsPlugin.Rnd10K() / 5) - 1000;
+			z = BackroomsPlugin.Rnd10K();
+			break;
+		default: throw new RuntimeException("Invalid level: "+Integer.toString(level));
+		}
 		return this.getSpawn(level, h, x, y, z);
 	}
 	@Override
