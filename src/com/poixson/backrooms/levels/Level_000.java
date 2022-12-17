@@ -150,8 +150,8 @@ public class Level_000 extends BackroomsLevel {
 	public void generateSurface(
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
-if (chunkX == -1 && chunkZ == 1) return;
-//if (chunkX % 10 == 0 || chunkZ % 10 == 0) return;
+//if (chunkX == 2 && chunkZ == 2) return;
+//if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
 		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
 		this.gen_000.setSeed(seed);
 		this.gen_001.setSeed(seed);

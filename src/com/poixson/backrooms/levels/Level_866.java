@@ -51,8 +51,8 @@ public class Level_866 extends BackroomsLevel {
 	public void generateSurface(
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
-if (chunkX == -1 && chunkZ == 1) return;
-//if (chunkX % 10 == 0 || chunkZ % 10 == 0) return;
+//if (chunkX == 2 && chunkZ == 2) return;
+//if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				chunk.setBlock(x, 0, z, Material.BEDROCK);
