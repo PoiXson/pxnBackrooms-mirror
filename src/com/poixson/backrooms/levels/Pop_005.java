@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.commonbukkit.utils.LocationUtils.Rotate;
 import static com.poixson.commonbukkit.utils.LocationUtils.RotateXZ;
 
 import java.util.HashMap;
@@ -7,10 +8,12 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
+import com.poixson.commonbukkit.tools.BlockPlotter;
 import com.poixson.tools.dao.Insew;
 import com.poixson.tools.dao.Ixy;
 import com.poixson.tools.dao.Ixywd;
@@ -346,101 +349,73 @@ public class Pop_005 extends BlockPopulator {
 			}
 		}
 		// build room
+		final BlockPlotter plotter = new BlockPlotter(region, x, y, z);
+		plotter.w = loc.w;
+		plotter.d = loc.d;
 		HotelRoomDAO dao;
-		Door door;
-		Orientable log;
-		Directional torch;
-		Lightable lamp;
-		Bed bed;
-		Slab slab;
-		final BlockPlotter plotter = new BlockPlotter(region, direction, x, y, z, loc.w, loc.d);
 		for (int iz=0; iz<loc.d; iz++) {
 			for (int ix=0; ix<loc.w; ix++) {
 				dao = room.get(new Ixy(ix, iz));
 				// carpet
 				if (!HotelRoomType.WALL.equals(dao.type))
-					plotter.setBlock(ix, 0, iz, dao.block_carpet);
+					plotter.setRotBlock(ix, 0, iz, direction, dao.block_carpet);
 				switch (dao.type) {
 				case LAMP:
 					if (BUILD_ROOF) {
-						plotter.setBlock(ix, 6, iz, Material.REDSTONE_BLOCK);
-						plotter.setBlock(ix, 5, iz, Material.REDSTONE_LAMP);
-							lamp = (Lightable) plotter.getBlockData(ix, 5, iz);
-							lamp.setLit(true);
-							plotter.setBlockData(ix, 5, iz, lamp);
+						plotter.setRotBlock(ix, 6, iz, direction, Material.REDSTONE_BLOCK);
+						plotter.setRotBlock(ix, 5, iz, direction, Material.REDSTONE_LAMP, "on");
 					}
 					break;
 				case WALL:
 					for (int iy=0; iy<7; iy++) {
-						plotter.setBlock(ix, iy, iz, dao.block_wall);
+						plotter.setRotBlock(ix, iy, iz, direction, dao.block_wall);
 					}
 					break;
 				case DOOR:
 				case DOOR_INSET:
-					plotter.setBlock(ix, 0, iz-1, Material.BLACK_GLAZED_TERRACOTTA);
+					plotter.setRotBlock(ix, 0, iz-1, direction, Material.BLACK_GLAZED_TERRACOTTA);
 					for (int iy=1; iy<5; iy++) {
-						plotter.setBlock(ix, iy, iz-1, Material.AIR);
+						plotter.setRotBlock(ix, iy, iz-1, direction, Material.AIR);
 					}
-					plotter.setBlock(ix, 4, iz, Level_005.HOTEL_WALL);
-					log = (Orientable) plotter.getBlockData(ix, 4, iz);
-					if (BlockFace.NORTH.equals(direction)
-					||  BlockFace.SOUTH.equals(direction)) {
-						log.setAxis(Axis.X);
-					} else {
-						log.setAxis(Axis.Z);
-					}
-					plotter.setBlockData(ix, 4, iz, log);
+					plotter.setRotBlock(ix, 4, iz, direction, HOTEL_WALL,
+						(BlockFace.NORTH.equals(direction) || BlockFace.SOUTH.equals(direction) ? "x" : "z"));
 					for (int i=0; i<2; i++) {
-						plotter.setBlock(ix, i+5, iz, dao.block_wall);
+						plotter.setRotBlock(ix, i+5, iz, direction, dao.block_wall);
 					}
 					break;
 				default:
 					// ceiling
 					if (BUILD_ROOF) {
-						plotter.setBlock(ix, 6, iz, Material.SMOOTH_STONE);
-						plotter.setBlock(ix, 5, iz, Material.SMOOTH_STONE_SLAB);
-							slab = (Slab) plotter.getBlockData(ix, 5, iz);
-							slab.setType(Slab.Type.TOP);
-							plotter.setBlockData(ix, 5, iz, slab);
+						plotter.setRotBlock(ix, 6, iz, direction, Material.SMOOTH_STONE);
+						plotter.setRotBlock(ix, 5, iz, direction, Material.SMOOTH_STONE_SLAB, "top");
 					}
 					break;
 				}
 				switch (dao.type) {
 				case DOOR:
-					plotter.setBlock(ix, 1, iz-1, Material.DARK_OAK_DOOR);
-						door = (Door) plotter.getBlockData(ix, 1, iz-1);
-						door.setHalf(Bisected.Half.BOTTOM);
-						door.setFacing(direction);
-						plotter.setBlockData(ix, 1, iz-1, door);
-					plotter.setBlock(ix, 2, iz-1, Material.DARK_OAK_DOOR);
-						door = (Door) plotter.getBlockData(ix, 2, iz-1);
-						door.setHalf(Bisected.Half.TOP);
-						door.setFacing(direction);
-						plotter.setBlockData(ix, 2, iz-1, door);
-					plotter.setBlock(ix, 3, iz, Level_005.HOTEL_WALL);
+					plotter.setRotBlock(ix, 1, iz-1, direction, Material.DARK_OAK_DOOR, "bottom,"+direction.toString());
+					plotter.setRotBlock(ix, 2, iz-1, direction, Material.DARK_OAK_DOOR, "top,"   +direction.toString());
+					plotter.setRotBlock(ix, 3, iz,   direction, HOTEL_WALL);
 					break;
 				case DOOR_INSET:
 					for (int iy=1; iy<4; iy++) {
-						plotter.setBlock(ix, iy, iz, Level_005.HOTEL_WALL);
+						plotter.setRotBlock(ix, iy, iz, direction, HOTEL_WALL);
 					}
-					plotter.setBlock(ix, 3, iz-1, Material.SOUL_WALL_TORCH);
-						torch = (Directional) plotter.getBlockData(ix, 3, iz-1);
-						torch.setFacing(direction);
-						plotter.setBlockData(ix, 3, iz-1, torch);
+					plotter.setRotBlock(ix, 3, iz-1, direction, Material.SOUL_WALL_TORCH, direction.toString());
 					break;
 				case BED:
-					plotter.setBlock(ix, 1, iz, dao.block_bed);
-						bed = (Bed) plotter.getBlockData(ix, 1, iz);
+					plotter.setRotBlock(ix, 1, iz, direction, dao.block_bed);
+						Bed bed = (Bed) plotter.getRotBlockData(ix, 1, iz, direction);
 						bed.setFacing(Rotate(direction, 0.5));
 						bed.setPart(Bed.Part.HEAD);
-						plotter.setBlockData(ix, 1, iz, bed);
-					plotter.setBlock(ix, 1, iz-1, dao.block_bed);
-						bed = (Bed) plotter.getBlockData(ix, 1, iz-1);
+						plotter.setRotBlockData(ix, 1, iz, direction, bed);
+					plotter.setRotBlock(ix, 1, iz-1, direction, dao.block_bed);
+						bed = (Bed) plotter.getRotBlockData(ix, 1, iz-1, direction);
 						bed.setFacing(Rotate(direction, 0.5));
 						bed.setPart(Bed.Part.FOOT);
-						plotter.setBlockData(ix, 1, iz-1, bed);
-					plotter.setBlock(ix-1, 1, iz, Material.SCAFFOLDING);
-					plotter.setBlock(ix+1, 1, iz, Material.SCAFFOLDING);
+						plotter.setRotBlockData(ix, 1, iz-1, direction, bed);
+					plotter.setRotBlock(ix-1, 1, iz, direction, Material.SCAFFOLDING);
+					plotter.setRotBlock(ix+1, 1, iz, direction, Material.SCAFFOLDING);
 					break;
 				default: break;
 				}
