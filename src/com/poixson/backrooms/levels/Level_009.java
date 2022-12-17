@@ -30,6 +30,10 @@ public class Level_009 extends BackroomsLevel {
 		if (level != 9) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		final int x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 		final int z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+		return this.getSpawn(level, x, z);
+	}
+	@Override
+	public Location getSpawn(final int level, final int x, final int z) {
 		return this.getSpawn(level, 10, x, SUBURBS_Y, z);
 	}
 

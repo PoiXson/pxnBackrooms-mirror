@@ -25,10 +25,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public abstract Location getSpawn(final int level);
 	public abstract int getLevelFromY(final int y);
 	public abstract int getYFromLevel(final int level);
 	public abstract int getMaxYFromLevel(final int level);
+
+	public abstract Location getSpawn(final int level);
+	public abstract Location getSpawn(final int level, final int x, final int z);
 
 	public Location getSpawn(final int level, final int h,
 			final int x, final int y, final int z) {

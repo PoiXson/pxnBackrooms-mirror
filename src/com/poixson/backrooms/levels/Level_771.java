@@ -44,6 +44,10 @@ public class Level_771 extends BackroomsLevel {
 		} else {
 			x = 0;
 		}
+		return this.getSpawn(level, x, z);
+	}
+	@Override
+	public Location getSpawn(final int level, final int x, final int z) {
 		return this.getSpawn(level, 10, x, ROAD_Y, z);
 	}
 
