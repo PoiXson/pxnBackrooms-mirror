@@ -30,6 +30,7 @@ import com.poixson.backrooms.levels.BackroomsLevel;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
 import com.poixson.backrooms.levels.Level_011;
+import com.poixson.backrooms.levels.Level_078;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.BackroomsCommands;
@@ -71,6 +72,7 @@ public class BackroomsPlugin extends JavaPlugin {
 				MakeWorld( 11, seed);
 				MakeWorld(771, seed);
 				MakeWorld(866, seed);
+				MakeWorld( 78, seed); // space
 			}
 		}).runTask(this);
 		// commands listener
@@ -190,6 +192,7 @@ public class BackroomsPlugin extends JavaPlugin {
 		case 11:
 		case 19:
 		case 37:
+		case 78:
 		case 309:
 		case 771:
 		case 866:
@@ -217,6 +220,7 @@ public class BackroomsPlugin extends JavaPlugin {
 		case 309: return "level0";
 		case 9:   return "level9";
 		case 11:  return "level11";
+		case 78:  return "level78";
 		case 771: return "level771";
 		case 866: return "level866";
 		default: break;
@@ -233,6 +237,7 @@ public class BackroomsPlugin extends JavaPlugin {
 		case 309: return this.backlevels.get(Integer.valueOf(0));
 		case 9:   return this.backlevels.get(Integer.valueOf(9));
 		case 11:  return this.backlevels.get(Integer.valueOf(11));
+		case 78:  return this.backlevels.get(Integer.valueOf(78));
 		case 771: return this.backlevels.get(Integer.valueOf(771));
 		case 866: return this.backlevels.get(Integer.valueOf(866));
 		default: break;
@@ -315,6 +320,8 @@ public class BackroomsPlugin extends JavaPlugin {
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 10 )); // suburbs
 			chance.put(Integer.valueOf(  37 ), Integer.valueOf(  5 )); // pools
 			break;
+		case 78: // space
+			break;
 		case 309: // path
 			chance.put(Integer.valueOf(   0 ), Integer.valueOf( 10 )); // lobby
 			chance.put(Integer.valueOf(   9 ), Integer.valueOf( 15 )); // suburbs
@@ -381,6 +388,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			case   0: lvl = new Level_000(this); break;
 			case   9: lvl = new Level_009(this); break;
 			case  11: lvl = new Level_011(this); break;
+			case  78: lvl = new Level_078(this); break;
 			case 771: lvl = new Level_771(this); break;
 			case 866: lvl = new Level_866(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
