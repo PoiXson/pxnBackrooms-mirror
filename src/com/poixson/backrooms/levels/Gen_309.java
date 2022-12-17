@@ -33,6 +33,7 @@ public class Gen_309 extends BackroomsGenerator {
 	public final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
+	public final Pop_309 radioPop;
 
 
 
@@ -54,6 +55,7 @@ public class Gen_309 extends BackroomsGenerator {
 		// populators
 		this.treePop = new TreePopulator309(this.noiseTrees, PATH_Y);
 		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
+		this.radioPop = new Pop_309();
 	}
 	@Override
 	public void unload() {
@@ -134,11 +136,23 @@ public class Gen_309 extends BackroomsGenerator {
 		public boolean isTree(final int x, final int z) {
 			if (!super.isTree(x, z))
 				return false;
+			if (Gen_309.this.isCenterClearing(x, z))
+				return false;
 			if (Gen_309.this.pathTrace.isPath(x, z, PATH_CLEARING))
 				return false;
 			return true;
 		}
 
+	}
+
+
+
+	public boolean isCenterClearing(final int x, final int z) {
+		if (Math.abs(x) > 100 || Math.abs(z) > 100)
+			return false;
+		final double distance = Math.sqrt( Math.pow((double)x, 2.0) + Math.pow((double)z, 2.0) )
+			+ (this.noisePath.getNoise(x*5, z*5) * 8.0);
+		return (distance < 80.0);
 	}
 
 

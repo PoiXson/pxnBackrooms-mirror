@@ -177,6 +177,7 @@ if (chunkX == -1 && chunkZ == 1) return;
 		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
 		if (BUILD_ROOF)
 			list.add(this.gen_309.treePop);
+		list.add(this.gen_309.radioPop);
 		list.add(this.gen_005.roomPop);
 		return list;
 	}
