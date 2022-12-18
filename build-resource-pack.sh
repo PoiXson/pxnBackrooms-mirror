@@ -7,13 +7,13 @@ fi
 
 
 \pushd  "resources/pack/"  >/dev/null  || exit 1
-#TODO: remove excludes
 	\zip -r -9  ../pxnBackrooms-resourcepack.zip *  \
-		--exclude */redstone_lamp.png     \
-		--exclude */redstone_lamp_on.png  \
 			|| exit 1
 \popd >/dev/null
 
 
-\sha1sum resources/pxnBackrooms-resourcepack.zip \
-	> resources/pxnBackrooms-resourcepack.sha1  || exit 1
+\pushd  "resources/"  >/dev/null  || exit 1
+	\sha1sum pxnBackrooms-resourcepack.zip \
+		> pxnBackrooms-resourcepack.sha1   \
+			|| exit 1
+\popd >/dev/null
