@@ -141,7 +141,12 @@ final String seed = "11";
 		final String name = "level" + Integer.toString(level);
 		if (!manager.isMVWorld(name, false)) {
 			log.warning(LOG_PREFIX+"Creating backrooms level: "+Integer.toString(level));
-			if (!manager.addWorld(name, Environment.NORMAL, seed, WorldType.NORMAL, false, "pxnBackrooms", true))
+			final Environment env;
+			switch (level) {
+			case 78: env = Environment.THE_END; break;
+			default: env = Environment.NORMAL;  break;
+			}
+			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, false, "pxnBackrooms", true))
 				throw new RuntimeException("Failed to create world: "+name);
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();
