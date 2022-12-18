@@ -72,8 +72,8 @@ public class BackroomsPlugin extends JavaPlugin {
 		(new BukkitRunnable() {
 			@Override
 			public void run() {
-//TODO
-final String seed = "11";
+				// note: this is converting long to string
+				final String seed = Long.toString( Bukkit.getWorld("world").getSeed() );
 				MakeWorld(  0, seed); // lobby
 				MakeWorld(  9, seed); // suburbs
 				MakeWorld( 11, seed); // city
