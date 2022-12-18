@@ -226,17 +226,14 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 				}
 			}
 		}
-		final int y = 10;
+		final int y = BASEMENT_Y + 10;
 		final World world = player.getWorld();
 		final int r = BASEMENT_LIGHT_RADIUS;
-		final int rr = r * 2;
-		final int fx = Math.floorDiv(toX, 10) * 10;
-		final int fz = Math.floorDiv(toZ, 10) * 10;
 		int xx, zz;
-		for (int z=0; z<rr; z+=10) {
-			zz = (fz + z) - r;
-			for (int x=0; x<rr; x+=10) {
-				xx = (fx + x) - r;
+		for (int iz=0-r-1; iz<r; iz+=10) {
+			zz = Math.floorDiv(toZ+iz, 10) * 10;
+			for (int ix=0-r-1; ix<r; ix+=10) {
+				xx = Math.floorDiv(toX+ix, 10) * 10;
 				final Block blk = world.getBlockAt(xx, y, zz);
 				if (to.distance(blk.getLocation()) < BASEMENT_LIGHT_RADIUS) {
 					if (Material.BEDROCK.equals(blk.getType())
