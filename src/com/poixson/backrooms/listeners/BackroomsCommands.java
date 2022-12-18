@@ -32,8 +32,7 @@ public class BackroomsCommands implements CommandExecutor {
 		final PluginCommand cmd = this.plugin.getCommand("backrooms");
 		cmd.setExecutor(this);
 		this.cmds.add(cmd);
-		final BackroomsTabCompleter completer = new BackroomsTabCompleter();
-		cmd.setTabCompleter(completer);
+		cmd.setTabCompleter( new BackroomsTabCompleter() );
 	}
 	public void unregister() {
 		for (final PluginCommand cmd : this.cmds) {
