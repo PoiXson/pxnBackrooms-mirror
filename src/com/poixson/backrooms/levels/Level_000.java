@@ -198,6 +198,7 @@ public class Level_000 extends BackroomsLevel {
 			list.add(this.gen_309.treePop);
 		list.add(this.gen_309.radioPop);
 		list.add(this.gen_005.roomPop);
+		list.add(this.gen_019.atticPop);
 		return list;
 	}
 
