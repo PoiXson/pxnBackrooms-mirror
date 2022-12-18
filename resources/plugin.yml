@@ -9,22 +9,20 @@ website: ${project.url}
 description: ${project.description}
 commands:
     backrooms:
-        description: "Commands to administrate the backrooms: generate, clear"
-        usage: "Usage: /backrooms reload"
+        description: "Commands to administrate the backrooms"
+        usage: "Usage: /backrooms <cmd>"
 permission-message: "You don't have permission to use this command."
 permissions:
     backrooms.*:
         default: op
+        description: Gives access to all backrooms commands
         children:
             backrooms.reload: true
             backrooms.generate: true
             backrooms.clear: true
-    backrooms.reload:
+    backrooms.tp:
         default: op
-        description: Reload scripts.
-    backrooms.generate:
+        description: Teleport to the backrooms
+    backrooms.tp.others:
         default: op
-        description: Generate an area of the world.
-    backrooms.clear:
-        default: op
-        description: Clear the area (CAUTION!)
+        description: Teleport players to the backrooms
