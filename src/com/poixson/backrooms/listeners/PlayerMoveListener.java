@@ -51,6 +51,8 @@ public class PlayerMoveListener implements Listener {
 		}
 		// level 1 - basement
 		this.gen_001.onPlayerMove(event, level);
+		// level 78 - space
+		this.gen_078.onPlayerMove(event, level);
 	}
 
 
