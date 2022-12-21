@@ -8,7 +8,6 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.commonbukkit.tools.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.StringUtils;
 
 
@@ -35,7 +34,6 @@ public class Gen_771 extends BackroomsGenerator {
 		super();
 		// road lanterns
 		this.noiseRoadLights = new FastNoiseLiteD();
-		this.noiseRoadLights.setNoiseType(NoiseType.OpenSimplex2);
 		this.noiseRoadLights.setFrequency(0.07);
 		this.noiseRoadLights.setFractalOctaves(1);
 		// populators

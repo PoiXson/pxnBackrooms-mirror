@@ -11,10 +11,15 @@ import com.poixson.backrooms.BackroomsPlugin;
 // 78 | Space
 public class Level_078 extends BackroomsLevel {
 
+	// generators
+	public final Gen_078 gen_078;
+
 
 
 	public Level_078(final BackroomsPlugin plugin) {
 		super(plugin);
+		// generators
+		this.gen_078 = new Gen_078(plugin);
 	}
 	@Override
 	public void unload() {

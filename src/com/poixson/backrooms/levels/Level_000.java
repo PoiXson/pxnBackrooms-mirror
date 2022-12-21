@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
@@ -59,14 +58,13 @@ public class Level_000 extends BackroomsLevel {
 
 	public Level_000(final BackroomsPlugin plugin) {
 		super(plugin);
+		// generators
 		this.gen_001 = new Gen_001();
 		this.gen_000 = new Gen_000();
 		this.gen_037 = new Gen_037();
 		this.gen_005 = new Gen_005();
 		this.gen_019 = new Gen_019();
 		this.gen_309 = new Gen_309();
-		Bukkit.getPluginManager()
-			.registerEvents(this.gen_001, plugin);
 	}
 
 	@Override

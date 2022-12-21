@@ -14,10 +14,15 @@ public class Level_011 extends BackroomsLevel {
 
 	public static final int CITY_Y = 0;
 
+	// generators
+	public final Gen_011 gen_011;
+
 
 
 	public Level_011(final BackroomsPlugin plugin) {
 		super(plugin);
+		// generators
+		this.gen_011 = new Gen_011();
 	}
 	@Override
 	public void unload() {
