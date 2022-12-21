@@ -33,6 +33,7 @@ import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.BackroomsCommands;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
+import com.poixson.backrooms.listeners.PlayerMoveListener;
 import com.poixson.utils.NumberUtils;
 import com.poixson.utils.Utils;
 
@@ -55,6 +56,7 @@ public class BackroomsPlugin extends JavaPlugin {
 
 	// listeners
 	protected final AtomicReference<BackroomsCommands>    commandListener      = new AtomicReference<BackroomsCommands>(null);
+	protected final AtomicReference<PlayerMoveListener>   playerMoveListener   = new AtomicReference<PlayerMoveListener>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
 
 
@@ -92,11 +94,23 @@ public class BackroomsPlugin extends JavaPlugin {
 		}
 		// load teleport chance
 		this.tpChances.set(TeleportChances.Load(this));
+		// player move listener
+		final PluginManager pm = Bukkit.getPluginManager();
+		{
+			final Level_000 lvl_000 = (Level_000) this.getBackroomsLevel(0);
+			final Level_078 lvl_078 = (Level_078) this.getBackroomsLevel(78);
+			if (lvl_000 == null) throw new RuntimeException("Failed to get backrooms level 0");
+			if (lvl_078 == null) throw new RuntimeException("Failed to get backrooms level 78");
+			final PlayerMoveListener listener = new PlayerMoveListener(lvl_000.gen_001, lvl_078.gen_078);
+			final PlayerMoveListener previous = this.playerMoveListener.getAndSet(listener);
+			if (previous != null)
+				HandlerList.unregisterAll(previous);
+			pm.registerEvents(listener, this);
+		}
 		// player damage listener
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
 			final PlayerDamageListener previous = this.playerDamageListener.getAndSet(listener);
-			final PluginManager pm = Bukkit.getPluginManager();
 			if (previous != null)
 				HandlerList.unregisterAll(previous);
 			pm.registerEvents(listener, this);

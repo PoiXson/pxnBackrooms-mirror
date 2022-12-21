@@ -9,9 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
@@ -23,7 +20,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 1 | Basement
-public class Gen_001 extends BackroomsGenerator implements Listener {
+public class Gen_001 extends BackroomsGenerator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
@@ -185,19 +182,14 @@ public class Gen_001 extends BackroomsGenerator implements Listener {
 
 
 
-	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
-	public void onPlayerMove(final PlayerMoveEvent event) {
-		// location changed
-		final Location from = event.getFrom();
+	public void onPlayerMove(final PlayerMoveEvent event, final int level) {
+		final Player player = event.getPlayer();
 		final Location to   = event.getTo();
 		final int toX = to.getBlockX();
 		final int toY = to.getBlockY();
 		final int toZ = to.getBlockZ();
-		if (from.getBlockX() == toX && from.getBlockZ() == toZ)
-			return;
-		final Player player = event.getPlayer();
-		if (!"level0".equals(player.getWorld().getName())) {
-			// player left world
+		// player left world
+		if (level != 0) {
 			final String uuid = player.getUniqueId().toString();
 			if (this.playerLights.containsKey(uuid)) {
 				for (final Location loc : this.playerLights.get(uuid)) {
