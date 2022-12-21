@@ -253,23 +253,6 @@ public class BackroomsPlugin extends JavaPlugin {
 		}
 		return null;
 	}
-	public BackroomsLevel getBackroomsLevel(final int level) {
-		switch (level) {
-		case 0:
-		case 1:
-		case 5:
-		case 19:
-		case 37:
-		case 309: return this.backlevels.get(Integer.valueOf(0));
-		case 9:   return this.backlevels.get(Integer.valueOf(9));
-		case 11:  return this.backlevels.get(Integer.valueOf(11));
-		case 78:  return this.backlevels.get(Integer.valueOf(78));
-		case 771: return this.backlevels.get(Integer.valueOf(771));
-		case 866: return this.backlevels.get(Integer.valueOf(866));
-		default: break;
-		}
-		return null;
-	}
 
 
 
@@ -313,12 +296,7 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 
-	@Override
-	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
-		if (!worldName.startsWith("level"))
-			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
-		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
-		final int level = this.getLevel(worldName);
+	public BackroomsLevel getBackroomsLevel(final int level) {
 		// existing generator
 		{
 			final BackroomsLevel lvl = this.backlevels.get(Integer.valueOf(level));
@@ -329,6 +307,11 @@ public class BackroomsPlugin extends JavaPlugin {
 		{
 			final BackroomsLevel lvl;
 			switch (level) {
+			case 1:
+			case 37:
+			case 5:
+			case 19:
+			case 309: return this.getBackroomsLevel(0);
 			case   0: lvl = new Level_000(this); break;
 			case   9: lvl = new Level_009(this); break;
 			case  11: lvl = new Level_011(this); break;
@@ -342,6 +325,15 @@ public class BackroomsPlugin extends JavaPlugin {
 				return existing;
 			return lvl;
 		}
+	}
+
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
+		if (!worldName.startsWith("level"))
+			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
+		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
+		final int level = this.getLevel(worldName);
+		return this.getBackroomsLevel(level);
 	}
 
 
