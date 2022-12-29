@@ -27,8 +27,10 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.levels.BackroomsLevel;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
+import com.poixson.backrooms.levels.Level_010;
 import com.poixson.backrooms.levels.Level_011;
 import com.poixson.backrooms.levels.Level_078;
+import com.poixson.backrooms.levels.Level_151;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.BackroomsCommands;
@@ -78,8 +80,10 @@ public class BackroomsPlugin extends JavaPlugin {
 				final String seed = Long.toString( Bukkit.getWorld("world").getSeed() );
 				MakeWorld(  0, seed); // lobby
 				MakeWorld(  9, seed); // suburbs
+				MakeWorld( 10, seed); // field of wheat
 				MakeWorld( 11, seed); // city
 				MakeWorld( 78, seed); // space
+				MakeWorld(151, seed); // dollhouse
 				MakeWorld(771, seed); // crossroads
 				MakeWorld(866, seed); // dirtfield
 			}
@@ -215,10 +219,12 @@ public class BackroomsPlugin extends JavaPlugin {
 		case 1:
 		case 5:
 		case 9:
+		case 10:
 		case 11:
 		case 19:
 		case 37:
 		case 78:
+		case 151:
 		case 309:
 		case 771:
 		case 866:
@@ -245,8 +251,10 @@ public class BackroomsPlugin extends JavaPlugin {
 		case 37:
 		case 309: return "level0";
 		case 9:   return "level9";
+		case 10:  return "level10";
 		case 11:  return "level11";
 		case 78:  return "level78";
+		case 151: return "level151";
 		case 771: return "level771";
 		case 866: return "level866";
 		default: break;
@@ -314,8 +322,10 @@ public class BackroomsPlugin extends JavaPlugin {
 			case 309: return this.getBackroomsLevel(0);
 			case   0: lvl = new Level_000(this); break;
 			case   9: lvl = new Level_009(this); break;
+			case  10: lvl = new Level_010(this); break;
 			case  11: lvl = new Level_011(this); break;
 			case  78: lvl = new Level_078(this); break;
+			case 151: lvl = new Level_151(this); break;
 			case 771: lvl = new Level_771(this); break;
 			case 866: lvl = new Level_866(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
