@@ -65,9 +65,10 @@ public class Gen_001 extends BackroomsGenerator {
 	@Override
 	public void unload() {
 		synchronized (this.playerLights) {
+			Block blk;
 			for (final ArrayList<Location> list : this.playerLights.values()) {
 				for (final Location loc : list) {
-					final Block blk = loc.getBlock();
+					blk = loc.getBlock();
 					if (Material.REDSTONE_TORCH.equals(blk.getType()))
 						blk.setType(Material.BEDROCK);
 				}
@@ -164,10 +165,12 @@ public class Gen_001 extends BackroomsGenerator {
 		// cleanup
 //TODO: improve this
 		if (this.playerLights.size() % 5 == 0) {
+			String key;
+			ArrayList<Location> list;
 			final Iterator<String> it = this.playerLights.keySet().iterator();
 			while (it.hasNext()) {
-				final String key = it.next();
-				final ArrayList<Location> list = this.playerLights.get(key);
+				key = it.next();
+				list = this.playerLights.get(key);
 				if (list == null || list.isEmpty())
 					this.playerLights.remove(key);
 			}
@@ -192,8 +195,9 @@ public class Gen_001 extends BackroomsGenerator {
 		if (level != 0) {
 			final String uuid = player.getUniqueId().toString();
 			if (this.playerLights.containsKey(uuid)) {
+				Block blk;
 				for (final Location loc : this.playerLights.get(uuid)) {
-					final Block blk = loc.getBlock();
+					blk = loc.getBlock();
 					if (Material.REDSTONE_TORCH.equals(blk.getType()))
 						blk.setType(Material.BEDROCK);
 				}
@@ -207,12 +211,14 @@ public class Gen_001 extends BackroomsGenerator {
 		final ArrayList<Location> lights = this.getPlayerLightsList(player);
 		// turn off lights
 		{
+			Location loc;
+			Block blk;
 			final Iterator<Location> it = lights.iterator();
 			while (it.hasNext()) {
-				final Location loc = it.next();
+				loc = it.next();
 				if (to.distance(loc) > BASEMENT_LIGHT_RADIUS) {
 					it.remove();
-					final Block blk = loc.getBlock();
+					blk = loc.getBlock();
 					if (Material.REDSTONE_TORCH.equals(blk.getType()))
 						blk.setType(Material.BEDROCK);
 				}

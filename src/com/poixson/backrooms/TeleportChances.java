@@ -35,20 +35,23 @@ public class TeleportChances {
 		final JsonElement json = JsonParser.parseReader(reader);
 		final Iterator<Entry<String, JsonElement>> it = json.getAsJsonObject().entrySet().iterator();
 		String key;
+		int level, lvl, w;
+		Entry<String, JsonElement> entry, entry2;
+		HashMap<Integer, Integer> weights;
 		while (it.hasNext()) {
-			final Entry<String, JsonElement> entry = it.next();
+			entry = it.next();
 			key = entry.getKey();
-			final int level = (
+			level = (
 				NumberUtils.IsNumeric(key)
 				? Integer.parseInt(key)
 				: Integer.MIN_VALUE
 			);
-			final HashMap<Integer, Integer> weights = new HashMap<Integer, Integer>();
+			weights = new HashMap<Integer, Integer>();
 			final Iterator<Entry<String, JsonElement>> it2 = entry.getValue().getAsJsonObject().entrySet().iterator();
 			while (it2.hasNext()) {
-				final Entry<String, JsonElement> entry2 = it2.next();
-				final int lvl = Integer.parseInt(entry2.getKey());
-				final int w   = entry2.getValue().getAsInt();
+				entry2 = it2.next();
+				lvl = Integer.parseInt(entry2.getKey());
+				w   = entry2.getValue().getAsInt();
 				weights.put(Integer.valueOf(lvl), Integer.valueOf(w));
 			}
 			chances.put(Integer.valueOf(level), weights);
@@ -68,11 +71,13 @@ public class TeleportChances {
 		}
 		final int rnd = NumberUtils.GetNewRandom(0, total, this.rndLast);
 		this.rndLast = rnd;
+		Entry<Integer, Integer> entry;
+		int level, weight;
 		final Iterator<Entry<Integer, Integer>> it = weights.entrySet().iterator();
 		while (it.hasNext()) {
-			final Entry<Integer, Integer> entry = it.next();
-			final int level  = entry.getKey().intValue();
-			final int weight = entry.getValue().intValue();
+			entry = it.next();
+			level  = entry.getKey().intValue();
+			weight = entry.getValue().intValue();
 			total -= weight;
 			if (total <= rnd)
 				return level;

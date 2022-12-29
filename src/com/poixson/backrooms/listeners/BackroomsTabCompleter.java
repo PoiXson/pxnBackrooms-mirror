@@ -48,8 +48,9 @@ public class BackroomsTabCompleter implements TabCompleter {
 					if (lvl.startsWith(args[1]))
 						matches.add(lvl);
 				}
+				String name;
 				for (final Player player : Bukkit.getOnlinePlayers()) {
-					final String name = player.getName();
+					name = player.getName();
 					if (name.startsWith(args[1]))
 						matches.add(name);
 				}
