@@ -56,25 +56,23 @@ public class PlayerMoveListener implements Listener {
 		final int toY = to.getBlockY();
 		final int toZ = to.getBlockZ();
 		// location changed
-		if (from.getBlockX() == toX
-		&&  from.getBlockY() == toY
-		&&  from.getBlockZ() == toZ)
-			return;
-		final Player player = event.getPlayer();
-		final String world_name = player.getWorld().getName();
-		if (!world_name.startsWith("level"))
-			return;
-		final int level;
-		{
-			final String str = world_name.substring(5);
-			if (!NumberUtils.IsNumeric(str))
-				return;
-			level = Integer.parseInt(str);
+		if (from.getBlockX() != toX
+		||  from.getBlockY() != toY
+		||  from.getBlockZ() != toZ) {
+			final Player player = event.getPlayer();
+			final String world_name = player.getWorld().getName();
+			if (world_name.startsWith("level")) {
+				final int level;
+				final String str = world_name.substring(5);
+				if (NumberUtils.IsNumeric(str)) {
+					level = Integer.parseInt(str);
+					// level 1 - basement
+					this.gen_001.onPlayerMove(event, level);
+					// level 78 - space
+					this.gen_078.onPlayerMove(event, level);
+				}
+			}
 		}
-		// level 1 - basement
-		this.gen_001.onPlayerMove(event, level);
-		// level 78 - space
-		this.gen_078.onPlayerMove(event, level);
 	}
 
 
