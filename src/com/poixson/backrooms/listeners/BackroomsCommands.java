@@ -50,7 +50,7 @@ public class BackroomsCommands implements CommandExecutor {
 		final int numargs = args.length;
 		if (numargs >= 1) {
 			switch (args[0]) {
-			case "tp":
+			case "tp": {
 				if (player != null && !player.hasPermission("backrooms.tp")) {
 					player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
 					return true;
@@ -94,6 +94,7 @@ public class BackroomsCommands implements CommandExecutor {
 					}
 				}
 				return true;
+			}
 			}
 		}
 		return false;

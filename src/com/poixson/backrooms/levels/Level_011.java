@@ -26,6 +26,7 @@ public class Level_011 extends BackroomsLevel {
 	}
 	@Override
 	public void unload() {
+		this.gen_011.unload();
 	}
 
 

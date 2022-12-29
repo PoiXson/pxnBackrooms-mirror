@@ -23,6 +23,7 @@ public class Level_078 extends BackroomsLevel {
 	}
 	@Override
 	public void unload() {
+		this.gen_078.unload();
 	}
 
 
@@ -40,13 +41,13 @@ public class Level_078 extends BackroomsLevel {
 
 	@Override
 	public int getLevelFromY(final int y) {
-return 0;
+		return 78;
 	}
 	public int getYFromLevel(final int level) {
-return 255;
+		return 255;
 	}
 	public int getMaxYFromLevel(final int level) {
-return 255;
+		return 319;
 	}
 
 

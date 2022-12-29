@@ -1,7 +1,6 @@
 package com.poixson.backrooms;
 
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -48,7 +47,6 @@ public class BackroomsPlugin extends JavaPlugin {
 	public static final String GENERATOR_NAME = "Backrooms";
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
-	protected final AtomicBoolean enableScripts = new AtomicBoolean(false);
 
 	// world generators
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
@@ -244,11 +242,11 @@ public class BackroomsPlugin extends JavaPlugin {
 	}
 	public String getLevelWorldName(final int level) {
 		switch (level) {
-		case 0:
 		case 1:
+		case 0:
+		case 37:
 		case 5:
 		case 19:
-		case 37:
 		case 309: return "level0";
 		case 9:   return "level9";
 		case 10:  return "level10";
