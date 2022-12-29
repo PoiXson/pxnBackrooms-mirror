@@ -53,52 +53,68 @@ public class Gen_078 extends BackroomsGenerator {
 		final int toY = to.getBlockY();
 		final int toZ = to.getBlockZ();
 		if (toY < -64) {
-			while (to.getBlockY() < -64)
+			while (to.getBlockY() < -64) {
 				to.add(0, 384, 0);
+			}
 		} else
 		if (toY > 319) {
-			while (to.getBlockY() > 319)
+			while (to.getBlockY() > 319) {
 				to.subtract(0, 384, 0);
-		}
-		boolean grounded = false;
-//TODO: search below 0 y
-		final int h = Math.min(toY, GRAVITY_REACH);
-		for (int iy=0; iy<h; iy++) {
-			final Block block = world.getBlockAt(toX, toY-iy, toZ);
-			if (!block.isPassable()) {
-				grounded = true;
-				break;
 			}
 		}
-		// gravity
-		if (grounded) {
-			if (this.floating.remove(uuid)) {
-				player.setGravity(true);
-				player.setFlying(false);
-				player.setAllowFlight(false);
-				player.setGlowing(false);
+		switch (player.getGameMode()) {
+		case CREATIVE:
+		case SPECTATOR:
+			player.setAllowFlight(true);
+			player.setGravity(true);
+			break;
+		case ADVENTURE:
+		case SURVIVAL: {
+			boolean grounded = false;
+			int yy;
+			Block block;
+			for (int iy=0; iy<GRAVITY_REACH; iy++) {
+				yy = toY - iy;
+				if (yy < -64) break;
+				block = world.getBlockAt(toX, yy, toZ);
+				if (!block.isPassable()) {
+					grounded = true;
+					break;
+				}
 			}
-		// floating
-		} else {
-			if (!this.floating.contains(uuid)) {
-				this.floating.add(uuid);
-				player.setGravity(false);
-				player.setAllowFlight(true);
-				player.setFlying(true);
-				player.setGlowing(true);
-				// ensure player is flying
-				(new BukkitRunnable() {
-					private Player player = null;
-					public BukkitRunnable init(final Player player) {
-						this.player = player;
-						return this;
-					}
-					@Override
-					public void run() {
-						this.player.setFlying(true);
-					}
-				}).init(player).runTaskLater(this.plugin, 1L);
+			// gravity
+			if (grounded) {
+				if (this.floating.remove(uuid)) {
+					player.setFlying(false);
+					player.setAllowFlight(false);
+					player.setGravity(true);
+					player.setGlowing(false);
+				}
+			// floating
+			} else {
+				if (!this.floating.contains(uuid)) {
+					this.floating.add(uuid);
+					player.setAllowFlight(true);
+					player.setGravity(false);
+					player.setFlying(true);
+					player.setGlowing(true);
+					// ensure player is flying
+					(new BukkitRunnable() {
+						private Player player = null;
+						public BukkitRunnable init(final Player player) {
+							this.player = player;
+							return this;
+						}
+						@Override
+						public void run() {
+							this.player.setFlying(true);
+						}
+					}).init(player).runTaskLater(this.plugin, 2L);
+				}
 			}
+			break;
+		}
+		default: throw new RuntimeException("Unknown game mode: "+player.getGameMode().toString());
 		}
 	}
 
