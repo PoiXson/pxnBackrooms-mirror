@@ -3,6 +3,7 @@ package com.poixson.backrooms.levels;
 import java.util.Random;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -64,6 +65,14 @@ public class Level_151 extends BackroomsLevel {
 	public void generateSurface(
 			final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
+//if (chunkX == 2 && chunkZ == 2) return;
+//if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
+		for (int z=0; z<16; z++) {
+			for (int x=0; x<16; x++) {
+				chunk.setBlock(x, 0, z, Material.BEDROCK);
+				chunk.setBlock(x, 1, z, Material.STONE);
+			}
+		}
 	}
 
 
