@@ -7,10 +7,12 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -51,6 +53,16 @@ public class PlayerDamageListener implements Listener {
 
 	public PlayerDamageListener(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
+	}
+
+
+
+	public void register() {
+		Bukkit.getPluginManager()
+			.registerEvents(this, this.plugin);
+	}
+	public void unregister() {
+		HandlerList.unregisterAll(this);
 	}
 
 
