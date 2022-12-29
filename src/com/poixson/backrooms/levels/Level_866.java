@@ -72,7 +72,7 @@ if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
 			zz = (chunkZ * 16) + z;
 			for (int x=0; x<16; x++) {
 				xx = (chunkX * 16) + x;
-				this.gen_866.generateField(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_866.generateField(chunk, chunkX, chunkZ, x, z, xx, zz);
 			}
 		}
 	}

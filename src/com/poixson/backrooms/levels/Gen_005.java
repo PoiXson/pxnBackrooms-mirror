@@ -134,7 +134,7 @@ public class Gen_005 extends BackroomsGenerator {
 		return prehotel;
 	}
 	public void generateHotel(final HashMap<Dxy, HotelDAO> prehotel,
-			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
 		int y  = HOTEL_Y;
 		int cy = HOTEL_Y + SUBFLOOR + HOTEL_H;

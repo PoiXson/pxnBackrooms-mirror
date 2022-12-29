@@ -59,7 +59,7 @@ public class Gen_000 extends BackroomsGenerator {
 
 
 	protected void generateLobby(
-			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
 		int y  = LOBBY_Y;
 		int cy = LOBBY_Y + SUBFLOOR + LOBBY_H;

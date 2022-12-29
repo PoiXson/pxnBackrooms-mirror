@@ -56,7 +56,7 @@ public class Gen_019 extends BackroomsGenerator {
 
 
 	public void generateAttic(
-			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
 		int y  = ATTIC_Y;
 		int cy = ATTIC_Y + SUBFLOOR + ATTIC_H;

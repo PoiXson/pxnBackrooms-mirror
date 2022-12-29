@@ -164,25 +164,25 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_019.setSeed(seed);
 		this.gen_309.setSeed(seed);
 		// pre-generate
-		int xx, zz;
 		final HashMap<Dxy, HotelDAO> prehotel = this.gen_005.pregenerateHotel(chunkX, chunkZ);
 		// generate
+		int xx, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				xx = x + (chunkX * 16);
 				zz = z + (chunkZ * 16);
 				// basement
-				this.gen_001.generateBasement(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_001.generateBasement(chunk, chunkX, chunkZ, x, z, xx, zz);
 				// 0 main lobby
-				this.gen_000.generateLobby(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_000.generateLobby(chunk, chunkX, chunkZ, x, z, xx, zz);
 				// pools
-				this.gen_037.generatePools(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_037.generatePools(chunk, chunkX, chunkZ, x, z, xx, zz);
 				// hotel
-				this.gen_005.generateHotel(prehotel, chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_005.generateHotel(prehotel, chunk, chunkX, chunkZ, x, z, xx, zz);
 				// attic
-				this.gen_019.generateAttic(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_019.generateAttic(chunk, chunkX, chunkZ, x, z, xx, zz);
 				// radio station
-				this.gen_309.generateWoodsPath(chunkX, chunkZ, chunk, x, z, xx, zz);
+				this.gen_309.generateWoodsPath(chunk, chunkX, chunkZ, x, z, xx, zz);
 			}
 		}
 	}

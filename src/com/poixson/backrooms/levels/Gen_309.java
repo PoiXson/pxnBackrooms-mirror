@@ -74,7 +74,7 @@ public class Gen_309 extends BackroomsGenerator {
 
 
 	public void generateWoodsPath(
-			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
 		int y = PATH_Y;
 		chunk.setBlock(x, y, z, Material.BEDROCK);

@@ -51,7 +51,7 @@ public class Gen_151 extends BackroomsGenerator {
 
 
 	public void generateHouse(
-			final int chunkX, final int chunkZ, final ChunkData chunk,
+			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
 		int y  = HOUSE_Y;
 		int cy = HOUSE_Y + SUBFLOOR + HOUSE_H;
