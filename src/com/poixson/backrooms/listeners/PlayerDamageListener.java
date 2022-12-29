@@ -76,8 +76,6 @@ public class PlayerDamageListener implements Listener {
 			final DamageCause cause = event.getCause();
 			switch (cause) {
 			case SUFFOCATION:
-			case DROWNING:
-			case POISON:
 			case VOID: {
 				final int count = this.incrementPlayerDamageCount(player.getUniqueId());
 				final int countMin = (health > MIN_DAMAGE ? 4 : 2);
@@ -85,8 +83,6 @@ public class PlayerDamageListener implements Listener {
 					return;
 				break;
 			}
-			case FLY_INTO_WALL:
-			case FALL: break;
 			default: return;
 			}
 			final int rnd = BackroomsPlugin.Rnd10K();
