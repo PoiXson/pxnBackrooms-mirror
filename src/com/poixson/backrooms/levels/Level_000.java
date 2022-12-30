@@ -92,6 +92,7 @@ public class Level_000 extends BackroomsLevel {
 			z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
 			break;
 		case 309:
+//TODO: improve this
 			x = (BackroomsPlugin.Rnd10K() / 5) - 1000;
 			z = BackroomsPlugin.Rnd10K();
 			break;
