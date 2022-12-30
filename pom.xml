@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Thu Dec 29 08:39:37 PM EST 2022 -->
+<!-- Generated: Thu Dec 29 09:09:45 PM EST 2022 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -35,6 +35,7 @@
 		<common-core-version>4.0.2-SNAPSHOT</common-core-version>
 		<common-bukkit-version>4.0.2-SNAPSHOT</common-bukkit-version>
 		<Multiverse-Core-version>4.3.1</Multiverse-Core-version>
+		<bstats-bukkit-version>3.0.0</bstats-bukkit-version>
 
 	</properties>
 	<scm>
@@ -210,6 +211,11 @@
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<version>${Multiverse-Core-version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>bstats-bukkit</artifactId>
+			<groupId>org.bstats</groupId>
+			<version>${bstats-bukkit-version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
@@ -47,6 +48,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	public static final String GENERATOR_NAME = "Backrooms";
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
+	protected static final AtomicReference<Metrics>         metrics  = new AtomicReference<Metrics>(null);
 
 	// world generators
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
@@ -112,6 +114,9 @@ public class BackroomsPlugin extends JavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+		// bStats
+		System.setProperty("bstats.relocatecheck","false");
+		metrics.set(new Metrics(this, 17231));
 	}
 
 	@Override
