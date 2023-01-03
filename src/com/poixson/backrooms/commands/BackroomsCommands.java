@@ -1,103 +1,71 @@
-package com.poixson.backrooms.listeners;
+package com.poixson.backrooms.commands;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.utils.NumberUtils;
+import com.poixson.commonbukkit.tools.commands.pxnCommandsHandler;
 
 
-public class BackroomsCommands implements CommandExecutor {
-	public static final String CHAT_PREFIX = BackroomsPlugin.CHAT_PREFIX;
-
-	protected final BackroomsPlugin plugin;
-
-	protected final ArrayList<PluginCommand> cmds = new ArrayList<PluginCommand>();
+public class BackroomsCommands extends pxnCommandsHandler {
 
 
 
 	public BackroomsCommands(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
-	}
-
-
-
-	public void register() {
-		final PluginCommand cmd = this.plugin.getCommand("backrooms");
-		cmd.setExecutor(this);
-		this.cmds.add(cmd);
-		cmd.setTabCompleter( new BackroomsTabCompleter() );
-	}
-	public void unregister() {
-		for (final PluginCommand cmd : this.cmds) {
-			cmd.setExecutor(null);
-		}
-		this.cmds.clear();
+		super(
+			plugin,
+			"backrooms"
+		);
 	}
 
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final Command cmd,
+	public List<String> onTabComplete(
+			final CommandSender sender, final Command cmd,
 			final String label, final String[] args) {
-		final Player player = (sender instanceof Player ? (Player)sender : null);
-		final int numargs = args.length;
-		if (numargs >= 1) {
-			switch (args[0]) {
-			case "tp": {
-				if (player != null && !player.hasPermission("backrooms.tp")) {
-					player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
-					return true;
+		final List<String> matches = new ArrayList<String>();
+		final int size = args.length;
+		switch (size) {
+		case 1:
+			if ("tp".startsWith(args[0])) matches.add("tp");
+			break;
+		case 2:
+			if ("tp".equals(args[0])) {
+				final List<String> levels = new ArrayList<String>();
+				levels.add("0");
+				levels.add("1");
+				levels.add("5");
+				levels.add("9");
+				levels.add("10");
+				levels.add("11");
+				levels.add("19");
+				levels.add("37");
+				levels.add("78");
+				levels.add("151");
+				levels.add("309");
+				levels.add("771");
+				levels.add("866");
+				for (final String lvl : levels) {
+					if (lvl.startsWith(args[1]))
+						matches.add(lvl);
 				}
-				// tp self random
-				if (numargs == 1 && player != null) {
-					this.plugin.noclip(player);
-					return true;
+				String name;
+				for (final Player player : Bukkit.getOnlinePlayers()) {
+					name = player.getName();
+					if (name.startsWith(args[1]))
+						matches.add(name);
 				}
-				// tp to level
-				int level = Integer.MIN_VALUE;
-				int i = 1;
-				if (numargs > 1 && NumberUtils.IsNumeric(args[1])) {
-					level = Integer.parseInt(args[1]);
-					if (!this.plugin.isValidLevel(level)) {
-						sender.sendMessage(CHAT_PREFIX+"Invalid backrooms level: "+Integer.toString(level));
-						return true;
-					}
-					i = 2;
-				}
-				// tp players
-				if (numargs > i) {
-					if (player != null && !player.hasPermission("backrooms.tp.others")) {
-						player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
-						return true;
-					}
-					for (; i<numargs; i++) {
-						final Player p = Bukkit.getPlayer(args[i]);
-						if (p == null) {
-							sender.sendMessage(CHAT_PREFIX+"Unknown player: "+args[i]);
-						} else {
-							this.plugin.noclip(p, level);
-						}
-					}
-				// tp self
-				} else {
-					if (player == null) {
-						sender.sendMessage(CHAT_PREFIX+"Cannot teleport");
-					} else {
-						this.plugin.noclip(player, level);
-					}
-				}
-				return true;
 			}
-			}
+			break;
+		default:
 		}
-		return false;
+		return matches;
 	}
 
 
