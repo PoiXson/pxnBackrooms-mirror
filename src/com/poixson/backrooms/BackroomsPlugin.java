@@ -24,7 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.poixson.backrooms.commands.BackroomsCommands;
+import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.levels.BackroomsLevel;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
@@ -57,7 +57,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	protected final AtomicReference<TeleportChances> tpChances = new AtomicReference<TeleportChances>(null);
 
 	// listeners
-	protected final AtomicReference<BackroomsCommands>    commandListener      = new AtomicReference<BackroomsCommands>(null);
+	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
 	protected final AtomicReference<PlayerMoveListener>   playerMoveListener   = new AtomicReference<PlayerMoveListener>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
 
@@ -90,8 +90,8 @@ public class BackroomsPlugin extends JavaPlugin {
 		}).runTask(this);
 		// commands listener
 		{
-			final BackroomsCommands listener = new BackroomsCommands(this);
-			final BackroomsCommands previous = this.commandListener.getAndSet(listener);
+			final Commands listener = new Commands(this);
+			final Commands previous = this.commandListener.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
@@ -128,7 +128,7 @@ public class BackroomsPlugin extends JavaPlugin {
 		this.backlevels.clear();
 		// commands listener
 		{
-			final BackroomsCommands listener = this.commandListener.getAndSet(null);
+			final Commands listener = this.commandListener.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}

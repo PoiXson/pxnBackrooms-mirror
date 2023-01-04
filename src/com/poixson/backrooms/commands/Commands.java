@@ -12,11 +12,11 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonbukkit.tools.commands.pxnCommandsHandler;
 
 
-public class BackroomsCommands extends pxnCommandsHandler {
+public class Commands extends pxnCommandsHandler {
 
 
 
-	public BackroomsCommands(final BackroomsPlugin plugin) {
+	public Commands(final BackroomsPlugin plugin) {
 		super(
 			plugin,
 			"backrooms"
