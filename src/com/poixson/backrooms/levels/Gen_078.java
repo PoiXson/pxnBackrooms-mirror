@@ -67,6 +67,7 @@ public class Gen_078 extends BackroomsGenerator {
 		case SPECTATOR:
 			player.setAllowFlight(true);
 			player.setGravity(true);
+			this.floating.remove(uuid);
 			break;
 		case ADVENTURE:
 		case SURVIVAL: {
