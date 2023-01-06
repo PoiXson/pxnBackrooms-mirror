@@ -34,6 +34,7 @@ import com.poixson.backrooms.levels.Level_078;
 import com.poixson.backrooms.levels.Level_151;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
+import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
 import com.poixson.utils.NumberUtils;
@@ -60,6 +61,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
 	protected final AtomicReference<PlayerMoveListener>   playerMoveListener   = new AtomicReference<PlayerMoveListener>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
+	protected final AtomicReference<ItemDespawnListener>  itemDespawnListener  = new AtomicReference<ItemDespawnListener>(null);
 
 
 
@@ -110,6 +112,14 @@ public class BackroomsPlugin extends JavaPlugin {
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
 			final PlayerDamageListener previous = this.playerDamageListener.getAndSet(listener);
+			if (previous != null)
+				previous.unregister();
+			listener.register();
+		}
+		// item despawn listener
+		{
+			final ItemDespawnListener listener = new ItemDespawnListener(this);
+			final ItemDespawnListener previous = this.itemDespawnListener.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
