@@ -41,7 +41,7 @@ import com.poixson.utils.Utils;
 
 public class BackroomsPlugin extends JavaPlugin {
 	public static final String LOG_PREFIX  = "[Backrooms] ";
-	public static final String CHAT_PREFIX = ChatColor.AQUA + "[Backrooms] " + ChatColor.WHITE;
+	public static final String CHAT_PREFIX = ChatColor.AQUA + LOG_PREFIX + ChatColor.WHITE;
 	public static final Logger log = Logger.getLogger("Minecraft");
 
 	public static final String GENERATOR_NAME = "Backrooms";
@@ -184,10 +184,10 @@ public class BackroomsPlugin extends JavaPlugin {
 			mvworld.setDifficulty(Difficulty.HARD);
 			mvworld.setHunger(true);
 			mvworld.setPVPMode(true);
-			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.TRUE );
-			world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
-			world.setGameRule(GameRule.KEEP_INVENTORY,       Boolean.TRUE );
-			world.setGameRule(GameRule.MOB_GRIEFING,         Boolean.FALSE);
+			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE );
+			world.setGameRule(GameRule.DO_WEATHER_CYCLE,  Boolean.FALSE);
+			world.setGameRule(GameRule.KEEP_INVENTORY,    Boolean.TRUE );
+			world.setGameRule(GameRule.MOB_GRIEFING,      Boolean.FALSE);
 		}
 	}
 
