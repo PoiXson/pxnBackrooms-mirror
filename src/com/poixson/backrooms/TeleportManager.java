@@ -12,22 +12,26 @@ import com.google.gson.JsonParser;
 import com.poixson.utils.NumberUtils;
 
 
-public class TeleportChances {
+public class TeleportManager {
 	public static final String LOG_PREFIX = BackroomsPlugin.LOG_PREFIX;
 	public static final Logger log        = BackroomsPlugin.log;
+
+	protected final BackroomsPlugin plugin;
 
 	protected final HashMap<Integer, HashMap<Integer, Integer>> weights;
 	protected int rndLast = 0;
 
 
 
-	public TeleportChances(final HashMap<Integer, HashMap<Integer, Integer>> weights) {
+	public TeleportManager(final BackroomsPlugin plugin,
+	final HashMap<Integer, HashMap<Integer, Integer>> weights) {
+		this.plugin  = plugin;
 		this.weights = weights;
 	}
 
 
 
-	public static TeleportChances Load(final BackroomsPlugin plugin) {
+	public static TeleportManager Load(final BackroomsPlugin plugin) {
 		final HashMap<Integer, HashMap<Integer, Integer>> chances = new HashMap<Integer, HashMap<Integer, Integer>>();
 		final InputStream input = plugin.getResource("chances.json");
 		if (input == null) throw new RuntimeException("Failed to load chances.json");
@@ -56,7 +60,7 @@ public class TeleportChances {
 			}
 			chances.put(Integer.valueOf(level), weights);
 		}
-		return new TeleportChances(chances);
+		return new TeleportManager(plugin, chances);
 	}
 
 

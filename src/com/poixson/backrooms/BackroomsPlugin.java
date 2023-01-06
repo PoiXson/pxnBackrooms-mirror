@@ -53,7 +53,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 
 	// chance to teleport to levels
-	protected final AtomicReference<TeleportChances> tpChances = new AtomicReference<TeleportChances>(null);
+	protected final AtomicReference<TeleportManager> tpManager = new AtomicReference<TeleportManager>(null);
 
 	// listeners
 	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
@@ -97,7 +97,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			listener.register();
 		}
 		// load teleport chance
-		this.tpChances.set(TeleportChances.Load(this));
+		this.tpManager.set(TeleportManager.Load(this));
 		// player move listener
 		{
 			final PlayerMoveListener listener = new PlayerMoveListener(this);
@@ -296,12 +296,12 @@ public class BackroomsPlugin extends JavaPlugin {
 		return levelTo;
 	}
 	public int noclip(final int level_from) {
-		final TeleportChances chances = this.tpChances.get();
-		if (chances == null) {
+		final TeleportManager manager = this.tpManager.get();
+		if (manager == null) {
 			log.warning(LOG_PREFIX+"teleport chance weights not loaded");
 			return 0;
 		}
-		return chances.getDestinationLevel(level_from);
+		return manager.getDestinationLevel(level_from);
 	}
 
 
