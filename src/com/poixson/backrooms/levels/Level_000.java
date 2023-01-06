@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.utils.NumberUtils.Rnd10K;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,13 +90,13 @@ public class Level_000 extends BackroomsLevel {
 		case 37:
 		case 5:
 		case 19:
-			x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
-			z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+			x = (Rnd10K() * 2) - 10000;
+			z = (Rnd10K() * 2) - 10000;
 			break;
 		case 309:
 //TODO: improve this
-			x = (BackroomsPlugin.Rnd10K() / 5) - 1000;
-			z = BackroomsPlugin.Rnd10K();
+			x = (Rnd10K() / 5) - 1000;
+			z = Rnd10K();
 			break;
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}

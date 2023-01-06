@@ -1,7 +1,6 @@
 package com.poixson.backrooms;
 
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -37,7 +36,6 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
-import com.poixson.utils.NumberUtils;
 import com.poixson.utils.Utils;
 
 
@@ -352,16 +350,6 @@ public class BackroomsPlugin extends JavaPlugin {
 		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevel(worldName);
 		return this.getBackroomsLevel(level);
-	}
-
-
-
-	protected static final AtomicInteger Last10K = new AtomicInteger(0);
-
-	public static int Rnd10K() {
-		final int rnd = NumberUtils.GetNewRandom(0, 9999, Last10K.get());
-		Last10K.set(rnd);
-		return rnd;
 	}
 
 

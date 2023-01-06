@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.utils.NumberUtils.Rnd10K;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -37,8 +39,8 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public Location getSpawn(final int level) {
 		if (level != 771) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		int x = (BackroomsPlugin.Rnd10K() * 2) - 10000;
-		int z = (BackroomsPlugin.Rnd10K() * 2) - 10000;
+		int x = (Rnd10K() * 2) - 10000;
+		int z = (Rnd10K() * 2) - 10000;
 		if (Math.abs(x) > Math.abs(z)) {
 			z = 0;
 		} else {

@@ -1,5 +1,7 @@
 package com.poixson.backrooms.listeners;
 
+import static com.poixson.utils.NumberUtils.Rnd10K;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -85,7 +87,7 @@ public class PlayerDamageListener implements Listener {
 			}
 			default: return;
 			}
-			final int rnd = BackroomsPlugin.Rnd10K();
+			final int rnd = Rnd10K();
 			if (rnd % 10 < 5)
 				return;
 			// noclip into the backrooms
