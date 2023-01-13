@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
@@ -14,10 +13,8 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
@@ -36,12 +33,11 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
-import com.poixson.commonmc.pxnCommonPlugin;
-import com.poixson.tools.AppProps;
+import com.poixson.commonmc.tools.plugin.xJavaPlugin;
 import com.poixson.utils.Utils;
 
 
-public class BackroomsPlugin extends JavaPlugin {
+public class BackroomsPlugin extends xJavaPlugin {
 	public static final String LOG_PREFIX  = "[Backrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + LOG_PREFIX + ChatColor.WHITE;
 	public static final Logger log = Logger.getLogger("Minecraft");
@@ -52,8 +48,6 @@ public class BackroomsPlugin extends JavaPlugin {
 	public static final String GENERATOR_NAME = "Backrooms";
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
-	protected static final AtomicReference<Metrics>         metrics  = new AtomicReference<Metrics>(null);
-	protected final AppProps props;
 
 	// world generators
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
@@ -70,17 +64,14 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 	public BackroomsPlugin() {
-		try {
-			this.props = AppProps.LoadFromClassRef(BackroomsPlugin.class);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		super(BackroomsPlugin.class);
 	}
 
 
 
 	@Override
 	public void onEnable() {
+		super.onEnable();
 		if (!instance.compareAndSet(null, this))
 			throw new RuntimeException("Plugin instance already enabled?");
 		// create worlds (after server starts)
@@ -133,21 +124,11 @@ public class BackroomsPlugin extends JavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
-		// bStats
-		System.setProperty("bstats.relocatecheck","false");
-		metrics.set(new Metrics(this, BSTATS_PLUGIN_ID));
-		// update checker
-		pxnCommonPlugin.GetPlugin()
-			.getUpdateCheckManager()
-				.addPlugin(this, SPIGOT_PLUGIN_ID, this.getPluginVersion());
 	}
 
 	@Override
 	public void onDisable() {
-		// update checker
-		pxnCommonPlugin.GetPlugin()
-			.getUpdateCheckManager()
-				.removePlugin(SPIGOT_PLUGIN_ID);
+		super.onDisable();
 		// unload generators
 		for (final BackroomsLevel lvl : this.backlevels.values()) {
 			lvl.unload();
@@ -159,13 +140,6 @@ public class BackroomsPlugin extends JavaPlugin {
 			if (listener != null)
 				listener.unregister();
 		}
-		// stop schedulers
-		try {
-			Bukkit.getScheduler()
-				.cancelTasks(this);
-		} catch (Exception ignore) {}
-		// stop listeners
-		HandlerList.unregisterAll(this);
 		if (!instance.compareAndSet(this, null))
 			throw new RuntimeException("Disable wrong instance of plugin?");
 	}
@@ -368,8 +342,17 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 
-	public String getPluginVersion() {
-		return this.props.version;
+	// -------------------------------------------------------------------------------
+
+
+
+	@Override
+	protected int getSpigotPluginID() {
+		return SPIGOT_PLUGIN_ID;
+	}
+	@Override
+	protected int getBStatsID() {
+		return BSTATS_PLUGIN_ID;
 	}
 
 

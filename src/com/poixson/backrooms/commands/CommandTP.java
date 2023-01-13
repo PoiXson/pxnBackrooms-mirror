@@ -11,10 +11,11 @@ import com.poixson.utils.NumberUtils;
 
 
 public class CommandTP extends pxnCommand {
-	protected static final String LOG_PREFIX  = BackroomsPlugin.LOG_PREFIX;
-	protected static final String CHAT_PREFIX = BackroomsPlugin.CHAT_PREFIX;
 
 	protected final BackroomsPlugin plugin;
+
+	protected final String logPrefix;
+	protected final String chatPrefix;
 
 
 
@@ -24,6 +25,8 @@ public class CommandTP extends pxnCommand {
 			"teleport"
 		);
 		this.plugin = plugin;
+		this.logPrefix  = plugin.getLogPrefix();
+		this.chatPrefix = plugin.getChatPrefix();
 	}
 
 
@@ -33,7 +36,7 @@ public class CommandTP extends pxnCommand {
 			final Command cmd, final String[] args) {
 		final Player player = (sender instanceof Player ? (Player)sender : null);
 		if (player != null && !player.hasPermission("backrooms.tp")) {
-			player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
+			player.sendMessage(this.chatPrefix + "You don't have permission to use this.");
 			return true;
 		}
 		final int numargs = args.length;
@@ -56,13 +59,13 @@ public class CommandTP extends pxnCommand {
 		// tp players
 		if (numargs > i) {
 			if (player != null && !player.hasPermission("backrooms.tp.others")) {
-				player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
+				player.sendMessage(this.chatPrefix + "You don't have permission to use this.");
 				return true;
 			}
 			for (; i<numargs; i++) {
 				final Player p = Bukkit.getPlayer(args[i]);
 				if (p == null) {
-					sender.sendMessage(CHAT_PREFIX+"Unknown player: "+args[i]);
+					sender.sendMessage(this.chatPrefix + "Unknown player: " + args[i]);
 				} else {
 					this.plugin.noclip(p, level);
 				}
@@ -70,7 +73,7 @@ public class CommandTP extends pxnCommand {
 		// tp self
 		} else {
 			if (player == null) {
-				sender.sendMessage(LOG_PREFIX+"Cannot teleport");
+				sender.sendMessage(this.logPrefix + "Cannot teleport");
 			} else {
 				this.plugin.noclip(player, level);
 			}
