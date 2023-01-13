@@ -67,9 +67,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	@Override
 	public void onEnable() {
-		super.onEnable();
 		if (!instance.compareAndSet(null, this))
 			throw new RuntimeException("Plugin instance already enabled?");
+		super.onEnable();
 		// create worlds (after server starts)
 		(new BukkitRunnable() {
 			@Override
@@ -133,6 +133,26 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// commands listener
 		{
 			final Commands listener = this.commandListener.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
+		// teleport chance
+		this.tpManager.set(null);
+		// player move listener
+		{
+			final PlayerMoveListener listener = this.playerMoveListener.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
+		// player damage listener
+		{
+			final PlayerDamageListener listener = this.playerDamageListener.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
+		// item despawn listener
+		{
+			final ItemDespawnListener listener = this.itemDespawnListener.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
