@@ -36,6 +36,7 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
+import com.poixson.tools.AppProps;
 import com.poixson.utils.Utils;
 
 
@@ -48,6 +49,7 @@ public class BackroomsPlugin extends JavaPlugin {
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
 	protected static final AtomicReference<Metrics>         metrics  = new AtomicReference<Metrics>(null);
+	protected final AppProps props;
 
 	// world generators
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
@@ -64,6 +66,11 @@ public class BackroomsPlugin extends JavaPlugin {
 
 
 	public BackroomsPlugin() {
+		try {
+			this.props = AppProps.LoadFromClassRef(BackroomsPlugin.class);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 
