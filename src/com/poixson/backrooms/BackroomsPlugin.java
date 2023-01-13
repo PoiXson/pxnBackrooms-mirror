@@ -2,10 +2,8 @@ package com.poixson.backrooms;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
@@ -38,14 +36,12 @@ import com.poixson.utils.Utils;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
-	public static final String LOG_PREFIX  = "[Backrooms] ";
-	public static final String CHAT_PREFIX = ChatColor.AQUA + LOG_PREFIX + ChatColor.WHITE;
-	public static final Logger log = Logger.getLogger("Minecraft");
+	protected static final String LOG_PREFIX  = "[Backrooms] ";
 //TODO
-	public static final int SPIGOT_PLUGIN_ID = 0;
-	public static final int BSTATS_PLUGIN_ID = 17231;
+	protected static final int SPIGOT_PLUGIN_ID = 0;
+	protected static final int BSTATS_PLUGIN_ID = 17231;
 
-	public static final String GENERATOR_NAME = "Backrooms";
+	protected static final String GENERATOR_NAME = "Backrooms";
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
 
@@ -141,48 +137,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 				listener.unregister();
 		}
 		if (!instance.compareAndSet(this, null))
-			throw new RuntimeException("Disable wrong instance of plugin?");
+			(new RuntimeException("Disable wrong instance of plugin?")).printStackTrace();
 	}
 
 
 
-	public static MultiverseCore GetMVCore() {
-		final PluginManager pm = Bukkit.getServer().getPluginManager();
-		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
-		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
-		return mvcore;
-	}
-
-	protected static void MakeWorld(final int level, final String seed) {
-		final MVWorldManager manager = GetMVCore().getMVWorldManager();
-		final String name = "level" + Integer.toString(level);
-		if (!manager.isMVWorld(name, false)) {
-			log.warning(LOG_PREFIX+"Creating backrooms level: "+Integer.toString(level));
-			final Environment env;
-			switch (level) {
-			case 78: env = Environment.THE_END; break;
-			default: env = Environment.NORMAL;  break;
-			}
-			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, "pxnBackrooms", true))
-				throw new RuntimeException("Failed to create world: "+name);
-			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
-			final World world = mvworld.getCBWorld();
-			mvworld.setAlias("backrooms");
-			mvworld.setHidden(true);
-			mvworld.setKeepSpawnInMemory(false);
-			mvworld.setAllowAnimalSpawn(true);
-			mvworld.setAllowMonsterSpawn(true);
-			mvworld.setAutoHeal(true);
-			mvworld.setBedRespawn(true);
-			mvworld.setDifficulty(Difficulty.HARD);
-			mvworld.setHunger(true);
-			mvworld.setPVPMode(true);
-			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE );
-			world.setGameRule(GameRule.DO_WEATHER_CYCLE,  Boolean.FALSE);
-			world.setGameRule(GameRule.KEEP_INVENTORY,    Boolean.TRUE );
-			world.setGameRule(GameRule.MOB_GRIEFING,      Boolean.FALSE);
-		}
-	}
+	// -------------------------------------------------------------------------------
+	// levels
 
 
 
@@ -294,10 +255,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	// -------------------------------------------------------------------------------
-
-
-
 	public BackroomsLevel getBackroomsLevel(final int level) {
 		// existing generator
 		{
@@ -331,6 +288,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 	}
 
+
+
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 		if (!worldName.startsWith("level"))
@@ -338,6 +297,46 @@ public class BackroomsPlugin extends xJavaPlugin {
 		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevel(worldName);
 		return this.getBackroomsLevel(level);
+	}
+
+
+
+	public static MultiverseCore GetMVCore() {
+		final PluginManager pm = Bukkit.getServer().getPluginManager();
+		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
+		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
+		return mvcore;
+	}
+
+	protected static void MakeWorld(final int level, final String seed) {
+		final MVWorldManager manager = GetMVCore().getMVWorldManager();
+		final String name = "level" + Integer.toString(level);
+		if (!manager.isMVWorld(name, false)) {
+			log.warning(LOG_PREFIX+"Creating backrooms level: "+Integer.toString(level));
+			final Environment env;
+			switch (level) {
+			case 78: env = Environment.THE_END; break;
+			default: env = Environment.NORMAL;  break;
+			}
+			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, "pxnBackrooms", true))
+				throw new RuntimeException("Failed to create world: "+name);
+			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
+			final World world = mvworld.getCBWorld();
+			mvworld.setAlias("backrooms");
+			mvworld.setHidden(true);
+			mvworld.setKeepSpawnInMemory(false);
+			mvworld.setAllowAnimalSpawn(true);
+			mvworld.setAllowMonsterSpawn(true);
+			mvworld.setAutoHeal(true);
+			mvworld.setBedRespawn(true);
+			mvworld.setDifficulty(Difficulty.HARD);
+			mvworld.setHunger(true);
+			mvworld.setPVPMode(true);
+			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE );
+			world.setGameRule(GameRule.DO_WEATHER_CYCLE,  Boolean.FALSE);
+			world.setGameRule(GameRule.KEEP_INVENTORY,    Boolean.TRUE );
+			world.setGameRule(GameRule.MOB_GRIEFING,      Boolean.FALSE);
+		}
 	}
 
 
