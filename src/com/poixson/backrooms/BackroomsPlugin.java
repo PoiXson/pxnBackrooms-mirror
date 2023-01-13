@@ -189,7 +189,7 @@ public class BackroomsPlugin extends JavaPlugin {
 			case 78: env = Environment.THE_END; break;
 			default: env = Environment.NORMAL;  break;
 			}
-			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, false, "pxnBackrooms", true))
+			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, "pxnBackrooms", true))
 				throw new RuntimeException("Failed to create world: "+name);
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();

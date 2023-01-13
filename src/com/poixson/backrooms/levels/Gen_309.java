@@ -133,6 +133,7 @@ public class Gen_309 extends BackroomsGenerator {
 			);
 		}
 
+		@Override
 		public boolean isTree(final int x, final int z) {
 			if (!super.isTree(x, z))
 				return false;

@@ -126,6 +126,7 @@ public class Level_000 extends BackroomsLevel {
 		if (y <= Y_019 + H_019) return 19;
 		return 309;
 	}
+	@Override
 	public int getYFromLevel(final int level) {
 		switch (level) {
 		case 1:   return Y_001;
@@ -138,6 +139,7 @@ public class Level_000 extends BackroomsLevel {
 		}
 		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 	}
+	@Override
 	public int getMaxYFromLevel(final int level) {
 		switch (level) {
 		case 1:   return Y_001 + H_001;

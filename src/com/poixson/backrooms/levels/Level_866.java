@@ -54,9 +54,11 @@ public class Level_866 extends BackroomsLevel {
 	public int getLevelFromY(final int y) {
 		return 866;
 	}
+	@Override
 	public int getYFromLevel(final int level) {
 		return DIRTFIELD_Y;
 	}
+	@Override
 	public int getMaxYFromLevel(final int level) {
 		return 255;
 	}
