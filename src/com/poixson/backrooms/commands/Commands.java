@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.commonbukkit.tools.commands.pxnCommandsHandler;
+import com.poixson.commonmc.tools.commands.pxnCommandsHandler;
 
 
 public class Commands extends pxnCommandsHandler {

@@ -1,7 +1,7 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.commonbukkit.utils.LocationUtils.Rotate;
-import static com.poixson.commonbukkit.utils.LocationUtils.RotateXZ;
+import static com.poixson.commonmc.utils.LocationUtils.Rotate;
+import static com.poixson.commonmc.utils.LocationUtils.RotateXZ;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -13,7 +13,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.poixson.commonbukkit.tools.BlockPlotter;
+import com.poixson.commonmc.tools.BlockPlotter;
 import com.poixson.tools.dao.Insew;
 import com.poixson.tools.dao.Ixy;
 import com.poixson.tools.dao.Ixywd;

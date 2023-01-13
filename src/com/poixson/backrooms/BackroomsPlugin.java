@@ -36,7 +36,7 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
-import com.poixson.commonbukkit.pxnCommonPlugin;
+import com.poixson.commonmc.pxnCommonPlugin;
 import com.poixson.tools.AppProps;
 import com.poixson.utils.Utils;
 

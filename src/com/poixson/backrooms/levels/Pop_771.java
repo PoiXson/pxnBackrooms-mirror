@@ -10,7 +10,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.poixson.commonbukkit.tools.BlockPlotter;
+import com.poixson.commonmc.tools.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 

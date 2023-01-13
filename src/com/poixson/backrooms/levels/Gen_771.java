@@ -1,12 +1,12 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.commonbukkit.utils.LocationUtils.RotateAround00;
+import static com.poixson.commonmc.utils.LocationUtils.RotateAround00;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.commonbukkit.tools.BlockPlotter;
+import com.poixson.commonmc.tools.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
