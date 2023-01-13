@@ -44,6 +44,7 @@ public class BackroomsPlugin extends JavaPlugin {
 	public static final String LOG_PREFIX  = "[Backrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + LOG_PREFIX + ChatColor.WHITE;
 	public static final Logger log = Logger.getLogger("Minecraft");
+	public static final int BSTATS_PLUGIN_ID = 17231;
 
 	public static final String GENERATOR_NAME = "Backrooms";
 
@@ -131,7 +132,7 @@ public class BackroomsPlugin extends JavaPlugin {
 		}
 		// bStats
 		System.setProperty("bstats.relocatecheck","false");
-		metrics.set(new Metrics(this, 17231));
+		metrics.set(new Metrics(this, BSTATS_PLUGIN_ID));
 	}
 
 	@Override
