@@ -36,6 +36,7 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
+import com.poixson.commonbukkit.pxnCommonPlugin;
 import com.poixson.tools.AppProps;
 import com.poixson.utils.Utils;
 
@@ -44,6 +45,8 @@ public class BackroomsPlugin extends JavaPlugin {
 	public static final String LOG_PREFIX  = "[Backrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + LOG_PREFIX + ChatColor.WHITE;
 	public static final Logger log = Logger.getLogger("Minecraft");
+//TODO
+	public static final int SPIGOT_PLUGIN_ID = 0;
 	public static final int BSTATS_PLUGIN_ID = 17231;
 
 	public static final String GENERATOR_NAME = "Backrooms";
@@ -133,10 +136,18 @@ public class BackroomsPlugin extends JavaPlugin {
 		// bStats
 		System.setProperty("bstats.relocatecheck","false");
 		metrics.set(new Metrics(this, BSTATS_PLUGIN_ID));
+		// update checker
+		pxnCommonPlugin.GetPlugin()
+			.getUpdateCheckManager()
+				.addPlugin(this, SPIGOT_PLUGIN_ID, this.getPluginVersion());
 	}
 
 	@Override
 	public void onDisable() {
+		// update checker
+		pxnCommonPlugin.GetPlugin()
+			.getUpdateCheckManager()
+				.removePlugin(SPIGOT_PLUGIN_ID);
 		// unload generators
 		for (final BackroomsLevel lvl : this.backlevels.values()) {
 			lvl.unload();
@@ -353,6 +364,12 @@ public class BackroomsPlugin extends JavaPlugin {
 		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevel(worldName);
 		return this.getBackroomsLevel(level);
+	}
+
+
+
+	public String getPluginVersion() {
+		return this.props.version;
 	}
 
 
