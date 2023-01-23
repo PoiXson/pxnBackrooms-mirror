@@ -40,6 +40,7 @@ public class ItemDespawnListener implements Listener {
 			final World world = event.getLocation().getWorld();
 			if (this.plugin.isValidLevel(world)) {
 				event.setCancelled(true);
+				event.getEntity().setUnlimitedLifetime(true);
 			}
 		}
 	}
