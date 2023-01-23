@@ -1,6 +1,9 @@
 package com.poixson.backrooms.listeners;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +22,11 @@ import com.poixson.utils.NumberUtils;
 
 public class PlayerMoveListener implements Listener {
 
+	public static final int VISIT_CHECK_LOOPS = 100;
+
 	protected final BackroomsPlugin plugin;
+
+	protected final AtomicInteger loops = new AtomicInteger(0);
 
 	protected final Gen_001 gen_001;
 	protected final Gen_078 gen_078;
@@ -71,8 +78,21 @@ public class PlayerMoveListener implements Listener {
 					// level 78 - space
 					this.gen_078.onPlayerMove(event, level);
 				}
+				// levels visited
+				if (this.loops.incrementAndGet() > VISIT_CHECK_LOOPS) {
+					this.loops.set(0);
+					if (this.plugin.addVisitedLevel(player))
+						this.visitedAllLevels(player);
+				}
 			}
 		}
+	}
+
+
+
+	public void visitedAllLevels(final Player player) {
+		player.sendMessage(ChatColor.AQUA + BackroomsPlugin.LOG_PREFIX + "You visited every level!");
+//TODO
 	}
 
 

@@ -1,7 +1,14 @@
 package com.poixson.backrooms;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
@@ -48,8 +55,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
 
-	// world generators
+	// backrooms levels
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
+	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
 
 	// chance to teleport to levels
 	protected final AtomicReference<TeleportManager> tpManager = new AtomicReference<TeleportManager>(null);
@@ -181,11 +189,41 @@ public class BackroomsPlugin extends xJavaPlugin {
 			cfg.options().copyDefaults(true);
 			super.saveConfig();
 		}
+		// levels-visited.yml
+		{
+			final File file = new File(this.getDataFolder(), "levels-visited.yml");
+			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+			final Set<String> keys = cfg.getKeys(false);
+			for (final String key : keys) {
+				final UUID uuid = UUID.fromString(key);
+				final CopyOnWriteArraySet<Integer> visited = new CopyOnWriteArraySet<Integer>();
+				visited.addAll(cfg.getIntegerList(key));
+				this.visitLevels.put(uuid, visited);
+			}
+		}
 	}
 	@Override
 	protected void saveConfigs() {
 		// config.yml
 		super.saveConfig();
+		// levels-visited.yml
+		{
+			final File file = new File(this.getDataFolder(), "levels-visited.yml");
+			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+			final Iterator<Entry<UUID, CopyOnWriteArraySet<Integer>>> it = this.visitLevels.entrySet().iterator();
+			while (it.hasNext()) {
+				final Entry<UUID, CopyOnWriteArraySet<Integer>> entry = it.next();
+				final String uuid = entry.getKey().toString();
+				final HashSet<Integer> set = new HashSet<Integer>();
+				set.addAll(entry.getValue());
+				cfg.set(uuid, set);
+			}
+			try {
+				cfg.save(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
@@ -341,6 +379,36 @@ public class BackroomsPlugin extends xJavaPlugin {
 				return existing;
 			return lvl;
 		}
+	}
+
+
+
+	public boolean addVisitedLevel(final Player player) {
+		return this.addVisitedLevel(player.getUniqueId());
+	}
+	public boolean addVisitedLevel(final UUID uuid) {
+		final int level = this.getPlayerLevel(uuid);
+		if (level < 0) return false;
+		CopyOnWriteArraySet<Integer> visited = this.visitLevels.get(uuid);
+		if (visited == null) {
+			visited = new CopyOnWriteArraySet<Integer>();
+			this.visitLevels.put(uuid, visited);
+		}
+		final int sizeLast = visited.size();
+		visited.add(Integer.valueOf(level));
+		if (visited.size() > sizeLast) {
+			// check if visited all levels
+			final int[] levels = new int[] {
+				0, 1, 5, 9, 10, 11, 19, 37, 78,
+				151, 309, 771, 866,
+			};
+			for (final int lvl : levels) {
+				if (!visited.contains(Integer.valueOf(lvl)))
+					return false;
+			}
+			return true;
+		}
+		return false;
 	}
 
 
