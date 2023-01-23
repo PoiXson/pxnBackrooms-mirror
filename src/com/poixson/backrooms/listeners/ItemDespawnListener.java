@@ -38,7 +38,7 @@ public class ItemDespawnListener implements Listener {
 	public void onItemDespawn(final ItemDespawnEvent event) {
 		if (EntityType.DROPPED_ITEM.equals(event.getEntityType())) {
 			final World world = event.getLocation().getWorld();
-			if (this.plugin.getLevel(world) != Integer.MIN_VALUE) {
+			if (this.plugin.isValidLevel(world)) {
 				event.setCancelled(true);
 			}
 		}

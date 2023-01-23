@@ -213,6 +213,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		return false;
 	}
+	public boolean isValidLevel(final World world) {
+		final int level = this.getLevelFromWorld(world);
+		return  (level >= 0);
+	}
 
 
 
