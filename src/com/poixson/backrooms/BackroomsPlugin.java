@@ -167,18 +167,18 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public int getLevel(final Player player) {
+	public int getPlayerLevel(final UUID uuid) {
 		if (player == null)
 			return Integer.MIN_VALUE;
 		final World world = player.getWorld();
 		return this.getLevel(world);
 	}
-	public int getLevel(final World world) {
+	public int getPlayerLevel(final Player player) {
 		if (world == null)
 			return Integer.MIN_VALUE;
-		return this.getLevel(world.getName());
+		return this.getLevelFromWorld(world.getName());
 	}
-	public int getLevel(final String worldName) {
+	public int getLevelFromWorld(final String worldName) {
 		if (worldName == null || worldName.isEmpty())
 			return Integer.MIN_VALUE;
 		if (!worldName.startsWith("level"))
@@ -216,7 +216,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public World getLevelWorld(final int level) {
+	public World getWorldFromLevel(final int level) {
 		final String worldName = this.getLevelWorldName(level);
 		if (Utils.isEmpty(worldName))
 			return null;
@@ -252,14 +252,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 		final TeleportManager manager = this.tpManager.get();
 		Location loc = manager.getSpawnLocation(level);
 		if (loc == null) {
-			final World world = this.getLevelWorld(level);
+			final World world = this.getWorldFromLevel(level);
 			loc = world.getSpawnLocation();
 		}
 		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));
 		player.teleport(loc);
 	}
 	public int noclip(final Player player) {
-		final int levelFrom = this.getLevel(player);
+		final int levelFrom = this.getPlayerLevel(player);
 		final int levelTo = this.noclip(levelFrom);
 		this.noclip(player, levelTo);
 		return levelTo;
@@ -315,7 +315,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (!worldName.startsWith("level"))
 			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
 		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
-		final int level = this.getLevel(worldName);
+		final int level = this.getLevelFromWorld(worldName);
 		return this.getBackroomsLevel(level);
 	}
 

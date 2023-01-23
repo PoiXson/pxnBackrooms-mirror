@@ -34,7 +34,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	public Location getSpawn(final int level, final int h,
 			final int x, final int y, final int z) {
-		final World world = this.plugin.getLevelWorld(level);
+		final World world = this.plugin.getWorldFromLevel(level);
 		// search location
 		for (int i=0; i<h; i++) {
 			if (Material.AIR.equals(world.getType(x, y+i,   z))
@@ -64,7 +64,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		final int level = this.plugin.getLevel(world);
+		final int level = this.plugin.getLevelFromWorld(world);
 		Location loc;
 		for (int i=0; i<10; i++) {
 			loc = this.getSpawn(level);
