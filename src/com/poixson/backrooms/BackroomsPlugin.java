@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,7 +47,7 @@ import com.poixson.utils.Utils;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
-	protected static final String LOG_PREFIX  = "[Backrooms] ";
+	public static final String LOG_PREFIX  = "[Backrooms] ";
 //TODO
 	protected static final int SPIGOT_PLUGIN_ID = 0;
 	protected static final int BSTATS_PLUGIN_ID = 17231;
@@ -85,7 +86,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		(new BukkitRunnable() {
 			@Override
 			public void run() {
-				// note: this is converting long to string
+//TODO: this is converting long to string
 				final String seed = Long.toString( Bukkit.getWorld("world").getSeed() );
 				MakeWorld(  0, seed); // lobby
 				MakeWorld(  9, seed); // suburbs
@@ -237,12 +238,19 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public int getPlayerLevel(final UUID uuid) {
+		final Player player = Bukkit.getPlayer(uuid);
 		if (player == null)
 			return Integer.MIN_VALUE;
-		final World world = player.getWorld();
-		return this.getLevel(world);
+		return this.getPlayerLevel(player);
 	}
 	public int getPlayerLevel(final Player player) {
+		if (player == null)
+			return Integer.MIN_VALUE;
+		final int lvl = this.getLevelFromWorld(player.getWorld());
+		final BackroomsLevel backlevel = this.getBackroomsLevel(lvl);
+		return backlevel.getLevelFromY(player.getLocation().getBlockY());
+	}
+	public int getLevelFromWorld(final World world) {
 		if (world == null)
 			return Integer.MIN_VALUE;
 		return this.getLevelFromWorld(world.getName());

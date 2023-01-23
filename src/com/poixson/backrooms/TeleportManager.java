@@ -86,7 +86,7 @@ public class TeleportManager {
 			final long sinceLast = current - this.timeLast;
 			if (sinceLast > this.updateGrace) {
 				// reset from/to levels
-				log.info(LOG_PREFIX+"Rolling the teleport dice..");
+				log.info(LOG_PREFIX + "Rolling the teleport dice..");
 				this.timeUpdated = current;
 				this.levelsFromTo.clear();
 				this.levelSpawns.clear();
@@ -108,8 +108,8 @@ public class TeleportManager {
 	}
 	protected int _getDestinationLevel(final int level_from) {
 		final HashMap<Integer, Integer> weights = this.weights.get(Integer.valueOf(level_from));
-		if (weights == null)           throw new RuntimeException("Unknown backrooms level: "+Integer.toString(level_from));
-		if (weights.isEmpty()) throw new RuntimeException("Backrooms level has no weights set: "+Integer.toString(level_from));
+		if (weights == null)   throw new RuntimeException("Unknown backrooms level: " + Integer.toString(level_from));
+		if (weights.isEmpty()) throw new RuntimeException("Backrooms level has no weights set: " + Integer.toString(level_from));
 		int total = 0;
 		for (final Integer i : weights.values()) {
 			total += i.intValue();
@@ -127,7 +127,7 @@ public class TeleportManager {
 			if (total <= rnd)
 				return level;
 		}
-		log.warning(LOG_PREFIX+"Failed to find random level");
+		log.warning(LOG_PREFIX + "Failed to find random level");
 		return 0;
 	}
 
@@ -150,7 +150,7 @@ public class TeleportManager {
 				if (loc != null)
 					break;
 			}
-			if (loc == null) throw new RuntimeException("Failed to find spawn location for level: "+Integer.toString(level));
+			if (loc == null) throw new RuntimeException("Failed to find spawn location for level: " + Integer.toString(level));
 			this.levelSpawns.put(Integer.valueOf(level), loc);
 			return loc;
 		}
