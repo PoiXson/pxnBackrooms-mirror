@@ -1,5 +1,6 @@
 package com.poixson.backrooms;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -10,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
@@ -158,6 +161,34 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		if (!instance.compareAndSet(this, null))
 			(new RuntimeException("Disable wrong instance of plugin?")).printStackTrace();
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfigs() {
+		this.mkPluginDir();
+		// config.yml
+		{
+			final FileConfiguration cfg = this.getConfig();
+			this.config.set(cfg);
+			this.configDefaults(cfg);
+			cfg.options().copyDefaults(true);
+			super.saveConfig();
+		}
+	}
+	@Override
+	protected void saveConfigs() {
+		// config.yml
+		super.saveConfig();
+	}
+	@Override
+	protected void configDefaults(final FileConfiguration cfg) {
 	}
 
 
