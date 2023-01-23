@@ -12,6 +12,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 151 | Dollhouse
 public class Gen_151 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final boolean BUILD_ROOF = Level_151.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_151.SUBFLOOR;
 	public static final int     SUBCEILING = Level_151.SUBCEILING;
@@ -53,6 +55,7 @@ public class Gen_151 extends BackroomsGenerator {
 	public void generateHouse(
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return;
 		int y  = HOUSE_Y;
 		int cy = HOUSE_Y + SUBFLOOR + HOUSE_H;
 		// lobby floor

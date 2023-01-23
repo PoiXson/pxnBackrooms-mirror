@@ -4,6 +4,8 @@ package com.poixson.backrooms.levels;
 // 9 | Suburbs
 public class Gen_009 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 
 
 	public Gen_009() {

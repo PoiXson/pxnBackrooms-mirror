@@ -15,6 +15,8 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 // 309 | Radio Station
 public class Gen_309 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final int SUBFLOOR      = Level_000.SUBFLOOR;
 	public static final int PATH_Y        = Level_000.Y_309;
 	public static final int PATH_WIDTH    = 3;
@@ -76,6 +78,7 @@ public class Gen_309 extends BackroomsGenerator {
 	public void generateWoodsPath(
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return;
 		int y = PATH_Y;
 		chunk.setBlock(x, y, z, Material.BEDROCK);
 		y++;

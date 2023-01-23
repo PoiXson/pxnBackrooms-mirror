@@ -16,6 +16,8 @@ import com.poixson.backrooms.BackroomsPlugin;
 // 78 | Space
 public class Gen_078 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final int GRAVITY_REACH = 10;
 
 	protected final BackroomsPlugin plugin;

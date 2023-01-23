@@ -9,6 +9,8 @@ import com.poixson.utils.FastNoiseLiteD;
 // 866 | Dirtfield
 public class Gen_866 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final int DIRTFIELD_Y = Level_866.DIRTFIELD_Y;
 	public static final int SUBFLOOR    = Level_866.SUBFLOOR;
 
@@ -42,6 +44,7 @@ public class Gen_866 extends BackroomsGenerator {
 	public void generateField(
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return;
 		// subfloor
 		chunk.setBlock(x, 0, z, Material.BEDROCK);
 		chunk.setBlock(x, 1, z, Material.ACACIA_PLANKS);

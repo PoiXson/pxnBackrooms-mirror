@@ -22,6 +22,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 1 | Basement
 public class Gen_001 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 	public static final int     SUBCEILING = Level_000.SUBCEILING;
@@ -90,6 +92,7 @@ public class Gen_001 extends BackroomsGenerator {
 	public void generateBasement(
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return;
 		int y  = BASEMENT_Y;
 		int cy = BASEMENT_Y + SUBFLOOR + BASEMENT_H;
 		// basement floor

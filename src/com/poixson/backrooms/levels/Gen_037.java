@@ -7,6 +7,8 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 // 37 | Poolrooms
 public class Gen_037 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 	public static final int     SUBCEILING = Level_000.SUBCEILING;
@@ -38,6 +40,7 @@ public class Gen_037 extends BackroomsGenerator {
 	public void generatePools(
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return;
 		int y  = POOLS_Y;
 		int cy = POOLS_Y + SUBFLOOR + POOLS_H;
 		// lobby floor

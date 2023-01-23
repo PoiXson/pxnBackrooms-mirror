@@ -17,6 +17,8 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 // 0 | Lobby
 public class Gen_000 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = true;
+
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 	public static final int     SUBCEILING = Level_000.SUBCEILING;
@@ -61,6 +63,7 @@ public class Gen_000 extends BackroomsGenerator {
 	protected void generateLobby(
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return null;
 		int y  = LOBBY_Y;
 		int cy = LOBBY_Y + SUBFLOOR + LOBBY_H;
 		// lobby floor

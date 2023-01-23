@@ -19,6 +19,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 5 | Hotel
 public class Gen_005 extends BackroomsGenerator {
 
+	public static final boolean ENABLED = false;
+
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 	public static final int     SUBCEILING = Level_000.SUBCEILING;
@@ -136,6 +138,7 @@ public class Gen_005 extends BackroomsGenerator {
 	public void generateHotel(final HashMap<Dxy, HotelDAO> prehotel,
 			final ChunkData chunk, final int chunkX, final int chunkZ,
 			final int x, final int z, final int xx, final int zz) {
+		if (!ENABLED) return;
 		int y  = HOTEL_Y;
 		int cy = HOTEL_Y + SUBFLOOR + HOTEL_H;
 		// hotel floor
