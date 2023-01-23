@@ -31,8 +31,8 @@ public class Gen_309 extends BackroomsGenerator {
 	protected final FastNoiseLiteD noiseTrees;
 
 	// populators
-	public final TreePopulator treePop;
-	public final PathTracer pathTrace;
+	protected final TreePopulator treePop;
+	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
 	public final Pop_309 radioPop;
@@ -55,7 +55,7 @@ public class Gen_309 extends BackroomsGenerator {
 		this.noiseTrees = new FastNoiseLiteD();
 		this.noiseTrees.setFrequency(0.2f);
 		// populators
-		this.treePop = new TreePopulator309(this.noiseTrees, PATH_Y);
+		this.treePop = new Pop_309_Trees(this);
 		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
 		this.radioPop = new Pop_309();
 	}
@@ -71,6 +71,10 @@ public class Gen_309 extends BackroomsGenerator {
 		this.noisePath.setSeed(seed);
 		this.noisePathGround.setSeed(seed);
 		this.noiseTrees.setSeed(seed);
+	}
+
+	public FastNoiseLiteD getTreeNoise() {
+		return this.noiseTrees;
 	}
 
 
@@ -122,31 +126,6 @@ public class Gen_309 extends BackroomsGenerator {
 				return cache;
 		}
 		return this.getPathCacheMap();
-	}
-
-
-
-	public class TreePopulator309 extends TreePopulator {
-
-		public TreePopulator309(final FastNoiseLiteD noise, final int chunkY) {
-			super(
-				noise, chunkY,
-				PATH_TREE_TRUNK,
-				PATH_TREE_LEAVES
-			);
-		}
-
-		@Override
-		public boolean isTree(final int x, final int z) {
-			if (!super.isTree(x, z))
-				return false;
-			if (Gen_309.this.isCenterClearing(x, z))
-				return false;
-			if (Gen_309.this.pathTrace.isPath(x, z, PATH_CLEARING))
-				return false;
-			return true;
-		}
-
 	}
 
 
