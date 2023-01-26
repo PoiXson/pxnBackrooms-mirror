@@ -27,6 +27,7 @@ import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
 import com.poixson.backrooms.levels.Level_010;
 import com.poixson.backrooms.levels.Level_011;
+import com.poixson.backrooms.levels.Level_033;
 import com.poixson.backrooms.levels.Level_078;
 import com.poixson.backrooms.levels.Level_151;
 import com.poixson.backrooms.levels.Level_771;
