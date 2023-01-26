@@ -237,6 +237,16 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
+	public int[] getLevels() {
+		final int num = this.backlevels.size();
+		final int[] levels = new int[num];
+		int i = 0;
+		for (final Integer lvl : this.backlevels.keySet()) {
+			levels[i] = lvl.intValue();
+			i++;
+		}
+		return levels;
+	}
 	public int getPlayerLevel(final UUID uuid) {
 		final Player player = Bukkit.getPlayer(uuid);
 		if (player == null)

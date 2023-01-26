@@ -38,23 +38,11 @@ public class Commands extends pxnCommandsHandler {
 			break;
 		case 2:
 			if ("tp".equals(args[0])) {
-				final List<String> levels = new ArrayList<String>();
-				levels.add("0");
-				levels.add("1");
-				levels.add("5");
-				levels.add("9");
-				levels.add("10");
-				levels.add("11");
-				levels.add("19");
-				levels.add("37");
-				levels.add("78");
-				levels.add("151");
-				levels.add("309");
-				levels.add("771");
-				levels.add("866");
-				for (final String lvl : levels) {
-					if (lvl.startsWith(args[1]))
-						matches.add(lvl);
+				final int[] levels = ((BackroomsPlugin)this.plugin).getLevels();
+				for (final int lvl : levels) {
+					final String str = Integer.toString(lvl);
+					if (str.startsWith(args[1]))
+						matches.add(str);
 				}
 				String name;
 				for (final Player player : Bukkit.getOnlinePlayers()) {
