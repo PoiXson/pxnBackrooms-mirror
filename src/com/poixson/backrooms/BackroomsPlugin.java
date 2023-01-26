@@ -75,6 +75,16 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (!instance.compareAndSet(null, this))
 			throw new RuntimeException("Plugin instance already enabled?");
 		super.onEnable();
+		// backrooms levels
+		new Level_000(this); // lobby, basement, hotel, attic, poolrooms, radio station
+		new Level_009(this); // suburbs
+		new Level_010(this); // field of wheat
+		new Level_011(this); // city
+		new Level_033(this); // run for your life
+		new Level_078(this); // space
+		new Level_151(this); // dollhouse
+		new Level_771(this); // crossroads
+		new Level_866(this); // dirtfield
 		// create worlds (after server starts)
 		(new BukkitRunnable() {
 			@Override
@@ -229,6 +239,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
+	public LevelBackrooms register(final int level, final LevelBackrooms backlevel) {
+		this.backlevels.put(Integer.valueOf(level), backlevel);
+		return backlevel;
+	}
 	public int[] getLevels() {
 		final int num = this.backlevels.size();
 		final int[] levels = new int[num];
@@ -283,29 +297,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public World getWorldFromLevel(final int level) {
-		final String worldName = this.getLevelWorldName(level);
+		final String worldName = "level" + Integer.toString(level);
 		if (Utils.isEmpty(worldName))
 			return null;
 		return Bukkit.getWorld(worldName);
-	}
-	public String getLevelWorldName(final int level) {
-		switch (level) {
-		case 1:
-		case 0:
-		case 37:
-		case 5:
-		case 19:
-		case 309: return "level0";
-		case 9:   return "level9";
-		case 10:  return "level10";
-		case 11:  return "level11";
-		case 78:  return "level78";
-		case 151: return "level151";
-		case 771: return "level771";
-		case 866: return "level866";
-		default: break;
-		}
-		return null;
 	}
 
 
@@ -342,36 +337,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public LevelBackrooms getBackroomsLevel(final int level) {
-		// existing generator
-		{
-			final LevelBackrooms lvl = this.backlevels.get(Integer.valueOf(level));
-			if (lvl != null)
-				return lvl;
-		}
-		// new generator instance
-		{
-			final LevelBackrooms lvl;
-			switch (level) {
-			case 1:
-			case 37:
-			case 5:
-			case 19:
-			case 309: return this.getBackroomsLevel(0);
-			case   0: lvl = new Level_000(this); break;
-			case   9: lvl = new Level_009(this); break;
-			case  10: lvl = new Level_010(this); break;
-			case  11: lvl = new Level_011(this); break;
-			case  78: lvl = new Level_078(this); break;
-			case 151: lvl = new Level_151(this); break;
-			case 771: lvl = new Level_771(this); break;
-			case 866: lvl = new Level_866(this); break;
-			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			}
-			final LevelBackrooms existing = this.backlevels.putIfAbsent(Integer.valueOf(level), lvl);
-			if (existing != null)
-				return existing;
-			return lvl;
-		}
+		return this.backlevels.get(Integer.valueOf(level));
 	}
 
 
@@ -391,12 +357,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		visited.add(Integer.valueOf(level));
 		if (visited.size() > sizeLast) {
 			// check if visited all levels
-			final int[] levels = new int[] {
-				0, 1, 5, 9, 10, 11, 19, 37, 78,
-				151, 309, 771, 866,
-			};
-			for (final int lvl : levels) {
-				if (!visited.contains(Integer.valueOf(lvl)))
+			for (final Integer lvl : this.backlevels.keySet()) {
+				if (!visited.contains(lvl))
 					return false;
 			}
 			return true;
