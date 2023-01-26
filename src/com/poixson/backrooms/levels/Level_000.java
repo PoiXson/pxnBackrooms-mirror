@@ -141,8 +141,8 @@ public class Level_000 extends LevelBackrooms {
 
 	@Override
 	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
-		// pre-generate hotel
-		final Map<Dxy, HotelData> prehotel = this.gen_005.pregenerateHotel(chunkX, chunkZ);
+		// pre-generate
+		final Map<Dxy, HotelData> prehotel = this.gen_005.pregenerate(chunkX, chunkZ);
 		this.gen_001.generate(null, chunk, chunkX, chunkZ);     // basement
 		this.gen_000.generate(null, chunk, chunkX, chunkZ);     // lobby
 		this.gen_037.generate(null, chunk, chunkX, chunkZ);     // pools

@@ -79,8 +79,8 @@ public class Gen_005 extends GenBackrooms {
 
 
 
-	public HashMap<Dxy, HotelData> pregenerateHotel(final int chunkX, final int chunkZ) {
-		final HashMap<Dxy, HotelData> prehotel = new HashMap<Dxy, HotelData>();
+	public HashMap<Dxy, HotelData> pregenerate(final int chunkX, final int chunkZ) {
+		final HashMap<Dxy, HotelData> pregen = new HashMap<Dxy, HotelData>();
 		int xx, zz;
 		double value;
 		HotelData dao;
@@ -90,7 +90,7 @@ public class Gen_005 extends GenBackrooms {
 				xx = (chunkX * 16) + x;
 				value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new HotelData(value);
-				prehotel.put(new Dxy(x, z), dao);
+				pregen.put(new Dxy(x, z), dao);
 			}
 		}
 		HotelData daoN, daoS, daoE, daoW;
@@ -98,15 +98,15 @@ public class Gen_005 extends GenBackrooms {
 		// find walls
 		for (int z=-8; z<24; z++) {
 			for (int x=-8; x<24; x++) {
-				dao   = prehotel.get(new Dxy(x,   z  ));
-				daoN  = prehotel.get(new Dxy(x,   z-1));
-				daoS  = prehotel.get(new Dxy(x,   z+1));
-				daoE  = prehotel.get(new Dxy(x+1, z  ));
-				daoW  = prehotel.get(new Dxy(x-1, z  ));
-				daoNE = prehotel.get(new Dxy(x+1, z-1));
-				daoNW = prehotel.get(new Dxy(x-1, z-1));
-				daoSE = prehotel.get(new Dxy(x+1, z+1));
-				daoSW = prehotel.get(new Dxy(x-1, z+1));
+				dao   = pregen.get(new Dxy(x,   z  ));
+				daoN  = pregen.get(new Dxy(x,   z-1));
+				daoS  = pregen.get(new Dxy(x,   z+1));
+				daoE  = pregen.get(new Dxy(x+1, z  ));
+				daoW  = pregen.get(new Dxy(x-1, z  ));
+				daoNE = pregen.get(new Dxy(x+1, z-1));
+				daoNW = pregen.get(new Dxy(x-1, z-1));
+				daoSE = pregen.get(new Dxy(x+1, z+1));
+				daoSW = pregen.get(new Dxy(x-1, z+1));
 				if (NodeType.ROOM.equals(dao.type)) {
 					if ((daoN  != null && NodeType.HALL.equals(daoN.type))
 					||  (daoS  != null && NodeType.HALL.equals(daoS.type))
@@ -120,7 +120,7 @@ public class Gen_005 extends GenBackrooms {
 				}
 			}
 		}
-		return prehotel;
+		return pregen;
 	}
 	@Override
 	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
