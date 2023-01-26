@@ -13,22 +13,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.backrooms.levels.Level_000;
@@ -88,14 +80,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 			public void run() {
 //TODO: this is converting long to string
 				final String seed = Long.toString( Bukkit.getWorld("world").getSeed() );
-				MakeWorld(  0, seed); // lobby
-				MakeWorld(  9, seed); // suburbs
-				MakeWorld( 10, seed); // field of wheat
-				MakeWorld( 11, seed); // city
-				MakeWorld( 78, seed); // space
-				MakeWorld(151, seed); // dollhouse
-				MakeWorld(771, seed); // crossroads
-				MakeWorld(866, seed); // dirtfield
+				final Iterator<Entry<Integer, LevelBackrooms>> it = BackroomsPlugin.this.backlevels.entrySet().iterator();
+				while (it.hasNext()) {
+					final Entry<Integer, LevelBackrooms> entry = it.next();
+					final int level = entry.getKey().intValue();
+					if (entry.getValue().isWorldMain(level))
+						LevelBackrooms.MakeWorld(level, seed);
+				}
 			}
 		}).runTask(this);
 		// commands listener
@@ -438,46 +429,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevelFromWorld(worldName);
 		return this.getBackroomsLevel(level);
-	}
-
-
-
-	public static MultiverseCore GetMVCore() {
-		final PluginManager pm = Bukkit.getServer().getPluginManager();
-		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
-		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
-		return mvcore;
-	}
-
-	protected static void MakeWorld(final int level, final String seed) {
-		final MVWorldManager manager = GetMVCore().getMVWorldManager();
-		final String name = "level" + Integer.toString(level);
-		if (!manager.isMVWorld(name, false)) {
-			log.warning(LOG_PREFIX+"Creating backrooms level: "+Integer.toString(level));
-			final Environment env;
-			switch (level) {
-			case 78: env = Environment.THE_END; break;
-			default: env = Environment.NORMAL;  break;
-			}
-			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, "pxnBackrooms", true))
-				throw new RuntimeException("Failed to create world: "+name);
-			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
-			final World world = mvworld.getCBWorld();
-			mvworld.setAlias("backrooms");
-			mvworld.setHidden(true);
-			mvworld.setKeepSpawnInMemory(false);
-			mvworld.setAllowAnimalSpawn(true);
-			mvworld.setAllowMonsterSpawn(true);
-			mvworld.setAutoHeal(true);
-			mvworld.setBedRespawn(true);
-			mvworld.setDifficulty(Difficulty.HARD);
-			mvworld.setHunger(true);
-			mvworld.setPVPMode(true);
-			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE );
-			world.setGameRule(GameRule.DO_WEATHER_CYCLE,  Boolean.FALSE);
-			world.setGameRule(GameRule.KEEP_INVENTORY,    Boolean.TRUE );
-			world.setGameRule(GameRule.MOB_GRIEFING,      Boolean.FALSE);
-		}
 	}
 
 

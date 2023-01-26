@@ -2,12 +2,21 @@ package com.poixson.backrooms.levels;
 
 import java.util.Random;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldType;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
+import org.bukkit.plugin.PluginManager;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.BackroomsPlugin;
 
 
@@ -76,6 +85,45 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
+	public static void MakeWorld(final int level, final String seed) {
+		final MVWorldManager manager = GetMVCore().getMVWorldManager();
+		final String name = "level" + Integer.toString(level);
+		if (!manager.isMVWorld(name, false)) {
+			BackroomsPlugin.log.warning(String.format("%sCreating backrooms level: %d", BackroomsPlugin.LOG_PREFIX, Integer.toString(level)));
+			final Environment env;
+			switch (level) {
+			case 78: env = Environment.THE_END; break;
+			default: env = Environment.NORMAL;  break;
+			}
+			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, "pxnBackrooms", true))
+				throw new RuntimeException("Failed to create world: " + name);
+			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
+			final World world = mvworld.getCBWorld();
+			mvworld.setAlias("backrooms");
+			mvworld.setHidden(true);
+			mvworld.setKeepSpawnInMemory(false);
+			mvworld.setAllowAnimalSpawn(true);
+			mvworld.setAllowMonsterSpawn(true);
+			mvworld.setAutoHeal(true);
+			mvworld.setBedRespawn(true);
+			mvworld.setDifficulty(Difficulty.HARD);
+			mvworld.setHunger(true);
+			mvworld.setPVPMode(true);
+			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE );
+			world.setGameRule(GameRule.DO_WEATHER_CYCLE,  Boolean.FALSE);
+			world.setGameRule(GameRule.KEEP_INVENTORY,    Boolean.TRUE );
+			world.setGameRule(GameRule.MOB_GRIEFING,      Boolean.FALSE);
+		}
+	}
+
+
+
+	public static MultiverseCore GetMVCore() {
+		final PluginManager pm = Bukkit.getServer().getPluginManager();
+		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
+		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
+		return mvcore;
+	}
 	@Override
 	public abstract void generateSurface(final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk);
