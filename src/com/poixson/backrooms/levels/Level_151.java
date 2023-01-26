@@ -32,7 +32,6 @@ public class Level_151 extends LevelBackrooms {
 //TODO
 	@Override
 	public Location getSpawn(final int level) {
-		if (level != 151) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		return this.getSpawn(level, 0, 0);
 	}
 	@Override
