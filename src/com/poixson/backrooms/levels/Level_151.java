@@ -8,7 +8,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 // 151 | Dollhouse
 public class Level_151 extends LevelBackrooms {
 
-	public static final boolean BUILD_ROOF = true;
+	private static final boolean BUILD_ROOF = true;
 
 	public static final int SUBFLOOR   = 3;
 	public static final int SUBCEILING = 3;

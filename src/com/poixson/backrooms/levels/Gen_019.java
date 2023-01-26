@@ -16,8 +16,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 19 | Attic
 public class Gen_019 extends GenBackrooms {
 
-	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
-
 	public static final Material ATTIC_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material ATTIC_WALLS = Material.SPRUCE_PLANKS;
 

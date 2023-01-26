@@ -79,7 +79,7 @@ public class Gen_000 extends GenBackrooms {
 					}
 				} else {
 					chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
-					if (BUILD_ROOF) {
+					if (this.buildroof) {
 						final int modX6 = Math.abs(xx) % 7;
 						final int modZ6 = Math.abs(zz) % 7;
 						if (modZ6 == 0 && modX6 < 2) {
@@ -100,7 +100,7 @@ public class Gen_000 extends GenBackrooms {
 						}
 					}
 				}
-				if (BUILD_ROOF) {
+				if (this.buildroof) {
 					cy++;
 					for (int i=1; i<SUBCEILING; i++) {
 						chunk.setBlock(x, cy+i, z, Material.STONE);

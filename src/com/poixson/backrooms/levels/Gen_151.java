@@ -16,8 +16,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 151 | Dollhouse
 public class Gen_151 extends GenBackrooms {
 
-	public static final boolean BUILD_ROOF = Level_151.BUILD_ROOF;
-
 	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
 

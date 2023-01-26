@@ -17,8 +17,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 5 | Hotel
 public class Gen_005 extends GenBackrooms {
 
-	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
-
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 

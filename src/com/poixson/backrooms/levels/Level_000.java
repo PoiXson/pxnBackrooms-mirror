@@ -19,7 +19,7 @@ import com.poixson.tools.dao.Dxy;
 //   1 | Basement
 public class Level_000 extends LevelBackrooms {
 
-	public static final boolean BUILD_ROOF = true;
+	private static final boolean BUILD_ROOF = true;
 
 	public static final int SUBFLOOR   = 3;
 	public static final int SUBCEILING = 3;

@@ -25,8 +25,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 1 | Basement
 public class Gen_001 extends GenBackrooms {
 
-	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
-
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 	public static final double MOIST_THRESHOLD = 0.35;
 

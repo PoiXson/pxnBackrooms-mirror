@@ -12,8 +12,6 @@ import com.poixson.tools.dao.Dxy;
 // 37 | Poolrooms
 public class Gen_037 extends GenBackrooms {
 
-	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
-
 	public static final Material POOLS_WALL       = Material.DARK_PRISMARINE;
 	public static final Material POOLS_SUBFLOOR   = Material.DARK_PRISMARINE;
 	public static final Material POOLS_SUBCEILING = Material.DARK_PRISMARINE;
