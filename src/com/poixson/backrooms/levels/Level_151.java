@@ -10,7 +10,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 151 | Dollhouse
-public class Level_151 extends BackroomsLevel {
+public class Level_151 extends LevelBackrooms {
 
 	public static final boolean BUILD_ROOF = true;
 

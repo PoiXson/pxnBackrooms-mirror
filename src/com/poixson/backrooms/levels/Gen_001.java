@@ -20,7 +20,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 1 | Basement
-public class Gen_001 extends BackroomsGenerator {
+public class Gen_001 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

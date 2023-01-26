@@ -12,7 +12,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 866 | Dirtfield
-public class Level_866 extends BackroomsLevel {
+public class Level_866 extends LevelBackrooms {
 
 	public static final int DIRTFIELD_Y = 0;
 	public static final int SUBFLOOR = 3;

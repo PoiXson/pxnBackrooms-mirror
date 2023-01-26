@@ -9,7 +9,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 78 | Space
-public class Level_078 extends BackroomsLevel {
+public class Level_078 extends LevelBackrooms {
 
 	// generators
 	public final Gen_078 gen_078;

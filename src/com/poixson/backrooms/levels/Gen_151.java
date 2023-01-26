@@ -10,7 +10,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 151 | Dollhouse
-public class Gen_151 extends BackroomsGenerator {
+public class Gen_151 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

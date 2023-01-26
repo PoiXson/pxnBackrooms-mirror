@@ -5,7 +5,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 
 // 37 | Poolrooms
-public class Gen_037 extends BackroomsGenerator {
+public class Gen_037 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

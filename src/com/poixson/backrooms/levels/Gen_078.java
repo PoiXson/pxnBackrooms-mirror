@@ -14,7 +14,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 78 | Space
-public class Gen_078 extends BackroomsGenerator {
+public class Gen_078 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

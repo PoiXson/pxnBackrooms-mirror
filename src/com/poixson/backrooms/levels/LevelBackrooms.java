@@ -11,13 +11,13 @@ import org.bukkit.generator.WorldInfo;
 import com.poixson.backrooms.BackroomsPlugin;
 
 
-public abstract class BackroomsLevel extends ChunkGenerator {
+public abstract class LevelBackrooms extends ChunkGenerator {
 
 	protected final BackroomsPlugin plugin;
 
 
 
-	public BackroomsLevel(final BackroomsPlugin plugin) {
+	public LevelBackrooms(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
 	}
 

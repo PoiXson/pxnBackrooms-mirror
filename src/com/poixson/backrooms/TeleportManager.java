@@ -11,7 +11,7 @@ import org.bukkit.Location;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.poixson.backrooms.levels.BackroomsLevel;
+import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.tools.xTime;
 import com.poixson.utils.NumberUtils;
 import com.poixson.utils.Utils;
@@ -143,7 +143,7 @@ public class TeleportManager {
 		}
 		// find spawn location
 		{
-			final BackroomsLevel backrooms = this.plugin.getBackroomsLevel(level);
+			final LevelBackrooms backrooms = this.plugin.getBackroomsLevel(level);
 			Location loc = null;
 			for (int i=0; i<5; i++) {
 				loc = backrooms.getSpawn(level);

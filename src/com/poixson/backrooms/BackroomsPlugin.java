@@ -30,7 +30,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.commands.Commands;
-import com.poixson.backrooms.levels.BackroomsLevel;
+import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
 import com.poixson.backrooms.levels.Level_010;
@@ -57,7 +57,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
 
 	// backrooms levels
-	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
+	protected final HashMap<Integer, LevelBackrooms> backlevels = new HashMap<Integer, LevelBackrooms>();
 	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
 
 	// chance to teleport to levels
@@ -138,7 +138,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public void onDisable() {
 		super.onDisable();
 		// unload generators
-		for (final BackroomsLevel lvl : this.backlevels.values()) {
+		for (final LevelBackrooms lvl : this.backlevels.values()) {
 			lvl.unload();
 		}
 		this.backlevels.clear();
@@ -247,7 +247,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (player == null)
 			return Integer.MIN_VALUE;
 		final int lvl = this.getLevelFromWorld(player.getWorld());
-		final BackroomsLevel backlevel = this.getBackroomsLevel(lvl);
+		final LevelBackrooms backlevel = this.getBackroomsLevel(lvl);
 		return backlevel.getLevelFromY(player.getLocation().getBlockY());
 	}
 	public int getLevelFromWorld(final World world) {
@@ -356,16 +356,16 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public BackroomsLevel getBackroomsLevel(final int level) {
+	public LevelBackrooms getBackroomsLevel(final int level) {
 		// existing generator
 		{
-			final BackroomsLevel lvl = this.backlevels.get(Integer.valueOf(level));
+			final LevelBackrooms lvl = this.backlevels.get(Integer.valueOf(level));
 			if (lvl != null)
 				return lvl;
 		}
 		// new generator instance
 		{
-			final BackroomsLevel lvl;
+			final LevelBackrooms lvl;
 			switch (level) {
 			case 1:
 			case 37:
@@ -382,7 +382,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			case 866: lvl = new Level_866(this); break;
 			default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 			}
-			final BackroomsLevel existing = this.backlevels.putIfAbsent(Integer.valueOf(level), lvl);
+			final LevelBackrooms existing = this.backlevels.putIfAbsent(Integer.valueOf(level), lvl);
 			if (existing != null)
 				return existing;
 			return lvl;

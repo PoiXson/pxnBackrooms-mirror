@@ -15,7 +15,7 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
 // 0 | Lobby
-public class Gen_000 extends BackroomsGenerator {
+public class Gen_000 extends GenBackrooms {
 
 	public static final boolean ENABLED = true;
 

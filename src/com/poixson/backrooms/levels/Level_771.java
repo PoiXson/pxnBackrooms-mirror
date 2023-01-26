@@ -15,7 +15,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 771 | Crossroads
-public class Level_771 extends BackroomsLevel {
+public class Level_771 extends LevelBackrooms {
 
 	public static final int ROAD_Y = 200;
 

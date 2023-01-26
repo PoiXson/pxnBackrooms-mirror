@@ -13,7 +13,7 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
 // 309 | Radio Station
-public class Gen_309 extends BackroomsGenerator {
+public class Gen_309 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

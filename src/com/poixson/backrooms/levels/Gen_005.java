@@ -17,7 +17,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 5 | Hotel
-public class Gen_005 extends BackroomsGenerator {
+public class Gen_005 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

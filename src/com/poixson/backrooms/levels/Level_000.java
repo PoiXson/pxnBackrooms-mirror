@@ -23,7 +23,7 @@ import com.poixson.tools.dao.Dxy;
 //  37 | Poolrooms
 //   0 | Lobby
 //   1 | Basement
-public class Level_000 extends BackroomsLevel {
+public class Level_000 extends LevelBackrooms {
 
 	public static final boolean BUILD_ROOF = true;
 

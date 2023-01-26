@@ -12,7 +12,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 9 | Suburbs
-public class Level_009 extends BackroomsLevel {
+public class Level_009 extends LevelBackrooms {
 
 	public static final int SUBURBS_Y = 0;
 

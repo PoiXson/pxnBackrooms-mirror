@@ -7,7 +7,7 @@ import com.poixson.utils.FastNoiseLiteD;
 
 
 // 866 | Dirtfield
-public class Gen_866 extends BackroomsGenerator {
+public class Gen_866 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

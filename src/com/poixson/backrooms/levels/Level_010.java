@@ -12,7 +12,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 10 | Field of Wheat
-public class Level_010 extends BackroomsLevel {
+public class Level_010 extends LevelBackrooms {
 
 	public static final int WHEAT_Y = 0;
 

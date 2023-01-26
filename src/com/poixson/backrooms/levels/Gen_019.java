@@ -10,7 +10,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 19 | Attic
-public class Gen_019 extends BackroomsGenerator {
+public class Gen_019 extends GenBackrooms {
 
 	public static final boolean ENABLED = false;
 

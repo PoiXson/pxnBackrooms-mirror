@@ -1,10 +1,10 @@
 package com.poixson.backrooms.levels;
 
 
-public abstract class BackroomsGenerator {
+public abstract class GenBackrooms {
 
 
-	public BackroomsGenerator() {
+	public GenBackrooms() {
 	}
 	public abstract void unload();
 
