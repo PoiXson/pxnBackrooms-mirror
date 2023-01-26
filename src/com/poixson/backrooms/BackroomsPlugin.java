@@ -269,31 +269,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public void assertValidLevel(final int level) {
 		if (!this.isValidLevel(level))
-			throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+			throw new RuntimeException("Invalid backrooms level: " + Integer.toString(level));
 	}
 	public boolean isValidLevel(final int level) {
-		switch (level) {
-		case 0:
-		case 1:
-		case 5:
-		case 9:
-		case 10:
-		case 11:
-		case 19:
-		case 37:
-		case 78:
-		case 151:
-		case 309:
-		case 771:
-		case 866:
-			return true;
-		default: break;
-		}
-		return false;
+		return this.backlevels.containsKey(Integer.valueOf(level));
 	}
 	public boolean isValidLevel(final World world) {
 		final int level = this.getLevelFromWorld(world);
-		return  (level >= 0);
+		return this.isValidLevel(level);
 	}
 
 

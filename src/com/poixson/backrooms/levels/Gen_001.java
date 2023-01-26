@@ -3,6 +3,7 @@ package com.poixson.backrooms.levels;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -22,14 +25,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 1 | Basement
 public class Gen_001 extends GenBackrooms {
 
-	public static final boolean ENABLED = false;
-
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
-	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
-	public static final int     SUBCEILING = Level_000.SUBCEILING;
-
-	public static final int BASEMENT_Y = Level_000.Y_001;
-	public static final int BASEMENT_H = Level_000.H_001;
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 	public static final double MOIST_THRESHOLD = 0.35;
@@ -38,6 +34,10 @@ public class Gen_001 extends GenBackrooms {
 	public static final Material BASEMENT_SUBFLOOR  = Material.DIRT;
 	public static final Material BASEMENT_FLOOR_DRY = Material.BROWN_CONCRETE_POWDER;
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
+
+	public final boolean buildroof;
+	public final int subfloor;
+	public final int subceiling;
 
 	// noise
 	protected final FastNoiseLiteD noiseBasementWalls;
@@ -48,10 +48,14 @@ public class Gen_001 extends GenBackrooms {
 
 
 
-	public Gen_001() {
-		super();
+	public Gen_001(final BackroomsPlugin plugin, final int level_y, final int level_h,
+			final boolean buildroof, final int subfloor, final int subceiling) {
+		super(plugin, level_y, level_h);
+		this.buildroof  = buildroof;
+		this.subfloor   = subfloor;
+		this.subceiling = subceiling;
 		// basement wall noise
-		this.noiseBasementWalls = new FastNoiseLiteD();
+		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
 		this.noiseBasementWalls.setFrequency(0.035);
 		this.noiseBasementWalls.setFractalOctaves(1);
 		this.noiseBasementWalls.setNoiseType(NoiseType.Cellular);
@@ -59,13 +63,14 @@ public class Gen_001 extends GenBackrooms {
 		this.noiseBasementWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseBasementWalls.setCellularReturnType(CellularReturnType.Distance);
 		// moist noise
-		this.noiseMoist = new FastNoiseLiteD();
+		this.noiseMoist = this.register(new FastNoiseLiteD());
 		this.noiseMoist.setFrequency(0.03);
 		this.noiseMoist.setFractalOctaves(2);
 		this.noiseMoist.setFractalGain(2.0);
 	}
 	@Override
 	public void unload() {
+		super.unload();
 		synchronized (this.playerLights) {
 			Block blk;
 			for (final ArrayList<Location> list : this.playerLights.values()) {
@@ -82,75 +87,75 @@ public class Gen_001 extends GenBackrooms {
 
 
 	@Override
-	public void setSeed(final int seed) {
-		this.noiseBasementWalls.setSeed(seed);
-		this.noiseMoist.setSeed(seed);
-	}
-
-
-
-	public void generateBasement(
-			final ChunkData chunk, final int chunkX, final int chunkZ,
-			final int x, final int z, final int xx, final int zz) {
-		if (!ENABLED) return;
-		int y  = BASEMENT_Y;
-		int cy = BASEMENT_Y + SUBFLOOR + BASEMENT_H;
-		// basement floor
-		chunk.setBlock(x, y, z, Material.BEDROCK);
-		y++;
-		for (int yy=0; yy<SUBFLOOR; yy++) {
-			chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
-		}
-		y += SUBFLOOR;
-		final double moist = this.noiseMoist.getNoise(xx, zz);
-		final boolean isWet = (moist > MOIST_THRESHOLD);
-		final double value = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
-		final boolean isWall = (value > 0.8 && value < 0.95);
-		if (isWall) {
-			// basement walls
-			final int h = BASEMENT_H - 2;
-			for (int yy=0; yy<h; yy++) {
-				if (yy > 6) {
-					chunk.setBlock(x, y+yy, z, Material.BEDROCK);
-				} else {
-					chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
+	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		for (int z=0; z<16; z++) {
+			for (int x=0; x<16; x++) {
+				final int xx = (chunkX * 16) + x;
+				final int zz = (chunkZ * 16) + z;
+/*
+				if (!ENABLED) return;
+				int y  = this.level_y;
+				int cy = this.level_y + SUBFLOOR + this.level_h;
+				// basement floor
+				chunk.setBlock(x, y, z, Material.BEDROCK);
+				y++;
+				for (int yy=0; yy<SUBFLOOR; yy++) {
+					chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
 				}
-			}
-		} else {
-			if (isWet) {
-				chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
-			} else {
-				chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
-			}
-			// basement lights
-			final int modX10 = Math.abs(xx) % 10;
-			final int modZ10 = Math.abs(zz) % 10;
-			if (modZ10 == 0) {
-				if (modX10 < 3 || modX10 > 7) {
-					chunk.setBlock(x, y+5, z, Material.REDSTONE_LAMP);
-					switch (modX10) {
-					case 0: chunk.setBlock(x, y+6, z, Material.BEDROCK);       break;
-					case 1:
-					case 9: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
-					case 2:
-					case 8:
-						for (int iy=0; iy<3; iy++) {
-							chunk.setBlock(x, y+iy+6, z, Material.CHAIN);
+				y += SUBFLOOR;
+				final double moist = this.noiseMoist.getNoise(xx, zz);
+				final boolean isWet = (moist > MOIST_THRESHOLD);
+				final double value = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
+				final boolean isWall = (value > 0.8 && value < 0.95);
+				if (isWall) {
+					// basement walls
+					final int h = this.level_h - 2;
+					for (int yy=0; yy<h; yy++) {
+						if (yy > 6) {
+							chunk.setBlock(x, y+yy, z, Material.BEDROCK);
+						} else {
+							chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
 						}
-						break;
+					}
+				} else {
+					if (isWet) {
+						chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
+					} else {
+						chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
+					}
+					// basement lights
+					final int modX10 = Math.abs(xx) % 10;
+					final int modZ10 = Math.abs(zz) % 10;
+					if (modZ10 == 0) {
+						if (modX10 < 3 || modX10 > 7) {
+							chunk.setBlock(x, y+5, z, Material.REDSTONE_LAMP);
+							switch (modX10) {
+							case 0: chunk.setBlock(x, y+6, z, Material.BEDROCK);       break;
+							case 1:
+							case 9: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
+							case 2:
+							case 8:
+								for (int iy=0; iy<3; iy++) {
+									chunk.setBlock(x, y+iy+6, z, Material.CHAIN);
+								}
+								break;
+							}
+						}
 					}
 				}
-			}
-		}
-		// basement ceiling
-		if (BUILD_ROOF) {
-			chunk.setBlock(x, cy-1, z, Material.BEDROCK);
-			if (isWet && !isWall) {
-				chunk.setBlock(x, cy, z, Material.WATER);
-			} else {
-				chunk.setBlock(x, cy, z, Material.STONE);
-			}
-		}
+				// basement ceiling
+				if (BUILD_ROOF) {
+					chunk.setBlock(x, cy-1, z, Material.BEDROCK);
+					if (isWet && !isWall) {
+						chunk.setBlock(x, cy, z, Material.WATER);
+					} else {
+						chunk.setBlock(x, cy, z, Material.STONE);
+					}
+				}
+*/
+			} // end x
+		} // end z
 	}
 
 
@@ -209,8 +214,8 @@ public class Gen_001 extends GenBackrooms {
 			return;
 		}
 		// basement level
-		if (toY < BASEMENT_Y           ) return;
-		if (toY > BASEMENT_Y+BASEMENT_H) return;
+		if (toY < this.level_y             ) return;
+		if (toY > this.level_y+this.level_h) return;
 		final ArrayList<Location> lights = this.getPlayerLightsList(player);
 		// turn off lights
 		{
@@ -227,7 +232,7 @@ public class Gen_001 extends GenBackrooms {
 				}
 			}
 		}
-		final int y = BASEMENT_Y + 10;
+		final int y = this.level_y + 10;
 		final World world = player.getWorld();
 		final int r = BASEMENT_LIGHT_RADIUS;
 		int xx, zz;

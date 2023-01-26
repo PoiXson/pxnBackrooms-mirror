@@ -1,3 +1,4 @@
+/*
 package com.poixson.backrooms.levels;
 
 import java.util.Random;
@@ -32,8 +33,8 @@ public class Pop_309 extends BlockPopulator {
 	public void populate00(final LimitedRegion region) {
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {
-			if (Material.AIR.equals(region.getType(0, i+Gen_309.PATH_Y, 15))) {
-				y = i + Gen_309.PATH_Y;
+			if (Material.AIR.equals(region.getType(0, this.level_y+i, 15))) {
+				y = this.level_y + i;
 				break;
 			}
 		}
@@ -76,3 +77,4 @@ public class Pop_309 extends BlockPopulator {
 
 
 }
+*/

@@ -2,18 +2,12 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.utils.NumberUtils.Rnd10K;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.backrooms.levels.Gen_005.HotelDAO;
+import com.poixson.backrooms.levels.Gen_005.HotelData;
 import com.poixson.tools.dao.Dxy;
 
 
@@ -61,22 +55,25 @@ public class Level_000 extends LevelBackrooms {
 	public Level_000(final BackroomsPlugin plugin) {
 		super(plugin);
 		// generators
-		this.gen_001 = new Gen_001();
-		this.gen_000 = new Gen_000();
-		this.gen_037 = new Gen_037();
-		this.gen_005 = new Gen_005();
-		this.gen_019 = new Gen_019();
-		this.gen_309 = new Gen_309();
+		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // basement
+		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lobby
+		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // pools
+		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // hotel
+		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // attic
+		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0,             SUBFLOOR            )); // radio station
 	}
 
+
+
 	@Override
-	public void unload() {
-		this.gen_001.unload();
-		this.gen_000.unload();
-		this.gen_037.unload();
-		this.gen_005.unload();
-		this.gen_019.unload();
-		this.gen_309.unload();
+	public boolean isWorldMain(final int level) {
+		if (level == 0)
+			return true;
+		return false;
+	}
+	@Override
+	public boolean isWorldStacked() {
+		return true;
 	}
 
 
@@ -85,15 +82,15 @@ public class Level_000 extends LevelBackrooms {
 	public Location getSpawn(final int level) {
 		final int x, z;
 		switch (level) {
-		case 1:
-		case 0:
-		case 37:
-		case 5:
-		case 19:
+		case 1:  // basement
+		case 0:  // lobby
+		case 37: // pools
+		case 5:  // hotel
+		case 19: // attic
 			x = (Rnd10K() * 2) - 10000;
 			z = (Rnd10K() * 2) - 10000;
 			break;
-		case 309:
+		case 309: // radio station
 //TODO: improve this
 			x = (Rnd10K() / 5) - 1000;
 			z = Rnd10K();
@@ -106,12 +103,12 @@ public class Level_000 extends LevelBackrooms {
 	public Location getSpawn(final int level, final int x, final int z) {
 		final int y, h;
 		switch (level) {
-		case   1: y = Y_001; h = H_001; break;
-		case   0: y = Y_000; h = H_000; break;
-		case  37: y = Y_037; h = H_037; break;
-		case   5: y = Y_005; h = H_005; break;
-		case  19: y = Y_019; h = H_019; break;
-		case 309: y = Y_309; h = 10;    break;
+		case   1: y = Y_001; h = H_001; break; // basement
+		case   0: y = Y_000; h = H_000; break; // lobby
+		case  37: y = Y_037; h = H_037; break; // pools
+		case   5: y = Y_005; h = H_005; break; // hotel
+		case  19: y = Y_019; h = H_019; break; // attic
+		case 309: y = Y_309; h = 10;    break; // radio station
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 		return this.getSpawn(level, h, x, y, z);
@@ -119,35 +116,35 @@ public class Level_000 extends LevelBackrooms {
 
 	@Override
 	public int getLevelFromY(final int y) {
-		if (y <= Y_001 + H_001) return 1;
-		if (y <= Y_000 + H_000) return 0;
-		if (y <= Y_037 + H_037) return 37;
-		if (y <= Y_005 + H_005) return 5;
-		if (y <= Y_019 + H_019) return 19;
-		return 309;
+		if (y <= Y_001 + H_001) return 1;  // basement
+		if (y <= Y_000 + H_000) return 0;  // lobby
+		if (y <= Y_037 + H_037) return 37; // pools
+		if (y <= Y_005 + H_005) return 5;  // hotel
+		if (y <= Y_019 + H_019) return 19; // attic
+		return 309;                        // radio station
 	}
 	@Override
-	public int getYFromLevel(final int level) {
+	public int getY(final int level) {
 		switch (level) {
-		case 1:   return Y_001;
-		case 0:   return Y_000;
-		case 37:  return Y_037;
-		case 5:   return Y_005;
-		case 19:  return Y_019;
-		case 309: return Y_309;
+		case 1:   return Y_001; // basement
+		case 0:   return Y_000; // lobby
+		case 37:  return Y_037; // pools
+		case 5:   return Y_005; // hotel
+		case 19:  return Y_019; // attic
+		case 309: return Y_309; // radio station
 		default: break;
 		}
 		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 	}
 	@Override
-	public int getMaxYFromLevel(final int level) {
+	public int getMaxY(final int level) {
 		switch (level) {
-		case 1:   return Y_001 + H_001;
-		case 0:   return Y_000 + H_000;
-		case 37:  return Y_037 + H_037;
-		case 5:   return Y_005 + H_005;
-		case 19:  return Y_019 + H_019;
-		case 309: return 255;
+		case 1:   return Y_001 + H_001; // basement
+		case 0:   return Y_000 + H_000; // lobby
+		case 37:  return Y_037 + H_037; // pools
+		case 5:   return Y_005 + H_005; // hotel
+		case 19:  return Y_019 + H_019; // attic
+		case 309: return 255;           // radio station
 		default: break;
 		}
 		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
@@ -156,44 +153,20 @@ public class Level_000 extends LevelBackrooms {
 
 
 	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
-//if (chunkX == 2 && chunkZ == 2) return;
-//if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
-		final int seed = Long.valueOf(worldInfo.getSeed()).intValue();
-		this.gen_001.setSeed(seed);
-		this.gen_000.setSeed(seed);
-		this.gen_037.setSeed(seed);
-		this.gen_005.setSeed(seed);
-		this.gen_019.setSeed(seed);
-		this.gen_309.setSeed(seed);
-		// pre-generate
-		final HashMap<Dxy, HotelDAO> prehotel = this.gen_005.pregenerateHotel(chunkX, chunkZ);
-		// generate
-		int xx, zz;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				xx = x + (chunkX * 16);
-				zz = z + (chunkZ * 16);
-				// basement
-				this.gen_001.generateBasement(chunk, chunkX, chunkZ, x, z, xx, zz);
-				// 0 main lobby
-				this.gen_000.generateLobby(chunk, chunkX, chunkZ, x, z, xx, zz);
-				// pools
-				this.gen_037.generatePools(chunk, chunkX, chunkZ, x, z, xx, zz);
-				// hotel
-				this.gen_005.generateHotel(prehotel, chunk, chunkX, chunkZ, x, z, xx, zz);
-				// attic
-				this.gen_019.generateAttic(chunk, chunkX, chunkZ, x, z, xx, zz);
-				// radio station
-				this.gen_309.generateWoodsPath(chunk, chunkX, chunkZ, x, z, xx, zz);
-			}
-		}
+	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
+		// pre-generate hotel
+		final Map<Dxy, HotelData> prehotel = this.gen_005.pregenerateHotel(chunkX, chunkZ);
+		this.gen_001.generate(null, chunk, chunkX, chunkZ);     // basement
+		this.gen_000.generate(null, chunk, chunkX, chunkZ);     // lobby
+		this.gen_037.generate(null, chunk, chunkX, chunkZ);     // pools
+		this.gen_005.generate(prehotel, chunk, chunkX, chunkZ); // hotel
+		this.gen_019.generate(null, chunk, chunkX, chunkZ);     // attic
+		this.gen_309.generate(null, chunk, chunkX, chunkZ);     // radio station
 	}
 
 
 
+/*
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
 		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
@@ -204,6 +177,7 @@ public class Level_000 extends LevelBackrooms {
 		list.add(this.gen_019.atticPop);
 		return list;
 	}
+*/
 
 
 

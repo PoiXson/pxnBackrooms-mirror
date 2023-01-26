@@ -40,7 +40,7 @@ public class PlayerMoveListener implements Listener {
 		if (lvl_000 == null) throw new RuntimeException("Failed to get backrooms level 0");
 		if (lvl_078 == null) throw new RuntimeException("Failed to get backrooms level 78");
 		this.gen_001 = lvl_000.gen_001;
-		this.gen_078 = lvl_078.gen_078;
+		this.gen_078 = lvl_078.gen;
 	}
 
 

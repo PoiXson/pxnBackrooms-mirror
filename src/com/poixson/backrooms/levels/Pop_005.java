@@ -1,3 +1,4 @@
+/*
 package com.poixson.backrooms.levels;
 
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
@@ -25,7 +26,6 @@ public class Pop_005 extends BlockPopulator {
 
 	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
-	public static final int     HOTEL_Y    = Gen_005.HOTEL_Y;
 
 	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
 
@@ -44,10 +44,9 @@ public class Pop_005 extends BlockPopulator {
 	@Override
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
-		if (!Gen_005.ENABLED) return;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
-		final int y = HOTEL_Y + SUBFLOOR + 1;
+		final int y = this.level_y + SUBFLOOR + 1;
 		Insew dao = this.findRoomWalls(x, y, z, region);
 		if (dao == null) dao = this.findRoomWalls(x+10, y, z+10, region);
 		if (dao == null) dao = this.findRoomWalls(x,    y, z+10, region);
@@ -428,3 +427,4 @@ public class Pop_005 extends BlockPopulator {
 
 
 }
+*/

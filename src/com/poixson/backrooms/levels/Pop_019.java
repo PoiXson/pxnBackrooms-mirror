@@ -1,3 +1,4 @@
+/*
 package com.poixson.backrooms.levels;
 
 import java.util.Random;
@@ -21,9 +22,9 @@ public class Pop_019 extends BlockPopulator {
 	@Override
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
-		if (!Gen_019.ENABLED) return;
 	}
 
 
 
 }
+*/

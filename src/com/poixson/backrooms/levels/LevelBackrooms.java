@@ -1,6 +1,7 @@
 package com.poixson.backrooms.levels;
 
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -24,19 +25,56 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 	protected final BackroomsPlugin plugin;
 
+	protected final CopyOnWriteArraySet<GenBackrooms> gens = new CopyOnWriteArraySet<GenBackrooms>();
+
 
 
 	public LevelBackrooms(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
 	}
 
-	public abstract void unload();
+	public void unload() {
+		for (final GenBackrooms gen : this.gens) {
+			gen.unload();
+		}
+	}
+
+
+
+	public boolean isWorldMain(final int level) {
+		return true;
+	}
+	public boolean isWorldStacked() {
+		return false;
+	}
+
+
+
+	protected <T extends GenBackrooms> T register(final T gen) {
+		this.gens.add(gen);
+		return gen;
+	}
+
+
+
+	@Override
+	public void generateSurface(final WorldInfo worldInfo, final Random random,
+			final int chunkX, final int chunkZ, final ChunkData chunk) {
+		// seed
+		final int seed = Long.valueOf( worldInfo.getSeed() ).intValue();
+		for (final GenBackrooms gen : this.gens) {
+			gen.setSeed(seed);
+		}
+		// generate
+		this.generate(chunk, chunkX, chunkZ);
+	}
+	protected abstract void generate(final ChunkData chunk, final int chunkX, final int chunkZ);
 
 
 
 	public abstract int getLevelFromY(final int y);
-	public abstract int getYFromLevel(final int level);
-	public abstract int getMaxYFromLevel(final int level);
+	public abstract int getY(final int level);
+	public abstract int getMaxY(final int level);
 
 	public abstract Location getSpawn(final int level);
 	public abstract Location getSpawn(final int level, final int x, final int z);
@@ -124,9 +162,6 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
 		return mvcore;
 	}
-	@Override
-	public abstract void generateSurface(final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk);
 
 
 

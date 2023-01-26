@@ -1,9 +1,6 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Random;
-
 import org.bukkit.Location;
-import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
 
@@ -12,18 +9,14 @@ import com.poixson.backrooms.BackroomsPlugin;
 public class Level_078 extends LevelBackrooms {
 
 	// generators
-	public final Gen_078 gen_078;
+	public final Gen_078 gen;
 
 
 
 	public Level_078(final BackroomsPlugin plugin) {
 		super(plugin);
 		// generators
-		this.gen_078 = new Gen_078(plugin);
-	}
-	@Override
-	public void unload() {
-		this.gen_078.unload();
+		this.gen = this.register(new Gen_078(plugin, 0, 0));
 	}
 
 
@@ -44,20 +37,19 @@ public class Level_078 extends LevelBackrooms {
 		return 78;
 	}
 	@Override
-	public int getYFromLevel(final int level) {
+	public int getY(final int level) {
 		return 255;
 	}
 	@Override
-	public int getMaxYFromLevel(final int level) {
+	public int getMaxY(final int level) {
 		return 319;
 	}
 
 
 
 	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
+	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
+		this.gen.generate(null, chunk, chunkX, chunkZ);
 	}
 
 

@@ -1,10 +1,6 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Random;
-
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
 
@@ -17,22 +13,18 @@ public class Level_151 extends LevelBackrooms {
 	public static final int SUBFLOOR   = 3;
 	public static final int SUBCEILING = 3;
 
-	public static final int HOUSE_Y = 100;
-	public static final int HOUSE_H = 100;
+	public static final int LEVEL_Y = 100;
+	public static final int LEVEL_H = 100;
 
 	// generators
-	public final Gen_151 gen_151;
+	public final Gen_151 gen;
 
 
 
 	public Level_151(final BackroomsPlugin plugin) {
 		super(plugin);
 		// generators
-		this.gen_151 = new Gen_151();
-	}
-	@Override
-	public void unload() {
-		this.gen_151.unload();
+		this.gen = this.register(new Gen_151(plugin, LEVEL_Y, LEVEL_H, BUILD_ROOF, SUBFLOOR, SUBCEILING));
 	}
 
 
@@ -53,28 +45,19 @@ public class Level_151 extends LevelBackrooms {
 		return 151;
 	}
 	@Override
-	public int getYFromLevel(final int level) {
-		return HOUSE_Y;
+	public int getY(final int level) {
+		return LEVEL_Y;
 	}
 	@Override
-	public int getMaxYFromLevel(final int level) {
+	public int getMaxY(final int level) {
 		return 319;
 	}
 
 
 
 	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
-//if (chunkX == 2 && chunkZ == 2) return;
-//if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				chunk.setBlock(x, 0, z, Material.BEDROCK);
-				chunk.setBlock(x, 1, z, Material.STONE);
-			}
-		}
+	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
+		this.gen.generate(null, chunk, chunkX, chunkZ);
 	}
 
 

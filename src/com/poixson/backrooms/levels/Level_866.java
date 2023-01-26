@@ -2,11 +2,8 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.utils.NumberUtils.Rnd10K;
 
-import java.util.Random;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.generator.WorldInfo;
 
 import com.poixson.backrooms.BackroomsPlugin;
 
@@ -14,26 +11,21 @@ import com.poixson.backrooms.BackroomsPlugin;
 // 866 | Dirtfield
 public class Level_866 extends LevelBackrooms {
 
-	public static final int DIRTFIELD_Y = 0;
+	public static final int LEVEL_Y = 0;
 	public static final int SUBFLOOR = 3;
 
 	public static final Material GROUND      = Material.RED_SANDSTONE;
 	public static final Material GROUND_SLAB = Material.RED_SANDSTONE_SLAB;
 
 	// generators
-	public final Gen_866 gen_866;
+	public final Gen_866 gen;
 
 
 
 	public Level_866(final BackroomsPlugin plugin) {
 		super(plugin);
 		// generators
-		this.gen_866 = new Gen_866();
-	}
-
-	@Override
-	public void unload() {
-		this.gen_866.unload();
+		this.gen = this.register(new Gen_866(plugin, LEVEL_Y, 0, SUBFLOOR));
 	}
 
 
@@ -47,7 +39,7 @@ public class Level_866 extends LevelBackrooms {
 	}
 	@Override
 	public Location getSpawn(final int level, final int x, final int z) {
-		return this.getSpawn(level, 10, x, DIRTFIELD_Y, z);
+		return this.getSpawn(level, 10, x, LEVEL_Y, z);
 	}
 
 	@Override
@@ -55,30 +47,19 @@ public class Level_866 extends LevelBackrooms {
 		return 866;
 	}
 	@Override
-	public int getYFromLevel(final int level) {
-		return DIRTFIELD_Y;
+	public int getY(final int level) {
+		return LEVEL_Y;
 	}
 	@Override
-	public int getMaxYFromLevel(final int level) {
-		return 255;
+	public int getMaxY(final int level) {
+		return LEVEL_Y + 20;
 	}
 
 
 
 	@Override
-	public void generateSurface(
-			final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
-if (chunkX == 2 && chunkZ == 2) return;
-if (chunkX % 20 == 0 || chunkZ % 20 == 0) return;
-		int xx, zz;
-		for (int z=0; z<16; z++) {
-			zz = (chunkZ * 16) + z;
-			for (int x=0; x<16; x++) {
-				xx = (chunkX * 16) + x;
-				this.gen_866.generateField(chunk, chunkX, chunkZ, x, z, xx, zz);
-			}
-		}
+	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
+		this.gen.generate(null, chunk, chunkX, chunkZ);
 	}
 
 

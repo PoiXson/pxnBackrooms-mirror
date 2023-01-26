@@ -1,20 +1,17 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.commonmc.utils.LocationUtils.RotateAround00;
+import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.commonmc.tools.BlockPlotter;
+import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.StringUtils;
 
 
 // 771 | Crossroads
 public class Gen_771 extends GenBackrooms {
-
-	public static final int ROAD_Y = Level_771.ROAD_Y;
 
 	public static final Material ROAD_SURFACE    = Material.POLISHED_BLACKSTONE;
 	public static final Material ROAD_WALL       = Material.POLISHED_BLACKSTONE_BRICK_WALL;
@@ -26,75 +23,93 @@ public class Gen_771 extends GenBackrooms {
 	protected final FastNoiseLiteD noiseRoadLights;
 
 	// populators
-	public final Pop_771 crossPop;
+//	public final Pop_771 crossPop;
 
 
 
-	public Gen_771() {
-		super();
+	public Gen_771(final BackroomsPlugin plugin, final int level_y, final int level_h) {
+		super(plugin, level_y, level_h);
 		// road lanterns
-		this.noiseRoadLights = new FastNoiseLiteD();
+		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseRoadLights.setFrequency(0.07);
 		this.noiseRoadLights.setFractalOctaves(1);
 		// populators
-		this.crossPop = new Pop_771(this.noiseRoadLights);
-	}
-	@Override
-	public void unload() {
+//		this.crossPop = new Pop_771(this.noiseRoadLights);
 	}
 
 
 
 	@Override
-	public void setSeed(final int seed) {
-		this.noiseRoadLights.setSeed(seed);
-	}
-
-
-
-	public void generateRoadCenter(final ChunkData chunk, final int chunkX, final int chunkZ) {
-		final BlockPlotter plotter = new BlockPlotter(chunk);
-		plotter.absY = ROAD_Y;
-		plotter.type('x', ROAD_SURFACE);
-		plotter.type('+', ROAD_WALL);
-		final StringBuilder[][] matrix = plotter.getNewMatrix3D(5, 16, 16);
-		int xx, zz;
-		double v;
-		// floor
-		for (int z=0; z<16; z++) {
-			zz = Math.abs((chunkZ * 16) + z) + chunkZ;
-			for (int x=0; x<16; x++) {
-				xx = Math.abs((chunkX * 16) + x) + chunkX;
-				v = Math.sqrt( Math.pow((double)xx, 2.0) + Math.pow((double)zz, 2.0) );
-				if (v < 15.5)
-					matrix[0][z].setCharAt(x, 'x');
-			}
+	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		final boolean centerX = (chunkX == 0 || chunkX == -1);
+		final boolean centerZ = (chunkZ == 0 || chunkZ == -1);
+		// world center
+		if (centerX && centerZ) {
+//			this.gen_771.generateRoadCenter(chunk, chunkX, chunkZ);
+//			this.gen_771.generateCenterArch(chunk, chunkX, chunkZ, true);
+//			this.gen_771.generateCenterArch(chunk, chunkX, chunkZ, false);
+		} else
+		// road
+		if (centerX || centerZ) {
+//			this.gen_771.generateRoad(null, chunk, chunkX, chunkZ);
 		}
-		// wall/fence
+	}
+
+
+
+/*
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				if (matrix[0][z].charAt(x) != ' ')
-					continue;
-				if ( (z > 0  && matrix[0][z-1].charAt(x) != ' ') // north
-				||   (z < 15 && matrix[0][z+1].charAt(x) != ' ') // south
-				||   (x < 15 && matrix[0][z].charAt(x+1) != ' ') // east
-				||   (x > 0  && matrix[0][z].charAt(x-1) != ' ') // west
-				||   (z>0  && x<15 && matrix[0][z-1].charAt(x+1) != ' ') // north-east
-				||   (z>0  && x>0  && matrix[0][z-1].charAt(x-1) != ' ') // north-west
-				||   (z<15 && x>0  && matrix[0][z+1].charAt(x-1) != ' ') // south-west
-				||   (z<15 && x<15 && matrix[0][z+1].charAt(x+1) != ' ') // south-east
-				) {
-					matrix[1][z].setCharAt(x, '+');
+				final int xx = (chunkX * 16) + x;
+				final int zz = (chunkZ * 16) + z;
+/*
+				final BlockPlotter plotter = new BlockPlotter(chunk);
+				plotter.absY = this.level_y;
+				plotter.type('x', ROAD_SURFACE);
+				plotter.type('+', ROAD_WALL);
+				final StringBuilder[][] matrix = plotter.getNewMatrix3D(5, 16, 16);
+				int ax, az;
+				double v;
+				// floor
+				for (int iz=0; iz<16; iz++) {
+					az = Math.abs((chunkZ * 16) + iz) + chunkZ;
+					for (int ix=0; ix<16; ix++) {
+						ax = Math.abs((chunkX * 16) + ix) + chunkX;
+						v = Math.sqrt( Math.pow((double)ax, 2.0) + Math.pow((double)az, 2.0) );
+						if (v < 15.5)
+							matrix[0][z].setCharAt(x, 'x');
+					}
 				}
-			}
-		}
-		// place blocks
-		final String axis = RotateAround00(chunkX, chunkZ);
-		plotter.place3D(axis, matrix);
+				// wall/fence
+				for (int iz=0; z<16; z++) {
+					for (int x=0; x<16; x++) {
+						if (matrix[0][z].charAt(x) != ' ')
+							continue;
+						if ( (z > 0  && matrix[0][z-1].charAt(x) != ' ') // north
+						||   (z < 15 && matrix[0][z+1].charAt(x) != ' ') // south
+						||   (x < 15 && matrix[0][z].charAt(x+1) != ' ') // east
+						||   (x > 0  && matrix[0][z].charAt(x-1) != ' ') // west
+						||   (z>0  && x<15 && matrix[0][z-1].charAt(x+1) != ' ') // north-east
+						||   (z>0  && x>0  && matrix[0][z-1].charAt(x-1) != ' ') // north-west
+						||   (z<15 && x>0  && matrix[0][z+1].charAt(x-1) != ' ') // south-west
+						||   (z<15 && x<15 && matrix[0][z+1].charAt(x+1) != ' ') // south-east
+						) {
+							matrix[1][z].setCharAt(x, '+');
+						}
+					}
+				}
+				// place blocks
+				final String axis = RotateAround00(chunkX, chunkZ);
+				plotter.place3D(axis, matrix);
+* /
+			} // end x
+		} // end z
 	}
 
 
 
+/ *
 	protected void generateCenterArch(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final boolean ab) {
 		final int x, z;
@@ -117,7 +132,7 @@ public class Gen_771 extends GenBackrooms {
 				} else  { x =  0; z = 12; axis = "YZX"; dir = BlockFace.NORTH; }
 			}
 		}
-		final BlockPlotter plotter = new BlockPlotter(chunk, x, ROAD_Y+1, z);
+		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y+1, z);
 		plotter.type('@', ROAD_WALL_DECOR);
 		plotter.type('|', CENTER_PILLAR);
 		plotter.type('-', Material.POLISHED_BLACKSTONE_SLAB);
@@ -161,7 +176,7 @@ public class Gen_771 extends GenBackrooms {
 			} else if (chunkZ ==  0) { axis = "uen"; x =  0; z =  3;
 			} else if (chunkZ == -1) { axis = "ues"; x =  0; z = 12;
 			} else return;
-			final BlockPlotter plotter = new BlockPlotter(chunk, x, ROAD_Y, z);
+			final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y, z);
 			final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(2, 16);
 			plotter.type('#', ROAD_SURFACE);
 			plotter.type('|', ROAD_WALL);
@@ -183,19 +198,19 @@ public class Gen_771 extends GenBackrooms {
 			} else if (chunkZ ==  0) { axis2 = "uwn"; x =  6; z =  3; dir = "north";
 			} else if (chunkZ == -1) { axis2 = "uws"; x =  6; z = 12; dir = "south";
 			} else return;
-			int y = ROAD_Y;
+			int h = this.level_h;
 			final BlockPlotter plotter = new BlockPlotter(chunk, x, 0, z);
-			final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(y, 2);
+			final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(h, 2);
 			plotter.type('x', Material.POLISHED_BLACKSTONE_BRICKS);
 			plotter.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "top,"+dir);
-			matrix[--y][1].append(" xxx"); matrix[y][0].append("  xx");
-			matrix[--y][1].append(" xxx"); matrix[y][0].append("  xx");
-			matrix[--y][1].append(" xxx"); matrix[y][0].append("  Lx");
-			matrix[--y][1].append(" Lxx"); matrix[y][0].append("   x");
-			matrix[--y][1].append("  xx"); matrix[y][0].append("   x");
-			matrix[--y][1].append("  xx"); matrix[y][0].append("   L");
-			matrix[--y][1].append("  Lx");
-			for (int iy=0; iy<y; iy++)
+			matrix[--h][1].append(" xxx"); matrix[h][0].append("  xx");
+			matrix[--h][1].append(" xxx"); matrix[h][0].append("  xx");
+			matrix[--h][1].append(" xxx"); matrix[h][0].append("  Lx");
+			matrix[--h][1].append(" Lxx"); matrix[h][0].append("   x");
+			matrix[--h][1].append("  xx"); matrix[h][0].append("   x");
+			matrix[--h][1].append("  xx"); matrix[h][0].append("   L");
+			matrix[--h][1].append("  Lx");
+			for (int iy=0; iy<h; iy++)
 				matrix[iy][1].append("   x");
 			plotter.place3D(axis, matrix);
 			if (chunkX == 0 || chunkX == -1) plotter.absZ += 3;
@@ -203,6 +218,7 @@ public class Gen_771 extends GenBackrooms {
 			plotter.place3D(axis2, matrix);
 		}
 	}
+*/
 
 
 
