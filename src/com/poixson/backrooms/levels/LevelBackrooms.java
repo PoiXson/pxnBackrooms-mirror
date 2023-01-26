@@ -27,10 +27,14 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 	protected final CopyOnWriteArraySet<GenBackrooms> gens = new CopyOnWriteArraySet<GenBackrooms>();
 
+	protected final int mainlevel;
 
 
-	public LevelBackrooms(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
+
+	public LevelBackrooms(final BackroomsPlugin plugin, final int mainlevel) {
+		this.plugin    = plugin;
+		this.mainlevel = mainlevel;
+		plugin.register(this.getMainLevel(), this);
 	}
 
 	public void unload() {
@@ -41,11 +45,14 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
+	public int getMainLevel() {
+		return this.mainlevel;
+	}
 	public boolean isWorldMain(final int level) {
-		return true;
+		return (this.getMainLevel() == level);
 	}
 	public boolean isWorldStacked() {
-		return false;
+		return (this.gens.size() > 1);
 	}
 
 

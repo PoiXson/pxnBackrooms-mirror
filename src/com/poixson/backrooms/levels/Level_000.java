@@ -53,7 +53,7 @@ public class Level_000 extends LevelBackrooms {
 
 
 	public Level_000(final BackroomsPlugin plugin) {
-		super(plugin);
+		super(plugin, 0);
 		// generators
 		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // basement
 		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lobby
@@ -61,19 +61,6 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // hotel
 		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // attic
 		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0,             SUBFLOOR            )); // radio station
-	}
-
-
-
-	@Override
-	public boolean isWorldMain(final int level) {
-		if (level == 0)
-			return true;
-		return false;
-	}
-	@Override
-	public boolean isWorldStacked() {
-		return true;
 	}
 
 

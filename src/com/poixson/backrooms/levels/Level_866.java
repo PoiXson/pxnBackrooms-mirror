@@ -23,7 +23,7 @@ public class Level_866 extends LevelBackrooms {
 
 
 	public Level_866(final BackroomsPlugin plugin) {
-		super(plugin);
+		super(plugin, 866);
 		// generators
 		this.gen = this.register(new Gen_866(plugin, LEVEL_Y, 0, SUBFLOOR));
 	}
