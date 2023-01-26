@@ -79,7 +79,9 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
-	public abstract int getLevelFromY(final int y);
+	public int getLevelFromY(final int y) {
+		return this.getMainLevel();
+	}
 	public abstract int getY(final int level);
 	public abstract int getMaxY(final int level);
 

@@ -33,10 +33,6 @@ public class Level_078 extends LevelBackrooms {
 	}
 
 	@Override
-	public int getLevelFromY(final int y) {
-		return 78;
-	}
-	@Override
 	public int getY(final int level) {
 		return 255;
 	}
