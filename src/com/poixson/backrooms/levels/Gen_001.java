@@ -26,7 +26,9 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_001 extends GenBackrooms {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
-	public static final double MOIST_THRESHOLD = 0.35;
+	public static final double THRESH_WALL_LOW  = 0.8;
+	public static final double THRESH_WALL_HIGH = 0.95;
+	public static final double THRESH_MOIST     = 0.35;
 
 	public static final Material BASEMENT_WALL      = Material.MUD_BRICKS;
 	public static final Material BASEMENT_SUBFLOOR  = Material.DIRT;
@@ -84,30 +86,59 @@ public class Gen_001 extends GenBackrooms {
 
 
 
+	public class BasementData implements PreGenData {
+		public final double valueWall;
+		public final double valueMoist;
+		public boolean isWall;
+		public boolean isWet;
+		public BasementData(final double valueWall, final double valueMoist) {
+			this.valueWall  = valueWall;
+			this.valueMoist = valueMoist;
+			this.isWall = (valueWall > THRESH_WALL_LOW && valueWall < THRESH_WALL_HIGH);
+			this.isWet = (valueMoist > THRESH_MOIST);
+		}
+	}
+
+
+
+	public HashMap<Dxy, BasementData> pregenerate(final int chunkX, final int chunkZ) {
+		final HashMap<Dxy, BasementData> pregen = new HashMap<Dxy, BasementData>();
+		BasementData dao;
+		int xx, zz;
+		double valueWall, valueMoist;
+		for (int z=0; z<16; z++) {
+			zz = (chunkZ * 16) + z;
+			for (int x=0; x<16; x++) {
+				xx = (chunkX * 16) + x;
+				valueWall  = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
+				valueMoist = this.noiseMoist.getNoise(xx, zz);
+				dao = new BasementData(valueWall, valueMoist);
+				pregen.put(new Dxy(x, z), dao);
+			}
+		}
+		return pregen;
+	}
 	@Override
 	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		BasementData dao;
+		int cy = this.level_y + this.level_h + this.subfloor;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
-/*
-				if (!ENABLED) return;
 				int y  = this.level_y;
-				int cy = this.level_y + SUBFLOOR + this.level_h;
 				// basement floor
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;
-				for (int yy=0; yy<SUBFLOOR; yy++) {
+				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
 				}
-				y += SUBFLOOR;
-				final double moist = this.noiseMoist.getNoise(xx, zz);
-				final boolean isWet = (moist > MOIST_THRESHOLD);
-				final double value = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
-				final boolean isWall = (value > 0.8 && value < 0.95);
-				if (isWall) {
-					// basement walls
+				y += this.subfloor;
+				dao = (BasementData) datamap.get(new Dxy(x, z));
+				if (dao == null) continue;
+				// wall
+				if (dao.isWall) {
 					final int h = this.level_h - 2;
 					for (int yy=0; yy<h; yy++) {
 						if (yy > 6) {
@@ -116,8 +147,9 @@ public class Gen_001 extends GenBackrooms {
 							chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
 						}
 					}
+				// room
 				} else {
-					if (isWet) {
+					if (dao.isWet) {
 						chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
 					} else {
 						chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
@@ -134,7 +166,7 @@ public class Gen_001 extends GenBackrooms {
 							case 9: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
 							case 2:
 							case 8:
-								for (int iy=0; iy<3; iy++) {
+								for (int iy=0; iy<5; iy++) {
 									chunk.setBlock(x, y+iy+6, z, Material.CHAIN);
 								}
 								break;
@@ -143,15 +175,14 @@ public class Gen_001 extends GenBackrooms {
 					}
 				}
 				// basement ceiling
-				if (BUILD_ROOF) {
+				if (this.buildroof) {
 					chunk.setBlock(x, cy-1, z, Material.BEDROCK);
-					if (isWet && !isWall) {
+					if (dao.isWet && !dao.isWall) {
 						chunk.setBlock(x, cy, z, Material.WATER);
 					} else {
 						chunk.setBlock(x, cy, z, Material.STONE);
 					}
 				}
-*/
 			} // end x
 		} // end z
 	}
