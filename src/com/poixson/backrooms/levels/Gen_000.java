@@ -22,8 +22,8 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 // 0 | Lobby
 public class Gen_000 extends GenBackrooms {
 
-	public static final double THRESH_WALL_LOW  = 0.38;
-	public static final double THRESH_WALL_HIGH = 0.5;
+	public static final double THRESH_WALL_L = 0.38;
+	public static final double THRESH_WALL_H = 0.5;
 
 	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
@@ -63,7 +63,7 @@ public class Gen_000 extends GenBackrooms {
 		public boolean isWall;
 		public LobbyData(final double valueWall) {
 			this.valueWall = valueWall;
-			this.isWall = (valueWall > THRESH_WALL_LOW && valueWall < THRESH_WALL_HIGH);
+			this.isWall = (valueWall > THRESH_WALL_L && valueWall < THRESH_WALL_H);
 		}
 	}
 
