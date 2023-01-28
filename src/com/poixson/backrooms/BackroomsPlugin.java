@@ -46,6 +46,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected static final int BSTATS_PLUGIN_ID = 17231;
 
 	protected static final String GENERATOR_NAME = "Backrooms";
+//TODO: set the version automatically
+	protected static final String DEFAULT_RESOURCE_PACK = "http://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-0.1.1.zip";
 
 	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
 
@@ -75,6 +77,20 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (!instance.compareAndSet(null, this))
 			throw new RuntimeException("Plugin instance already enabled?");
 		super.onEnable();
+		// resource pack
+		{
+			final String pack = Bukkit.getResourcePack();
+			if (pack == null || pack.isEmpty()) {
+				log.warning(LOG_PREFIX + "Resource pack not set");
+				log.warning(LOG_PREFIX + "You can use this one: " + DEFAULT_RESOURCE_PACK);
+			} else {
+				log.info(String.format(
+					"%sUsing resource pack: %s",
+					LOG_PREFIX,
+					Bukkit.getResourcePack()
+				));
+			}
+		}
 		// backrooms levels
 		new Level_000(this); // lobby, basement, hotel, attic, poolrooms, radio station
 		new Level_009(this); // suburbs
