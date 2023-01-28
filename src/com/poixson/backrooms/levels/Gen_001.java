@@ -25,6 +25,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 1 | Basement
 public class Gen_001 extends GenBackrooms {
 
+	public static final int LAMP_Y = 6;
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 	public static final double THRESH_WALL_LOW  = 0.8;
 	public static final double THRESH_WALL_HIGH = 0.95;
@@ -159,15 +160,15 @@ public class Gen_001 extends GenBackrooms {
 					final int modZ10 = Math.abs(zz) % 10;
 					if (modZ10 == 0) {
 						if (modX10 < 3 || modX10 > 7) {
-							chunk.setBlock(x, y+5, z, Material.REDSTONE_LAMP);
+							chunk.setBlock(x, y+LAMP_Y, z, Material.REDSTONE_LAMP);
 							switch (modX10) {
-							case 0: chunk.setBlock(x, y+6, z, Material.BEDROCK);       break;
+							case 0: chunk.setBlock(x, y+LAMP_Y+1, z, Material.BEDROCK);       break;
 							case 1:
-							case 9: chunk.setBlock(x, y+6, z, Material.REDSTONE_WIRE); break;
+							case 9: chunk.setBlock(x, y+LAMP_Y+1, z, Material.REDSTONE_WIRE); break;
 							case 2:
 							case 8:
 								for (int iy=0; iy<5; iy++) {
-									chunk.setBlock(x, y+iy+6, z, Material.CHAIN);
+									chunk.setBlock(x, y+iy+LAMP_Y+1, z, Material.CHAIN);
 								}
 								break;
 							}
@@ -261,7 +262,7 @@ public class Gen_001 extends GenBackrooms {
 				}
 			}
 		}
-		final int y = this.level_y + 10;
+		final int y = this.level_y + LAMP_Y + 5;
 		final World world = player.getWorld();
 		final int r = BASEMENT_LIGHT_RADIUS;
 		int xx, zz;
