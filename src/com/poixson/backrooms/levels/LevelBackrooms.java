@@ -151,19 +151,76 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();
 			mvworld.setAlias("backrooms");
+			mvworld.setAutoLoad(true);
 			mvworld.setHidden(true);
 			mvworld.setKeepSpawnInMemory(false);
 			mvworld.setAllowAnimalSpawn(true);
 			mvworld.setAllowMonsterSpawn(true);
-			mvworld.setAutoHeal(true);
+			mvworld.setAutoHeal(false);
+			mvworld.setHunger(true);
 			mvworld.setBedRespawn(true);
 			mvworld.setDifficulty(Difficulty.HARD);
-			mvworld.setHunger(true);
 			mvworld.setPVPMode(true);
-			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE );
-			world.setGameRule(GameRule.DO_WEATHER_CYCLE,  Boolean.FALSE);
-			world.setGameRule(GameRule.KEEP_INVENTORY,    Boolean.TRUE );
-			world.setGameRule(GameRule.MOB_GRIEFING,      Boolean.FALSE);
+			mvworld.setGenerator("");
+			mvworld.setRespawnToWorld("level0");
+			switch (level) {
+			case 0: // lobby
+				mvworld.setTime("midnight");
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.FALSE);
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
+				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE);
+				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.TRUE );
+				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.FALSE);
+				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE);
+				break;
+			case 33: // run for your life
+				mvworld.setTime("midnight");
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.FALSE);
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
+				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.TRUE );
+				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.FALSE);
+				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.TRUE );
+				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE );
+				break;
+			case 78: // space
+				mvworld.setTime("midnight");
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.FALSE);
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
+				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE);
+				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.FALSE);
+				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.TRUE );
+				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE );
+				break;
+			default:
+				mvworld.setTime("noon");
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.TRUE );
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.TRUE );
+				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE);
+				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.FALSE);
+				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.TRUE );
+				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE );
+				break;
+			}
+			world.setGameRule(GameRule.REDUCED_DEBUG_INFO,         Boolean.FALSE);
+			world.setGameRule(GameRule.KEEP_INVENTORY,             Boolean.TRUE );
+			world.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS,       Boolean.TRUE );
+			world.setGameRule(GameRule.DROWNING_DAMAGE,            Boolean.TRUE );
+			world.setGameRule(GameRule.FREEZE_DAMAGE,              Boolean.FALSE);
+			world.setGameRule(GameRule.MOB_GRIEFING,               Boolean.FALSE);
+			world.setGameRule(GameRule.DO_ENTITY_DROPS,            Boolean.TRUE );
+			world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS,      Boolean.FALSE);
+			world.setGameRule(GameRule.SHOW_DEATH_MESSAGES,        Boolean.TRUE );
+			world.setGameRule(GameRule.BLOCK_EXPLOSION_DROP_DECAY, Boolean.FALSE);
+			world.setGameRule(GameRule.TNT_EXPLOSION_DROP_DECAY,   Boolean.FALSE);
+			world.setGameRule(GameRule.MOB_EXPLOSION_DROP_DECAY,   Boolean.FALSE);
+			world.setGameRule(GameRule.FIRE_DAMAGE,                Boolean.TRUE );
+			world.setGameRule(GameRule.DO_FIRE_TICK,               Boolean.TRUE );
+			world.setGameRule(GameRule.DO_TILE_DROPS,              Boolean.TRUE );
+			world.setGameRule(GameRule.DO_TRADER_SPAWNING,         Boolean.TRUE );
+			world.setGameRule(GameRule.DO_WARDEN_SPAWNING,         Boolean.TRUE );
+			world.setGameRule(GameRule.SPAWN_RADIUS,                Integer.valueOf(50));
+			world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, Integer.valueOf( 1));
+			world.setGameRule(GameRule.SNOW_ACCUMULATION_HEIGHT,    Integer.valueOf( 8));
 		}
 	}
 
