@@ -35,6 +35,7 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
+import com.poixson.backrooms.listeners.RedstoneListener;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
 import com.poixson.utils.Utils;
@@ -63,6 +64,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
 	protected final AtomicReference<PlayerMoveListener>   playerMoveListener   = new AtomicReference<PlayerMoveListener>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
+	protected final AtomicReference<RedstoneListener>     redstoneListener     = new AtomicReference<RedstoneListener>(null);
 	protected final AtomicReference<ItemDespawnListener>  itemDespawnListener  = new AtomicReference<ItemDespawnListener>(null);
 
 
@@ -143,6 +145,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+		// redstone listener
+		{
+			final RedstoneListener listener = new RedstoneListener(this);
+			final RedstoneListener previous = this.redstoneListener.getAndSet(listener);
+			if (previous != null)
+				previous.unregister();
+			listener.register();
+		}
 		// item despawn listener
 		{
 			final ItemDespawnListener listener = new ItemDespawnListener(this);
@@ -180,6 +190,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// player damage listener
 		{
 			final PlayerDamageListener listener = this.playerDamageListener.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
+		// redstone listener
+		{
+			final RedstoneListener listener = this.redstoneListener.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
