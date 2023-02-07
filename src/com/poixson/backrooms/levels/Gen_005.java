@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.dao.Dxy;
+import com.poixson.tools.dao.Ixy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -78,7 +78,7 @@ public class Gen_005 extends GenBackrooms {
 
 
 
-	public void pregenerate(Map<Dxy, HotelData> data,
+	public void pregenerate(Map<Ixy, HotelData> data,
 			final int chunkX, final int chunkZ) {
 		HotelData dao;
 		int xx, zz;
@@ -89,7 +89,7 @@ public class Gen_005 extends GenBackrooms {
 				xx = (chunkX * 16) + x;
 				value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new HotelData(value);
-				data.put(new Dxy(x, z), dao);
+				data.put(new Ixy(x, z), dao);
 			}
 		}
 		HotelData daoN, daoS, daoE, daoW;
@@ -97,15 +97,15 @@ public class Gen_005 extends GenBackrooms {
 		// find walls
 		for (int z=-8; z<24; z++) {
 			for (int x=-8; x<24; x++) {
-				dao   = data.get(new Dxy(x,   z  ));
-				daoN  = data.get(new Dxy(x,   z-1));
-				daoS  = data.get(new Dxy(x,   z+1));
-				daoE  = data.get(new Dxy(x+1, z  ));
-				daoW  = data.get(new Dxy(x-1, z  ));
-				daoNE = data.get(new Dxy(x+1, z-1));
-				daoNW = data.get(new Dxy(x-1, z-1));
-				daoSE = data.get(new Dxy(x+1, z+1));
-				daoSW = data.get(new Dxy(x-1, z+1));
+				dao   = data.get(new Ixy(x,   z  ));
+				daoN  = data.get(new Ixy(x,   z-1));
+				daoS  = data.get(new Ixy(x,   z+1));
+				daoE  = data.get(new Ixy(x+1, z  ));
+				daoW  = data.get(new Ixy(x-1, z  ));
+				daoNE = data.get(new Ixy(x+1, z-1));
+				daoNW = data.get(new Ixy(x-1, z-1));
+				daoSE = data.get(new Ixy(x+1, z+1));
+				daoSW = data.get(new Ixy(x-1, z+1));
 				if (NodeType.ROOM.equals(dao.type)) {
 					if ((daoN  != null && NodeType.HALL.equals(daoN.type))
 					||  (daoS  != null && NodeType.HALL.equals(daoS.type))
@@ -171,10 +171,10 @@ public class Gen_005 extends GenBackrooms {
 							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 						// ceiling
 						} else {
-							final HotelDAO daoN = prehotel.get(new Dxy(x, z-1));
-							final HotelDAO daoS = prehotel.get(new Dxy(x, z+1));
-							final HotelDAO daoE = prehotel.get(new Dxy(x+1, z));
-							final HotelDAO daoW = prehotel.get(new Dxy(x-1, z));
+							final HotelData daoN = pregen0.hotel.get(new Ixy(x, z-1));
+							final HotelData daoS = pregen0.hotel.get(new Ixy(x, z+1));
+							final HotelData daoE = pregen0.hotel.get(new Ixy(x+1, z));
+							final HotelData daoW = pregen0.hotel.get(new Ixy(x-1, z));
 							if (NodeType.WALL.equals(daoN.type)
 							||  NodeType.WALL.equals(daoS.type)
 							||  NodeType.WALL.equals(daoE.type)

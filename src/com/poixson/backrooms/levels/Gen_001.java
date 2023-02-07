@@ -15,7 +15,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
-import com.poixson.tools.dao.Dxy;
+import com.poixson.tools.dao.Ixy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -103,7 +103,7 @@ public class Gen_001 extends GenBackrooms {
 
 
 
-	public void pregenerate(Map<Dxy, BasementData> data,
+	public void pregenerate(Map<Ixy, BasementData> data,
 			final int chunkX, final int chunkZ) {
 		BasementData dao;
 		int xx, zz;
@@ -116,7 +116,7 @@ public class Gen_001 extends GenBackrooms {
 				valueMoistA = this.noiseMoist.getNoise(xx, zz);
 				valueMoistB = this.noiseMoist.getNoise(zz, xx);
 				dao = new BasementData(valueWall, valueMoistA, valueMoistB);
-				data.put(new Dxy(x, z), dao);
+				data.put(new Ixy(x, z), dao);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ public class Gen_001 extends GenBackrooms {
 					chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
 				}
 				y += this.subfloor;
-				dao = (BasementData) ((PregenLevel0)pregen).basement.get(new Dxy(x, z));
+				dao = (BasementData) ((PregenLevel0)pregen).basement.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

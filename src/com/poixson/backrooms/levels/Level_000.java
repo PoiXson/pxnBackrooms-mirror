@@ -14,7 +14,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Gen_005.HotelData;
-import com.poixson.tools.dao.Dxy;
+import com.poixson.tools.dao.Ixy;
 
 
 // 309 | Radio Station
@@ -146,9 +146,9 @@ public class Level_000 extends LevelBackrooms {
 
 
 	public class PregenLevel0 implements PreGenData {
-		public final HashMap<Dxy, LobbyData>    lobby    = new HashMap<Dxy, LobbyData>();
-		public final HashMap<Dxy, BasementData> basement = new HashMap<Dxy, BasementData>();
-		public final HashMap<Dxy, HotelData>    hotel    = new HashMap<Dxy, HotelData>();
+		public final HashMap<Ixy, LobbyData>    lobby    = new HashMap<Ixy, LobbyData>();
+		public final HashMap<Ixy, BasementData> basement = new HashMap<Ixy, BasementData>();
+		public final HashMap<Ixy, HotelData>    hotel    = new HashMap<Ixy, HotelData>();
 		public PregenLevel0() {
 		}
 	}
