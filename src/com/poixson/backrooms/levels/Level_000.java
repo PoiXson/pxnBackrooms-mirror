@@ -3,8 +3,12 @@ package com.poixson.backrooms.levels;
 import static com.poixson.utils.NumberUtils.Rnd10K;
 
 import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
@@ -169,10 +173,9 @@ public class Level_000 extends LevelBackrooms {
 
 
 
-/*
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
+		final LinkedList<BlockPopulator> list = new LinkedList<BlockPopulator>();
 		if (BUILD_ROOF)
 			list.add(this.gen_309.treePop);
 		list.add(this.gen_309.radioPop);
@@ -180,7 +183,6 @@ public class Level_000 extends LevelBackrooms {
 		list.add(this.gen_019.atticPop);
 		return list;
 	}
-*/
 
 
 

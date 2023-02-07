@@ -1,4 +1,3 @@
-/*
 package com.poixson.backrooms.levels;
 
 import java.util.Random;
@@ -14,9 +13,12 @@ import com.poixson.backrooms.BackroomsPlugin;
 // 309 | Radio Station
 public class Pop_309 extends BlockPopulator {
 
+	protected final Gen_309 gen;
 
 
-	public Pop_309() {
+
+	public Pop_309(final Gen_309 gen) {
+		this.gen = gen;
 	}
 
 
@@ -33,8 +35,8 @@ public class Pop_309 extends BlockPopulator {
 	public void populate00(final LimitedRegion region) {
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {
-			if (Material.AIR.equals(region.getType(0, this.level_y+i, 15))) {
-				y = this.level_y + i;
+			if (Material.AIR.equals(region.getType(0, this.gen.level_y+i, 15))) {
+				y = this.gen.level_y + i;
 				break;
 			}
 		}
@@ -77,4 +79,3 @@ public class Pop_309 extends BlockPopulator {
 
 
 }
-*/

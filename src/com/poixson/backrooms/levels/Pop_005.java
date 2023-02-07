@@ -1,4 +1,3 @@
-/*
 package com.poixson.backrooms.levels;
 
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
@@ -18,25 +17,22 @@ import com.poixson.commonmc.tools.BlockPlotter;
 import com.poixson.tools.dao.Insew;
 import com.poixson.tools.dao.Ixy;
 import com.poixson.tools.dao.Ixywd;
-import com.poixson.utils.FastNoiseLiteD;
 
 
 // 5 | Hotel
 public class Pop_005 extends BlockPopulator {
 
-	public static final boolean BUILD_ROOF = Level_000.BUILD_ROOF;
 	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
 
 	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
 
-	// noise
-	protected final FastNoiseLiteD noiseHotelRooms;
+	protected final Gen_005 gen;
 
 
 
-	public Pop_005(final FastNoiseLiteD noiseHotelRooms) {
+	public Pop_005(final Gen_005 gen) {
 		super();
-		this.noiseHotelRooms = noiseHotelRooms;
+		this.gen = gen;
 	}
 
 
@@ -46,7 +42,7 @@ public class Pop_005 extends BlockPopulator {
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
-		final int y = this.level_y + SUBFLOOR + 1;
+		final int y = this.gen.level_y + SUBFLOOR + 1;
 		Insew dao = this.findRoomWalls(x, y, z, region);
 		if (dao == null) dao = this.findRoomWalls(x+10, y, z+10, region);
 		if (dao == null) dao = this.findRoomWalls(x,    y, z+10, region);
@@ -162,7 +158,7 @@ public class Pop_005 extends BlockPopulator {
 				if (iz == 0) {
 					// north-west
 					if (ix == 0) {
-						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+						if (0.0 < this.gen.noiseHotelRooms.getNoise(room_x, room_z)) {
 							direction = BlockFace.NORTH;
 						} else {
 							direction = BlockFace.WEST;
@@ -170,7 +166,7 @@ public class Pop_005 extends BlockPopulator {
 					} else
 					// north-east
 					if (ix == rooms_wide-1) {
-						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+						if (0.0 < this.gen.noiseHotelRooms.getNoise(room_x, room_z)) {
 							direction = BlockFace.NORTH;
 						} else {
 							direction = BlockFace.EAST;
@@ -183,7 +179,7 @@ public class Pop_005 extends BlockPopulator {
 				if (iz == rooms_deep-1) {
 					// south-west
 					if (ix == 0) {
-						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+						if (0.0 < this.gen.noiseHotelRooms.getNoise(room_x, room_z)) {
 							direction = BlockFace.SOUTH;
 						} else {
 							direction = BlockFace.WEST;
@@ -191,7 +187,7 @@ public class Pop_005 extends BlockPopulator {
 					} else
 					// south-east
 					if (ix == rooms_wide-1) {
-						if (0.0 < this.noiseHotelRooms.getNoise(room_x, room_z)) {
+						if (0.0 < this.gen.noiseHotelRooms.getNoise(room_x, room_z)) {
 							direction = BlockFace.SOUTH;
 						} else {
 							direction = BlockFace.EAST;
@@ -251,7 +247,7 @@ public class Pop_005 extends BlockPopulator {
 		final Ixywd loc = RotateXZ(new Ixywd(x, z, w, d), direction);
 		final int wh = (int) Math.floor( ((double)loc.w) * 0.5 );
 		final int dh = (int) Math.floor( ((double)loc.d) * 0.5 );
-		double value = this.noiseHotelRooms.getNoise(x, z);
+		double value = this.gen.noiseHotelRooms.getNoise(x, z);
 		// wall
 		final Material block_wall;
 		switch ( (int)Math.round(((1.0+value)*0.5) * 20.0) ) {
@@ -320,7 +316,7 @@ public class Pop_005 extends BlockPopulator {
 		HotelRoomType type;
 		for (int iz=0; iz<loc.d; iz++) {
 			for (int ix=0; ix<loc.w; ix++) {
-				value = this.noiseHotelRooms.getNoise(x+ix, z+iz);
+				value = this.gen.noiseHotelRooms.getNoise(x+ix, z+iz);
 				type = HotelRoomType.EMPTY;
 				// wall
 				if (ix == 0 || ix == loc.w-1
@@ -362,7 +358,7 @@ public class Pop_005 extends BlockPopulator {
 					plotter.setRotBlock(ix, 0, iz, direction, dao.block_carpet);
 				switch (dao.type) {
 				case LAMP:
-					if (BUILD_ROOF) {
+					if (this.gen.buildroof) {
 						plotter.setRotBlock(ix, 6, iz, direction, Material.REDSTONE_BLOCK);
 						plotter.setRotBlock(ix, 5, iz, direction, Material.REDSTONE_LAMP, "on");
 					}
@@ -386,7 +382,7 @@ public class Pop_005 extends BlockPopulator {
 					break;
 				default:
 					// ceiling
-					if (BUILD_ROOF) {
+					if (this.gen.buildroof) {
 						plotter.setRotBlock(ix, 6, iz, direction, Material.SMOOTH_STONE);
 						plotter.setRotBlock(ix, 5, iz, direction, Material.SMOOTH_STONE_SLAB, "top");
 					}
@@ -427,4 +423,3 @@ public class Pop_005 extends BlockPopulator {
 
 
 }
-*/

@@ -1,4 +1,3 @@
-/*
 package com.poixson.backrooms.levels;
 
 import java.util.Random;
@@ -12,20 +11,18 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.commonmc.tools.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
 
 
 // 771 | Crossroads
 public class Pop_771 extends BlockPopulator {
 
-	// noise
-	protected final FastNoiseLiteD noiseRoadLights;
+	protected final Gen_771 gen;
 
 
 
-	public Pop_771(final FastNoiseLiteD noiseRoadLights) {
+	public Pop_771(final Gen_771 gen) {
 		super();
-		this.noiseRoadLights = noiseRoadLights;
+		this.gen = gen;
 	}
 
 
@@ -38,7 +35,7 @@ public class Pop_771 extends BlockPopulator {
 			double value, valueN, valueS, valueE, valueW;
 			Wall wall;
 			int xx, zz;
-			final int y = this.level_y;
+			final int y = this.gen.level_y;
 			for (int z=0; z<16; z++) {
 				zz = (chunkZ * 16) + z;
 				for (int x=0; x<16; x++) {
@@ -52,26 +49,26 @@ public class Pop_771 extends BlockPopulator {
 						// north
 						if (this.isBlockSolid(xx, y+1, zz-1, region)) {
 							wall.setHeight(BlockFace.NORTH, Wall.Height.LOW);
-							valueN = this.noiseRoadLights.getNoise(xx, zz-1);
+							valueN = this.gen.noiseRoadLights.getNoise(xx, zz-1);
 						}
 						// south
 						if (this.isBlockSolid(xx, y+1, zz+1, region)) {
 							wall.setHeight(BlockFace.SOUTH, Wall.Height.LOW);
-							valueS = this.noiseRoadLights.getNoise(xx, zz+1);
+							valueS = this.gen.noiseRoadLights.getNoise(xx, zz+1);
 						}
 						// east
 						if (this.isBlockSolid(xx+1, y+1, zz, region)) {
 							wall.setHeight(BlockFace.EAST, Wall.Height.LOW);
-							valueE = this.noiseRoadLights.getNoise(xx+1, zz);
+							valueE = this.gen.noiseRoadLights.getNoise(xx+1, zz);
 						}
 						// west
 						if (this.isBlockSolid(xx-1, y+1, zz, region)) {
 							wall.setHeight(BlockFace.WEST, Wall.Height.LOW);
-							valueW = this.noiseRoadLights.getNoise(xx-1, zz);
+							valueW = this.gen.noiseRoadLights.getNoise(xx-1, zz);
 						}
 						// lanterns
 						if (Material.AIR.equals(region.getType(xx, y+2, zz))) {
-							value = this.noiseRoadLights.getNoise(xx, zz);
+							value = this.gen.noiseRoadLights.getNoise(xx, zz);
 							if (value > valueN
 							&&  value > valueS
 							&&  value > valueE
@@ -87,7 +84,7 @@ public class Pop_771 extends BlockPopulator {
 		}
 		// center lamp
 		if (chunkX == 0 && chunkZ == 0) {
-			final BlockPlotter plotter = new BlockPlotter(region, -3, this.level_y+5, -3);
+			final BlockPlotter plotter = new BlockPlotter(region, -3, this.gen.level_y+5, -3);
 			final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(10, 6);
 			plotter.type('|', Material.CHAIN);
 			plotter.type('L', Material.REDSTONE_LAMP, "on");
@@ -112,7 +109,7 @@ public class Pop_771 extends BlockPopulator {
 			for (int z=-3; z<3; z++) {
 				for (int x=-3; x<3; x++) {
 					for (int y=5; y<8; y++) {
-						yy = this.level_y + y;
+						yy = this.gen.level_y + y;
 						if (Material.SCULK_VEIN.equals(region.getType(x, yy, z))) {
 							changed = false;
 							data = (MultipleFacing) region.getBlockData(x, yy, z);
@@ -191,4 +188,3 @@ public class Pop_771 extends BlockPopulator {
 
 
 }
-*/

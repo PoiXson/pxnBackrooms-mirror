@@ -2,7 +2,12 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.utils.NumberUtils.Rnd10K;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
 
 import com.poixson.backrooms.BackroomsPlugin;
 
@@ -60,14 +65,12 @@ public class Level_771 extends LevelBackrooms {
 
 
 
-/*
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
 		return Arrays.asList(
 			this.gen.crossPop
 		);
 	}
-*/
 
 
 

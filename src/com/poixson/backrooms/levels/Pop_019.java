@@ -1,4 +1,3 @@
-/*
 package com.poixson.backrooms.levels;
 
 import java.util.Random;
@@ -11,10 +10,13 @@ import org.bukkit.generator.WorldInfo;
 // 19 | Attic
 public class Pop_019 extends BlockPopulator {
 
+	protected final Gen_019 gen;
 
 
-	public Pop_019() {
+
+	public Pop_019(final Gen_019 gen) {
 		super();
+		this.gen = gen;
 	}
 
 
@@ -27,4 +29,3 @@ public class Pop_019 extends BlockPopulator {
 
 
 }
-*/
