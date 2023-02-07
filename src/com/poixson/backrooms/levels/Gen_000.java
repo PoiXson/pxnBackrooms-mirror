@@ -1,6 +1,5 @@
 package com.poixson.backrooms.levels;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -10,6 +9,8 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.levels.Gen_001.BasementData;
+import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -69,8 +70,8 @@ public class Gen_000 extends GenBackrooms {
 
 
 
-	public HashMap<Dxy, LobbyData> pregenerate(final int chunkX, final int chunkZ) {
-		final HashMap<Dxy, LobbyData> pregen = new HashMap<Dxy, LobbyData>();
+	public void pregenerate(Map<Dxy, LobbyData> data,
+			final int chunkX, final int chunkZ) {
 		LobbyData dao;
 		int xx, zz;
 		double valueWall;
@@ -80,13 +81,12 @@ public class Gen_000 extends GenBackrooms {
 				xx = (chunkX * 16) + x;
 				valueWall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new LobbyData(valueWall);
-				pregen.put(new Dxy(x, z), dao);
+				data.put(new Dxy(x, z), dao);
 			}
 		}
-		return pregen;
 	}
 	@Override
-	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		LobbyData dao;
 		int cy = this.level_y + this.level_h + this.subfloor;
@@ -102,7 +102,7 @@ public class Gen_000 extends GenBackrooms {
 					chunk.setBlock(x, y+yy, z, LOBBY_SUBFLOOR);
 				}
 				y += this.subfloor;
-				dao = (LobbyData) datamap.get(new Dxy(x, z));
+				dao = (LobbyData) ((PregenLevel0)pregen).lobby.get(new Dxy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

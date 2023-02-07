@@ -1,7 +1,6 @@
 package com.poixson.backrooms.levels;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -13,7 +12,6 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.dao.Dxy;
 
 
 // 78 | Space
@@ -35,7 +33,7 @@ public class Gen_078 extends GenBackrooms {
 
 
 	@Override
-	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {

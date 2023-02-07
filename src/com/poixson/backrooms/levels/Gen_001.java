@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -102,25 +103,25 @@ public class Gen_001 extends GenBackrooms {
 
 
 
-	public HashMap<Dxy, BasementData> pregenerate(final int chunkX, final int chunkZ) {
-		final HashMap<Dxy, BasementData> pregen = new HashMap<Dxy, BasementData>();
+	public void pregenerate(Map<Dxy, BasementData> data,
+			final int chunkX, final int chunkZ) {
 		BasementData dao;
 		int xx, zz;
-		double valueWall, valueMoist;
+		double valueWall, valueMoistA, valueMoistB;
 		for (int z=0; z<16; z++) {
 			zz = (chunkZ * 16) + z;
 			for (int x=0; x<16; x++) {
 				xx = (chunkX * 16) + x;
-				valueWall  = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
-				valueMoist = this.noiseMoist.getNoise(xx, zz);
-				dao = new BasementData(valueWall, valueMoist);
-				pregen.put(new Dxy(x, z), dao);
+				valueWall   = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
+				valueMoistA = this.noiseMoist.getNoise(xx, zz);
+				valueMoistB = this.noiseMoist.getNoise(zz, xx);
+				dao = new BasementData(valueWall, valueMoistA, valueMoistB);
+				data.put(new Dxy(x, z), dao);
 			}
 		}
-		return pregen;
 	}
 	@Override
-	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		BasementData dao;
 		int cy = this.level_y + this.level_h + this.subfloor;
@@ -136,7 +137,7 @@ public class Gen_001 extends GenBackrooms {
 					chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
 				}
 				y += this.subfloor;
-				dao = (BasementData) datamap.get(new Dxy(x, z));
+				dao = (BasementData) ((PregenLevel0)pregen).basement.get(new Dxy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

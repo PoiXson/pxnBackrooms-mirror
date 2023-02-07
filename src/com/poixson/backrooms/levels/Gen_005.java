@@ -1,6 +1,5 @@
 package com.poixson.backrooms.levels;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -79,18 +78,18 @@ public class Gen_005 extends GenBackrooms {
 
 
 
-	public HashMap<Dxy, HotelData> pregenerate(final int chunkX, final int chunkZ) {
-		final HashMap<Dxy, HotelData> pregen = new HashMap<Dxy, HotelData>();
+	public void pregenerate(Map<Dxy, HotelData> data,
+			final int chunkX, final int chunkZ) {
+		HotelData dao;
 		int xx, zz;
 		double value;
-		HotelData dao;
 		for (int z=-8; z<24; z++) {
 			zz = (chunkZ * 16) + z;
 			for (int x=-8; x<24; x++) {
 				xx = (chunkX * 16) + x;
 				value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new HotelData(value);
-				pregen.put(new Dxy(x, z), dao);
+				data.put(new Dxy(x, z), dao);
 			}
 		}
 		HotelData daoN, daoS, daoE, daoW;
@@ -98,15 +97,15 @@ public class Gen_005 extends GenBackrooms {
 		// find walls
 		for (int z=-8; z<24; z++) {
 			for (int x=-8; x<24; x++) {
-				dao   = pregen.get(new Dxy(x,   z  ));
-				daoN  = pregen.get(new Dxy(x,   z-1));
-				daoS  = pregen.get(new Dxy(x,   z+1));
-				daoE  = pregen.get(new Dxy(x+1, z  ));
-				daoW  = pregen.get(new Dxy(x-1, z  ));
-				daoNE = pregen.get(new Dxy(x+1, z-1));
-				daoNW = pregen.get(new Dxy(x-1, z-1));
-				daoSE = pregen.get(new Dxy(x+1, z+1));
-				daoSW = pregen.get(new Dxy(x-1, z+1));
+				dao   = data.get(new Dxy(x,   z  ));
+				daoN  = data.get(new Dxy(x,   z-1));
+				daoS  = data.get(new Dxy(x,   z+1));
+				daoE  = data.get(new Dxy(x+1, z  ));
+				daoW  = data.get(new Dxy(x-1, z  ));
+				daoNE = data.get(new Dxy(x+1, z-1));
+				daoNW = data.get(new Dxy(x-1, z-1));
+				daoSE = data.get(new Dxy(x+1, z+1));
+				daoSW = data.get(new Dxy(x-1, z+1));
 				if (NodeType.ROOM.equals(dao.type)) {
 					if ((daoN  != null && NodeType.HALL.equals(daoN.type))
 					||  (daoS  != null && NodeType.HALL.equals(daoS.type))
@@ -120,10 +119,9 @@ public class Gen_005 extends GenBackrooms {
 				}
 			}
 		}
-		return pregen;
 	}
 	@Override
-	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {

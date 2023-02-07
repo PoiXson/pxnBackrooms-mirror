@@ -1,12 +1,10 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 
 
@@ -49,7 +47,7 @@ public abstract class GenBackrooms {
 
 
 
-	public abstract void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public abstract void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ);
 
 

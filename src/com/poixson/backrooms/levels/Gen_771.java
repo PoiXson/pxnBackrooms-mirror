@@ -1,12 +1,9 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.dao.Dxy;
 import com.poixson.utils.FastNoiseLiteD;
 
 
@@ -40,7 +37,7 @@ public class Gen_771 extends GenBackrooms {
 
 
 	@Override
-	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		final boolean centerX = (chunkX == 0 || chunkX == -1);
 		final boolean centerZ = (chunkZ == 0 || chunkZ == -1);

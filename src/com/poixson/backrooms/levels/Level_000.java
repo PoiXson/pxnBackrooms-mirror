@@ -7,6 +7,8 @@ import java.util.Map;
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.levels.Gen_000.LobbyData;
+import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Gen_005.HotelData;
 import com.poixson.tools.dao.Dxy;
 
@@ -139,16 +141,30 @@ public class Level_000 extends LevelBackrooms {
 
 
 
+	public class PregenLevel0 implements PreGenData {
+		public final HashMap<Dxy, LobbyData>    lobby    = new HashMap<Dxy, LobbyData>();
+		public final HashMap<Dxy, BasementData> basement = new HashMap<Dxy, BasementData>();
+		public final HashMap<Dxy, HotelData>    hotel    = new HashMap<Dxy, HotelData>();
+		public PregenLevel0() {
+		}
+	}
+
+
+
 	@Override
 	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// pre-generate
-		final Map<Dxy, HotelData> prehotel = this.gen_005.pregenerate(chunkX, chunkZ);
-		this.gen_001.generate(null, chunk, chunkX, chunkZ);     // basement
-		this.gen_000.generate(null, chunk, chunkX, chunkZ);     // lobby
-		this.gen_037.generate(null, chunk, chunkX, chunkZ);     // pools
-		this.gen_005.generate(prehotel, chunk, chunkX, chunkZ); // hotel
-		this.gen_019.generate(null, chunk, chunkX, chunkZ);     // attic
-		this.gen_309.generate(null, chunk, chunkX, chunkZ);     // radio station
+		final PregenLevel0 pregen = new PregenLevel0();
+		this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ);
+		this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ);
+		this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ);
+		// generate
+		this.gen_001.generate(pregen, chunk, chunkX, chunkZ); // basement
+		this.gen_000.generate(pregen, chunk, chunkX, chunkZ); // lobby
+		this.gen_037.generate(pregen, chunk, chunkX, chunkZ); // pools
+		this.gen_005.generate(pregen, chunk, chunkX, chunkZ); // hotel
+		this.gen_019.generate(pregen, chunk, chunkX, chunkZ); // attic
+		this.gen_309.generate(pregen, chunk, chunkX, chunkZ); // radio station
 	}
 
 

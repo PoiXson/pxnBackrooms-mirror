@@ -1,12 +1,9 @@
 package com.poixson.backrooms.levels;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.dao.Dxy;
 
 
 // 37 | Poolrooms
@@ -33,7 +30,7 @@ public class Gen_037 extends GenBackrooms {
 
 
 	@Override
-	public void generate(final Map<Dxy, ? extends PreGenData> datamap,
+	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
