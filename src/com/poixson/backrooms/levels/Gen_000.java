@@ -3,6 +3,7 @@ package com.poixson.backrooms.levels;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Slab;
@@ -59,9 +60,15 @@ public class Gen_000 extends GenBackrooms {
 
 
 	public class LobbyData implements PreGenData {
-//TODO: add wall_1_away
 		public final double valueWall;
-		public boolean isWall;
+		public final boolean isWall;
+		public boolean wall_n = false;
+		public boolean wall_s = false;
+		public boolean wall_e = false;
+		public boolean wall_w = false;
+		public int wall_dist = 5;
+		public int boxed = 0;
+		public BlockFace box_dir = null;
 		public LobbyData(final double valueWall) {
 			this.valueWall = valueWall;
 			this.isWall = (valueWall > THRESH_WALL_L && valueWall < THRESH_WALL_H);
@@ -75,15 +82,96 @@ public class Gen_000 extends GenBackrooms {
 		LobbyData dao;
 		int xx, zz;
 		double valueWall;
-		for (int z=0; z<16; z++) {
+		for (int z=-1; z<17; z++) {
 			zz = (chunkZ * 16) + z;
-			for (int x=0; x<16; x++) {
+			for (int x=-1; x<17; x++) {
 				xx = (chunkX * 16) + x;
 				valueWall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new LobbyData(valueWall);
 				data.put(new Ixy(x, z), dao);
 			}
 		}
+		// find wall distance
+		LobbyData dao_near;
+		for (int z=0; z<16; z++) {
+			for (int x=0; x<16; x++) {
+				dao = data.get(new Ixy(x, z));
+				if (dao.isWall) {
+					dao.wall_dist = 0;
+					continue;
+				}
+				for (int i=1; i<3; i++) {
+					dao.boxed = 0;
+					// north
+					dao_near = data.get(new Ixy(x, z-i));
+					if (dao_near != null && dao_near.isWall) {
+						if (dao.wall_dist > i)
+							dao.wall_dist = i;
+						dao.wall_n = true;
+						dao.boxed++;
+					}
+					// south
+					dao_near = data.get(new Ixy(x, z+i));
+					if (dao_near != null && dao_near.isWall) {
+						if (dao.wall_dist > i)
+							dao.wall_dist = i;
+						dao.wall_s = true;
+						dao.boxed++;
+					}
+					// east
+					dao_near = data.get(new Ixy(x+i, z));
+					if (dao_near != null && dao_near.isWall) {
+						if (dao.wall_dist > i)
+							dao.wall_dist = i;
+						dao.wall_e = true;
+						dao.boxed++;
+					}
+					// west
+					dao_near = data.get(new Ixy(x-i, z));
+					if (dao_near != null && dao_near.isWall) {
+						if (dao.wall_dist > i)
+							dao.wall_dist = i;
+						dao.wall_w = true;
+						dao.boxed++;
+					}
+					// boxed walls
+					if (dao.boxed > 2) {
+						// north-east
+						if (dao.wall_n || dao.wall_e) {
+							dao_near = data.get(new Ixy(x+i, z-i));
+							if (dao_near != null && dao_near.isWall)
+								dao.boxed++;
+						}
+						// north-west
+						if (dao.wall_n || dao.wall_w) {
+							dao_near = data.get(new Ixy(x-i, z-i));
+							if (dao_near != null && dao_near.isWall)
+								dao.boxed++;
+						}
+						// south-east
+						if (dao.wall_s || dao.wall_e) {
+							dao_near = data.get(new Ixy(x+i, z+i));
+							if (dao_near != null && dao_near.isWall)
+								dao.boxed++;
+						}
+						// south-west
+						if (dao.wall_s || dao.wall_w) {
+							dao_near = data.get(new Ixy(x-i, z+i));
+							if (dao_near != null && dao_near.isWall)
+								dao.boxed++;
+						}
+						// boxed direction
+						if (dao.boxed > 2) {
+							if (!dao.wall_n) { dao.box_dir = BlockFace.NORTH; break; }
+							if (!dao.wall_s) { dao.box_dir = BlockFace.SOUTH; break; }
+							if (!dao.wall_e) { dao.box_dir = BlockFace.EAST;  break; }
+							if (!dao.wall_w) { dao.box_dir = BlockFace.WEST;  break; }
+							break;
+						}
+					}
+				} // end distance loop
+			} // end x
+		} // end z
 	}
 	@Override
 	public void generate(final PreGenData pregen,
