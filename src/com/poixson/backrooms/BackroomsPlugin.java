@@ -35,6 +35,7 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.listeners.PlayerMoveListener;
+import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
 import com.poixson.utils.Utils;
 
@@ -160,6 +161,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 			lvl.unload();
 		}
 		this.backlevels.clear();
+		// finish filling chests
+		DelayedChestFiller.stop();
 		// commands listener
 		{
 			final Commands listener = this.commandListener.getAndSet(null);

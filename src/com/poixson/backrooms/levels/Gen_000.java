@@ -1,18 +1,28 @@
 package com.poixson.backrooms.levels;
 
+import java.util.LinkedList;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.type.Barrel;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
+import com.poixson.commonmc.tools.BlockPlotter;
+import com.poixson.commonmc.tools.DelayedBlockPlotter;
+import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.tools.dao.Ixy;
+import com.poixson.tools.dao.Ixyz;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -36,6 +46,7 @@ public class Gen_000 extends GenBackrooms {
 
 	// noise
 	protected final FastNoiseLiteD noiseLobbyWalls;
+	protected final FastNoiseLiteD noiseLoot;
 
 
 
@@ -55,6 +66,12 @@ public class Gen_000 extends GenBackrooms {
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
 		this.noiseLobbyWalls.setRotationType3D(RotationType3D.ImproveXYPlanes);
+		// chest loot
+		this.noiseLoot = this.register(new FastNoiseLiteD());
+		this.noiseLoot.setFrequency(0.1);
+		this.noiseLoot.setFractalOctaves(1);
+		this.noiseLoot.setNoiseType(NoiseType.OpenSimplex2);
+		this.noiseLoot.setRotationType3D(RotationType3D.ImproveXYPlanes);
 	}
 
 
@@ -176,6 +193,8 @@ public class Gen_000 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
+		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
 		int cy = this.level_y + this.level_h + this.subfloor;
 		for (int z=0; z<16; z++) {
@@ -205,8 +224,8 @@ public class Gen_000 extends GenBackrooms {
 					if (this.buildroof) {
 						final int modX6 = Math.abs(xx) % 7;
 						final int modZ6 = Math.abs(zz) % 7;
-						if (modZ6 == 0 && modX6 < 2) {
-//TODO: not near walls
+						if (modZ6 == 0 && modX6 < 2
+						&& dao.wall_dist > 1) {
 							// ceiling lights
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
 							final BlockData block = chunk.getBlockData(x, cy, z);
@@ -222,7 +241,93 @@ public class Gen_000 extends GenBackrooms {
 							chunk.setBlock(x, cy+1, z, Material.STONE);
 						}
 					}
-				}
+					// special
+					if (dao.boxed > 4) {
+						// barrel
+						if (dao.wall_dist == 1) {
+							chunk.setBlock(x, y+1, z, Material.BARREL);
+							final Barrel barrel = (Barrel) chunk.getBlockData(x, y+1, z);
+							barrel.setFacing(BlockFace.UP);
+							chunk.setBlock(x, y+1, z, barrel);
+							chests.add(new Ixyz(xx, y+1, zz));
+						} else
+						// portal to basement
+						if (dao.boxed     == 7
+						&&  dao.wall_dist == 2
+						&&  dao.box_dir != null) {
+							boolean found_wall = false;
+							BasementData base;
+							for (int iz=-2; iz<3; iz++) {
+								for (int ix=-2; ix<3; ix++) {
+									base = ((PregenLevel0)pregen).basement.get(new Ixy(ix, iz));
+									if (base.isWall) {
+										found_wall = true;
+										break;
+									}
+								}
+							}
+							if (!found_wall) {
+								final String axis;
+								final int xxx, zzz;
+								switch (dao.box_dir) {
+								case NORTH: axis = "YzX"; xxx = x - 2; zzz = z + 2; break;
+								case SOUTH: axis = "YZX"; xxx = x - 2; zzz = z - 2; break;
+								case EAST:  axis = "YXZ"; xxx = x - 2; zzz = z - 2; break;
+								case WEST:  axis = "YxZ"; xxx = x + 2; zzz = z - 2; break;
+								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
+								}
+								final BlockPlotter plot = new BlockPlotter(chunk, xxx, y-6, zzz);
+								plot.types.put(Character.valueOf('.'), Material.AIR);
+								plot.types.put(Character.valueOf('='), Material.YELLOW_TERRACOTTA);
+								plot.types.put(Character.valueOf('x'), Material.BEDROCK);
+								final int h = this.level_h + this.subfloor + 3;
+								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 5);
+								for (int i=0; i<h; i++) {
+									// bottom
+									if (i == 0) {
+										matrix[i][0].append("xxxxx");
+										matrix[i][1].append("xxxxx");
+										matrix[i][2].append("xxxxx");
+										matrix[i][3].append("xx.xx");
+										matrix[i][4].append("xxxxx");
+									} else
+									// subfloor
+									if (i < 6) {
+										matrix[i][0].append("xxxxx");
+										matrix[i][1].append("xxxxx");
+										matrix[i][2].append("xx.xx");
+										matrix[i][3].append("xx.xx");
+										matrix[i][4].append("xxxxx");
+									} else
+									// floor
+									if (i == 6) {
+										matrix[i][0].append("xxxxx");
+										matrix[i][1].append("xxxxx");
+										matrix[i][2].append("xx.xx");
+										matrix[i][3].append("xxxxx");
+										matrix[i][4].append("xxxxx");
+									} else
+									// top
+									if (i > h-2) {
+										matrix[i][0].append("=====");
+										matrix[i][1].append("=xxx=");
+										matrix[i][2].append("=xxx=");
+										matrix[i][3].append("=xxx=");
+										matrix[i][4].append("== ==");
+									// walls
+									} else {
+										matrix[i][0].append("=====");
+										matrix[i][1].append("=xxx=");
+										matrix[i][2].append("=x.x=");
+										matrix[i][3].append("=x.x=");
+										matrix[i][4].append("==.==");
+									}
+								}
+								delayed.add(new DelayedBlockPlotter(plot, axis, matrix));
+							}
+						}
+					}
+				} // end wall/room
 				if (this.buildroof) {
 					for (int i=1; i<this.subceiling; i++) {
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
@@ -230,6 +335,47 @@ public class Gen_000 extends GenBackrooms {
 				}
 			} // end x
 		} // end z
+		// place delayed blocks
+		if (!delayed.isEmpty()) {
+			for (final DelayedBlockPlotter plot : delayed) {
+				plot.run();
+			}
+		}
+		if (!chests.isEmpty()) {
+			for (final Ixyz loc : chests) {
+				(new ChestFiller_000(this.plugin, "level0", loc.x, loc.y, loc.z))
+					.start();
+			}
+		}
+	}
+
+
+
+	public class ChestFiller_000 extends DelayedChestFiller {
+
+		public ChestFiller_000(final JavaPlugin plugin,
+				final String worldName, final int x, final int y, final int z) {
+			super(plugin, worldName, x, y, z);
+		}
+
+		@Override
+		public void fill(final Inventory chest) {
+//TODO
+final ItemStack item = new ItemStack(Material.BREAD);
+			final Location loc = chest.getLocation();
+			final int xx = loc.getBlockX();
+			final int zz = loc.getBlockZ();
+			int x, y;
+			double value;
+			for (int i=0; i<27; i++) {
+				x = xx + (i % 9);
+				y = zz + Math.floorDiv(i, 9);
+				value = Gen_000.this.noiseLoot.getNoise(x, y);
+				if (value > 0.7)
+					chest.setItem(i, item);
+			}
+		}
+
 	}
 
 
