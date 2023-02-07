@@ -60,9 +60,11 @@ public class Gen_000 extends GenBackrooms {
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLobbyWalls.setFrequency(0.023);
 		this.noiseLobbyWalls.setFractalOctaves(2);
-		this.noiseLobbyWalls.setFractalGain(0.05);
+		this.noiseLobbyWalls.setFractalGain(0.1);
+		this.noiseLobbyWalls.setFractalLacunarity(0.4);
 		this.noiseLobbyWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseLobbyWalls.setFractalType(FractalType.PingPong);
+		this.noiseLobbyWalls.setFractalPingPongStrength(2.28);
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
 		this.noiseLobbyWalls.setRotationType3D(RotationType3D.ImproveXYPlanes);

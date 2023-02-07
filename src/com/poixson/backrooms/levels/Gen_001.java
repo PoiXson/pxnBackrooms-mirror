@@ -28,9 +28,8 @@ public class Gen_001 extends GenBackrooms {
 
 	public static final int LAMP_Y = 6;
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
-	public static final double THRESH_WALL_LOW  = 0.8;
-	public static final double THRESH_WALL_HIGH = 0.95;
-	public static final double THRESH_MOIST     = 0.35;
+	public static final double THRESH_WALL  = 0.9;
+	public static final double THRESH_MOIST = 0.35;
 
 	public static final Material BASEMENT_WALL      = Material.MUD_BRICKS;
 	public static final Material BASEMENT_SUBFLOOR  = Material.DIRT;
@@ -58,8 +57,10 @@ public class Gen_001 extends GenBackrooms {
 		this.subceiling = subceiling;
 		// basement wall noise
 		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
-		this.noiseBasementWalls.setFrequency(0.035);
-		this.noiseBasementWalls.setFractalOctaves(1);
+		this.noiseBasementWalls.setFrequency(0.033);
+		this.noiseBasementWalls.setFractalOctaves(2);
+		this.noiseBasementWalls.setFractalGain(0.03);
+		this.noiseBasementWalls.setFractalPingPongStrength(1.2);
 		this.noiseBasementWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseBasementWalls.setFractalType(FractalType.PingPong);
 		this.noiseBasementWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
