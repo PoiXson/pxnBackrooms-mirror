@@ -192,6 +192,7 @@ public class Gen_000 extends GenBackrooms {
 			} // end x
 		} // end z
 	}
+
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
@@ -263,7 +264,8 @@ public class Gen_000 extends GenBackrooms {
 							for (int iz=-2; iz<3; iz++) {
 								for (int ix=-2; ix<3; ix++) {
 									base = ((PregenLevel0)pregen).basement.get(new Ixy(ix, iz));
-									if (base.isWall) {
+									if (base == null
+									||  base.isWall) {
 										found_wall = true;
 										break;
 									}
