@@ -35,8 +35,8 @@ public class Gen_866 extends GenBackrooms {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
+//				final int xx = (chunkX * 16) + x;
+//				final int zz = (chunkZ * 16) + z;
 /*
 				// subfloor
 				chunk.setBlock(x, 0, z, Material.BEDROCK);

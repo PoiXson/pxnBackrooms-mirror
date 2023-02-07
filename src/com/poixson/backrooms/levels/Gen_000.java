@@ -37,7 +37,7 @@ public class Gen_000 extends GenBackrooms {
 	public static final double THRESH_WALL_L = 0.38;
 	public static final double THRESH_WALL_H = 0.5;
 
-	public static final Material LOBBY_WALL = Material.YELLOW_TERRACOTTA;
+	public static final Material LOBBY_WALL      = Material.TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
 
 	public final boolean buildroof;
@@ -196,12 +196,13 @@ public class Gen_000 extends GenBackrooms {
 		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
-		int cy = this.level_y + this.level_h + this.subfloor;
+		final int cy = this.level_y + this.level_h + this.subfloor;
+		int xx, y, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
-				int y  = this.level_y;
+				xx = (chunkX * 16) + x;
+				zz = (chunkZ * 16) + z;
+				y  = this.level_y;
 				// lobby floor
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;

@@ -163,45 +163,6 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			mvworld.setPVPMode(true);
 			mvworld.setGenerator("");
 			mvworld.setRespawnToWorld("level0");
-			switch (level) {
-			case 0: // lobby
-				mvworld.setTime("midnight");
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.FALSE);
-				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
-				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE);
-				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.TRUE );
-				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.FALSE);
-				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE);
-				break;
-			case 33: // run for your life
-				mvworld.setTime("midnight");
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.FALSE);
-				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
-				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.TRUE );
-				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.FALSE);
-				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.TRUE );
-				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE );
-				break;
-			case 78: // space
-				mvworld.setTime("midnight");
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.FALSE);
-				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.FALSE);
-				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE);
-				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.FALSE);
-				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.TRUE );
-				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE );
-				break;
-			default:
-				mvworld.setTime("noon");
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE,    Boolean.TRUE );
-				world.setGameRule(GameRule.DO_WEATHER_CYCLE,     Boolean.TRUE );
-				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE);
-				world.setGameRule(GameRule.DO_INSOMNIA,          Boolean.FALSE);
-				world.setGameRule(GameRule.FALL_DAMAGE,          Boolean.TRUE );
-				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE );
-				break;
-			}
-			world.setGameRule(GameRule.REDUCED_DEBUG_INFO,         Boolean.FALSE);
 			world.setGameRule(GameRule.KEEP_INVENTORY,             Boolean.TRUE );
 			world.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS,       Boolean.TRUE );
 			world.setGameRule(GameRule.DROWNING_DAMAGE,            Boolean.TRUE );
@@ -221,6 +182,85 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			world.setGameRule(GameRule.SPAWN_RADIUS,                Integer.valueOf(50));
 			world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, Integer.valueOf( 1));
 			world.setGameRule(GameRule.SNOW_ACCUMULATION_HEIGHT,    Integer.valueOf( 8));
+			// time
+			switch (level) {
+			case 0:  // lobby
+			case 33: // run for your life
+			case 78: // space
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
+				mvworld.setTime("midnight"); break;
+			case 151: // dollhouse
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
+				mvworld.setTime("noon"); break;
+			default:
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE);
+				mvworld.setTime("noon"); break;
+			}
+			// weather
+			switch (level) {
+			case 0:   // lobby
+			case 33:  // run for your life
+			case 78:  // space
+			case 151: // dollhouse
+			case 771: // crossroads
+			case 866: // dirtfield
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.FALSE); break;
+			default:
+				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.TRUE);  break;
+			}
+			// insomnia
+			switch (level) {
+			case 0:   // lobby
+			case 9:   // suburbs
+			case 11:  // city
+			case 78:  // space
+			case 151: // dollhouse
+			case 771: // crossroads
+			case 866: // dirtfield
+				world.setGameRule(GameRule.DO_INSOMNIA, Boolean.TRUE);  break;
+			default:
+				world.setGameRule(GameRule.DO_INSOMNIA, Boolean.FALSE); break;
+			}
+			// immediate respawn
+			switch (level) {
+			case 33: // run for your life
+				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.TRUE);  break;
+			default:
+				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE); break;
+			}
+			// fall damage
+			switch (level) {
+			case 0: // lobby
+				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.FALSE); break;
+			default:
+				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.TRUE);  break;
+			}
+			// natural regeneration
+			switch (level) {
+			case 0:   // lobby
+			case 9:   // suburbs
+			case 10:  // field of wheat
+			case 11:  // city
+			case 78:  // space
+			case 151: // dollhouse
+			case 771: // crossroads
+			case 866: // dirtfield
+				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE); break;
+			default:
+				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE);  break;
+			}
+			// F3 debug info
+			switch (level) {
+			case 0:   // lobby
+			case 9:   // suburbs
+			case 10:  // field of wheat
+			case 11:  // city
+			case 151: // dollhouse
+			case 866: // dirtfield
+				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
+			default:
+				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;
+			}
 		}
 	}
 

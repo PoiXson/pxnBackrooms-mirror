@@ -3,9 +3,14 @@ package com.poixson.backrooms.levels;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.tools.dao.Ixy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -28,7 +33,7 @@ public class Gen_005 extends GenBackrooms {
 	protected final FastNoiseLiteD noiseHotelRooms;
 
 	// populators
-//	public final Pop_005 roomPop;
+	public final Pop_005 roomPop;
 
 
 
@@ -51,7 +56,7 @@ public class Gen_005 extends GenBackrooms {
 		this.noiseHotelRooms.setFrequency(0.008);
 		this.noiseHotelRooms.setFractalOctaves(1);
 		// populators
-//		this.roomPop = new Pop_005(this.noiseHotelRooms);
+		this.roomPop = new Pop_005(this);
 	}
 
 
@@ -123,27 +128,24 @@ public class Gen_005 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		final PregenLevel0 pregen0 = (PregenLevel0) pregen;
+		final int cy = this.level_y + this.level_h + this.subfloor;
+		int xx, y, zz;
+		HotelData dao;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
-				final HotelData dao = (HotelData) datamap.get(new Dxy(x, z));
-/*
-//final HashMap<Dxy, HotelDAO> prehotel
-				int y  = this.level_y;
-				int cy = this.level_y + SUBFLOOR + this.level_h;
+				xx = (chunkX * 16) + x;
+				zz = (chunkZ * 16) + z;
+				y  = this.level_y;
 				// hotel floor
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;
-				for (int yy=0; yy<SUBFLOOR; yy++) {
+				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, y+yy, z, Material.SPRUCE_PLANKS);
 				}
-				y += SUBFLOOR;
-				final HotelDAO dao = prehotel.get(new Dxy(x, z));
-				if (dao == null)
-					throw new RuntimeException("pre-generated data for hotel not found for x:"+
-						Integer.toString(x)+" z:"+Integer.toString(z));
-				Slab slab;
+				y += this.subfloor;
+				dao = (HotelData) pregen0.hotel.get(new Ixy(x, z));
+				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
 					for (int iy=0; iy<this.level_h; iy++) {
@@ -161,7 +163,7 @@ public class Gen_005 extends GenBackrooms {
 						else            tile.setFacing(BlockFace.SOUTH);
 					}
 					chunk.setBlock(x, y, z, tile);
-					if (BUILD_ROOF) {
+					if (this.buildroof) {
 						// ceiling light
 						if (xx % 5 == 0 && zz % 5 == 0) {
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
@@ -182,7 +184,7 @@ public class Gen_005 extends GenBackrooms {
 								chunk.setBlock(x, cy, z, Material.SMOOTH_STONE);
 							} else {
 								chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
-								slab = (Slab) chunk.getBlockData(x, cy, z);
+								final Slab slab = (Slab) chunk.getBlockData(x, cy, z);
 								slab.setType(Slab.Type.TOP);
 								chunk.setBlock(x, cy, z, slab);
 							}
@@ -192,13 +194,11 @@ public class Gen_005 extends GenBackrooms {
 				}
 				default: break;
 				}
-				if (BUILD_ROOF) {
-					cy++;
-					for (int i=0; i<SUBCEILING; i++) {
-						chunk.setBlock(x, cy+i, z, Material.STONE);
+				if (this.buildroof) {
+					for (int i=0; i<this.subceiling; i++) {
+						chunk.setBlock(x, cy+i+1, z, Material.STONE);
 					}
 				}
-*/
 			} // end x
 		} // end z
 	}

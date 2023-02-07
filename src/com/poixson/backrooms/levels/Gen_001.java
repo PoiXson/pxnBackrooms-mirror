@@ -90,14 +90,18 @@ public class Gen_001 extends GenBackrooms {
 
 	public class BasementData implements PreGenData {
 		public final double valueWall;
-		public final double valueMoist;
+		public final double valueMoistA;
+		public final double valueMoistB;
 		public boolean isWall;
 		public boolean isWet;
-		public BasementData(final double valueWall, final double valueMoist) {
-			this.valueWall  = valueWall;
-			this.valueMoist = valueMoist;
-			this.isWall = (valueWall > THRESH_WALL_LOW && valueWall < THRESH_WALL_HIGH);
-			this.isWet = (valueMoist > THRESH_MOIST);
+		public BasementData(final double valueWall, final double valueMoistA, final double valueMoistB) {
+			this.valueWall   = valueWall;
+			this.valueMoistA = valueMoistA;
+			this.valueMoistB = valueMoistB;
+			this.isWall = (valueWall > THRESH_WALL);
+			this.isWet  =
+				(valueMoistA > THRESH_MOIST) ||
+				(valueMoistB > THRESH_MOIST);
 		}
 	}
 
@@ -179,7 +183,7 @@ public class Gen_001 extends GenBackrooms {
 				// basement ceiling
 				if (this.buildroof) {
 					chunk.setBlock(x, cy-1, z, Material.BEDROCK);
-					if (dao.isWet && !dao.isWall) {
+					if (dao.isWet) {
 						chunk.setBlock(x, cy, z, Material.WATER);
 					} else {
 						chunk.setBlock(x, cy, z, Material.STONE);

@@ -2,7 +2,7 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.utils.NumberUtils.Rnd10K;
 
-import java.util.Map;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 

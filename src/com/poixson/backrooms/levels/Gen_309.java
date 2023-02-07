@@ -8,6 +8,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.PathTracer;
+import com.poixson.commonmc.tools.TreePopulator;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 
@@ -29,11 +30,11 @@ public class Gen_309 extends GenBackrooms {
 	protected final FastNoiseLiteD noiseTrees;
 
 	// populators
-//	protected final TreePopulator treePop;
+	protected final TreePopulator treePop;
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
-//	public final Pop_309 radioPop;
+	public final Pop_309 radioPop;
 
 
 
@@ -55,10 +56,9 @@ public class Gen_309 extends GenBackrooms {
 		this.noiseTrees = this.register(new FastNoiseLiteD());
 		this.noiseTrees.setFrequency(0.2f);
 		// populators
-//		this.treePop = new Pop_309_Trees(this);
-//		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
-this.pathTrace = null;
-//		this.radioPop = new Pop_309();
+		this.treePop = new Pop_309_Trees(this);
+		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
+		this.radioPop = new Pop_309(this);
 	}
 	@Override
 	public void unload() {
@@ -81,14 +81,13 @@ this.pathTrace = null;
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
-/*
 				int y = this.level_y;
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;
-				for (int i=0; i<SUBFLOOR; i++) {
+				for (int i=0; i<this.subfloor; i++) {
 					chunk.setBlock(x, y+i, z, Material.STONE);
 				}
-				y += SUBFLOOR;
+				y += this.subfloor;
 				final double ground;
 				{
 					final double g = this.noisePathGround.getNoise(xx, zz);
@@ -107,14 +106,12 @@ this.pathTrace = null;
 						chunk.setBlock(x, y+i, z, Material.DIRT);
 					}
 				}
-*/
 			} // end x
 		} // end z
 	}
 
 
 
-/*
 	public ConcurrentHashMap<Integer, Double> getPathCacheMap() {
 		// existing
 		{
@@ -140,7 +137,6 @@ this.pathTrace = null;
 			+ (this.noisePath.getNoise(x*5, z*5) * 8.0);
 		return (distance < 80.0);
 	}
-*/
 
 
 

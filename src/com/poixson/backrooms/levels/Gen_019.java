@@ -25,7 +25,7 @@ public class Gen_019 extends GenBackrooms {
 	protected final FastNoiseLiteD noiseAtticWalls;
 
 	// populators
-//	public final Pop_019 atticPop;
+	public final Pop_019 atticPop;
 
 
 
@@ -43,7 +43,7 @@ public class Gen_019 extends GenBackrooms {
 		this.noiseAtticWalls.setFractalType(FractalType.PingPong);
 		this.noiseAtticWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		// populators
-//		this.atticPop = new Pop_019();
+		this.atticPop = new Pop_019(this);
 	}
 
 
@@ -55,17 +55,16 @@ public class Gen_019 extends GenBackrooms {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
-/*
 				int y  = this.level_y;
-				int cy = this.level_y + SUBFLOOR + this.level_h;
+				int cy = this.level_y + this.subfloor + this.level_h;
 				// lobby floor
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;
-				for (int yy=0; yy<SUBFLOOR; yy++) {
+				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, y+yy, z, ATTIC_FLOOR);
 				}
-				y += SUBFLOOR;
-				final double value = this.noiseAtticWalls.getNoiseRot(xx, cy, 0.25);
+				y += this.subfloor;
+				final double value = this.noiseAtticWalls.getNoiseRot(xx, zz, 0.25);
 				if (value < -0.9 || value > 0.9) {
 					for (int iy=0; iy<3; iy++) {
 						chunk.setBlock(x, y+iy, z, ATTIC_WALLS);
@@ -73,13 +72,12 @@ public class Gen_019 extends GenBackrooms {
 				}
 				// second floor
 				chunk.setBlock(x, y+this.level_m, z, ATTIC_WALLS);
-				if (BUILD_ROOF) {
+				if (this.buildroof) {
 					cy++;
-					for (int i=0; i<SUBCEILING; i++) {
+					for (int i=0; i<this.subceiling; i++) {
 						chunk.setBlock(x, cy+i, z, ATTIC_FLOOR);
 					}
 				}
-*/
 			} // end x
 		} // end z
 	}
