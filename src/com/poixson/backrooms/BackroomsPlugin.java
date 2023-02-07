@@ -93,7 +93,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			}
 		}
 		// backrooms levels
-		new Level_000(this); // lobby, basement, hotel, attic, poolrooms, radio station
+		new Level_000(this); // lobby, lights out, basement, hotel, attic, poolrooms, radio station
 		new Level_009(this); // suburbs
 		new Level_010(this); // field of wheat
 		new Level_011(this); // city

@@ -9,18 +9,18 @@ import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.tools.dao.Ixy;
 
 
-public class Gen_007 extends GenBackrooms {
+// 6 | Lights Out
+public class Gen_006 extends GenBackrooms {
 
 	public final boolean buildroof;
 
 
 
-	public Gen_007(final BackroomsPlugin plugin, final int level_y, final int level_h,
+	public Gen_006(final BackroomsPlugin plugin, final int level_y, final int level_h,
 			final boolean buildroof, final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
 		this.buildroof  = buildroof;
 	}
-
 
 
 

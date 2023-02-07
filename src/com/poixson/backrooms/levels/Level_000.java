@@ -21,6 +21,7 @@ import com.poixson.tools.dao.Ixy;
 //  19 | Attic
 //   5 | Hotel
 //  37 | Poolrooms
+//   6 | lights out
 //   0 | Lobby
 //   1 | Basement
 public class Level_000 extends LevelBackrooms {
@@ -36,11 +37,11 @@ public class Level_000 extends LevelBackrooms {
 	// lobby
 	public static final int Y_000 = SUBFLOOR + Y_001 + H_001 + 1;
 	public static final int H_000 = 7;
-	// lobby-alt
-	public static final int Y_007 = SUBFLOOR + Y_000 + H_000 + SUBCEILING + 1;
-	public static final int H_007 = 7;
+	// lights out
+	public static final int Y_006 = SUBFLOOR + Y_000 + H_000 + SUBCEILING + 1;
+	public static final int H_006 = 7;
 	// pools
-	public static final int Y_037 = SUBFLOOR + Y_007 + H_007 + SUBCEILING + 1;
+	public static final int Y_037 = SUBFLOOR + Y_006 + H_006 + SUBCEILING + 1;
 	public static final int H_037 = 10;
 	// hotel
 	public static final int Y_005 = SUBFLOOR + Y_037 + H_037 + SUBCEILING + 1;
@@ -54,7 +55,7 @@ public class Level_000 extends LevelBackrooms {
 	// generators
 	public final Gen_001 gen_001;
 	public final Gen_000 gen_000;
-	public final Gen_007 gen_007;
+	public final Gen_006 gen_006;
 	public final Gen_037 gen_037;
 	public final Gen_005 gen_005;
 	public final Gen_019 gen_019;
@@ -67,7 +68,7 @@ public class Level_000 extends LevelBackrooms {
 		// generators
 		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // basement
 		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lobby
-		this.gen_007 = this.register(new Gen_007(plugin, Y_007, H_007, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lobby-alt
+		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lights out
 		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // pools
 		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // hotel
 		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // attic
@@ -82,7 +83,7 @@ public class Level_000 extends LevelBackrooms {
 		switch (level) {
 		case 1:  // basement
 		case 0:  // lobby
-		case 7:  // lobby-alt
+		case 6:  // lights out
 		case 37: // pools
 		case 5:  // hotel
 		case 19: // attic
@@ -104,7 +105,7 @@ public class Level_000 extends LevelBackrooms {
 		switch (level) {
 		case   1: y = Y_001; h = H_001; break; // basement
 		case   0: y = Y_000; h = H_000; break; // lobby
-		case   7: y = Y_007; h = H_007; break; // lobby-alt
+		case   6: y = Y_006; h = H_006; break; // lights out
 		case  37: y = Y_037; h = H_037; break; // pools
 		case   5: y = Y_005; h = H_005; break; // hotel
 		case  19: y = Y_019; h = H_019; break; // attic
@@ -118,7 +119,7 @@ public class Level_000 extends LevelBackrooms {
 	public int getLevelFromY(final int y) {
 		if (y <= Y_001 + H_001) return 1;  // basement
 		if (y <= Y_000 + H_000) return 0;  // lobby
-		if (y <= Y_007 + H_007) return 7;  // lobby-alt
+		if (y <= Y_006 + H_006) return 6;  // lights out
 		if (y <= Y_037 + H_037) return 37; // pools
 		if (y <= Y_005 + H_005) return 5;  // hotel
 		if (y <= Y_019 + H_019) return 19; // attic
@@ -129,7 +130,7 @@ public class Level_000 extends LevelBackrooms {
 		switch (level) {
 		case 1:   return Y_001; // basement
 		case 0:   return Y_000; // lobby
-		case 7:   return Y_007; // lobby-aly
+		case 6:   return Y_006; // lights out
 		case 37:  return Y_037; // pools
 		case 5:   return Y_005; // hotel
 		case 19:  return Y_019; // attic
@@ -143,7 +144,7 @@ public class Level_000 extends LevelBackrooms {
 		switch (level) {
 		case 1:   return Y_001 + H_001; // basement
 		case 0:   return Y_000 + H_000; // lobby
-		case 7:   return Y_007 + H_007; // lobby-alt
+		case 6:   return Y_006 + H_006; // lights out
 		case 37:  return Y_037 + H_037; // pools
 		case 5:   return Y_005 + H_005; // hotel
 		case 19:  return Y_019 + H_019; // attic
@@ -175,7 +176,7 @@ public class Level_000 extends LevelBackrooms {
 		// generate
 		this.gen_001.generate(pregen, chunk, chunkX, chunkZ); // basement
 		this.gen_000.generate(pregen, chunk, chunkX, chunkZ); // lobby
-		this.gen_007.generate(pregen, chunk, chunkX, chunkZ); // lobby-alt
+		this.gen_006.generate(pregen, chunk, chunkX, chunkZ); // lights out
 		this.gen_037.generate(pregen, chunk, chunkX, chunkZ); // pools
 		this.gen_005.generate(pregen, chunk, chunkX, chunkZ); // hotel
 		this.gen_019.generate(pregen, chunk, chunkX, chunkZ); // attic
