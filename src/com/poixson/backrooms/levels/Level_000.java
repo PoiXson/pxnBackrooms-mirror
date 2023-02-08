@@ -168,9 +168,9 @@ public class Level_000 extends LevelBackrooms {
 	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// pre-generate
 		final PregenLevel0 pregen = new PregenLevel0();
-		this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ);
-		this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ);
-		this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ);
+		this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
+		this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ); // basement
+		this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
 		// generate
 		this.gen_001.generate(pregen, chunk, chunkX, chunkZ); // basement
 		this.gen_000.generate(pregen, chunk, chunkX, chunkZ); // lobby
@@ -188,9 +188,9 @@ public class Level_000 extends LevelBackrooms {
 		final LinkedList<BlockPopulator> list = new LinkedList<BlockPopulator>();
 		if (Gen_309.ENABLE_ROOF)
 			list.add(this.gen_309.treePop);
-		list.add(this.gen_309.radioPop);
-		list.add(this.gen_005.roomPop);
-		list.add(this.gen_019.atticPop);
+		list.add(this.gen_309.popRadio);
+		list.add(this.gen_005.popRooms);
+		list.add(this.gen_019.popAttic);
 		return list;
 	}
 

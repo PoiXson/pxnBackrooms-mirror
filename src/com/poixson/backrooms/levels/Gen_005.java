@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -35,7 +36,7 @@ public class Gen_005 extends GenBackrooms {
 	protected final FastNoiseLiteD noiseHotelRooms;
 
 	// populators
-	public final Pop_005 roomPop;
+	public final Pop_005 popRooms;
 
 
 
@@ -58,7 +59,7 @@ public class Gen_005 extends GenBackrooms {
 		this.noiseHotelRooms.setFrequency(0.008);
 		this.noiseHotelRooms.setFractalOctaves(1);
 		// populators
-		this.roomPop = new Pop_005(this);
+		this.popRooms = new Pop_005(this);
 	}
 
 
@@ -131,7 +132,7 @@ public class Gen_005 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final PregenLevel0 pregen0 = (PregenLevel0) pregen;
+		final HashMap<Ixy, HotelData> hoteldata = ((PregenLevel0)pregen).hotel;
 		final int cy = this.level_y + this.level_h + this.subfloor;
 		int xx, y, zz;
 		HotelData dao;
@@ -147,7 +148,7 @@ public class Gen_005 extends GenBackrooms {
 					chunk.setBlock(x, y+yy, z, Material.SPRUCE_PLANKS);
 				}
 				y += this.subfloor;
-				dao = (HotelData) pregen0.hotel.get(new Ixy(x, z));
+				dao = hoteldata.get(new Ixy(x, z));
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
@@ -176,10 +177,10 @@ public class Gen_005 extends GenBackrooms {
 							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 						// ceiling
 						} else {
-							final HotelData daoN = pregen0.hotel.get(new Ixy(x, z-1));
-							final HotelData daoS = pregen0.hotel.get(new Ixy(x, z+1));
-							final HotelData daoE = pregen0.hotel.get(new Ixy(x+1, z));
-							final HotelData daoW = pregen0.hotel.get(new Ixy(x-1, z));
+							final HotelData daoN = hoteldata.get(new Ixy(x, z-1));
+							final HotelData daoS = hoteldata.get(new Ixy(x, z+1));
+							final HotelData daoE = hoteldata.get(new Ixy(x+1, z));
+							final HotelData daoW = hoteldata.get(new Ixy(x-1, z));
 							if (NodeType.WALL.equals(daoN.type)
 							||  NodeType.WALL.equals(daoS.type)
 							||  NodeType.WALL.equals(daoE.type)

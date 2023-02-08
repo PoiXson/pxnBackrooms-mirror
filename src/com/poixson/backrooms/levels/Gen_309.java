@@ -37,7 +37,7 @@ public class Gen_309 extends GenBackrooms {
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
-	public final Pop_309 radioPop;
+	public final Pop_309 popRadio;
 
 
 
@@ -62,7 +62,7 @@ public class Gen_309 extends GenBackrooms {
 		// populators
 		this.treePop = new Pop_309_Trees(this);
 		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
-		this.radioPop = new Pop_309(this);
+		this.popRadio = new Pop_309(this);
 	}
 	@Override
 	public void unload() {

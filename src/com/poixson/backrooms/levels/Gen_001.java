@@ -145,7 +145,7 @@ public class Gen_001 extends GenBackrooms {
 					chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
 				}
 				y += this.subfloor;
-				dao = (BasementData) ((PregenLevel0)pregen).basement.get(new Ixy(x, z));
+				dao = ((PregenLevel0)pregen).basement.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

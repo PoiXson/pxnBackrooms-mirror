@@ -216,7 +216,7 @@ public class Gen_000 extends GenBackrooms {
 					chunk.setBlock(x, y+yy, z, LOBBY_SUBFLOOR);
 				}
 				y += this.subfloor;
-				dao = (LobbyData) ((PregenLevel0)pregen).lobby.get(new Ixy(x, z));
+				dao = ((PregenLevel0)pregen).lobby.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

@@ -250,6 +250,8 @@ public class Pop_005 extends BlockPopulator {
 		double value = this.gen.noiseHotelRooms.getNoise(x, z);
 		// wall
 		final Material block_wall;
+//TODO: use cellular noise
+//TODO: mod 16 ?
 		switch ( (int)Math.round(((1.0+value)*0.5) * 20.0) ) {
 		case 0:  block_wall = Material.WHITE_TERRACOTTA;      break;
 		case 1:  block_wall = Material.ORANGE_TERRACOTTA;     break;

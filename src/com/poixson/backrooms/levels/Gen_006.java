@@ -30,16 +30,13 @@ public class Gen_006 extends GenBackrooms {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		LobbyData dao;
-		final int y  = this.level_y;
-		final int cy = this.level_y + this.level_h;
+		final int y = this.level_y;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				if (ENABLE_ROOF) {
-					// floor/ceiling
+				// floor
+				if (ENABLE_ROOF)
 					chunk.setBlock(x, y, z, Material.BEDROCK);
-					chunk.setBlock(x, cy, z, Material.BEDROCK);
-				}
-				dao = (LobbyData) ((PregenLevel0)pregen).lobby.get(new Ixy(x, z));
+				dao = ((PregenLevel0)pregen).lobby.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
@@ -48,8 +45,6 @@ public class Gen_006 extends GenBackrooms {
 					for (int yy=0; yy<h; yy++) {
 						chunk.setBlock(x, y+yy+1, z, Material.GLOWSTONE);
 					}
-				// room
-				} else {
 				} // end wall/room
 			} // end x
 		} // end z
