@@ -13,10 +13,12 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 151 | Dollhouse
 public class Gen_151 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+	public static final boolean ENABLE_ROOF     = true;
+
 	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
 
-	public final boolean buildroof;
 	public final int subfloor;
 	public final int subceiling;
 	public final int level_m;
@@ -26,10 +28,10 @@ public class Gen_151 extends GenBackrooms {
 
 
 
-	public Gen_151(final BackroomsPlugin plugin, final int level_y, final int level_h,
-			final boolean buildroof, final int subfloor, final int subceiling) {
+	public Gen_151(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
+			final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
-		this.buildroof  = buildroof;
 		this.subfloor   = subfloor;
 		this.subceiling = subceiling;
 		this.level_m = Math.floorDiv(this.level_h, 2);
@@ -46,6 +48,7 @@ public class Gen_151 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 //				final int xx = (chunkX * 16) + x;

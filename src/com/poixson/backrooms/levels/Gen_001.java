@@ -26,6 +26,9 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 1 | Basement
 public class Gen_001 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+	public static final boolean ENABLE_ROOF     = true;
+
 	public static final int LAMP_Y = 6;
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 	public static final double THRESH_WALL  = 0.9;
@@ -36,7 +39,6 @@ public class Gen_001 extends GenBackrooms {
 	public static final Material BASEMENT_FLOOR_DRY = Material.BROWN_CONCRETE_POWDER;
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
 
-	public final boolean buildroof;
 	public final int subfloor;
 	public final int subceiling;
 
@@ -49,10 +51,10 @@ public class Gen_001 extends GenBackrooms {
 
 
 
-	public Gen_001(final BackroomsPlugin plugin, final int level_y, final int level_h,
-			final boolean buildroof, final int subfloor, final int subceiling) {
+	public Gen_001(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
+			final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
-		this.buildroof  = buildroof;
 		this.subfloor   = subfloor;
 		this.subceiling = subceiling;
 		// basement wall noise
@@ -128,6 +130,7 @@ public class Gen_001 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		BasementData dao;
 		int cy = this.level_y + this.level_h + this.subfloor;
 		for (int z=0; z<16; z++) {
@@ -182,7 +185,7 @@ public class Gen_001 extends GenBackrooms {
 					}
 				}
 				// basement ceiling
-				if (this.buildroof) {
+				if (ENABLE_ROOF) {
 					chunk.setBlock(x, cy-1, z, Material.BEDROCK);
 					if (dao.isWet) {
 						chunk.setBlock(x, cy, z, Material.WATER);

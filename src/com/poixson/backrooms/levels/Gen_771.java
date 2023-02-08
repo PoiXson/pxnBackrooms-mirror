@@ -10,6 +10,8 @@ import com.poixson.utils.FastNoiseLiteD;
 // 771 | Crossroads
 public class Gen_771 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+
 	public static final Material ROAD_SURFACE    = Material.POLISHED_BLACKSTONE;
 	public static final Material ROAD_WALL       = Material.POLISHED_BLACKSTONE_BRICK_WALL;
 	public static final Material ROAD_WALL_DECOR = Material.CHISELED_POLISHED_BLACKSTONE;
@@ -39,6 +41,7 @@ public class Gen_771 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		final boolean centerX = (chunkX == 0 || chunkX == -1);
 		final boolean centerZ = (chunkZ == 0 || chunkZ == -1);
 		// world center

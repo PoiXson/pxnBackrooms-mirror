@@ -22,7 +22,7 @@ import com.poixson.tools.dao.Ixywd;
 // 5 | Hotel
 public class Pop_005 extends BlockPopulator {
 
-	public static final int     SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 
 	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
 
@@ -358,7 +358,7 @@ public class Pop_005 extends BlockPopulator {
 					plotter.setRotBlock(ix, 0, iz, direction, dao.block_carpet);
 				switch (dao.type) {
 				case LAMP:
-					if (this.gen.buildroof) {
+					if (Gen_005.ENABLE_ROOF) {
 						plotter.setRotBlock(ix, 6, iz, direction, Material.REDSTONE_BLOCK);
 						plotter.setRotBlock(ix, 5, iz, direction, Material.REDSTONE_LAMP, "on");
 					}
@@ -382,7 +382,7 @@ public class Pop_005 extends BlockPopulator {
 					break;
 				default:
 					// ceiling
-					if (this.gen.buildroof) {
+					if (Gen_005.ENABLE_ROOF) {
 						plotter.setRotBlock(ix, 6, iz, direction, Material.SMOOTH_STONE);
 						plotter.setRotBlock(ix, 5, iz, direction, Material.SMOOTH_STONE_SLAB, "top");
 					}

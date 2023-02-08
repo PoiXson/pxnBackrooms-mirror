@@ -17,6 +17,8 @@ import com.poixson.backrooms.BackroomsPlugin;
 // 78 | Space
 public class Gen_078 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+
 	public static final int GRAVITY_REACH = 10;
 
 	protected final BackroomsPlugin plugin;
@@ -25,7 +27,8 @@ public class Gen_078 extends GenBackrooms {
 
 
 
-	public Gen_078(final BackroomsPlugin plugin, final int level_y, final int level_h) {
+	public Gen_078(final BackroomsPlugin plugin,
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
 		this.plugin = plugin;
 	}
@@ -35,6 +38,7 @@ public class Gen_078 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 //				final int xx = (chunkX * 16) + x;

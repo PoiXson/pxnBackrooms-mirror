@@ -16,6 +16,9 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 // 309 | Radio Station
 public class Gen_309 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+	public static final boolean ENABLE_ROOF     = true;
+
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
 
@@ -38,7 +41,8 @@ public class Gen_309 extends GenBackrooms {
 
 
 
-	public Gen_309(final BackroomsPlugin plugin, final int level_y, final int level_h,
+	public Gen_309(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
 			final int subfloor) {
 		super(plugin, level_y, level_h);
 		this.subfloor   = subfloor;
@@ -77,6 +81,7 @@ public class Gen_309 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;

@@ -12,14 +12,15 @@ import com.poixson.tools.dao.Ixy;
 // 6 | Lights Out
 public class Gen_006 extends GenBackrooms {
 
-	public final boolean buildroof;
+	public static final boolean ENABLE_GENERATE = true;
+	public static final boolean ENABLE_ROOF     = true;
 
 
 
-	public Gen_006(final BackroomsPlugin plugin, final int level_y, final int level_h,
-			final boolean buildroof, final int subfloor, final int subceiling) {
+	public Gen_006(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
+			final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
-		this.buildroof  = buildroof;
 	}
 
 
@@ -27,12 +28,13 @@ public class Gen_006 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		LobbyData dao;
 		final int y  = this.level_y;
 		final int cy = this.level_y + this.level_h;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				if (this.buildroof) {
+				if (ENABLE_ROOF) {
 					// floor/ceiling
 					chunk.setBlock(x, y, z, Material.BEDROCK);
 					chunk.setBlock(x, cy, z, Material.BEDROCK);

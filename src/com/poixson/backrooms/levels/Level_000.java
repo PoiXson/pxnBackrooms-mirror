@@ -26,8 +26,6 @@ import com.poixson.tools.dao.Ixy;
 //   1 | Basement
 public class Level_000 extends LevelBackrooms {
 
-	private static final boolean BUILD_ROOF = true;
-
 	public static final int SUBFLOOR   = 3;
 	public static final int SUBCEILING = 3;
 
@@ -66,13 +64,13 @@ public class Level_000 extends LevelBackrooms {
 	public Level_000(final BackroomsPlugin plugin) {
 		super(plugin, 0);
 		// generators
-		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // basement
-		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lobby
-		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // lights out
-		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // pools
-		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // hotel
-		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, BUILD_ROOF, SUBFLOOR, SUBCEILING)); // attic
-		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0,             SUBFLOOR            )); // radio station
+		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, SUBFLOOR, SUBCEILING)); // basement
+		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, SUBFLOOR, SUBCEILING)); // lobby
+		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006, SUBFLOOR, SUBCEILING)); // lights out
+		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037, SUBFLOOR, SUBCEILING)); // pools
+		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, SUBFLOOR, SUBCEILING)); // hotel
+		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, SUBFLOOR, SUBCEILING)); // attic
+		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0, SUBFLOOR            )); // radio station
 	}
 
 
@@ -188,7 +186,7 @@ public class Level_000 extends LevelBackrooms {
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
 		final LinkedList<BlockPopulator> list = new LinkedList<BlockPopulator>();
-		if (BUILD_ROOF)
+		if (Gen_309.ENABLE_ROOF)
 			list.add(this.gen_309.treePop);
 		list.add(this.gen_309.radioPop);
 		list.add(this.gen_005.roomPop);

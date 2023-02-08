@@ -34,13 +34,15 @@ import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 // 0 | Lobby
 public class Gen_000 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+	public static final boolean ENABLE_ROOF     = true;
+
 	public static final double THRESH_WALL_L = 0.38;
 	public static final double THRESH_WALL_H = 0.5;
 
 	public static final Material LOBBY_WALL      = Material.TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
 
-	public final boolean buildroof;
 	public final int subfloor;
 	public final int subceiling;
 
@@ -50,10 +52,10 @@ public class Gen_000 extends GenBackrooms {
 
 
 
-	public Gen_000(final BackroomsPlugin plugin, final int level_y, final int level_h,
-			final boolean buildroof, final int subfloor, final int subceiling) {
+	public Gen_000(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
+			final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
-		this.buildroof  = buildroof;
 		this.subfloor   = subfloor;
 		this.subceiling = subceiling;
 		// lobby walls
@@ -196,6 +198,7 @@ public class Gen_000 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
@@ -225,7 +228,7 @@ public class Gen_000 extends GenBackrooms {
 				// room
 				} else {
 					chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
-					if (this.buildroof) {
+					if (ENABLE_ROOF) {
 						final int modX6 = Math.abs(xx) % 7;
 						final int modZ6 = Math.abs(zz) % 7;
 						if (modZ6 == 0 && modX6 < 2
@@ -333,7 +336,7 @@ public class Gen_000 extends GenBackrooms {
 						}
 					}
 				} // end wall/room
-				if (this.buildroof) {
+				if (ENABLE_ROOF) {
 					for (int i=1; i<this.subceiling; i++) {
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
 					}

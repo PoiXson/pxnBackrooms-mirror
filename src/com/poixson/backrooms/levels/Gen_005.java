@@ -21,10 +21,12 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 5 | Hotel
 public class Gen_005 extends GenBackrooms {
 
+	public static final boolean ENABLE_GENERATE = true;
+	public static final boolean ENABLE_ROOF     = true;
+
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 
-	public final boolean buildroof;
 	public final int subfloor;
 	public final int subceiling;
 
@@ -37,10 +39,10 @@ public class Gen_005 extends GenBackrooms {
 
 
 
-	public Gen_005(final BackroomsPlugin plugin, final int level_y, final int level_h,
-			final boolean buildroof, final int subfloor, final int subceiling) {
+	public Gen_005(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
+			final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
-		this.buildroof  = buildroof;
 		this.subfloor   = subfloor;
 		this.subceiling = subceiling;
 		// hotel walls
@@ -128,6 +130,7 @@ public class Gen_005 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GENERATE) return;
 		final PregenLevel0 pregen0 = (PregenLevel0) pregen;
 		final int cy = this.level_y + this.level_h + this.subfloor;
 		int xx, y, zz;
@@ -163,7 +166,7 @@ public class Gen_005 extends GenBackrooms {
 						else            tile.setFacing(BlockFace.SOUTH);
 					}
 					chunk.setBlock(x, y, z, tile);
-					if (this.buildroof) {
+					if (ENABLE_ROOF) {
 						// ceiling light
 						if (xx % 5 == 0 && zz % 5 == 0) {
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
@@ -194,7 +197,7 @@ public class Gen_005 extends GenBackrooms {
 				}
 				default: break;
 				}
-				if (this.buildroof) {
+				if (ENABLE_ROOF) {
 					for (int i=0; i<this.subceiling; i++) {
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
 					}
