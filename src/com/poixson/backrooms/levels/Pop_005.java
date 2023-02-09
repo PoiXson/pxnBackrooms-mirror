@@ -132,6 +132,7 @@ public class Pop_005 extends BlockPopulator {
 		final int total_ew = dao.e - dao.w;
 		final int rooms_deep = (int) Math.floor( ((double)total_ns) / room_size );
 		final int rooms_wide = (int) Math.floor( ((double)total_ew) / room_size );
+		if (rooms_deep < 1 || rooms_wide < 1) return;
 		final int room_depth = Math.floorDiv(total_ns, rooms_deep);
 		final int room_width = Math.floorDiv(total_ew, rooms_wide);
 		final int rooms_deep_half = (int)Math.floor( ((double)rooms_deep) * 0.5 );
