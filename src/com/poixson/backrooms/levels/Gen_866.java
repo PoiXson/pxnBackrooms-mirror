@@ -21,7 +21,8 @@ public class Gen_866 extends GenBackrooms {
 
 
 
-	public Gen_866(final BackroomsPlugin plugin, final int level_y, final int level_h,
+	public Gen_866(final BackroomsPlugin plugin,
+			final int level_y, final int level_h,
 			final int subfloor) {
 		super(plugin, level_y, level_h);
 		this.subfloor   = subfloor;

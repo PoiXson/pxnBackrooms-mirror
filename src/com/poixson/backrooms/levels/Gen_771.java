@@ -26,7 +26,8 @@ public class Gen_771 extends GenBackrooms {
 
 
 
-	public Gen_771(final BackroomsPlugin plugin, final int level_y, final int level_h) {
+	public Gen_771(final BackroomsPlugin plugin,
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
 		// road lanterns
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());

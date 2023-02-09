@@ -27,12 +27,12 @@ public class Pop_309 extends BlockPopulator {
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
 		if (chunkX == 0 && chunkZ == 0)
-			this.populate00(region);
+			this.populate0x0(region);
 	}
 
 
 
-	public void populate00(final LimitedRegion region) {
+	public void populate0x0(final LimitedRegion region) {
 		if (!Gen_309.ENABLE_GENERATE) return;
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {

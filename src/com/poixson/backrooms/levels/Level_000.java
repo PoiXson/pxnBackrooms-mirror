@@ -66,7 +66,7 @@ public class Level_000 extends LevelBackrooms {
 		// generators
 		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, SUBFLOOR, SUBCEILING)); // basement
 		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, SUBFLOOR, SUBCEILING)); // lobby
-		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006, SUBFLOOR, SUBCEILING)); // lights out
+		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006                      )); // lights out
 		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037, SUBFLOOR, SUBCEILING)); // pools
 		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, SUBFLOOR, SUBCEILING)); // hotel
 		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, SUBFLOOR, SUBCEILING)); // attic

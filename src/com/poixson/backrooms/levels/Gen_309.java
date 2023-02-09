@@ -45,7 +45,7 @@ public class Gen_309 extends GenBackrooms {
 			final int level_y, final int level_h,
 			final int subfloor) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
+		this.subfloor = subfloor;
 		// path
 		this.noisePath = this.register(new FastNoiseLiteD());
 		this.noisePath.setFrequency(0.01f);
@@ -61,7 +61,7 @@ public class Gen_309 extends GenBackrooms {
 		this.noiseTrees.setFrequency(0.2f);
 		// populators
 		this.treePop = new Pop_309_Trees(this);
-		this.pathTrace = new PathTracer(this.noisePath, this.getPathCacheMap());
+		this.pathTrace = new PathTracer(this.noisePath, 18, this.getPathCacheMap());
 		this.popRadio = new Pop_309(this);
 	}
 	@Override

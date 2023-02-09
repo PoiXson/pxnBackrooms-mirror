@@ -13,13 +13,11 @@ import com.poixson.tools.dao.Ixy;
 public class Gen_006 extends GenBackrooms {
 
 	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 
 
 	public Gen_006(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
 	}
 

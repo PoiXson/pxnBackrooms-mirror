@@ -14,6 +14,7 @@ import com.poixson.commonmc.tools.DelayedLever;
 import com.poixson.commonmc.utils.BukkitUtils;
 
 
+// lobby/lights-out teleport
 public class Listener_006 {
 
 	protected final BackroomsPlugin plugin;
