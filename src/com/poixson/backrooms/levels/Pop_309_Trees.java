@@ -20,7 +20,7 @@ public class Pop_309_Trees extends TreePopulator {
 	public Pop_309_Trees(final Gen_309 gen) {
 		super(
 			gen.getTreeNoise(),
-			gen.level_y,
+			gen.level_y + gen.subfloor + 1,
 			PATH_TREE_TRUNK,
 			PATH_TREE_LEAVES
 		);

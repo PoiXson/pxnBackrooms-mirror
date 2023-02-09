@@ -33,22 +33,22 @@ public class Level_000 extends LevelBackrooms {
 	public static final int Y_001 = 0;
 	public static final int H_001 = 30;
 	// lobby
-	public static final int Y_000 = SUBFLOOR + Y_001 + H_001 + 1;
-	public static final int H_000 = 7;
+	public static final int Y_000 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
+	public static final int H_000 = 5;
 	// lights out
-	public static final int Y_006 = SUBFLOOR + Y_000 + H_000 + SUBCEILING + 1;
+	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 2;
 	public static final int H_006 = 7;
 	// pools
-	public static final int Y_037 = SUBFLOOR + Y_006 + H_006 + SUBCEILING + 1;
+	public static final int Y_037 = Y_006 + H_006 + 1;
 	public static final int H_037 = 10;
 	// hotel
-	public static final int Y_005 = SUBFLOOR + Y_037 + H_037 + SUBCEILING + 1;
-	public static final int H_005 = 7;
+	public static final int Y_005 = Y_037 + H_037 + SUBFLOOR + SUBCEILING + 3;
+	public static final int H_005 = 6;
 	// attic
-	public static final int Y_019 = SUBFLOOR + Y_005 + H_005 + SUBCEILING + 1;
+	public static final int Y_019 = Y_005 + H_005 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_019 = 10;
 	// radio station
-	public static final int Y_309 = SUBFLOOR + Y_019 + H_019 + SUBCEILING + 1;
+	public static final int Y_309 = Y_019 + H_019 + SUBFLOOR + SUBCEILING + 1;
 
 	// generators
 	public final Gen_001 gen_001;
@@ -115,13 +115,13 @@ public class Level_000 extends LevelBackrooms {
 
 	@Override
 	public int getLevelFromY(final int y) {
-		if (y <= Y_001 + H_001) return 1;  // basement
-		if (y <= Y_000 + H_000) return 0;  // lobby
-		if (y <= Y_006 + H_006) return 6;  // lights out
-		if (y <= Y_037 + H_037) return 37; // pools
-		if (y <= Y_005 + H_005) return 5;  // hotel
-		if (y <= Y_019 + H_019) return 19; // attic
-		return 309;                        // radio station
+		if (y < Y_000) return 1;  // basement
+		if (y < Y_006) return 0;  // lobby
+		if (y < Y_037) return 6;  // lights out
+		if (y < Y_005) return 37; // pools
+		if (y < Y_019) return 5;  // hotel
+		if (y < Y_309) return 19; // attic
+		return 309;               // radio station
 	}
 	@Override
 	public int getY(final int level) {
@@ -140,13 +140,13 @@ public class Level_000 extends LevelBackrooms {
 	@Override
 	public int getMaxY(final int level) {
 		switch (level) {
-		case 1:   return Y_001 + H_001; // basement
-		case 0:   return Y_000 + H_000; // lobby
-		case 6:   return Y_006 + H_006; // lights out
-		case 37:  return Y_037 + H_037; // pools
-		case 5:   return Y_005 + H_005; // hotel
-		case 19:  return Y_019 + H_019; // attic
-		case 309: return 255;           // radio station
+		case 1:   return Y_000 - 1; // basement
+		case 0:   return Y_006 - 1; // lobby
+		case 6:   return Y_037 - 1; // lights out
+		case 37:  return Y_005 - 1; // pools
+		case 5:   return Y_019 - 1; // hotel
+		case 19:  return Y_309 - 1; // attic
+		case 309: return 320;       // radio station
 		default: break;
 		}
 		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));

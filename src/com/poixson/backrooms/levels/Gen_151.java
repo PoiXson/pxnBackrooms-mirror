@@ -56,8 +56,8 @@ public class Gen_151 extends GenBackrooms {
 				chunk.setBlock(x, 0, z, Material.BEDROCK);
 				chunk.setBlock(x, 1, z, Material.STONE);
 /*
-				int y  = this.level_y;
-				int cy = this.level_y + SUBFLOOR + this.level_h;
+				int y  = this.level_y + this.subfloor + 1;
+				int cy = this.level_y + this.subfloor + this.level_h + 1;
 				// lobby floor
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;

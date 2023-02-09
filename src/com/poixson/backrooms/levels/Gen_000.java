@@ -202,26 +202,24 @@ public class Gen_000 extends GenBackrooms {
 		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
-		final int cy = this.level_y + this.level_h + this.subfloor;
-		int xx, y, zz;
+		final int y  = this.level_y + this.subfloor + 1;
+		final int cy = this.level_y + this.subfloor + this.level_h + 1;
+		int xx, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				xx = (chunkX * 16) + x;
 				zz = (chunkZ * 16) + z;
-				y  = this.level_y;
 				// lobby floor
-				chunk.setBlock(x, y, z, Material.BEDROCK);
-				y++;
+				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<this.subfloor; yy++) {
-					chunk.setBlock(x, y+yy, z, LOBBY_SUBFLOOR);
+					chunk.setBlock(x, this.level_y+yy+1, z, LOBBY_SUBFLOOR);
 				}
-				y += this.subfloor;
 				dao = ((PregenLevel0)pregen).lobby.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
 					// lobby walls
-					final int h = this.level_h + 1;
+					final int h = this.level_h + 3;
 					for (int yy=0; yy<h; yy++) {
 						chunk.setBlock(x, y+yy, z, LOBBY_WALL);
 					}

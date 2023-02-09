@@ -132,24 +132,22 @@ public class Gen_001 extends GenBackrooms {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		BasementData dao;
-		int cy = this.level_y + this.level_h + this.subfloor;
+		final int y  = this.level_y + this.subfloor + 1;
+		final int cy = this.level_y + this.subfloor + this.level_h + 2;
+		final int h  = this.level_h + 1;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
-				int y  = this.level_y;
 				// basement floor
-				chunk.setBlock(x, y, z, Material.BEDROCK);
-				y++;
+				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<this.subfloor; yy++) {
-					chunk.setBlock(x, y+yy, z, BASEMENT_SUBFLOOR);
+					chunk.setBlock(x, this.level_y+yy+1, z, BASEMENT_SUBFLOOR);
 				}
-				y += this.subfloor;
 				dao = ((PregenLevel0)pregen).basement.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
-					final int h = this.level_h - 2;
 					for (int yy=0; yy<h; yy++) {
 						if (yy > 6) {
 							chunk.setBlock(x, y+yy, z, Material.BEDROCK);
@@ -186,11 +184,11 @@ public class Gen_001 extends GenBackrooms {
 				}
 				// basement ceiling
 				if (ENABLE_ROOF) {
-					chunk.setBlock(x, cy-1, z, Material.BEDROCK);
+					chunk.setBlock(x, cy, z, Material.BEDROCK);
 					if (dao.isWet) {
-						chunk.setBlock(x, cy, z, Material.WATER);
+						chunk.setBlock(x, cy+1, z, Material.WATER);
 					} else {
-						chunk.setBlock(x, cy, z, Material.STONE);
+						chunk.setBlock(x, cy+1, z, Material.STONE);
 					}
 				}
 			} // end x

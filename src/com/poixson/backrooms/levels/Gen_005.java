@@ -133,26 +133,25 @@ public class Gen_005 extends GenBackrooms {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Ixy, HotelData> hoteldata = ((PregenLevel0)pregen).hotel;
-		final int cy = this.level_y + this.level_h + this.subfloor;
-		int xx, y, zz;
+		final int y  = this.level_y + this.subfloor + 1;
+		final int cy = this.level_y + this.subfloor + this.level_h + 2;
+		final int h  = this.level_h + 2;
+		int xx, zz;
 		HotelData dao;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				xx = (chunkX * 16) + x;
 				zz = (chunkZ * 16) + z;
-				y  = this.level_y;
 				// hotel floor
-				chunk.setBlock(x, y, z, Material.BEDROCK);
-				y++;
+				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<this.subfloor; yy++) {
-					chunk.setBlock(x, y+yy, z, Material.SPRUCE_PLANKS);
+					chunk.setBlock(x, this.level_y+yy+1, z, Material.SPRUCE_PLANKS);
 				}
-				y += this.subfloor;
 				dao = hoteldata.get(new Ixy(x, z));
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
-					for (int iy=0; iy<this.level_h; iy++) {
+					for (int iy=0; iy<h; iy++) {
 						chunk.setBlock(x, y+iy, z, HOTEL_WALL);
 					}
 					break;

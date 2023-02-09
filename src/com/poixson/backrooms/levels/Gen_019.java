@@ -54,19 +54,17 @@ public class Gen_019 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
+		final int y  = this.level_y + this.subfloor + 1;
+		final int cy = this.level_y + this.subfloor + this.level_h + 1;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
-				int y  = this.level_y;
-				int cy = this.level_y + this.subfloor + this.level_h;
 				// lobby floor
-				chunk.setBlock(x, y, z, Material.BEDROCK);
-				y++;
+				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<this.subfloor; yy++) {
-					chunk.setBlock(x, y+yy, z, ATTIC_FLOOR);
+					chunk.setBlock(x, this.level_y+yy+1, z, ATTIC_FLOOR);
 				}
-				y += this.subfloor;
 				final double value = this.noiseAtticWalls.getNoiseRot(xx, zz, 0.25);
 				if (value < -0.9 || value > 0.9) {
 					for (int iy=0; iy<3; iy++) {
@@ -76,9 +74,8 @@ public class Gen_019 extends GenBackrooms {
 				// second floor
 				chunk.setBlock(x, y+this.level_m, z, ATTIC_WALLS);
 				if (ENABLE_ROOF) {
-					cy++;
 					for (int i=0; i<this.subceiling; i++) {
-						chunk.setBlock(x, cy+i, z, ATTIC_FLOOR);
+						chunk.setBlock(x, cy+i+1, z, ATTIC_FLOOR);
 					}
 				}
 			} // end x

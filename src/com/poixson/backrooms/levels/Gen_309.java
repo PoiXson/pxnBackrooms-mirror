@@ -82,17 +82,15 @@ public class Gen_309 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
+		final int y = this.level_y + this.subfloor + 1;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
-				int y = this.level_y;
-				chunk.setBlock(x, y, z, Material.BEDROCK);
-				y++;
+				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int i=0; i<this.subfloor; i++) {
-					chunk.setBlock(x, y+i, z, Material.STONE);
+					chunk.setBlock(x, this.level_y+i+1, z, Material.STONE);
 				}
-				y += this.subfloor;
 				final double ground;
 				{
 					final double g = this.noisePathGround.getNoise(xx, zz);
