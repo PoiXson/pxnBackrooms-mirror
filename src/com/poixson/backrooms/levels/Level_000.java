@@ -14,6 +14,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Gen_005.HotelData;
+import com.poixson.backrooms.levels.Gen_037.PoolData;
 import com.poixson.tools.dao.Ixy;
 
 
@@ -158,6 +159,7 @@ public class Level_000 extends LevelBackrooms {
 		public final HashMap<Ixy, LobbyData>    lobby    = new HashMap<Ixy, LobbyData>();
 		public final HashMap<Ixy, BasementData> basement = new HashMap<Ixy, BasementData>();
 		public final HashMap<Ixy, HotelData>    hotel    = new HashMap<Ixy, HotelData>();
+		public final HashMap<Ixy, PoolData>     pools    = new HashMap<Ixy, PoolData>();
 		public PregenLevel0() {
 		}
 	}
@@ -171,6 +173,7 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
 		this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ); // basement
 		this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
+		this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // pools
 		// generate
 		this.gen_001.generate(pregen, chunk, chunkX, chunkZ); // basement
 		this.gen_000.generate(pregen, chunk, chunkX, chunkZ); // lobby
@@ -191,6 +194,7 @@ public class Level_000 extends LevelBackrooms {
 		list.add(this.gen_309.popRadio);
 		list.add(this.gen_005.popRooms);
 		list.add(this.gen_019.popAttic);
+		list.add(this.gen_037.popPools);
 		return list;
 	}
 
