@@ -13,6 +13,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,7 +43,8 @@ import com.poixson.utils.Utils;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
-	public static final String LOG_PREFIX  = "[Backrooms] ";
+	public static final String LOG_PREFIX  = "[pxnBackrooms] ";
+	public static final String CHAT_PREFIX = ChatColor.AQUA + "[Backrooms] " + ChatColor.WHITE;
 //TODO
 	protected static final int SPIGOT_PLUGIN_ID = 0;
 	protected static final int BSTATS_PLUGIN_ID = 17231;
