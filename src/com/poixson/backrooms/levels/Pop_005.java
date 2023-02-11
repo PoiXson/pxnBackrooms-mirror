@@ -40,6 +40,7 @@ public class Pop_005 extends BlockPopulator {
 	@Override
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
+		if (!Gen_005.ENABLE_GENERATE) return;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
 		final int y = this.gen.level_y + SUBFLOOR + 1;

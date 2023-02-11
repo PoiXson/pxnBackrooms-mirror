@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -39,9 +40,10 @@ public class Gen_000 extends GenBackrooms {
 
 	public static final double THRESH_WALL_L = 0.38;
 	public static final double THRESH_WALL_H = 0.5;
+	public static final double THRESH_LOOT   = 0.65;
 
-	public static final Material LOBBY_WALL      = Material.TERRACOTTA;
-	public static final Material LOBBY_SUBFLOOR  = Material.OAK_PLANKS;
+	public static final Material LOBBY_WALL     = Material.YELLOW_TERRACOTTA;
+	public static final Material LOBBY_SUBFLOOR = Material.OAK_PLANKS;
 
 	public final int subfloor;
 	public final int subceiling;
@@ -199,6 +201,8 @@ public class Gen_000 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
+		final HashMap<Ixy, LobbyData>    pregen_lobby    = ((PregenLevel0)pregen).lobby;
+		final HashMap<Ixy, BasementData> pregen_basement = ((PregenLevel0)pregen).basement;
 		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
@@ -214,7 +218,7 @@ public class Gen_000 extends GenBackrooms {
 				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, this.level_y+yy+1, z, LOBBY_SUBFLOOR);
 				}
-				dao = ((PregenLevel0)pregen).lobby.get(new Ixy(x, z));
+				dao = pregen_lobby.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
@@ -260,19 +264,19 @@ public class Gen_000 extends GenBackrooms {
 						if (dao.boxed     == 7
 						&&  dao.wall_dist == 2
 						&&  dao.box_dir != null) {
-							boolean found_wall = false;
+							boolean found_basement_wall = false;
 							BasementData base;
 							for (int iz=-2; iz<3; iz++) {
 								for (int ix=-2; ix<3; ix++) {
-									base = ((PregenLevel0)pregen).basement.get(new Ixy(ix, iz));
-										found_wall = true;
+									base = pregen_basement.get(new Ixy(ix+x, iz+z));
 									if (base != null
 									&&  base.isWall) {
+										found_basement_wall = true;
 										break;
 									}
 								}
 							}
-							if (!found_wall) {
+							if (!found_basement_wall) {
 								final String axis;
 								final int xxx, zzz;
 								switch (dao.box_dir) {
@@ -382,7 +386,7 @@ final ItemStack item = new ItemStack(Material.BREAD);
 				x = xx + (i % 9);
 				y = zz + Math.floorDiv(i, 9);
 				value = Gen_000.this.noiseLoot.getNoise(x, y);
-				if (value > 0.7)
+				if (value > THRESH_LOOT)
 					chest.setItem(i, item);
 			}
 		}

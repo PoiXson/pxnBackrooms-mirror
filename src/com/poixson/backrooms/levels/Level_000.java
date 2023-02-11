@@ -37,7 +37,7 @@ public class Level_000 extends LevelBackrooms {
 	public static final int Y_000 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_000 = 4;
 	// lights out
-	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 2;
+	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 3;
 	public static final int H_006 = 5;
 	// pools
 	public static final int Y_037 = Y_006 + H_006 + 1;
