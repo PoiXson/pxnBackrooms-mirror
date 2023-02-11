@@ -131,6 +131,7 @@ public class Gen_001 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
+		final HashMap<Ixy, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
 		final int y  = this.level_y + this.subfloor + 1;
 		final int cy = this.level_y + this.subfloor + this.level_h + 2;
@@ -144,7 +145,7 @@ public class Gen_001 extends GenBackrooms {
 				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, this.level_y+yy+1, z, BASEMENT_SUBFLOOR);
 				}
-				dao = ((PregenLevel0)pregen).basement.get(new Ixy(x, z));
+				dao = basementData.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

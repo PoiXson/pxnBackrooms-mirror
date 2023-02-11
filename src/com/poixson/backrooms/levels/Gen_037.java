@@ -113,7 +113,7 @@ public class Gen_037 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final Map<Ixy, PoolData> pooldata = ((PregenLevel0)pregen).pools;
+		final Map<Ixy, PoolData> poolData = ((PregenLevel0)pregen).pools;
 		final int y = this.level_y + this.subfloor + 1;
 		final int cy = this.level_y + this.subfloor + this.level_h + 1;
 		final int h = this.level_h + 2;
@@ -141,15 +141,15 @@ public class Gen_037 extends GenBackrooms {
 				plotter.types.put(Character.valueOf('w'), Material.WATER);
 				plotter.types.put(Character.valueOf('g'), POOL_CEILING);
 				final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(h, 8);
-				dao = pooldata.get(new Ixy(rx, rz));
-				solid_n  = pooldata.get(new Ixy(rx,   rz-1)).isSolid();
-				solid_s  = pooldata.get(new Ixy(rx,   rz+1)).isSolid();
-				solid_e  = pooldata.get(new Ixy(rx+1, rz  )).isSolid();
-				solid_w  = pooldata.get(new Ixy(rx-1, rz  )).isSolid();
-				solid_ne = pooldata.get(new Ixy(rx+1, rz-1)).isSolid();
-				solid_nw = pooldata.get(new Ixy(rx-1, rz-1)).isSolid();
-				solid_se = pooldata.get(new Ixy(rx+1, rz+1)).isSolid();
-				solid_sw = pooldata.get(new Ixy(rx-1, rz+1)).isSolid();
+				dao = poolData.get(new Ixy(rx, rz));
+				solid_n  = poolData.get(new Ixy(rx,   rz-1)).isSolid();
+				solid_s  = poolData.get(new Ixy(rx,   rz+1)).isSolid();
+				solid_e  = poolData.get(new Ixy(rx+1, rz  )).isSolid();
+				solid_w  = poolData.get(new Ixy(rx-1, rz  )).isSolid();
+				solid_ne = poolData.get(new Ixy(rx+1, rz-1)).isSolid();
+				solid_nw = poolData.get(new Ixy(rx-1, rz-1)).isSolid();
+				solid_se = poolData.get(new Ixy(rx+1, rz+1)).isSolid();
+				solid_sw = poolData.get(new Ixy(rx-1, rz+1)).isSolid();
 				switch (dao.type) {
 				case SOLID: {
 					for (int iz=0; iz<8; iz++) {

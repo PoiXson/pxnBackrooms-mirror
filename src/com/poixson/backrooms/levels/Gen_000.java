@@ -201,8 +201,8 @@ public class Gen_000 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final HashMap<Ixy, LobbyData>    pregen_lobby    = ((PregenLevel0)pregen).lobby;
-		final HashMap<Ixy, BasementData> pregen_basement = ((PregenLevel0)pregen).basement;
+		final HashMap<Ixy, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
+		final HashMap<Ixy, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
@@ -218,7 +218,7 @@ public class Gen_000 extends GenBackrooms {
 				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, this.level_y+yy+1, z, LOBBY_SUBFLOOR);
 				}
-				dao = pregen_lobby.get(new Ixy(x, z));
+				dao = lobbyData.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
@@ -268,7 +268,7 @@ public class Gen_000 extends GenBackrooms {
 							BasementData base;
 							for (int iz=-2; iz<3; iz++) {
 								for (int ix=-2; ix<3; ix++) {
-									base = pregen_basement.get(new Ixy(ix+x, iz+z));
+									base = basementData.get(new Ixy(ix+x, iz+z));
 									if (base != null
 									&&  base.isWall) {
 										found_basement_wall = true;
@@ -337,11 +337,11 @@ public class Gen_000 extends GenBackrooms {
 										matrix[i][4].append("==.==");
 										matrix[i][5].append("     ");
 									}
-								}
+								} // end for i
 								delayed.add(new DelayedBlockPlotter(plot, axis, matrix));
 							}
-						}
-					}
+						} // end portal to basement
+					} // end special
 				} // end wall/room
 				if (ENABLE_ROOF) {
 					for (int i=1; i<this.subceiling; i++) {

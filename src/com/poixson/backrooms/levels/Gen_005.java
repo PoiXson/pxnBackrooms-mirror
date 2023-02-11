@@ -132,7 +132,7 @@ public class Gen_005 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final HashMap<Ixy, HotelData> hoteldata = ((PregenLevel0)pregen).hotel;
+		final HashMap<Ixy, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + this.subfloor + 1;
 		final int cy = this.level_y + this.subfloor + this.level_h + 2;
 		final int h  = this.level_h + 2;
@@ -147,7 +147,7 @@ public class Gen_005 extends GenBackrooms {
 				for (int yy=0; yy<this.subfloor; yy++) {
 					chunk.setBlock(x, this.level_y+yy+1, z, Material.SPRUCE_PLANKS);
 				}
-				dao = hoteldata.get(new Ixy(x, z));
+				dao = hotelData.get(new Ixy(x, z));
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
@@ -176,10 +176,10 @@ public class Gen_005 extends GenBackrooms {
 							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 						// ceiling
 						} else {
-							final HotelData daoN = hoteldata.get(new Ixy(x, z-1));
-							final HotelData daoS = hoteldata.get(new Ixy(x, z+1));
-							final HotelData daoE = hoteldata.get(new Ixy(x+1, z));
-							final HotelData daoW = hoteldata.get(new Ixy(x-1, z));
+							final HotelData daoN = hotelData.get(new Ixy(x, z-1));
+							final HotelData daoS = hotelData.get(new Ixy(x, z+1));
+							final HotelData daoE = hotelData.get(new Ixy(x+1, z));
+							final HotelData daoW = hotelData.get(new Ixy(x-1, z));
 							if (NodeType.WALL.equals(daoN.type)
 							||  NodeType.WALL.equals(daoS.type)
 							||  NodeType.WALL.equals(daoE.type)
