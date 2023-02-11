@@ -287,15 +287,16 @@ public class Gen_000 extends GenBackrooms {
 								plot.types.put(Character.valueOf('='), Material.YELLOW_TERRACOTTA);
 								plot.types.put(Character.valueOf('x'), Material.BEDROCK);
 								final int h = this.level_h + this.subfloor + 5;
-								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 5);
+								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 6);
 								for (int i=0; i<h; i++) {
 									// bottom
 									if (i == 0) {
 										matrix[i][0].append("xxxxx");
 										matrix[i][1].append("xxxxx");
 										matrix[i][2].append("xxxxx");
-										matrix[i][3].append("xx.xx");
-										matrix[i][4].append("xxxxx");
+										matrix[i][3].append("xxxxx");
+										matrix[i][4].append("xx.xx");
+										matrix[i][5].append("xxxxx");
 									} else
 									// subfloor
 									if (i < 6) {
@@ -303,15 +304,17 @@ public class Gen_000 extends GenBackrooms {
 										matrix[i][1].append("xxxxx");
 										matrix[i][2].append("xx.xx");
 										matrix[i][3].append("xx.xx");
-										matrix[i][4].append("xxxxx");
+										matrix[i][4].append("xx.xx");
+										matrix[i][5].append("xxxxx");
 									} else
 									// floor
 									if (i == 6) {
-										matrix[i][0].append("xxxxx");
-										matrix[i][1].append("xxxxx");
-										matrix[i][2].append("xx.xx");
-										matrix[i][3].append("xxxxx");
-										matrix[i][4].append("xxxxx");
+										matrix[i][0].append("     ");
+										matrix[i][1].append(" xxx ");
+										matrix[i][2].append(" x.x ");
+										matrix[i][3].append(" xxx ");
+										matrix[i][4].append(" xxx ");
+										matrix[i][5].append("     ");
 									} else
 									// top
 									if (i > h-2) {
@@ -320,6 +323,7 @@ public class Gen_000 extends GenBackrooms {
 										matrix[i][2].append("=xxx=");
 										matrix[i][3].append("=xxx=");
 										matrix[i][4].append("== ==");
+										matrix[i][5].append("     ");
 									// walls
 									} else {
 										matrix[i][0].append("=====");
@@ -327,6 +331,7 @@ public class Gen_000 extends GenBackrooms {
 										matrix[i][2].append("=x.x=");
 										matrix[i][3].append("=x.x=");
 										matrix[i][4].append("==.==");
+										matrix[i][5].append("     ");
 									}
 								}
 								delayed.add(new DelayedBlockPlotter(plot, axis, matrix));
