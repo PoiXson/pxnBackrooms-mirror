@@ -265,9 +265,9 @@ public class Gen_000 extends GenBackrooms {
 							for (int iz=-2; iz<3; iz++) {
 								for (int ix=-2; ix<3; ix++) {
 									base = ((PregenLevel0)pregen).basement.get(new Ixy(ix, iz));
-									if (base == null
-									||  base.isWall) {
 										found_wall = true;
+									if (base != null
+									&&  base.isWall) {
 										break;
 									}
 								}
