@@ -11,7 +11,6 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.DelayedLever;
-import com.poixson.commonmc.utils.BukkitUtils;
 
 
 // lobby/lights-out teleport
@@ -37,15 +36,14 @@ public class Listener_006 {
 		final String worldName = world.getName();
 		if ("level0".equals(worldName)) {
 			final int y = block.getY();
+			final int diff_y = (Level_000.Y_006 - Level_000.Y_000) - 4;
 			final int lvl = this.level0.getLevelFromY(y);
 			switch (lvl) {
 			case 0: // lobby
 				if (y == Level_000.Y_000 + 6
 				&&  Material.LEVER.equals(block.getType())) {
-					// sign above
-					final Block blk = block.getRelative(BlockFace.UP);
-					if (BukkitUtils.isSign(blk.getType())) {
-						final int diff_y = (Level_000.Y_006 - Level_000.Y_000) - 4;
+					final Block blk = block.getRelative(BlockFace.UP, diff_y);
+					if (Material.LEVER.equals(blk.getType())) {
 						this.doLeverTP(block.getLocation(), diff_y);
 						(new DelayedLever(this.level0.plugin, block.getLocation(), false, 10L))
 							.start();
@@ -55,11 +53,9 @@ public class Listener_006 {
 			case 6: // lights out
 				if (y == Level_000.Y_006 + 2
 				&&  Material.LEVER.equals(block.getType())) {
-					// sign above
-					final Block blk = block.getRelative(BlockFace.UP);
-					if (BukkitUtils.isSign(blk.getType())) {
-						final int diff_y = (Level_000.Y_000 - Level_000.Y_006) + 4;
-						this.doLeverTP(block.getLocation(), diff_y);
+					final Block blk = block.getRelative(BlockFace.DOWN, diff_y);
+					if (Material.LEVER.equals(blk.getType())) {
+						this.doLeverTP(block.getLocation(), 0-diff_y);
 						(new DelayedLever(this.level0.plugin, block.getLocation(), true, 10L))
 							.start();
 					}
