@@ -203,7 +203,7 @@ public class Gen_000 extends GenBackrooms {
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
 		final int y  = this.level_y + this.subfloor + 1;
-		final int cy = this.level_y + this.subfloor + this.level_h + 1;
+		final int cy = this.level_y + this.subfloor + this.level_h + 2;
 		int xx, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
@@ -286,7 +286,7 @@ public class Gen_000 extends GenBackrooms {
 								plot.types.put(Character.valueOf('.'), Material.AIR);
 								plot.types.put(Character.valueOf('='), Material.YELLOW_TERRACOTTA);
 								plot.types.put(Character.valueOf('x'), Material.BEDROCK);
-								final int h = this.level_h + this.subfloor + 3;
+								final int h = this.level_h + this.subfloor + 5;
 								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 5);
 								for (int i=0; i<h; i++) {
 									// bottom
