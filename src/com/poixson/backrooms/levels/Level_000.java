@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Gen_005.HotelData;
@@ -64,6 +65,18 @@ public class Level_000 extends LevelBackrooms {
 
 	public Level_000(final BackroomsPlugin plugin) {
 		super(plugin, 0);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add(Y_001+H_001+SUBFLOOR+1, "basement",  "Basement"  );
+			gen_tpl.add(Y_000+H_000+SUBFLOOR+1, "lobby",     "Lobby"     );
+			gen_tpl.add(Y_006+H_006,            "lightsout", "Lights Out");
+			gen_tpl.add(Y_037+H_037+SUBFLOOR+1, "poolrooms", "Poolrooms" );
+			gen_tpl.add(Y_005+H_005+SUBFLOOR+1, "hotel",     "Hotel"     );
+			gen_tpl.add(Y_019+H_019+SUBFLOOR+1, "attic",     "Attic"     );
+			gen_tpl.add(                        "radio",  "Radio Station");
+			gen_tpl.commit();
+		}
 		// generators
 		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, SUBFLOOR, SUBCEILING)); // basement
 		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, SUBFLOOR, SUBCEILING)); // lobby

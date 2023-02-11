@@ -23,6 +23,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.commands.Commands;
+import com.poixson.backrooms.dynmap.GeneratorPerspective;
 import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_009;
@@ -69,6 +70,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<RedstoneListener>     redstoneListener     = new AtomicReference<RedstoneListener>(null);
 	protected final AtomicReference<ItemDespawnListener>  itemDespawnListener  = new AtomicReference<ItemDespawnListener>(null);
 
+	// dynmap config generator
+	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
+
 
 
 	public BackroomsPlugin() {
@@ -106,6 +110,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		new Level_151(this); // dollhouse
 		new Level_771(this); // crossroads
 		new Level_866(this); // dirtfield
+		this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
 		// create worlds (after server starts)
 		(new BukkitRunnable() {
 			@Override
@@ -207,6 +212,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			if (listener != null)
 				listener.unregister();
 		}
+		this.dynmap_perspective.set(null);
 		if (!instance.compareAndSet(this, null))
 			(new RuntimeException("Disable wrong instance of plugin?")).printStackTrace();
 	}
@@ -267,6 +273,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
+	}
+
+
+
+	public boolean enableDynmapConfigGen() {
+		return this.config.get().getBoolean("Enable Dynmap Config Gen");
 	}
 
 
@@ -412,6 +425,23 @@ public class BackroomsPlugin extends xJavaPlugin {
 		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevelFromWorld(worldName);
 		return this.getBackroomsLevel(level);
+	}
+
+
+
+	public GeneratorPerspective getDynmapPerspective() {
+		// existing
+		{
+			final GeneratorPerspective gen = this.dynmap_perspective.get();
+			if (gen != null)
+				return gen;
+		}
+		// new instance
+		{
+			final GeneratorPerspective gen = new GeneratorPerspective();
+			this.dynmap_perspective.set(gen);
+			return gen;
+		}
 	}
 
 

@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 771 | Crossroads
@@ -25,6 +26,11 @@ public class Level_771 extends LevelBackrooms {
 
 	public Level_771(final BackroomsPlugin plugin) {
 		super(plugin, 771);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add("crossroads", "Crossroads");
+		}
 		// generators
 		this.gen = this.register(new Gen_771(plugin, LEVEL_Y, 0));
 	}

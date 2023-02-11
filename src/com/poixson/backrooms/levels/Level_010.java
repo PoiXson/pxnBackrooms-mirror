@@ -5,6 +5,7 @@ import static com.poixson.utils.NumberUtils.Rnd10K;
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 10 | Field of Wheat
@@ -19,6 +20,11 @@ public class Level_010 extends LevelBackrooms {
 
 	public Level_010(final BackroomsPlugin plugin) {
 		super(plugin, 10);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add("wheat", "Field of Wheat");
+		}
 		// generators
 		this.gen = this.register(new Gen_010(plugin, LEVEL_Y, 0));
 	}

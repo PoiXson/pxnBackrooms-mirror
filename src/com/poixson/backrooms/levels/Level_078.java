@@ -3,6 +3,7 @@ package com.poixson.backrooms.levels;
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 78 | Space
@@ -15,6 +16,11 @@ public class Level_078 extends LevelBackrooms {
 
 	public Level_078(final BackroomsPlugin plugin) {
 		super(plugin, 78);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add("space", "Space");
+		}
 		// generators
 		this.gen = this.register(new Gen_078(plugin, 0, 0));
 	}

@@ -3,6 +3,7 @@ package com.poixson.backrooms.levels;
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 151 | Dollhouse
@@ -21,6 +22,11 @@ public class Level_151 extends LevelBackrooms {
 
 	public Level_151(final BackroomsPlugin plugin) {
 		super(plugin, 151);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add(LEVEL_Y+LEVEL_H+SUBFLOOR+1, "", "");
+		}
 		// generators
 		this.gen = this.register(new Gen_151(plugin, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));
 	}

@@ -5,6 +5,7 @@ import static com.poixson.utils.NumberUtils.Rnd10K;
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 33 | Run For Your Life!
@@ -23,6 +24,11 @@ public class Level_033 extends LevelBackrooms {
 
 	public Level_033(final BackroomsPlugin plugin) {
 		super(plugin, 33);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add(LEVEL_Y+LEVEL_H+SUBFLOOR+1, "run", "Run For Your Life");
+		}
 		// generators
 		this.gen = this.register(new Gen_033(plugin, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));
 	}

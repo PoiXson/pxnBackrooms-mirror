@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 866 | Dirtfield
@@ -24,6 +25,11 @@ public class Level_866 extends LevelBackrooms {
 
 	public Level_866(final BackroomsPlugin plugin) {
 		super(plugin, 866);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add("dirtfield", "Dirtfield");
+		}
 		// generators
 		this.gen = this.register(new Gen_866(plugin, LEVEL_Y, 0, SUBFLOOR));
 	}

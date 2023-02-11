@@ -5,6 +5,7 @@ import static com.poixson.utils.NumberUtils.Rnd10K;
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.dynmap.GeneratorTemplate;
 
 
 // 11 | City
@@ -19,6 +20,11 @@ public class Level_011 extends LevelBackrooms {
 
 	public Level_011(final BackroomsPlugin plugin) {
 		super(plugin, 11);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add("city", "City");
+		}
 		// generators
 		this.gen = this.register(new Gen_011(plugin, LEVEL_Y, 0));
 	}
