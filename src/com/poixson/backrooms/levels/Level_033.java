@@ -27,7 +27,7 @@ public class Level_033 extends LevelBackrooms {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(LEVEL_Y+LEVEL_H+SUBFLOOR+1, "run", "Run For Your Life");
+			gen_tpl.add(33, "run", "Run For Your Life", LEVEL_Y+LEVEL_H+SUBFLOOR+1);
 		}
 		// generators
 		this.gen = this.register(new Gen_033(plugin, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));

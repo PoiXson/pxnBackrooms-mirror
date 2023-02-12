@@ -23,7 +23,7 @@ public class Level_011 extends LevelBackrooms {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add("city", "City");
+			gen_tpl.add(11, "city", "City");
 		}
 		// generators
 		this.gen = this.register(new Gen_011(plugin, LEVEL_Y, 0));

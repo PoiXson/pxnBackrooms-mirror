@@ -23,7 +23,7 @@ public class Level_010 extends LevelBackrooms {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add("wheat", "Field of Wheat");
+			gen_tpl.add(10, "wheat", "Field of Wheat");
 		}
 		// generators
 		this.gen = this.register(new Gen_010(plugin, LEVEL_Y, 0));

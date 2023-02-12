@@ -43,16 +43,17 @@ public class GeneratorTemplate {
 			.append("    protected: false\n"    )
 			.append("    fullrenderlocations:\n")
 			.append("      - x: 0\n"            )
+			.append("        y: 0\n"            )
 			.append("        z: 0\n"            )
 			.append("    maps:\n"               );
 	}
 
 
 
-	public void add(final String name, final String title) {
-		this.add(320, name, title);
+	public void add(final int level, final String name, final String title) {
+		this.add(level, name, title, 320);
 	}
-	public void add(final int y, final String name, final String title) {
+	public void add(final int level, final String name, final String title, final int y) {
 		this.gen_persp.add(y, name);
 		this.out
 			.append("      - class: org.dynmap.hdmap.HDMap\n")
@@ -62,12 +63,22 @@ public class GeneratorTemplate {
 			.append("        perspective: iso_S_90_lowres_").append(name).append('\n')
 			.append("        bigworld: true\n"    )
 			.append("        shader: stdtexture\n")
-			.append("        lighting: shadows\n" )
-			.append("        mapzoomin: 2\n"      )
-			.append("        center:\n"           )
-			.append("          x: 0\n"            )
+			.append("        lighting: "          );
+		switch (level) {
+		case 0:
+		case 1:
+		case 5:
+		case 6:
+		case 37:
+		case 19: this.out.append("default\n"); break;
+		default: this.out.append("shadows\n"); break;
+		}
+		this.out
+			.append("        mapzoomin: 2\n")
+			.append("        center:\n"     )
+			.append("          x: 0\n"      )
 			.append("          y: ").append(y<320 ? y : 0).append('\n')
-			.append("          z: 0\n"            );
+			.append("          z: 0\n"      );
 	}
 
 
@@ -87,7 +98,7 @@ public class GeneratorTemplate {
 			log.warning(LOG_PREFIX + "Path not found: plugins/dynmap/templates/");
 			return;
 		}
-		final File file = new File(path, "backrooms_"+this.worldName);
+		final File file = new File(path, this.worldName + ".txt");
 		try {
 			FileWriter writer = new FileWriter(file);
 			writer.write(this.toString());

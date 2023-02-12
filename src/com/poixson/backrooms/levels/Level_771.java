@@ -29,7 +29,7 @@ public class Level_771 extends LevelBackrooms {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add("crossroads", "Crossroads");
+			gen_tpl.add(771, "crossroads", "Crossroads");
 		}
 		// generators
 		this.gen = this.register(new Gen_771(plugin, LEVEL_Y, 0));

@@ -30,7 +30,7 @@ public class GeneratorPerspective {
 			.append("  - class: org.dynmap.hdmap.IsoHDPerspective\n")
 			.append("    name: iso_S_90_lowres_").append(name).append('\n');
 		if (y < 320)
-			this.out.append("maximumheight: ").append(y).append('\n');
+			this.out.append("    maximumheight: ").append(y).append('\n');
 		this.out
 			.append("    azimuth: 180\n")
 			.append("    inclination: 90\n")
