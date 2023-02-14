@@ -364,6 +364,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		Location loc = manager.getSpawnLocation(level);
 		if (loc == null) {
 			final World world = this.getWorldFromLevel(level);
+			if (world == null) {
+				log.warning(String.format("%sUnknown backrooms world for level: %d", LOG_PREFIX, Integer.valueOf(level)));
+				return;
+			}
 			loc = world.getSpawnLocation();
 		}
 		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));

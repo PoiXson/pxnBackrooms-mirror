@@ -113,18 +113,16 @@ public class Level_000 extends LevelBackrooms {
 	}
 	@Override
 	public Location getSpawn(final int level, final int x, final int z) {
-		final int y, h;
 		switch (level) {
-		case   1: y = Y_001; h = H_001; break; // basement
-		case   0: y = Y_000; h = H_000; break; // lobby
-		case   6: y = Y_006; h = H_006; break; // lights out
-		case  37: y = Y_037; h = H_037; break; // pools
-		case   5: y = Y_005; h = H_005; break; // hotel
-		case  19: y = Y_019; h = H_019; break; // attic
-		case 309: y = Y_309; h = 10;    break; // radio station
+		case   1: return this.getSpawn(level, H_001, x, Y_001+SUBFLOOR, z); // basement
+		case   0: return this.getSpawn(level, H_000, x, Y_000+SUBFLOOR, z); // lobby
+		case   6: return this.getSpawn(level, H_006, x, Y_006,          z); // lights out
+		case  37: return this.getSpawn(level, H_037, x, Y_037+SUBFLOOR, z); // pools
+		case   5: return this.getSpawn(level, H_005, x, Y_005+SUBFLOOR, z); // hotel
+		case  19: return this.getSpawn(level, H_019, x, Y_019+SUBFLOOR, z); // attic
+		case 309: return this.getSpawn(level,    10, x, Y_309+SUBFLOOR, z); // radio station
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
-		return this.getSpawn(level, h, x, y, z);
 	}
 
 	@Override

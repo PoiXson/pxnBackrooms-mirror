@@ -114,9 +114,17 @@ public class TeleportManager {
 		for (final Integer i : weights.values()) {
 			total += i.intValue();
 		}
+		if (total < 1)
+			return 0;
+		Entry<Integer, Integer> entry;
+		if (total == 1) {
+			final Iterator<Entry<Integer, Integer>> it = weights.entrySet().iterator();
+			entry = it.next();
+			if (entry.getValue().intValue() == 1)
+				return entry.getKey().intValue();
+		}
 		final int rnd = NumberUtils.GetNewRandom(0, total, this.rndLast);
 		this.rndLast = rnd;
-		Entry<Integer, Integer> entry;
 		int level, weight;
 		final Iterator<Entry<Integer, Integer>> it = weights.entrySet().iterator();
 		while (it.hasNext()) {
@@ -144,6 +152,10 @@ public class TeleportManager {
 		// find spawn location
 		{
 			final LevelBackrooms backrooms = this.plugin.getBackroomsLevel(level);
+			if (backrooms == null) {
+				log.warning(String.format("%sUnknown backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
+				return null;
+			}
 			Location loc = null;
 			for (int i=0; i<5; i++) {
 				loc = backrooms.getSpawn(level);

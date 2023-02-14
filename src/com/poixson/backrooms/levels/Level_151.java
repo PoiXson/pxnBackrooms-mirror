@@ -40,7 +40,7 @@ public class Level_151 extends LevelBackrooms {
 	}
 	@Override
 	public Location getSpawn(final int level, final int x, final int z) {
-		return this.getSpawn(level, 255, x, 0, z);
+		return this.getSpawn(level, 255, x, LEVEL_Y+SUBFLOOR, z);
 	}
 
 	@Override
