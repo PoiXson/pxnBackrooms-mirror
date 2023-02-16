@@ -287,9 +287,9 @@ public class Gen_000 extends GenBackrooms {
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
 								final BlockPlotter plot = new BlockPlotter(chunk, xxx, y-6, zzz);
-								plot.types.put(Character.valueOf('.'), Material.AIR);
-								plot.types.put(Character.valueOf('='), Material.YELLOW_TERRACOTTA);
-								plot.types.put(Character.valueOf('x'), Material.BEDROCK);
+								plot.type('.', Material.AIR              );
+								plot.type('=', Material.YELLOW_TERRACOTTA);
+								plot.type('x', Material.BEDROCK          );
 								final int h = this.level_h + this.subfloor + 5;
 								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 6);
 								for (int i=0; i<h; i++) {

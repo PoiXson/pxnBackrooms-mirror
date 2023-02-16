@@ -136,10 +136,10 @@ public class Gen_037 extends GenBackrooms {
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
 				final BlockPlotter plotter = new BlockPlotter(chunk, rx*8, y, rz*8);
-				plotter.types.put(Character.valueOf('#'), POOL_WALL_A);
-				plotter.types.put(Character.valueOf('@'), POOL_WALL_B);
-				plotter.types.put(Character.valueOf('w'), Material.WATER);
-				plotter.types.put(Character.valueOf('g'), POOL_CEILING);
+				plotter.type('#', POOL_WALL_A   );
+				plotter.type('@', POOL_WALL_B   );
+				plotter.type('w', Material.WATER);
+				plotter.type('g', POOL_CEILING  );
 				final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(h, 8);
 				dao = poolData.get(new Ixy(rx, rz));
 				solid_n  = poolData.get(new Ixy(rx,   rz-1)).isSolid();

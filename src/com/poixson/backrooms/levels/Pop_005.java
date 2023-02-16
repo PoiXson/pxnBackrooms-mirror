@@ -1,7 +1,6 @@
 package com.poixson.backrooms.levels;
 
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
-import static com.poixson.commonmc.utils.LocationUtils.RotateXZ;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -246,7 +245,7 @@ public class Pop_005 extends BlockPopulator {
 
 	public void buildHotelRoom(final int x, final int y, final int z, final int w, final int d,
 			final BlockFace direction, final LimitedRegion region) {
-		final Ixywd loc = RotateXZ(new Ixywd(x, z, w, d), direction);
+		final Ixywd loc = Rotate(new Ixywd(x, z, w, d), direction);
 		final int wh = (int) Math.floor( ((double)loc.w) * 0.5 );
 		final int dh = (int) Math.floor( ((double)loc.d) * 0.5 );
 		double value = this.gen.noiseHotelRooms.getNoise(x, z);
@@ -351,8 +350,8 @@ public class Pop_005 extends BlockPopulator {
 		}
 		// build room
 		final BlockPlotter plotter = new BlockPlotter(region, x, y, z);
-		plotter.w = loc.w;
-		plotter.d = loc.d;
+		plotter.setW(loc.w);
+		plotter.setD(loc.d);
 		HotelRoomDAO dao;
 		for (int iz=0; iz<loc.d; iz++) {
 			for (int ix=0; ix<loc.w; ix++) {

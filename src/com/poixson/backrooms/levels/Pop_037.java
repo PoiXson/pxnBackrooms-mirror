@@ -144,9 +144,9 @@ public class Pop_037 extends BlockPopulator {
 		Ixy last;
 		for (final TunnelTracer tracer : tunnelTracers) {
 			final BlockPlotter plotter = new BlockPlotter(region);
-			plotter.absY = this.gen.level_y + 7;
-			plotter.types.put(Character.valueOf('.'), Material.AIR);
-			plotter.types.put(Character.valueOf('#'), POOL_WALL_A);
+			plotter.setY(this.gen.level_y + 7);
+			plotter.type('.', Material.AIR);
+			plotter.type('#', POOL_WALL_A );
 			final StringBuilder[] matrix = plotter.getEmptyMatrix2D(6);
 			matrix[5].append(" ##### ");
 			matrix[4].append("##...##");
@@ -166,25 +166,17 @@ if (region.isInRegion(loc.x, 73, loc.y)) region.setType(loc.x, 73, loc.y, Materi
 					last = loc;
 					continue POINTS_LOOP;
 				}
-				plotter.absX = loc.x;
-				plotter.absZ = loc.y;
+				plotter.setX(loc.x);
+				plotter.setZ(loc.y);
 				// find direction
 				dirX = loc.x - last.x;
-				if (dirX == 0) {
-					axis = "YX";
-					plotter.absX -= 3;
-				} else {
-					axis = "YZ";
-					plotter.absZ -= 3;
-				}
+				if (dirX == 0) { axis = "YX"; plotter.setX(plotter.getX() - 3);
+				} else {         axis = "YZ"; plotter.setZ(plotter.getZ() - 3); }
 				plotter.place2D(axis, matrix);
 				if (first) {
 					first = false;
-					if (dirX == 0) {
-						plotter.absZ = last.y;
-					} else {
-						plotter.absX = last.x;
-					}
+					if (dirX == 0) plotter.setZ(last.y);
+					else           plotter.setX(last.x);
 					plotter.place2D(axis, matrix);
 				}
 				last = loc;
