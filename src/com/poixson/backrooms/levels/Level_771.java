@@ -2,12 +2,7 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.utils.NumberUtils.Rnd10K;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
@@ -32,7 +27,7 @@ public class Level_771 extends LevelBackrooms {
 			gen_tpl.add(771, "crossroads", "Crossroads");
 		}
 		// generators
-		this.gen = this.register(new Gen_771(plugin, LEVEL_Y, 0));
+		this.gen = this.register(new Gen_771(plugin, LEVEL_Y, LEVEL_H));
 	}
 
 
