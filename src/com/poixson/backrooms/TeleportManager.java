@@ -14,6 +14,7 @@ import com.google.gson.JsonParser;
 import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.tools.xTime;
 import com.poixson.utils.NumberUtils;
+import com.poixson.utils.RandomUtils;
 import com.poixson.utils.Utils;
 
 
@@ -123,7 +124,7 @@ public class TeleportManager {
 			if (entry.getValue().intValue() == 1)
 				return entry.getKey().intValue();
 		}
-		final int rnd = NumberUtils.GetNewRandom(0, total, this.rndLast);
+		final int rnd = RandomUtils.GetNewRandom(0, total, this.rndLast);
 		this.rndLast = rnd;
 		int level, weight;
 		final Iterator<Entry<Integer, Integer>> it = weights.entrySet().iterator();

@@ -1,6 +1,6 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.utils.NumberUtils.Rnd10K;
+import static com.poixson.utils.RandomUtils.Rnd10K;
 
 import java.util.HashMap;
 import java.util.LinkedList;
