@@ -66,13 +66,4 @@ public class Level_771 extends LevelBackrooms {
 
 
 
-	@Override
-	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		return Arrays.asList(
-			this.gen.popCross
-		);
-	}
-
-
-
 }

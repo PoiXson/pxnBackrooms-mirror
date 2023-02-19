@@ -29,9 +29,6 @@ public class Gen_771 extends GenBackrooms {
 	// noise
 	protected final FastNoiseLiteD noiseRoadLights;
 
-	// populators
-	public final Pop_771 popCross;
-
 
 
 	public Gen_771(final BackroomsPlugin plugin,
@@ -41,8 +38,6 @@ public class Gen_771 extends GenBackrooms {
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseRoadLights.setFrequency(0.07);
 		this.noiseRoadLights.setFractalOctaves(1);
-		// populators
-		this.popCross = new Pop_771(this);
 	}
 
 
