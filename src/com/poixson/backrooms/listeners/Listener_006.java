@@ -1,4 +1,4 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,14 +7,19 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.levels.Level_000;
 import com.poixson.commonmc.tools.DelayedLever;
 
 
-// lobby/lights-out teleport
-public class Listener_006 {
+//lobby/lights-out teleport
+public class Listener_006 implements Listener {
 
 	protected final BackroomsPlugin plugin;
 
@@ -22,14 +27,24 @@ public class Listener_006 {
 
 
 
-	public Listener_006(final BackroomsPlugin plugin) {
+	public Listener_006(final BackroomsPlugin plugin, final Level_000 level0) {
 		this.plugin = plugin;
-		this.level0 = (Level_000) plugin.getBackroomsLevel(0);
-		if (this.level0 == null) throw new NullPointerException("Failed to get Level0");
+		this.level0 = level0;
 	}
 
 
 
+	public void register() {
+		Bukkit.getPluginManager()
+			.registerEvents(this, this.plugin);
+	}
+	public void unregister() {
+		HandlerList.unregisterAll(this);
+	}
+
+
+
+	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onBlockRedstone(final BlockRedstoneEvent event) {
 		final Block block = event.getBlock();
 		final World world = block.getWorld();
@@ -45,7 +60,7 @@ public class Listener_006 {
 					final Block blk = block.getRelative(BlockFace.UP, diff_y);
 					if (Material.LEVER.equals(blk.getType())) {
 						this.doLeverTP(block.getLocation(), diff_y);
-						(new DelayedLever(this.level0.plugin, block.getLocation(), false, 10L))
+						(new DelayedLever(this.plugin, block.getLocation(), false, 10L))
 							.start();
 					}
 				}
@@ -56,7 +71,7 @@ public class Listener_006 {
 					final Block blk = block.getRelative(BlockFace.DOWN, diff_y);
 					if (Material.LEVER.equals(blk.getType())) {
 						this.doLeverTP(block.getLocation(), 0-diff_y);
-						(new DelayedLever(this.level0.plugin, block.getLocation(), true, 10L))
+						(new DelayedLever(this.plugin, block.getLocation(), true, 10L))
 							.start();
 					}
 				}

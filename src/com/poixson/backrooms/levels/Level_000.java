@@ -17,6 +17,7 @@ import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Gen_005.HotelData;
 import com.poixson.backrooms.levels.Gen_037.PoolData;
 import com.poixson.backrooms.listeners.Listener_001;
+import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.tools.dao.Ixy;
 
 
@@ -64,6 +65,7 @@ public class Level_000 extends LevelBackrooms {
 
 	// listeners
 	protected final Listener_001 listener_001;
+	protected final Listener_006 listener_006;
 
 
 
@@ -91,6 +93,7 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0, SUBFLOOR            )); // radio station
 		// listeners
 		this.listener_001 = new Listener_001(plugin, Y_001);
+		this.listener_006 = new Listener_006(plugin, this);
 	}
 
 
@@ -99,11 +102,13 @@ public class Level_000 extends LevelBackrooms {
 	public void register() {
 		super.register();
 		this.listener_001.register();
+		this.listener_006.register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
 		this.listener_001.unregister();
+		this.listener_006.unregister();
 	}
 
 
