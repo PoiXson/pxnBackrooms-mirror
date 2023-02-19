@@ -36,7 +36,6 @@ import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
-import com.poixson.backrooms.listeners.PlayerMoveListener;
 import com.poixson.backrooms.listeners.RedstoneListener;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
@@ -65,7 +64,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// listeners
 	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
-	protected final AtomicReference<PlayerMoveListener>   playerMoveListener   = new AtomicReference<PlayerMoveListener>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
 	protected final AtomicReference<RedstoneListener>     redstoneListener     = new AtomicReference<RedstoneListener>(null);
 	protected final AtomicReference<ItemDespawnListener>  itemDespawnListener  = new AtomicReference<ItemDespawnListener>(null);
@@ -136,14 +134,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// load teleport chance
 		this.tpManager.set(TeleportManager.Load(this));
-		// player move listener
-		{
-			final PlayerMoveListener listener = new PlayerMoveListener(this);
-			final PlayerMoveListener previous = this.playerMoveListener.getAndSet(listener);
-			if (previous != null)
-				previous.unregister();
-			listener.register();
-		}
 		// player damage listener
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
@@ -188,12 +178,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// teleport chance
 		this.tpManager.set(null);
-		// player move listener
-		{
-			final PlayerMoveListener listener = this.playerMoveListener.getAndSet(null);
-			if (listener != null)
-				listener.unregister();
-		}
 		// player damage listener
 		{
 			final PlayerDamageListener listener = this.playerDamageListener.getAndSet(null);

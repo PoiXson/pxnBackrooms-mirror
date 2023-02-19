@@ -4,6 +4,7 @@ import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.backrooms.listeners.Listener_078;
 
 
 // 78 | Space
@@ -11,6 +12,9 @@ public class Level_078 extends LevelBackrooms {
 
 	// generators
 	public final Gen_078 gen;
+
+	// listeners
+	protected final Listener_078 listener_078;
 
 
 
@@ -23,6 +27,21 @@ public class Level_078 extends LevelBackrooms {
 		}
 		// generators
 		this.gen = this.register(new Gen_078(plugin, 0, 0));
+		// listeners
+		this.listener_078 = new Listener_078(plugin);
+	}
+
+
+
+	@Override
+	public void register() {
+		super.register();
+		this.listener_078.register();
+	}
+	@Override
+	public void unregister() {
+		super.unregister();
+		this.listener_078.unregister();
 	}
 
 
