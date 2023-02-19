@@ -2,6 +2,7 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.commonmc.utils.LocationUtils.AxToFace;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToAx;
+import static com.poixson.commonmc.utils.LocationUtils.FaceToIxy;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 import static com.poixson.commonmc.utils.LocationUtils.ValueToFaceQuarter;
 
@@ -11,7 +12,10 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.BlockPlotter;
+import com.poixson.tools.dao.Ixy;
 import com.poixson.utils.FastNoiseLiteD;
+import com.poixson.utils.FastNoiseLiteD.NoiseType;
+import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 import com.poixson.utils.StringUtils;
 
 
@@ -20,14 +24,24 @@ public class Gen_771 extends GenBackrooms {
 
 	public static final boolean ENABLE_GENERATE = true;
 
-	public static final Material ROAD_SURFACE    = Material.POLISHED_BLACKSTONE;
-	public static final Material ROAD_WALL       = Material.POLISHED_BLACKSTONE_BRICK_WALL;
-	public static final Material ROAD_WALL_DECOR = Material.CHISELED_POLISHED_BLACKSTONE;
-	public static final Material CENTER_PILLAR   = Material.POLISHED_BLACKSTONE_WALL;
-	public static final Material CENTER_ARCH     = Material.POLISHED_BLACKSTONE_STAIRS;
+	public static final double THRESH_LIGHT     = 0.42;
+	public static final double THRESH_LADDER    = 0.88;
+	public static final double THRESH_LOOT      = 0.84;
+	public static final double THRESH_LOOT_A    = 0.65;
+	public static final double THRESH_LOOT_B    = 0.75;
+	public static final int    PILLAR_B_OFFSET  = 10;
 
 	// noise
 	protected final FastNoiseLiteD noiseRoadLights;
+	protected final FastNoiseLiteD noiseSpecial;
+	protected final FastNoiseLiteD noiseLoot;
+
+	public enum PillarType {
+		PILLAR_NORM,
+		PILLAR_LADDER,
+		PILLAR_LOOT,
+		PILLAR_DROP,
+	}
 
 
 
@@ -36,8 +50,18 @@ public class Gen_771 extends GenBackrooms {
 		super(plugin, level_y, level_h);
 		// road lanterns
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
-		this.noiseRoadLights.setFrequency(0.07);
+		this.noiseRoadLights.setFrequency(0.3);
 		this.noiseRoadLights.setFractalOctaves(1);
+		// special exits
+		this.noiseSpecial = this.register(new FastNoiseLiteD());
+		this.noiseSpecial.setFrequency(0.2);
+		this.noiseSpecial.setFractalOctaves(1);
+		// chest loot
+		this.noiseLoot = this.register(new FastNoiseLiteD());
+		this.noiseLoot.setFrequency(0.1);
+		this.noiseLoot.setFractalOctaves(1);
+		this.noiseLoot.setNoiseType(NoiseType.OpenSimplex2);
+		this.noiseLoot.setRotationType3D(RotationType3D.ImproveXYPlanes);
 	}
 
 
@@ -93,16 +117,16 @@ public class Gen_771 extends GenBackrooms {
 	protected void generateCenterArch(final ChunkData chunk,
 			final char axisA, final char axisB, final int x, final int z) {
 		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y+this.level_h+1, z);
-		plotter.type('@', ROAD_WALL_DECOR);
-		plotter.type('|', CENTER_PILLAR);
-		plotter.type('-', Material.POLISHED_BLACKSTONE_SLAB);
-		plotter.type('=', Material.POLISHED_BLACKSTONE_SLAB, "top");
-		plotter.type('#', Material.POLISHED_BLACKSTONE);
+		plotter.type('@', Material.CHISELED_POLISHED_BLACKSTONE);
+		plotter.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+		plotter.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB);
+		plotter.type('=', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top");
+		plotter.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
 		// small arch
 		{
 			final BlockFace direction = AxToFace(axisA);
-			plotter.type('L', CENTER_ARCH, direction.getOppositeFace().toString().toLowerCase());
-			plotter.type('^', CENTER_ARCH, direction.toString().toLowerCase()+",top");
+			plotter.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, direction.getOppositeFace().toString().toLowerCase());
+			plotter.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, direction.toString().toLowerCase()+",top");
 			final StringBuilder[] matrix = plotter.getEmptyMatrix2D(5);
 			matrix[4].append("#L"  );
 			matrix[3].append(" ^L" );
@@ -128,10 +152,16 @@ public class Gen_771 extends GenBackrooms {
 
 
 	protected void generateCenterRoad(final ChunkData chunk, final BlockFace quarter) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, this.level_y+this.level_h);
+		final BlockPlotter plotter = new BlockPlotter(chunk, (this.level_y+this.level_h)-3);
 		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(5, 16);
-		plotter.type('#', ROAD_SURFACE);
-		plotter.type('+', ROAD_WALL, "autoface");
+		plotter.type('#', Material.POLISHED_BLACKSTONE);
+		plotter.type('X', Material.GILDED_BLACKSTONE);
+		plotter.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
+		plotter.type('*', Material.BLACKSTONE);
+		plotter.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plotter.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
+		plotter.type('.', Material.LIGHT, "15");
+		plotter.type(',', Material.LIGHT, "9");
 		switch (quarter) {
 		case NORTH_EAST: plotter.setX( 0); plotter.setZ(15); break;
 		case NORTH_WEST: plotter.setX(15); plotter.setZ(15); break;
@@ -139,22 +169,22 @@ public class Gen_771 extends GenBackrooms {
 		case SOUTH_WEST: plotter.setX(15); plotter.setZ( 0); break;
 		default: throw new RuntimeException("Unknown quarter: " + quarter.toString());
 		}
-		matrix[0][ 0].append("################"); matrix[1][ 0].append("                ");
-		matrix[0][ 1].append("################"); matrix[1][ 1].append("                ");
-		matrix[0][ 2].append("################"); matrix[1][ 2].append("                ");
-		matrix[0][ 3].append("############### "); matrix[1][ 3].append("                ");
-		matrix[0][ 4].append("############### "); matrix[1][ 4].append("               +");
-		matrix[0][ 5].append("##############  "); matrix[1][ 5].append("              ++");
-		matrix[0][ 6].append("##############  "); matrix[1][ 6].append("              + ");
-		matrix[0][ 7].append("#############   "); matrix[1][ 7].append("             ++ ");
-		matrix[0][ 8].append("#############   "); matrix[1][ 8].append("             +  ");
-		matrix[0][ 9].append("############    "); matrix[1][ 9].append("            ++  ");
-		matrix[0][10].append("###########     "); matrix[1][10].append("           ++   ");
-		matrix[0][11].append("##########      "); matrix[1][11].append("          ++    ");
-		matrix[0][12].append("#########       "); matrix[1][12].append("         ++     ");
-		matrix[0][13].append("#######         "); matrix[1][13].append("       +++      ");
-		matrix[0][14].append("#####           "); matrix[1][14].append("     +++        ");
-		matrix[0][15].append("###             "); matrix[1][15].append("    ++          ");
+		matrix[0][ 0].append("###########---  "); matrix[1][ 0].append(" , , , , , ,  # "); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
+		matrix[0][ 1].append("###########---  "); matrix[1][ 1].append("              # "); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
+		matrix[0][ 2].append("##########---   "); matrix[1][ 2].append(" , , , , , , ## "); matrix[2][ 2].append("             ###"); matrix[3][ 2].append("**X#############"); matrix[4][ 2].append("                ");
+		matrix[0][ 3].append("##########---   "); matrix[1][ 3].append("             #  "); matrix[2][ 3].append("             ## "); matrix[3][ 3].append("*##*########### "); matrix[4][ 3].append("  .   .   .   . ");
+		matrix[0][ 4].append("#########---    "); matrix[1][ 4].append(" , , , , ,  ##  "); matrix[2][ 4].append("            ### "); matrix[3][ 4].append("*###X########## "); matrix[4][ 4].append("               +");
+		matrix[0][ 5].append("########----    "); matrix[1][ 5].append("            #   "); matrix[2][ 5].append("            ##  "); matrix[3][ 5].append("*####*########  "); matrix[4][ 5].append("              ++");
+		matrix[0][ 6].append("#######----     "); matrix[1][ 6].append(" , , , , , ##   "); matrix[2][ 6].append("           ###  "); matrix[3][ 6].append("*#####*#######  "); matrix[4][ 6].append("              + ");
+		matrix[0][ 7].append("######-----     "); matrix[1][ 7].append("           #    "); matrix[2][ 7].append("           ##   "); matrix[3][ 7].append("*######X#####   "); matrix[4][ 7].append("  .   .   .  ++ ");
+		matrix[0][ 8].append("#####-----      "); matrix[1][ 8].append(" , , , ,  ##    "); matrix[2][ 8].append("          ###   "); matrix[3][ 8].append("*#######*####   "); matrix[4][ 8].append("             +  ");
+		matrix[0][ 9].append("####-----       "); matrix[1][ 9].append("         ##     "); matrix[2][ 9].append("         ###    "); matrix[3][ 9].append("*###########    "); matrix[4][ 9].append("            ++  ");
+		matrix[0][10].append("##------        "); matrix[1][10].append(" , , ,  ##      "); matrix[2][10].append("        ###     "); matrix[3][10].append("*##########     "); matrix[4][10].append("           ++   ");
+		matrix[0][11].append("-------         "); matrix[1][11].append("       ##       "); matrix[2][11].append("       ###      "); matrix[3][11].append("*#########      "); matrix[4][11].append("  .   .   ++    ");
+		matrix[0][12].append("-----           "); matrix[1][12].append(" ,   ###        "); matrix[2][12].append("     ####       "); matrix[3][12].append("*########       "); matrix[4][12].append("         ++     ");
+		matrix[0][13].append("--              "); matrix[1][13].append("  ####          "); matrix[2][13].append("  #####         "); matrix[3][13].append("*######         "); matrix[4][13].append("       +++      ");
+		matrix[0][14].append("                "); matrix[1][14].append("###             "); matrix[2][14].append("#####           "); matrix[3][14].append("*####           "); matrix[4][14].append("     +++        ");
+		matrix[0][15].append("                "); matrix[1][15].append("                "); matrix[2][15].append("###             "); matrix[3][15].append("*##             "); matrix[4][15].append("  . ++          ");
 		// place blocks
 		final String axis = "u" + FaceToAx(quarter);
 		plotter.place3D(axis, matrix);
@@ -220,29 +250,46 @@ public class Gen_771 extends GenBackrooms {
 		default: throw new RuntimeException("Unknown direction: " + direction.toString());
 		}
 		// road
-		this.generateRoad(chunk, direction, side, x, z);
+		this.generateRoad(chunk, direction, side, chunkX, chunkZ, x, z);
 		// pillar
 		{
+			// round to nearest chunk group and convert to block location
+			final int px = Math.floorDiv(chunkX+1, 4) * 64;
+			final int pz = Math.floorDiv(chunkZ+1, 4) * 64;
+			final double valB = this.noiseSpecial.getNoise(px, pz);
+			final double valC = this.noiseSpecial.getNoise(px+PILLAR_B_OFFSET, pz+PILLAR_B_OFFSET);
+			final PillarType pillar_type;
+			if (Math.abs(chunkX) < 30
+			&&  Math.abs(chunkZ) < 30) {
+				pillar_type = PillarType.PILLAR_NORM;
+			} else
+			if (valB > THRESH_LADDER) {
+				if (valC > THRESH_LOOT) pillar_type = PillarType.PILLAR_DROP;
+				else                    pillar_type = PillarType.PILLAR_LADDER;
+			} else {
+				if (valC > THRESH_LOOT) pillar_type = PillarType.PILLAR_LOOT;
+				else                    pillar_type = PillarType.PILLAR_NORM;
+			}
 			final BlockFace mirrored = direction.getOppositeFace();
-			final int pillar;
+			final int mod_pillar;
 			switch (direction) {
-			case NORTH: case SOUTH: pillar = Math.abs(chunkZ) % 4; break;
-			case EAST:  case WEST:  pillar = Math.abs(chunkX) % 4; break;
+			case NORTH: case SOUTH: mod_pillar = Math.abs(chunkZ) % 4; break;
+			case EAST:  case WEST:  mod_pillar = Math.abs(chunkX) % 4; break;
 			default: throw new RuntimeException("Unknown direction: " + direction.toString());
 			}
 			switch (direction) {
 			case NORTH:
-				if (pillar == 0) this.generatePillar(chunk, mirrored,  side, x, 15-z); else
-				if (pillar == 1) this.generatePillar(chunk, direction, side, x,    z); break;
+				if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, x, 15-z); else
+				if (mod_pillar == 1) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ, x,    z); break;
 			case SOUTH:
-				if (pillar == 3) this.generatePillar(chunk, mirrored,  side, x, 15-z); else
-				if (pillar == 0) this.generatePillar(chunk, direction, side, x,    z); break;
+				if (mod_pillar == 3) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, x, 15-z); else
+				if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ, x,    z); break;
 			case EAST:
-				if (pillar == 3) this.generatePillar(chunk, mirrored,  side, 15-x, z); else
-				if (pillar == 0) this.generatePillar(chunk, direction, side,    x, z); break;
+				if (mod_pillar == 3) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, 15-x, z); else
+				if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ,    x, z); break;
 			case WEST:
-				if (pillar == 0) this.generatePillar(chunk, mirrored,  side, 15-x, z); else
-				if (pillar == 1) this.generatePillar(chunk, direction, side,    x, z); break;
+				if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, 15-x, z); else
+				if (mod_pillar == 1) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ,    x, z); break;
 			default: throw new RuntimeException("Unknown direction: " + direction.toString());
 			}
 		}
@@ -250,37 +297,104 @@ public class Gen_771 extends GenBackrooms {
 
 	protected void generateRoad(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
-			final int x, final int z) {
+			final int chunkX, final int chunkZ, final int x, final int z) {
 		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y+this.level_h, z);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(2, 16);
-		plotter.type('#', ROAD_SURFACE);
-		plotter.type('+', ROAD_WALL, "autoface");
+		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(3, 16);
+		plotter.type('#', Material.POLISHED_BLACKSTONE);
+		plotter.type('*', Material.BLACKSTONE);
+		plotter.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plotter.type('i', Material.SOUL_LANTERN);
+		plotter.type('L', Material.LIGHT, "15");
+		double value_light;
+		final Ixy dir = FaceToIxy(direction);
+		final int cx = chunkX * 16;
+		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
-			matrix[0][i].append("### ");
 			matrix[1][i].append("   +");
+			matrix[0][i].append("*## ");
+			value_light = this.noiseRoadLights.getNoise(cx+(dir.x*i), cz+(dir.y*i)) % 0.5;
+			if (value_light > THRESH_LIGHT) {
+				matrix[2][i].append("   i");
+				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
+			}
 		}
 		// place blocks
 		final String axis = "u" + FaceToAx(direction) + FaceToAx(side);
 		plotter.place3D(axis, matrix);
 	}
 
-	protected void generatePillar(final ChunkData chunk,
+
+
+	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
-			final int x, final int z) {
+			final int chunkX, final int chunkZ, final int x, final int z) {
 		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y, z);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(this.level_h, 2);
+		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(this.level_h+2, 2);
 		plotter.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
 		plotter.type('%', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "top,"+direction.getOppositeFace().toString().toLowerCase());
+		plotter.type('$', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "top,"+side.getOppositeFace().toString().toLowerCase());
+		plotter.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
+		plotter.type('/', Material.SPRUCE_TRAPDOOR,  "top,"+side.toString().toLowerCase());
+		plotter.type('~', Material.CRIMSON_TRAPDOOR, "top,"+side.getOppositeFace().toString().toLowerCase());
+		plotter.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
+		plotter.type('.', Material.LIGHT,  "15");
+		plotter.type('U', Material.BARREL, "up");
 		int h = this.level_h;
-		matrix[--h][0].append("###"); matrix[h][1].append("##");
-		matrix[--h][0].append("###"); matrix[h][1].append("##");
-		matrix[--h][0].append("###"); matrix[h][1].append("#%");
-		matrix[--h][0].append("##%"); matrix[h][1].append("#" );
-		matrix[--h][0].append("##" ); matrix[h][1].append("#" );
-		matrix[--h][0].append("##" ); matrix[h][1].append("%" );
-		matrix[--h][0].append("#%" );
-		for (int iy=0; iy<h; iy++)
-			matrix[iy][0].append("#");
+		switch (type) {
+		// loot
+		case PILLAR_LOOT:
+			if (x == 0 && z == 0)
+				matrix[h+1][0].append("  U");
+		// normal
+		case PILLAR_NORM: {
+			matrix[  h][0].append("   %");
+			matrix[--h][0].append("###"); matrix[h][1].append("##");
+			matrix[--h][0].append("###"); matrix[h][1].append("##");
+			matrix[--h][0].append("###"); matrix[h][1].append("#%");
+			matrix[--h][0].append("##%"); matrix[h][1].append("#" );
+			matrix[--h][0].append("##" ); matrix[h][1].append("#" );
+			matrix[--h][0].append("##" ); matrix[h][1].append("%" );
+			matrix[--h][0].append("#%" );
+			for (int iy=0; iy<h; iy++)
+				matrix[iy][0].append("#");
+			break;
+		}
+		// ladder shaft
+		case PILLAR_LADDER: {
+			matrix[  h][0].append("   %");
+			if (x == 0 && z == 0) {
+				matrix[h+1][0].append("_ _");
+				matrix[h+1][1].append(" _" );
+				StringUtils.ReplaceInString(matrix[h][0], "/", 1);
+			}
+			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
+			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
+			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
+			matrix[--h][0].append(" ##"); matrix[h][1].append("#%"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 0);
+			matrix[--h][0].append(" #%"); matrix[h][1].append("#" ); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 0);
+			for (int iy=0; iy<h; iy++) {
+				matrix[iy][0].append(" #");
+				matrix[iy][1].append("#" );
+				if (x == 0 && z == 0)
+					StringUtils.ReplaceInString(matrix[iy][0], "H", 0);
+				else
+				if (iy % 10 == 0)
+					StringUtils.ReplaceInString(matrix[iy][0], ".", 0);
+			}
+			break;
+		}
+		// rare drop shaft
+		case PILLAR_DROP: {
+			matrix[h+1][1].append("_"   );
+			matrix[  h][0].append("~  $");
+			for (int iy=0; iy<h; iy++) {
+				matrix[iy][0].append("  #" );
+				matrix[iy][1].append("##"  );
+			}
+			break;
+		}
+		default: break;
+		}
 		final String axis = "u" + FaceToAx(direction) + FaceToAx(side);
 		plotter.place3D(axis, matrix);
 	}
