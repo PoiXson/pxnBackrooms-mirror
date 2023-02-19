@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001;
+import com.poixson.backrooms.levels.Level_000;
 
 
 // level 1 - basement
@@ -36,9 +37,9 @@ public class Listener_001 implements Listener {
 
 
 
-	public Listener_001(final BackroomsPlugin plugin, final int level_y) {
+	public Listener_001(final BackroomsPlugin plugin) {
 		this.plugin  = plugin;
-		this.level_y = level_y;
+		this.level_y = Level_000.Y_001;
 	}
 
 

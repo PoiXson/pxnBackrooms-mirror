@@ -20,10 +20,7 @@ public class CommandTP extends pxnCommand {
 
 
 	public CommandTP(final BackroomsPlugin plugin) {
-		super(
-			"tp",
-			"teleport"
-		);
+		super("tp", "teleport");
 		this.plugin = plugin;
 		this.logPrefix  = plugin.getLogPrefix();
 		this.chatPrefix = plugin.getChatPrefix();

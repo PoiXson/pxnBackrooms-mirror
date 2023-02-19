@@ -36,22 +36,22 @@ public class Level_000 extends LevelBackrooms {
 	// basement
 	public static final int Y_001 = 0;
 	public static final int H_001 = 30;
-	// lobby
+	// lobby                        0     + 30      3        + 3          + 1 = 37
 	public static final int Y_000 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_000 = 4;
-	// lights out
+	// lights out                   37    + 4     + 3        + 3          + 3 = 50
 	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 3;
 	public static final int H_006 = 5;
-	// pools
+	// pools                        50    + 5     + 1 = 56
 	public static final int Y_037 = Y_006 + H_006 + 1;
 	public static final int H_037 = 10;
-	// hotel
+	// hotel                        56    + 10    + 3        + 3          + 3 = 75
 	public static final int Y_005 = Y_037 + H_037 + SUBFLOOR + SUBCEILING + 3;
 	public static final int H_005 = 6;
-	// attic
+	// attic                        75    + 6     + 3        + 3          + 1 = 88
 	public static final int Y_019 = Y_005 + H_005 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_019 = 10;
-	// radio station
+	// radio station                88    + 10    + 3        + 3          + 1 = 105
 	public static final int Y_309 = Y_019 + H_019 + SUBFLOOR + SUBCEILING + 1;
 
 	// generators
@@ -92,7 +92,7 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, SUBFLOOR, SUBCEILING)); // attic
 		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0, SUBFLOOR            )); // radio station
 		// listeners
-		this.listener_001 = new Listener_001(plugin, Y_001);
+		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);
 	}
 
