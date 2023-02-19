@@ -11,8 +11,8 @@ import com.poixson.backrooms.dynmap.GeneratorTemplate;
 // 771 | Crossroads
 public class Level_771 extends LevelBackrooms {
 
-	public static final int LEVEL_Y = 0;
-	public static final int LEVEL_H = 200;
+	public static final int LEVEL_Y = -60;
+	public static final int LEVEL_H = 260;
 
 	// generators
 	public final Gen_771 gen;
