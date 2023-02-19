@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.backrooms.listeners.Listener_771;
 
 
 // 771 | Crossroads
@@ -16,6 +17,9 @@ public class Level_771 extends LevelBackrooms {
 
 	// generators
 	public final Gen_771 gen;
+
+	// listeners
+	protected final Listener_771 listener_771;
 
 
 
@@ -28,6 +32,21 @@ public class Level_771 extends LevelBackrooms {
 		}
 		// generators
 		this.gen = this.register(new Gen_771(plugin, LEVEL_Y, LEVEL_H));
+		// listeners
+		this.listener_771 = new Listener_771(plugin);
+	}
+
+
+
+	@Override
+	public void register() {
+		super.register();
+		this.listener_771.register();
+	}
+	@Override
+	public void unregister() {
+		super.unregister();
+		this.listener_771.unregister();
 	}
 
 
