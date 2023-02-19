@@ -12,17 +12,11 @@ public class Gen_033 extends GenBackrooms {
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
 
-	public final int subfloor;
-	public final int subceiling;
-
 
 
 	public Gen_033(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
-		this.subceiling = subceiling;
 	}
 
 
