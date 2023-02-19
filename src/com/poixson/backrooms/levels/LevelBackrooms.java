@@ -37,9 +37,14 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 		plugin.register(this.getMainLevel(), this);
 	}
 
-	public void unload() {
+	public void register() {
 		for (final GenBackrooms gen : this.gens) {
-			gen.unload();
+			gen.register();
+		}
+	}
+	public void unregister() {
+		for (final GenBackrooms gen : this.gens) {
+			gen.unregister();
 		}
 	}
 

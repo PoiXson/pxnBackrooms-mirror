@@ -64,9 +64,12 @@ public class Gen_309 extends GenBackrooms {
 		this.pathTrace = new PathTracer(this.noisePath, 18, this.getPathCacheMap());
 		this.popRadio = new Pop_309(this);
 	}
+
+
+
 	@Override
-	public void unload() {
-		super.unload();
+	public void unregister() {
+		super.unregister();
 		this.pathCache.set(null);
 	}
 

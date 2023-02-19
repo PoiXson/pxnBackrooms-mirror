@@ -124,6 +124,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 				}
 			}
 		}).runTask(this);
+		// register levels
+		for (final LevelBackrooms level : this.backlevels.values()) {
+			level.register();
+		}
 		// commands listener
 		{
 			final Commands listener = new Commands(this);
@@ -163,21 +167,19 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	public void onDisable() {
 		super.onDisable();
-		// unload generators
-		for (final LevelBackrooms lvl : this.backlevels.values()) {
-			lvl.unload();
-		}
-		this.backlevels.clear();
 		// finish filling chests
 		DelayedChestFiller.stop();
+		// unload levels
+		for (final LevelBackrooms lvl : this.backlevels.values()) {
+			lvl.unregister();
+		}
+		this.backlevels.clear();
 		// commands listener
 		{
 			final Commands listener = this.commandListener.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
-		// teleport chance
-		this.tpManager.set(null);
 		// player damage listener
 		{
 			final PlayerDamageListener listener = this.playerDamageListener.getAndSet(null);
@@ -190,6 +192,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 			if (listener != null)
 				listener.unregister();
 		}
+		// teleport chance
+		this.tpManager.set(null);
 		// item despawn listener
 		{
 			final ItemDespawnListener listener = this.itemDespawnListener.getAndSet(null);

@@ -27,8 +27,8 @@ public abstract class GenBackrooms {
 
 
 
-	public void unload() {
-	}
+	public void register() {}
+	public void unregister() {}
 
 
 
