@@ -30,6 +30,7 @@ public class Gen_771 extends GenBackrooms {
 	public static final double THRESH_LOOT_A    = 0.65;
 	public static final double THRESH_LOOT_B    = 0.75;
 	public static final int    PILLAR_B_OFFSET  = 10;
+	public static final double THRESH_VOID   = 0.88;
 
 	// noise
 	protected final FastNoiseLiteD noiseRoadLights;
@@ -41,6 +42,7 @@ public class Gen_771 extends GenBackrooms {
 		PILLAR_LADDER,
 		PILLAR_LOOT,
 		PILLAR_DROP,
+		PILLAR_VOID,
 	}
 
 
@@ -264,11 +266,13 @@ public class Gen_771 extends GenBackrooms {
 				pillar_type = PillarType.PILLAR_NORM;
 			} else
 			if (valB > THRESH_LADDER) {
-				if (valC > THRESH_LOOT) pillar_type = PillarType.PILLAR_DROP;
-				else                    pillar_type = PillarType.PILLAR_LADDER;
+				if (valC > THRESH_LOOT) {
+				if (valC > THRESH_VOID) pillar_type = PillarType.PILLAR_VOID;   // void shaft
+				else                    pillar_type = PillarType.PILLAR_DROP;   // drop shaft
+				} else                  pillar_type = PillarType.PILLAR_LADDER; // ladder shaft
 			} else {
-				if (valC > THRESH_LOOT) pillar_type = PillarType.PILLAR_LOOT;
-				else                    pillar_type = PillarType.PILLAR_NORM;
+				if (valC > THRESH_LOOT) pillar_type = PillarType.PILLAR_LOOT; // loot chest
+				else                    pillar_type = PillarType.PILLAR_NORM; // normal pillar
 			}
 			final BlockFace mirrored = direction.getOppositeFace();
 			final int mod_pillar;
@@ -325,28 +329,44 @@ public class Gen_771 extends GenBackrooms {
 
 
 
+	// -------------------------------------------------------------------------------
+	// pillars
+
+
+
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y, z);
 		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(this.level_h+2, 2);
-		plotter.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
-		plotter.type('%', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "top,"+direction.getOppositeFace().toString().toLowerCase());
-		plotter.type('$', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "top,"+side.getOppositeFace().toString().toLowerCase());
+		plotter.type('#', Material.DEEPSLATE_BRICKS);
+		plotter.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +direction.getOppositeFace().toString().toLowerCase());
+		plotter.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.toString().toLowerCase());
+		plotter.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.getOppositeFace().toString().toLowerCase());
+		plotter.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom,"+side.getOppositeFace().toString().toLowerCase());
+		plotter.type('w', Material.DARK_OAK_PLANKS);
 		plotter.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
 		plotter.type('/', Material.SPRUCE_TRAPDOOR,  "top,"+side.toString().toLowerCase());
 		plotter.type('~', Material.CRIMSON_TRAPDOOR, "top,"+side.getOppositeFace().toString().toLowerCase());
+		plotter.type('d', Material.SPRUCE_DOOR, "top,"   +direction.toString().toLowerCase());
+		plotter.type('D', Material.SPRUCE_DOOR, "bottom,"+direction.toString().toLowerCase());
 		plotter.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
-		plotter.type('.', Material.LIGHT,  "15");
+		plotter.type('-', Material.DARK_OAK_PRESSURE_PLATE);
+		plotter.type('+', Material.DEEPSLATE_TILE_WALL);
+		plotter.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
 		plotter.type('U', Material.BARREL, "up");
+		plotter.type(',', Material.LIGHT,  "15");
+		plotter.type('W', Material.WATER);
+		plotter.type('.', Material.AIR);
 		int h = this.level_h;
 		switch (type) {
-		// loot
+		// loot chest
 		case PILLAR_LOOT:
 			if (x == 0 && z == 0)
 				matrix[h+1][0].append("  U");
-		// normal
+		// normal pillar
 		case PILLAR_NORM: {
+			// top of pillar
 			matrix[  h][0].append("   %");
 			matrix[--h][0].append("###"); matrix[h][1].append("##");
 			matrix[--h][0].append("###"); matrix[h][1].append("##");
@@ -355,18 +375,35 @@ public class Gen_771 extends GenBackrooms {
 			matrix[--h][0].append("##" ); matrix[h][1].append("#" );
 			matrix[--h][0].append("##" ); matrix[h][1].append("%" );
 			matrix[--h][0].append("#%" );
-			for (int iy=0; iy<h; iy++)
+			// vertical pillar
+			for (int iy=8; iy<h; iy++)
 				matrix[iy][0].append("#");
+			// bottom of pillar
+			matrix[7][0].append("#&"  );
+			matrix[6][0].append("##"  );
+			matrix[5][0].append("##&" );
+			matrix[4][0].append("  <&");
+			matrix[3][0].append("   #");
+			matrix[2][0].append("   #");
+			matrix[1][0].append("   #");
+			matrix[0][0].append("   $");
+			// loot chest
+			if (PillarType.PILLAR_LOOT.equals(type))
+				if (x == 0 && z == 0)
+					StringUtils.ReplaceInString(matrix[1][0], "U", 2);
 			break;
 		}
 		// ladder shaft
 		case PILLAR_LADDER: {
-			matrix[  h][0].append("   %");
+			matrix[h][0].append("   $");
+			// trapdoor
 			if (x == 0 && z == 0) {
 				matrix[h+1][0].append("_ _");
 				matrix[h+1][1].append(" _" );
 				StringUtils.ReplaceInString(matrix[h][0], "/", 1);
 			}
+			if (x == -1 && z == -1)
+				matrix[h+1][1].append(" _");
 			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
 			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
 			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
@@ -375,22 +412,46 @@ public class Gen_771 extends GenBackrooms {
 			for (int iy=0; iy<h; iy++) {
 				matrix[iy][0].append(" #");
 				matrix[iy][1].append("#" );
-				if (x == 0 && z == 0)
-					StringUtils.ReplaceInString(matrix[iy][0], "H", 0);
-				else
-				if (iy % 10 == 0)
-					StringUtils.ReplaceInString(matrix[iy][0], ".", 0);
+				// ladder and lights
+				if (x == 0 && z == 0)  StringUtils.ReplaceInString(matrix[iy][0], "H", 0);
+				else if (iy % 10 == 0) StringUtils.ReplaceInString(matrix[iy][0], ",", 0);
 			}
+			// door
+			if (x != 0 && z != 0) {
+				StringUtils.ReplaceInString(matrix[2][1], "d", 0);
+				StringUtils.ReplaceInString(matrix[1][1], "D", 0);
+				StringUtils.ReplaceInString(matrix[1][0], "-", 0);
+			}
+			// floor inside shaft
+			StringUtils.ReplaceInString(matrix[0][0], "w", 0);
 			break;
 		}
-		// rare drop shaft
+		// drop shaft to lower road
 		case PILLAR_DROP: {
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {
-				matrix[iy][0].append("  #" );
-				matrix[iy][1].append("##"  );
+				matrix[iy][0].append("  #");
+				matrix[iy][1].append("##" );
 			}
+			// doorway
+			StringUtils.ReplaceInString(matrix[4][0], "WW", 0);
+			StringUtils.ReplaceInString(matrix[3][0], "SS", 0);
+			StringUtils.ReplaceInString(matrix[2][1], ".+", 0);
+			StringUtils.ReplaceInString(matrix[1][1], ".+", 0);
+			StringUtils.ReplaceInString(matrix[0][0], "ww", 0);
+			break;
+		}
+		// void shaft
+		case PILLAR_VOID: {
+			matrix[h+1][1].append("_"   );
+			matrix[  h][0].append("~  $");
+			for (int iy=0; iy<h; iy++) {
+				matrix[iy][0].append(" #");
+				matrix[iy][1].append("#" );
+			}
+			// no floor inside shaft
+			StringUtils.ReplaceInString(matrix[0][0], ".", 0);
 			break;
 		}
 		default: break;
