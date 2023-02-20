@@ -454,6 +454,7 @@ public class Gen_771 extends GenBackrooms {
 				StringUtils.ReplaceInString(matrix[2][1], "d", 0);
 				StringUtils.ReplaceInString(matrix[1][1], "D", 0);
 				StringUtils.ReplaceInString(matrix[1][0], "-", 0);
+				StringUtils.ReplaceInString(matrix[0][1], " ", 0);
 			}
 			// floor inside shaft
 			StringUtils.ReplaceInString(matrix[0][0], "w", 0);
