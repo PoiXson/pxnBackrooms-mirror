@@ -252,7 +252,8 @@ public class Gen_771 extends GenBackrooms {
 		default: throw new RuntimeException("Unknown direction: " + direction.toString());
 		}
 		// road
-		this.generateRoad(chunk, direction, side, chunkX, chunkZ, x, z);
+		this.generateRoadTop(chunk, direction, side, chunkX, chunkZ, x, z);
+		this.generateRoadBottom(chunk, direction, side, chunkX, chunkZ, x, z);
 		// pillar
 		{
 			// round to nearest chunk group and convert to block location
@@ -299,7 +300,7 @@ public class Gen_771 extends GenBackrooms {
 		}
 	}
 
-	protected void generateRoad(final ChunkData chunk,
+	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y+this.level_h, z);
@@ -315,7 +316,34 @@ public class Gen_771 extends GenBackrooms {
 		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
 			matrix[1][i].append("   +");
-			matrix[0][i].append("*## ");
+			matrix[0][i].append("*##" );
+			value_light = this.noiseRoadLights.getNoise(cx+(dir.x*i), cz+(dir.y*i)) % 0.5;
+			if (value_light > THRESH_LIGHT) {
+				matrix[2][i].append("   i");
+				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
+			}
+		}
+		// place blocks
+		final String axis = "u" + FaceToAx(direction) + FaceToAx(side);
+		plotter.place3D(axis, matrix);
+	}
+	protected void generateRoadBottom(final ChunkData chunk,
+			final BlockFace direction, final BlockFace side,
+			final int chunkX, final int chunkZ, final int x, final int z) {
+		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y, z);
+		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(3, 16);
+		plotter.type('#', Material.POLISHED_BLACKSTONE);
+		plotter.type('*', Material.BLACKSTONE);
+		plotter.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plotter.type('i', Material.LANTERN);
+		plotter.type('L', Material.LIGHT, "15");
+		double value_light;
+		final Ixy dir = FaceToIxy(direction);
+		final int cx = chunkX * 16;
+		final int cz = chunkZ * 16;
+		for (int i=0; i<16; i++) {
+			matrix[1][i].append("   +");
+			matrix[0][i].append("*##" );
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.x*i), cz+(dir.y*i)) % 0.5;
 			if (value_light > THRESH_LIGHT) {
 				matrix[2][i].append("   i");
