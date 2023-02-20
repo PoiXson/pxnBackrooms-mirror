@@ -24,13 +24,13 @@ public class Gen_771 extends GenBackrooms {
 
 	public static final boolean ENABLE_GENERATE = true;
 
-	public static final double THRESH_LIGHT     = 0.42;
-	public static final double THRESH_LADDER    = 0.88;
-	public static final double THRESH_LOOT      = 0.84;
-	public static final double THRESH_LOOT_A    = 0.65;
-	public static final double THRESH_LOOT_B    = 0.75;
-	public static final int    PILLAR_B_OFFSET  = 10;
-	public static final double THRESH_VOID   = 0.88;
+	public static final double THRESH_LIGHT  = 0.42; // lanterns
+	public static final double THRESH_LADDER = 0.82; // ladder shaft
+	public static final double THRESH_LOOT   = 0.78; // loot chest
+	public static final double THRESH_VOID   = 0.88; // void shaft
+	public static final double THRESH_LOOT_A = 0.65; // loot type
+	public static final double THRESH_LOOT_B = 0.75; // loot type
+	public static final int PILLAR_B_OFFSET = 10;
 
 	// noise
 	protected final FastNoiseLiteD noiseRoadLights;
@@ -56,7 +56,7 @@ public class Gen_771 extends GenBackrooms {
 		this.noiseRoadLights.setFractalOctaves(1);
 		// special exits
 		this.noiseSpecial = this.register(new FastNoiseLiteD());
-		this.noiseSpecial.setFrequency(0.2);
+		this.noiseSpecial.setFrequency(0.5);
 		this.noiseSpecial.setFractalOctaves(1);
 		// chest loot
 		this.noiseLoot = this.register(new FastNoiseLiteD());
@@ -68,6 +68,7 @@ public class Gen_771 extends GenBackrooms {
 
 
 
+//TODO: change to use pregenerate function
 	@Override
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
@@ -175,22 +176,22 @@ public class Gen_771 extends GenBackrooms {
 		case SOUTH_WEST: plotter.setX(15); plotter.setZ( 0); break;
 		default: throw new RuntimeException("Unknown quarter: " + quarter.toString());
 		}
-		matrix[0][ 0].append("###########---  "); matrix[1][ 0].append(" , , , , , ,  # "); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
-		matrix[0][ 1].append("###########---  "); matrix[1][ 1].append("              # "); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
-		matrix[0][ 2].append("##########---   "); matrix[1][ 2].append(" , , , , , , ## "); matrix[2][ 2].append("             ###"); matrix[3][ 2].append("**X#############"); matrix[4][ 2].append("                ");
-		matrix[0][ 3].append("##########---   "); matrix[1][ 3].append("             #  "); matrix[2][ 3].append("             ## "); matrix[3][ 3].append("*##*########### "); matrix[4][ 3].append("  .   .   .   . ");
-		matrix[0][ 4].append("#########---    "); matrix[1][ 4].append(" , , , , ,  ##  "); matrix[2][ 4].append("            ### "); matrix[3][ 4].append("*###X########## "); matrix[4][ 4].append("               +");
-		matrix[0][ 5].append("########----    "); matrix[1][ 5].append("            #   "); matrix[2][ 5].append("            ##  "); matrix[3][ 5].append("*####*########  "); matrix[4][ 5].append("              ++");
-		matrix[0][ 6].append("#######----     "); matrix[1][ 6].append(" , , , , , ##   "); matrix[2][ 6].append("           ###  "); matrix[3][ 6].append("*#####*#######  "); matrix[4][ 6].append("              + ");
-		matrix[0][ 7].append("######-----     "); matrix[1][ 7].append("           #    "); matrix[2][ 7].append("           ##   "); matrix[3][ 7].append("*######X#####   "); matrix[4][ 7].append("  .   .   .  ++ ");
-		matrix[0][ 8].append("#####-----      "); matrix[1][ 8].append(" , , , ,  ##    "); matrix[2][ 8].append("          ###   "); matrix[3][ 8].append("*#######*####   "); matrix[4][ 8].append("             +  ");
-		matrix[0][ 9].append("####-----       "); matrix[1][ 9].append("         ##     "); matrix[2][ 9].append("         ###    "); matrix[3][ 9].append("*###########    "); matrix[4][ 9].append("            ++  ");
-		matrix[0][10].append("##------        "); matrix[1][10].append(" , , ,  ##      "); matrix[2][10].append("        ###     "); matrix[3][10].append("*##########     "); matrix[4][10].append("           ++   ");
-		matrix[0][11].append("-------         "); matrix[1][11].append("       ##       "); matrix[2][11].append("       ###      "); matrix[3][11].append("*#########      "); matrix[4][11].append("  .   .   ++    ");
-		matrix[0][12].append("-----           "); matrix[1][12].append(" ,   ###        "); matrix[2][12].append("     ####       "); matrix[3][12].append("*########       "); matrix[4][12].append("         ++     ");
-		matrix[0][13].append("--              "); matrix[1][13].append("  ####          "); matrix[2][13].append("  #####         "); matrix[3][13].append("*######         "); matrix[4][13].append("       +++      ");
-		matrix[0][14].append("                "); matrix[1][14].append("###             "); matrix[2][14].append("#####           "); matrix[3][14].append("*####           "); matrix[4][14].append("     +++        ");
-		matrix[0][15].append("                "); matrix[1][15].append("                "); matrix[2][15].append("###             "); matrix[3][15].append("*##             "); matrix[4][15].append("  . ++          ");
+		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
+		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
+		matrix[0][ 2].append("##########---" ); matrix[1][ 2].append(" , , , , , , ##"); matrix[2][ 2].append("             ###"); matrix[3][ 2].append("**X#############"); matrix[4][ 2].append("                ");
+		matrix[0][ 3].append("##########---" ); matrix[1][ 3].append("             #" ); matrix[2][ 3].append("             ##" ); matrix[3][ 3].append("*##*###########" ); matrix[4][ 3].append("  .   .   .   . ");
+		matrix[0][ 4].append("#########---"  ); matrix[1][ 4].append(" , , , , ,  ##" ); matrix[2][ 4].append("            ###" ); matrix[3][ 4].append("*###X##########" ); matrix[4][ 4].append("               +");
+		matrix[0][ 5].append("########----"  ); matrix[1][ 5].append("            #"  ); matrix[2][ 5].append("            ##"  ); matrix[3][ 5].append("*####*########"  ); matrix[4][ 5].append("              ++");
+		matrix[0][ 6].append("#######----"   ); matrix[1][ 6].append(" , , , , , ##"  ); matrix[2][ 6].append("           ###"  ); matrix[3][ 6].append("*#####*#######"  ); matrix[4][ 6].append("              +" );
+		matrix[0][ 7].append("######-----"   ); matrix[1][ 7].append("           #"   ); matrix[2][ 7].append("           ##"   ); matrix[3][ 7].append("*######X#####"   ); matrix[4][ 7].append("  .   .   .  ++" );
+		matrix[0][ 8].append("#####-----"    ); matrix[1][ 8].append(" , , , ,  ##"   ); matrix[2][ 8].append("          ###"   ); matrix[3][ 8].append("*#######*####"   ); matrix[4][ 8].append("             +"  );
+		matrix[0][ 9].append("####-----"     ); matrix[1][ 9].append("         ##"    ); matrix[2][ 9].append("         ###"    ); matrix[3][ 9].append("*###########"    ); matrix[4][ 9].append("            ++"  );
+		matrix[0][10].append("##------"      ); matrix[1][10].append(" , , ,  ##"     ); matrix[2][10].append("        ###"     ); matrix[3][10].append("*##########"     ); matrix[4][10].append("           ++"   );
+		matrix[0][11].append("-------"       ); matrix[1][11].append("       ##"      ); matrix[2][11].append("       ###"      ); matrix[3][11].append("*#########"      ); matrix[4][11].append("  .   .   ++"    );
+		matrix[0][12].append("-----"         ); matrix[1][12].append(" ,   ###"       ); matrix[2][12].append("     ####"       ); matrix[3][12].append("*########"       ); matrix[4][12].append("         ++"     );
+		matrix[0][13].append("--"            ); matrix[1][13].append("  ####"         ); matrix[2][13].append("  #####"         ); matrix[3][13].append("*######"         ); matrix[4][13].append("       +++"      );
+		matrix[0][14].append(""              ); matrix[1][14].append("###"            ); matrix[2][14].append("#####"           ); matrix[3][14].append("*####"           ); matrix[4][14].append("     +++"        );
+		matrix[0][15].append(""              ); matrix[1][15].append(""               ); matrix[2][15].append("###"             ); matrix[3][15].append("*##"             ); matrix[4][15].append("  . ++"          );
 		// place blocks
 		final String axis = "u" + FaceToAx(quarter);
 		plotter.place3D(axis, matrix);
