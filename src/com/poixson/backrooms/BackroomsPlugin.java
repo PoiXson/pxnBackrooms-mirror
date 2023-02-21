@@ -44,9 +44,6 @@ import com.poixson.utils.Utils;
 public class BackroomsPlugin extends xJavaPlugin {
 	public static final String LOG_PREFIX  = "[pxnBackrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + "[Backrooms] " + ChatColor.WHITE;
-//TODO
-	protected static final int SPIGOT_PLUGIN_ID = 0;
-	protected static final int BSTATS_PLUGIN_ID = 17231;
 
 	protected static final String GENERATOR_NAME = "Backrooms";
 //TODO: set the version automatically
@@ -68,6 +65,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// dynmap config generator
 	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
+
+	@Override public int getSpigotPluginID() { return 108148; }
+	@Override public int getBStatsID() {       return 17231;  }
 
 
 
@@ -418,21 +418,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 			this.dynmap_perspective.set(gen);
 			return gen;
 		}
-	}
-
-
-
-	// -------------------------------------------------------------------------------
-
-
-
-	@Override
-	protected int getSpigotPluginID() {
-		return SPIGOT_PLUGIN_ID;
-	}
-	@Override
-	protected int getBStatsID() {
-		return BSTATS_PLUGIN_ID;
 	}
 
 
