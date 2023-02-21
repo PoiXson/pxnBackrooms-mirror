@@ -1,13 +1,13 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+
 import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
-
-import com.poixson.backrooms.BackroomsPlugin;
 
 
 // 309 | Radio Station
@@ -42,7 +42,7 @@ public class Pop_309 extends BlockPopulator {
 			}
 		}
 		if (y == Integer.MIN_VALUE) {
-			BackroomsPlugin.log.warning("Failed to generate level 309 building; unknown y point.");
+			LOG.warning("Failed to generate level 309 building; unknown y point.");
 			return;
 		}
 		// doorstep

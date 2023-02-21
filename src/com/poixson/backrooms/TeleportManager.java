@@ -1,11 +1,13 @@
 package com.poixson.backrooms;
 
+import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
+import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import org.bukkit.Location;
 
@@ -19,8 +21,6 @@ import com.poixson.utils.Utils;
 
 
 public class TeleportManager {
-	public static final String LOG_PREFIX = BackroomsPlugin.LOG_PREFIX;
-	public static final Logger log        = BackroomsPlugin.log;
 
 	protected final BackroomsPlugin plugin;
 
@@ -87,7 +87,7 @@ public class TeleportManager {
 			final long sinceLast = current - this.timeLast;
 			if (sinceLast > this.updateGrace) {
 				// reset from/to levels
-				log.info(LOG_PREFIX + "Rolling the teleport dice..");
+				LOG.info(LOG_PREFIX + "Rolling the teleport dice..");
 				this.timeUpdated = current;
 				this.levelsFromTo.clear();
 				this.levelSpawns.clear();
@@ -136,7 +136,7 @@ public class TeleportManager {
 			if (total <= rnd)
 				return level;
 		}
-		log.warning(LOG_PREFIX + "Failed to find random level");
+		LOG.warning(LOG_PREFIX + "Failed to find random level");
 		return 0;
 	}
 
@@ -154,7 +154,7 @@ public class TeleportManager {
 		{
 			final LevelBackrooms backrooms = this.plugin.getBackroomsLevel(level);
 			if (backrooms == null) {
-				log.warning(String.format("%sUnknown backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
+				LOG.warning(String.format("%sUnknown backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
 				return null;
 			}
 			Location loc = null;

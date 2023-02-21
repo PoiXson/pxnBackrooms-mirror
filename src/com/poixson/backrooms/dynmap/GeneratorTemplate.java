@@ -1,18 +1,18 @@
 package com.poixson.backrooms.dynmap;
 
+import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
+import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.utils.Utils;
 
 
 public class GeneratorTemplate {
-	public static final Logger log = BackroomsPlugin.log;
-	public static final String LOG_PREFIX = BackroomsPlugin.LOG_PREFIX;
 
 	protected final BackroomsPlugin plugin;
 	protected final GeneratorPerspective gen_persp;
@@ -92,10 +92,10 @@ public class GeneratorTemplate {
 
 	public void commit() {
 		if (!this.committed.compareAndSet(false, true)) return;
-		log.info(LOG_PREFIX + "Creating dynmap template: backrooms_" + this.worldName);
+		LOG.info(LOG_PREFIX + "Creating dynmap template: backrooms_" + this.worldName);
 		final File path = new File(this.plugin.getDataFolder(), "../dynmap/templates/");
 		if (!path.isDirectory()) {
-			log.warning(LOG_PREFIX + "Path not found: plugins/dynmap/templates/");
+			LOG.warning(LOG_PREFIX + "Path not found: plugins/dynmap/templates/");
 			return;
 		}
 		final File file = new File(path, this.worldName + ".txt");

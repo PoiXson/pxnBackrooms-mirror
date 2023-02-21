@@ -1,18 +1,17 @@
 package com.poixson.backrooms.dynmap;
 
+import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
+import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.utils.Utils;
 
 
 public class GeneratorPerspective {
-	public static final Logger log = BackroomsPlugin.log;
-	public static final String LOG_PREFIX = BackroomsPlugin.LOG_PREFIX;
 
 	public final StringBuilder out = new StringBuilder();
 	protected final AtomicBoolean committed = new AtomicBoolean(false);
@@ -48,9 +47,9 @@ public class GeneratorPerspective {
 
 	public void commit(final File path) {
 		if (!this.committed.compareAndSet(false, true)) return;
-		log.info(LOG_PREFIX + "Creating dynmap config: custom-perspectives.txt");
+		LOG.info(LOG_PREFIX + "Creating dynmap config: custom-perspectives.txt");
 		if (!path.isDirectory()) {
-			log.warning(LOG_PREFIX + "Path not found: plugins/dynmap/");
+			LOG.warning(LOG_PREFIX + "Path not found: plugins/dynmap/");
 			return;
 		}
 		final File file = new File(path, "custom-perspectives.txt");

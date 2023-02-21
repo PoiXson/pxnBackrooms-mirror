@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -141,7 +143,7 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
 		final String name = "level" + Integer.toString(level);
 		if (!manager.isMVWorld(name, false)) {
-			BackroomsPlugin.log.warning(String.format(
+			LOG.warning(String.format(
 				"%sCreating backrooms level: %d",
 				BackroomsPlugin.LOG_PREFIX,
 				Integer.valueOf(level)

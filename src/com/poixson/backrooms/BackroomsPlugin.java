@@ -86,10 +86,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		{
 			final String pack = Bukkit.getResourcePack();
 			if (pack == null || pack.isEmpty()) {
-				log.warning(LOG_PREFIX + "Resource pack not set");
-				log.warning(LOG_PREFIX + "You can use this one: " + DEFAULT_RESOURCE_PACK);
+				LOG.warning(LOG_PREFIX + "Resource pack not set");
+				LOG.warning(LOG_PREFIX + "You can use this one: " + DEFAULT_RESOURCE_PACK);
 			} else {
-				log.info(String.format(
+				LOG.info(String.format(
 					"%sUsing resource pack: %s",
 					LOG_PREFIX,
 					Bukkit.getResourcePack()
@@ -337,12 +337,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (loc == null) {
 			final World world = this.getWorldFromLevel(level);
 			if (world == null) {
-				log.warning(String.format("%sUnknown backrooms world for level: %d", LOG_PREFIX, Integer.valueOf(level)));
+				LOG.warning(String.format("%sUnknown backrooms world for level: %d", LOG_PREFIX, Integer.valueOf(level)));
 				return;
 			}
 			loc = world.getSpawnLocation();
 		}
-		log.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));
+		LOG.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));
 		player.teleport(loc);
 	}
 	public int noclip(final Player player) {
@@ -354,7 +354,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int noclip(final int level_from) {
 		final TeleportManager manager = this.tpManager.get();
 		if (manager == null) {
-			log.warning(LOG_PREFIX+"teleport chance weights not loaded");
+			LOG.warning(LOG_PREFIX+"teleport chance weights not loaded");
 			return 0;
 		}
 		return manager.getDestinationLevel(level_from);
@@ -398,7 +398,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 		if (!worldName.startsWith("level"))
 			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
-		log.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
+		LOG.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevelFromWorld(worldName);
 		return this.getBackroomsLevel(level);
 	}
