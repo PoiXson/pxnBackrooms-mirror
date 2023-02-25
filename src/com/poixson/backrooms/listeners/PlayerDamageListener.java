@@ -9,27 +9,23 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plugin.xListener;
 import com.poixson.tools.xTime;
 import com.poixson.utils.Utils;
 
 
-public class PlayerDamageListener implements Listener {
+public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 
 	public static final long DAMAGE_TIMEOUT = xTime.Parse("5s").ms();
 	public static final double MIN_DAMAGE = 3.0;
-
-	protected final BackroomsPlugin plugin;
 
 	protected final AtomicInteger cleanup = new AtomicInteger(0);
 
@@ -54,17 +50,7 @@ public class PlayerDamageListener implements Listener {
 
 
 	public PlayerDamageListener(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
-	}
-
-
-
-	public void register() {
-		Bukkit.getPluginManager()
-			.registerEvents(this, this.plugin);
-	}
-	public void unregister() {
-		HandlerList.unregisterAll(this);
+		super(plugin);
 	}
 
 

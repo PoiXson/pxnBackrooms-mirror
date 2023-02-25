@@ -10,37 +10,36 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plugin.xListener;
 
 
 // level 78 - space
-public class Listener_078 implements Listener {
+public class Listener_078 extends xListener<BackroomsPlugin> {
 
 	public static final int GRAVITY_REACH = 10;
-
-	protected final BackroomsPlugin plugin;
 
 	protected final ArrayList<UUID> floating = new ArrayList<UUID>();
 
 
 
 	public Listener_078(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
+		super(plugin);
 	}
 
 
 
-	public void register() {
-		Bukkit.getPluginManager()
-			.registerEvents(this, this.plugin);
-	}
+	@Override
 	public void unregister() {
-		HandlerList.unregisterAll(this);
+		super.unregister();
+		for (final UUID uuid : this.flying) {
+			final Player player = Bukkit.getPlayer(uuid);
+			if (player != null)
+				this.unfly(player);
+		}
 	}
 
 

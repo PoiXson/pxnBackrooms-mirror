@@ -1,30 +1,15 @@
 package com.poixson.backrooms.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plugin.xListener;
 
 
-public class Listener_771 implements Listener {
-
-	protected final BackroomsPlugin plugin;
+public class Listener_771 extends xListener<BackroomsPlugin> {
 
 
 
 	public Listener_771(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
-	}
-
-
-
-	public void register() {
-		Bukkit.getPluginManager()
-			.registerEvents(this, this.plugin);
-	}
-	public void unregister() {
-		HandlerList.unregisterAll(this);
+		super(plugin);
 	}
 
 

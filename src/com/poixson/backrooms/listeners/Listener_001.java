@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,23 +11,20 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001;
 import com.poixson.backrooms.levels.Level_000;
+import com.poixson.commonmc.tools.plugin.xListener;
 
 
 // level 1 - basement
-public class Listener_001 implements Listener {
+public class Listener_001 extends xListener<BackroomsPlugin> {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 
 	public static final int LAMP_Y = Gen_001.LAMP_Y;
-
-	protected final BackroomsPlugin plugin;
 
 	protected final int level_y;
 
@@ -38,18 +34,15 @@ public class Listener_001 implements Listener {
 
 
 	public Listener_001(final BackroomsPlugin plugin) {
-		this.plugin  = plugin;
+		super(plugin);
 		this.level_y = Level_000.Y_001;
 	}
 
 
 
-	public void register() {
-		Bukkit.getPluginManager()
-			.registerEvents(this, this.plugin);
-	}
+	@Override
 	public void unregister() {
-		HandlerList.unregisterAll(this);
+		super.unregister();
 		synchronized (this.playerLights) {
 			Block blk;
 			for (final ArrayList<Location> list : this.playerLights.values()) {

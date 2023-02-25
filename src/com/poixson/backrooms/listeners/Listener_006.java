@@ -9,37 +9,24 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.commonmc.tools.DelayedLever;
+import com.poixson.commonmc.tools.plugin.xListener;
 
 
 //lobby/lights-out teleport
-public class Listener_006 implements Listener {
-
-	protected final BackroomsPlugin plugin;
+public class Listener_006 extends xListener<BackroomsPlugin> {
 
 	protected final Level_000 level0;
 
 
 
 	public Listener_006(final BackroomsPlugin plugin, final Level_000 level0) {
-		this.plugin = plugin;
+		super(plugin);
 		this.level0 = level0;
-	}
-
-
-
-	public void register() {
-		Bukkit.getPluginManager()
-			.registerEvents(this, this.plugin);
-	}
-	public void unregister() {
-		HandlerList.unregisterAll(this);
 	}
 
 

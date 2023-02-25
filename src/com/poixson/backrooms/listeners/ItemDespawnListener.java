@@ -12,24 +12,12 @@ import org.bukkit.event.entity.ItemDespawnEvent;
 import com.poixson.backrooms.BackroomsPlugin;
 
 
-public class ItemDespawnListener implements Listener {
-
-	protected final BackroomsPlugin plugin;
+public class ItemDespawnListener extends xListener<BackroomsPlugin> {
 
 
 
 	public ItemDespawnListener(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
-	}
-
-
-
-	public void register() {
-		Bukkit.getPluginManager()
-			.registerEvents(this, this.plugin);
-	}
-	public void unregister() {
-		HandlerList.unregisterAll(this);
+		super(plugin);
 	}
 
 
