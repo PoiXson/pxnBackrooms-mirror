@@ -49,8 +49,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 //TODO: set the version automatically
 	protected static final String DEFAULT_RESOURCE_PACK = "http://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-0.1.1.zip";
 
-	protected static final AtomicReference<BackroomsPlugin> instance = new AtomicReference<BackroomsPlugin>(null);
-
 	// backrooms levels
 	protected final HashMap<Integer, LevelBackrooms> backlevels = new HashMap<Integer, LevelBackrooms>();
 	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
@@ -79,8 +77,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	@Override
 	public void onEnable() {
-		if (!instance.compareAndSet(null, this))
-			throw new RuntimeException("Plugin instance already enabled?");
 		super.onEnable();
 		// resource pack
 		{
@@ -185,8 +181,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 				listener.unregister();
 		}
 		this.dynmap_perspective.set(null);
-		if (!instance.compareAndSet(this, null))
-			(new RuntimeException("Disable wrong instance of plugin?")).printStackTrace();
 	}
 
 
