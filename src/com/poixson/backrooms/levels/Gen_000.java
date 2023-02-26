@@ -352,9 +352,8 @@ public class Gen_000 extends GenBackrooms {
 		} // end z
 		// place delayed blocks
 		if (!delayed.isEmpty()) {
-			for (final DelayedBlockPlotter plot : delayed) {
+			for (final DelayedBlockPlotter plot : delayed)
 				plot.run();
-			}
 		}
 		if (!chests.isEmpty()) {
 			for (final Ixyz loc : chests) {

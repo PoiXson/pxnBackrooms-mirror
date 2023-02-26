@@ -195,8 +195,7 @@ public class Level_000 extends LevelBackrooms {
 		public final HashMap<Ixy, BasementData> basement = new HashMap<Ixy, BasementData>();
 		public final HashMap<Ixy, HotelData>    hotel    = new HashMap<Ixy, HotelData>();
 		public final HashMap<Ixy, PoolData>     pools    = new HashMap<Ixy, PoolData>();
-		public PregenLevel0() {
-		}
+		public PregenLevel0() {}
 	}
 
 
