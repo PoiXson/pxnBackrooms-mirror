@@ -11,11 +11,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001;
 import com.poixson.backrooms.levels.Level_000;
+import com.poixson.commonmc.events.PlayerMoveNormalEvent;
 import com.poixson.commonmc.tools.plugin.xListener;
 
 
@@ -59,68 +59,59 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
-	public void onPlayerMove(final PlayerMoveEvent event) {
-		final Location from = event.getFrom();
-		final Location to   = event.getTo();
-		final int toX = to.getBlockX();
-		final int toY = to.getBlockY();
-		final int toZ = to.getBlockZ();
-		// location changed
-		if (from.getBlockX() != toX
-		||  from.getBlockY() != toY
-		||  from.getBlockZ() != toZ) {
-			final Player player = event.getPlayer();
-			final World world = player.getWorld();
-			final int level = this.plugin.getLevelFromWorld(world.getName());
-			int lvl = (level==0 ? this.plugin.getPlayerLevel(player) : Integer.MIN_VALUE);
-			// basement
-			if (lvl == 1) {
-				final ArrayList<Location> lights = this.getPlayerLightsList(player);
-				// turn off lights
-				{
+	public void onPlayerMoveNormal(final PlayerMoveNormalEvent event) {
+		final Location to = event.getTo();
+		final Player player = event.getPlayer();
+		final World world = player.getWorld();
+		final int level = this.plugin.getLevelFromWorld(world.getName());
+		int lvl = (level==0 ? this.plugin.getPlayerLevel(player) : Integer.MIN_VALUE);
+		// basement
+		if (lvl == 1) {
+			final ArrayList<Location> lights = this.getPlayerLightsList(player);
+			// turn off lights
+			{
 //TODO: check other players
-					Location loc;
-					Block blk;
-					final Iterator<Location> it = lights.iterator();
-					while (it.hasNext()) {
-						loc = it.next();
-						if (to.distance(loc) > BASEMENT_LIGHT_RADIUS) {
-							it.remove();
-							blk = loc.getBlock();
-							if (Material.REDSTONE_TORCH.equals(blk.getType()))
-								blk.setType(Material.BEDROCK);
-						}
-					}
-				}
-				final int y = this.level_y + LAMP_Y + 5;
-				final int r = BASEMENT_LIGHT_RADIUS;
-				int xx, zz;
-				for (int iz=0-r-1; iz<r; iz+=10) {
-					zz = Math.floorDiv(toZ+iz, 10) * 10;
-					for (int ix=0-r-1; ix<r; ix+=10) {
-						xx = Math.floorDiv(toX+ix, 10) * 10;
-						final Block blk = world.getBlockAt(xx, y, zz);
-						if (to.distance(blk.getLocation()) < BASEMENT_LIGHT_RADIUS) {
-							if (Material.BEDROCK.equals(blk.getType())
-							||  Material.REDSTONE_TORCH.equals(blk.getType()) ) {
-								lights.add(blk.getLocation());
-								world.setType(xx, y, zz, Material.REDSTONE_TORCH);
-							}
-						}
-					}
-				}
-			// not basement
-			} else {
-				final String uuid = player.getUniqueId().toString();
-				if (this.playerLights.containsKey(uuid)) {
-					Block blk;
-					for (final Location loc : this.playerLights.get(uuid)) {
+				Location loc;
+				Block blk;
+				final Iterator<Location> it = lights.iterator();
+				while (it.hasNext()) {
+					loc = it.next();
+					if (to.distance(loc) > BASEMENT_LIGHT_RADIUS) {
+						it.remove();
 						blk = loc.getBlock();
 						if (Material.REDSTONE_TORCH.equals(blk.getType()))
 							blk.setType(Material.BEDROCK);
 					}
-					this.playerLights.remove(uuid);
 				}
+			}
+			final int y = this.level_y + LAMP_Y + 5;
+			final int r = BASEMENT_LIGHT_RADIUS;
+			int xx, zz;
+			for (int iz=0-r-1; iz<r; iz+=10) {
+				zz = Math.floorDiv(iz+to.getBlockZ(), 10) * 10;
+				for (int ix=0-r-1; ix<r; ix+=10) {
+					xx = Math.floorDiv(ix+to.getBlockX(), 10) * 10;
+					final Block blk = world.getBlockAt(xx, y, zz);
+					if (to.distance(blk.getLocation()) < BASEMENT_LIGHT_RADIUS) {
+						if (Material.BEDROCK.equals(blk.getType())
+						||  Material.REDSTONE_TORCH.equals(blk.getType()) ) {
+							lights.add(blk.getLocation());
+							world.setType(xx, y, zz, Material.REDSTONE_TORCH);
+						}
+					}
+				}
+			}
+		// not basement
+		} else {
+			final String uuid = player.getUniqueId().toString();
+			if (this.playerLights.containsKey(uuid)) {
+				Block blk;
+				for (final Location loc : this.playerLights.get(uuid)) {
+					blk = loc.getBlock();
+					if (Material.REDSTONE_TORCH.equals(blk.getType()))
+						blk.setType(Material.BEDROCK);
+				}
+				this.playerLights.remove(uuid);
 			}
 		}
 	}
