@@ -1,7 +1,7 @@
 package com.poixson.backrooms.listeners;
 
-import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,10 +10,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.events.PlayerMoveNormalEvent;
 import com.poixson.commonmc.tools.plugin.xListener;
 
 
@@ -22,7 +22,7 @@ public class Listener_078 extends xListener<BackroomsPlugin> {
 
 	public static final int GRAVITY_REACH = 10;
 
-	protected final ArrayList<UUID> floating = new ArrayList<UUID>();
+	protected final CopyOnWriteArraySet<UUID> flying = new CopyOnWriteArraySet<UUID>();
 
 
 
@@ -44,6 +44,43 @@ public class Listener_078 extends xListener<BackroomsPlugin> {
 
 
 
+	public boolean fly(final Player player) {
+		final UUID uuid = player.getUniqueId();
+		if (this.flying.add(uuid)) {
+			player.setAllowFlight(true);
+			player.setFlying(true);
+			player.setGravity(false);
+			player.setGlowing(true);
+			// ensure player is flying
+			(new BukkitRunnable() {
+				private Player player = null;
+				public BukkitRunnable init(final Player player) {
+					this.player = player;
+					return this;
+				}
+				@Override
+				public void run() {
+					this.player.setFlying(true);
+				}
+			}).init(player).runTaskLater(this.plugin, 2L);
+			return true;
+		}
+		return false;
+	}
+	public boolean unfly(final Player player) {
+		final UUID uuid = player.getUniqueId();
+		if (this.flying.remove(uuid)) {
+			player.setFlying(false);
+			player.setAllowFlight(false);
+			player.setGravity(true);
+			player.setGlowing(false);
+			return true;
+		}
+		return false;
+	}
+
+
+
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerMove(final PlayerMoveEvent event) {
 		final Location from = event.getFrom();
@@ -56,7 +93,6 @@ public class Listener_078 extends xListener<BackroomsPlugin> {
 		||  from.getBlockY() != toY
 		||  from.getBlockZ() != toZ) {
 			final Player player = event.getPlayer();
-			final UUID uuid = player.getUniqueId();
 			final World world = player.getWorld();
 			final int level = this.plugin.getLevelFromWorld(world.getName());
 			if (level == 78) {
@@ -75,9 +111,7 @@ public class Listener_078 extends xListener<BackroomsPlugin> {
 				switch (player.getGameMode()) {
 				case CREATIVE:
 				case SPECTATOR:
-					player.setAllowFlight(true);
-					player.setGravity(true);
-					this.floating.remove(uuid);
+					this.unfly(player);
 					break;
 				case ADVENTURE:
 				case SURVIVAL: {
@@ -93,42 +127,14 @@ public class Listener_078 extends xListener<BackroomsPlugin> {
 							break;
 						}
 					}
-					// gravity
-					if (grounded) {
-						if (this.floating.remove(uuid)) {
-							player.setFlying(false);
-							player.setAllowFlight(false);
-							player.setGravity(true);
-							player.setGlowing(false);
-						}
-					// floating
-					} else {
-						if (!this.floating.contains(uuid)) {
-							this.floating.add(uuid);
-							player.setAllowFlight(true);
-							player.setGravity(false);
-							player.setFlying(true);
-							player.setGlowing(true);
-							// ensure player is flying
-							(new BukkitRunnable() {
-								private Player player = null;
-								public BukkitRunnable init(final Player player) {
-									this.player = player;
-									return this;
-								}
-								@Override
-								public void run() {
-									this.player.setFlying(true);
-								}
-							}).init(player).runTaskLater(this.plugin, 2L);
-						}
-					}
+					if (grounded) this.unfly(player);
+					else          this.fly(player);
 					break;
 				}
 				default: throw new RuntimeException("Unknown game mode: "+player.getGameMode().toString());
 				}
 			} else {
-				this.floating.remove(uuid);
+//				this.unfly(player);
 			}
 		}
 	}
