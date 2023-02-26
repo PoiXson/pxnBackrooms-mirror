@@ -82,60 +82,52 @@ public class Listener_078 extends xListener<BackroomsPlugin> {
 
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
-	public void onPlayerMove(final PlayerMoveEvent event) {
-		final Location from = event.getFrom();
-		final Location to   = event.getTo();
+	public void onPlayerMoveNormal(final PlayerMoveNormalEvent event) {
+		final Location to = event.getTo();
 		final int toX = to.getBlockX();
 		final int toY = to.getBlockY();
 		final int toZ = to.getBlockZ();
-		// location changed
-		if (from.getBlockX() != toX
-		||  from.getBlockY() != toY
-		||  from.getBlockZ() != toZ) {
-			final Player player = event.getPlayer();
-			final World world = player.getWorld();
-			final int level = this.plugin.getLevelFromWorld(world.getName());
-			if (level == 78) {
-				// teleport top/bottom of the world
-				if (toY < -64) {
-					while (to.getBlockY() < -64) {
-						to.add(0, 384, 0);
-					}
-				} else
-				if (toY > 319) {
-					while (to.getBlockY() > 319) {
-						to.subtract(0, 384, 0);
-					}
-				}
-				// fly in space
-				switch (player.getGameMode()) {
-				case CREATIVE:
-				case SPECTATOR:
-					this.unfly(player);
-					break;
-				case ADVENTURE:
-				case SURVIVAL: {
-					boolean grounded = false;
-					int yy;
-					Block block;
-					for (int iy=0; iy<GRAVITY_REACH; iy++) {
-						yy = toY - iy;
-						if (yy < -64) break;
-						block = world.getBlockAt(toX, yy, toZ);
-						if (!block.isPassable()) {
-							grounded = true;
-							break;
-						}
-					}
-					if (grounded) this.unfly(player);
-					else          this.fly(player);
-					break;
-				}
-				default: throw new RuntimeException("Unknown game mode: "+player.getGameMode().toString());
-				}
-			} else {
-//				this.unfly(player);
+		final Player player = event.getPlayer();
+		final World world = player.getWorld();
+		final int level = this.plugin.getLevelFromWorld(world.getName());
+		if (level == 78) {
+			// teleport top/bottom of the world
+			if (toY < -64) {
+				while (to.getBlockY() < -64)
+					to.add(0, 384, 0);
+			} else
+			if (toY > 319) {
+				while (to.getBlockY() > 319)
+					to.subtract(0, 384, 0);
 			}
+			// fly in space
+			switch (player.getGameMode()) {
+			case CREATIVE:
+			case SPECTATOR:
+				this.unfly(player);
+				break;
+			case ADVENTURE:
+			case SURVIVAL: {
+				boolean grounded = false;
+				int yy;
+				Block block;
+				for (int iy=0; iy<GRAVITY_REACH; iy++) {
+					yy = toY - iy;
+					if (yy < -64) break;
+					block = world.getBlockAt(toX, yy, toZ);
+					if (!block.isPassable()) {
+						grounded = true;
+						break;
+					}
+				}
+				if (grounded) this.unfly(player);
+				else          this.fly(player);
+				break;
+			}
+			default: throw new RuntimeException("Unknown game mode: "+player.getGameMode().toString());
+			}
+		} else {
+//			this.unfly(player);
 		}
 	}
 
