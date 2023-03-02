@@ -31,7 +31,7 @@ public class Level_866 extends LevelBackrooms {
 			gen_tpl.add(866, "dirtfield", "Dirtfield");
 		}
 		// generators
-		this.gen = this.register(new Gen_866(plugin, LEVEL_Y, 0, SUBFLOOR));
+		this.gen = this.register(new Gen_866(plugin, LEVEL_Y, 0));
 	}
 
 

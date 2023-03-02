@@ -24,6 +24,9 @@ public class Gen_001 extends GenBackrooms {
 
 	public static final int LAMP_Y = 6;
 
+	public static final int SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int SUBCEILING = Level_000.SUBCEILING;
+
 	public static final double THRESH_WALL  = 0.9;
 	public static final double THRESH_MOIST = 0.35;
 
@@ -32,9 +35,6 @@ public class Gen_001 extends GenBackrooms {
 	public static final Material BASEMENT_FLOOR_DRY = Material.BROWN_CONCRETE_POWDER;
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
 
-	public final int subfloor;
-	public final int subceiling;
-
 	// noise
 	protected final FastNoiseLiteD noiseBasementWalls;
 	protected final FastNoiseLiteD noiseMoist;
@@ -42,11 +42,8 @@ public class Gen_001 extends GenBackrooms {
 
 
 	public Gen_001(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
-		this.subceiling = subceiling;
 		// basement wall noise
 		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
 		this.noiseBasementWalls.setFrequency(0.033);
@@ -108,8 +105,8 @@ public class Gen_001 extends GenBackrooms {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Ixy, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
-		final int y  = this.level_y + this.subfloor + 1;
-		final int cy = this.level_y + this.subfloor + this.level_h + 2;
+		final int y  = this.level_y + SUBFLOOR + 1;
+		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		final int h  = this.level_h + 1;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
@@ -117,7 +114,7 @@ public class Gen_001 extends GenBackrooms {
 				final int zz = (chunkZ * 16) + z;
 				// basement floor
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int yy=0; yy<this.subfloor; yy++) {
+				for (int yy=0; yy<SUBFLOOR; yy++)
 					chunk.setBlock(x, this.level_y+yy+1, z, BASEMENT_SUBFLOOR);
 				}
 				dao = basementData.get(new Ixy(x, z));

@@ -29,8 +29,6 @@ public class Gen_037 extends GenBackrooms {
 	public static final Material POOLS_SUBFLOOR   = Material.DARK_PRISMARINE;
 	public static final Material POOLS_SUBCEILING = Material.DARK_PRISMARINE;
 
-	public final int subfloor;
-	public final int subceiling;
 
 	// noise
 	protected final FastNoiseLiteD noisePoolRooms;
@@ -42,11 +40,8 @@ public class Gen_037 extends GenBackrooms {
 
 
 	public Gen_037(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
-		this.subceiling = subceiling;
 		// pool rooms
 		this.noisePoolRooms = this.register(new FastNoiseLiteD());
 		this.noisePoolRooms.setFrequency(0.004);

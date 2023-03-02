@@ -25,11 +25,11 @@ public class Gen_005 extends GenBackrooms {
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
 
+	public static final int SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int SUBCEILING = Level_000.SUBCEILING;
+
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
-
-	public final int subfloor;
-	public final int subceiling;
 
 	// noise
 	protected final FastNoiseLiteD noiseHotelWalls;
@@ -41,11 +41,8 @@ public class Gen_005 extends GenBackrooms {
 
 
 	public Gen_005(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
-		this.subceiling = subceiling;
 		// hotel walls
 		this.noiseHotelWalls = this.register(new FastNoiseLiteD());
 		this.noiseHotelWalls.setFrequency(0.02);
@@ -133,8 +130,8 @@ public class Gen_005 extends GenBackrooms {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Ixy, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
-		final int y  = this.level_y + this.subfloor + 1;
-		final int cy = this.level_y + this.subfloor + this.level_h + 2;
+		final int y  = this.level_y + SUBFLOOR + 1;
+		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		final int h  = this.level_h + 2;
 		int xx, zz;
 		HotelData dao;
@@ -144,9 +141,8 @@ public class Gen_005 extends GenBackrooms {
 				zz = (chunkZ * 16) + z;
 				// hotel floor
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int yy=0; yy<this.subfloor; yy++) {
+				for (int yy=0; yy<SUBFLOOR; yy++)
 					chunk.setBlock(x, this.level_y+yy+1, z, Material.SPRUCE_PLANKS);
-				}
 				dao = hotelData.get(new Ixy(x, z));
 				if (dao == null) continue;
 				switch (dao.type) {
@@ -198,7 +194,7 @@ public class Gen_005 extends GenBackrooms {
 				default: break;
 				}
 				if (ENABLE_ROOF) {
-					for (int i=0; i<this.subceiling; i++) {
+					for (int i=0; i<SUBCEILING; i++) {
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
 					}
 				}

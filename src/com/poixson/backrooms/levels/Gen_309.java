@@ -25,8 +25,6 @@ public class Gen_309 extends GenBackrooms {
 	public static final Material PATH_TREE_TRUNK  = Material.BIRCH_LOG;
 	public static final Material PATH_TREE_LEAVES = Material.BIRCH_LEAVES;
 
-	public final int subfloor;
-
 	// noise
 	protected final FastNoiseLiteD noisePath;
 	protected final FastNoiseLiteD noisePathGround;
@@ -42,10 +40,8 @@ public class Gen_309 extends GenBackrooms {
 
 
 	public Gen_309(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor = subfloor;
 		// path
 		this.noisePath = this.register(new FastNoiseLiteD());
 		this.noisePath.setFrequency(0.01f);

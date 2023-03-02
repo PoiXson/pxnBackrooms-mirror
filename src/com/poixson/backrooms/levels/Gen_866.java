@@ -12,8 +12,6 @@ public class Gen_866 extends GenBackrooms {
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
 
-	public final int subfloor;
-
 	// noise
 	protected final FastNoiseLiteD noiseField;
 
@@ -22,10 +20,8 @@ public class Gen_866 extends GenBackrooms {
 
 
 	public Gen_866(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
 		// field
 		this.noiseField = this.register(new FastNoiseLiteD());
 		this.noiseField.setFrequency(0.006);

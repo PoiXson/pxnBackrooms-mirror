@@ -38,15 +38,15 @@ public class Gen_000 extends GenBackrooms {
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
 
+	public static final int SUBFLOOR   = Level_000.SUBFLOOR;
+	public static final int SUBCEILING = Level_000.SUBCEILING;
+
 	public static final double THRESH_WALL_L = 0.38;
 	public static final double THRESH_WALL_H = 0.5;
 	public static final double THRESH_LOOT   = 0.65;
 
 	public static final Material LOBBY_WALL     = Material.YELLOW_TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR = Material.OAK_PLANKS;
-
-	public final int subfloor;
-	public final int subceiling;
 
 	// noise
 	protected final FastNoiseLiteD noiseLobbyWalls;
@@ -55,11 +55,8 @@ public class Gen_000 extends GenBackrooms {
 
 
 	public Gen_000(final BackroomsPlugin plugin,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
+			final int level_y, final int level_h) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
-		this.subceiling = subceiling;
 		// lobby walls
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLobbyWalls.setFrequency(0.022);
@@ -206,8 +203,8 @@ public class Gen_000 extends GenBackrooms {
 		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
 		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
 		LobbyData dao;
-		final int y  = this.level_y + this.subfloor + 1;
-		final int cy = this.level_y + this.subfloor + this.level_h + 2;
+		final int y  = this.level_y + SUBFLOOR + 1;
+		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		int xx, zz;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
@@ -215,9 +212,8 @@ public class Gen_000 extends GenBackrooms {
 				zz = (chunkZ * 16) + z;
 				// lobby floor
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int yy=0; yy<this.subfloor; yy++) {
+				for (int yy=0; yy<SUBFLOOR; yy++)
 					chunk.setBlock(x, this.level_y+yy+1, z, LOBBY_SUBFLOOR);
-				}
 				dao = lobbyData.get(new Ixy(x, z));
 				if (dao == null) continue;
 				// wall
@@ -277,6 +273,7 @@ public class Gen_000 extends GenBackrooms {
 								}
 							}
 							if (!found_basement_wall) {
+								final int h = this.level_h + SUBFLOOR + 5;
 								final String axis;
 								final int xxx, zzz;
 								switch (dao.box_dir) {
@@ -290,7 +287,6 @@ public class Gen_000 extends GenBackrooms {
 								plot.type('.', Material.AIR              );
 								plot.type('=', Material.YELLOW_TERRACOTTA);
 								plot.type('x', Material.BEDROCK          );
-								final int h = this.level_h + this.subfloor + 5;
 								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 6);
 								for (int i=0; i<h; i++) {
 									// bottom
@@ -344,9 +340,8 @@ public class Gen_000 extends GenBackrooms {
 					} // end special
 				} // end wall/room
 				if (ENABLE_ROOF) {
-					for (int i=1; i<this.subceiling; i++) {
+					for (int i=1; i<SUBCEILING; i++)
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
-					}
 				}
 			} // end x
 		} // end z

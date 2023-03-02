@@ -19,8 +19,6 @@ public class Gen_151 extends GenBackrooms {
 	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
 
-	public final int subfloor;
-	public final int subceiling;
 	public final int level_m;
 
 	// noise
@@ -32,8 +30,6 @@ public class Gen_151 extends GenBackrooms {
 			final int level_y, final int level_h,
 			final int subfloor, final int subceiling) {
 		super(plugin, level_y, level_h);
-		this.subfloor   = subfloor;
-		this.subceiling = subceiling;
 		this.level_m = Math.floorDiv(this.level_h, 2);
 		// attic walls
 		this.noiseHouseWalls = this.register(new FastNoiseLiteD());
