@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import com.poixson.tools.dao.Iabcd;
 // 5 | Hotel
 public class Pop_005 extends BlockPopulator {
 
-	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 
 	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
 

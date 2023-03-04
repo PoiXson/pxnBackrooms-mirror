@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -81,13 +83,13 @@ public class Gen_309 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final int y = this.level_y + this.subfloor + 1;
+		final int y = this.level_y + SUBFLOOR + 1;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
 				final int zz = (chunkZ * 16) + z;
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int i=0; i<this.subfloor; i++) {
+				for (int i=0; i<SUBFLOOR; i++) {
 					chunk.setBlock(x, this.level_y+i+1, z, Material.STONE);
 				}
 				final double ground;

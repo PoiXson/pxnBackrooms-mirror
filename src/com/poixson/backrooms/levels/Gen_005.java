@@ -1,5 +1,8 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
+import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,9 +27,6 @@ public class Gen_005 extends GenBackrooms {
 
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
-
-	public static final int SUBFLOOR   = Level_000.SUBFLOOR;
-	public static final int SUBCEILING = Level_000.SUBCEILING;
 
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;

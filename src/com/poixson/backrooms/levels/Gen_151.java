@@ -1,5 +1,8 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_151.SUBCEILING;
+import static com.poixson.backrooms.levels.Level_151.SUBFLOOR;
+
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
@@ -52,14 +55,13 @@ public class Gen_151 extends GenBackrooms {
 				chunk.setBlock(x, 0, z, Material.BEDROCK);
 				chunk.setBlock(x, 1, z, Material.STONE);
 /*
-				int y  = this.level_y + this.subfloor + 1;
-				int cy = this.level_y + this.subfloor + this.level_h + 1;
+				int y  = this.level_y + SUBFLOOR + 1;
+				int cy = this.level_y + SUBFLOOR + this.level_h + 1;
 				// lobby floor
 				chunk.setBlock(x, y, z, Material.BEDROCK);
 				y++;
-				for (int yy=0; yy<SUBFLOOR; yy++) {
+				for (int yy=0; yy<SUBFLOOR; yy++)
 					chunk.setBlock(x, y+yy, z, HOUSE_FLOOR);
-				}
 				y += SUBFLOOR;
 				final double value = this.noiseHouseWalls.getNoiseRot(xx, cy, 0.25);
 				if (value < -0.9 || value > 0.9) {
@@ -69,9 +71,8 @@ public class Gen_151 extends GenBackrooms {
 				}
 				if (BUILD_ROOF) {
 					cy++;
-					for (int i=0; i<SUBCEILING; i++) {
-				chunk.setBlock(x, cy+i, z, HOUSE_FLOOR);
-					}
+					for (int i=0; i<SUBCEILING; i++)
+						chunk.setBlock(x, cy+i, z, HOUSE_FLOOR);
 				}
 */
 			} // end x

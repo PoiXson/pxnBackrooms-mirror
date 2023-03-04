@@ -1,5 +1,8 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
+import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -108,18 +111,18 @@ public class Gen_037 extends GenBackrooms {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
-		final int y = this.level_y + this.subfloor + 1;
-		final int cy = this.level_y + this.subfloor + this.level_h + 1;
+		final int y = this.level_y + SUBFLOOR + 1;
+		final int cy = this.level_y + SUBFLOOR + this.level_h + 1;
 		final int h = this.level_h + 2;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
 				// subfloor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int iy=0; iy<this.subfloor; iy++)
+				for (int iy=0; iy<SUBFLOOR; iy++)
 					chunk.setBlock(ix, this.level_y+iy+1, iz, POOLS_SUBFLOOR);
 				// subceiling
 				if (ENABLE_ROOF) {
-					for (int iy=0; iy<this.subceiling; iy++)
+					for (int iy=0; iy<SUBCEILING; iy++)
 						chunk.setBlock(ix, cy+iy+2, iz, POOLS_SUBCEILING);
 				}
 			}

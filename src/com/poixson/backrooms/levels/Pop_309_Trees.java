@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+
 import org.bukkit.Material;
 
 import com.poixson.commonmc.tools.TreePopulator;
@@ -20,7 +22,7 @@ public class Pop_309_Trees extends TreePopulator {
 	public Pop_309_Trees(final Gen_309 gen) {
 		super(
 			gen.getTreeNoise(),
-			gen.level_y + gen.subfloor + 1,
+			gen.level_y + SUBFLOOR + 1,
 			PATH_TREE_TRUNK,
 			PATH_TREE_LEAVES
 		);

@@ -1,5 +1,8 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
+import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -36,9 +39,6 @@ public class Gen_000 extends GenBackrooms {
 
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
-
-	public static final int SUBFLOOR   = Level_000.SUBFLOOR;
-	public static final int SUBCEILING = Level_000.SUBCEILING;
 
 	public static final double THRESH_WALL_L = 0.38;
 	public static final double THRESH_WALL_H = 0.5;
