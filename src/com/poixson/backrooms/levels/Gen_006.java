@@ -8,7 +8,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
-import com.poixson.tools.dao.Ixy;
+import com.poixson.tools.dao.Iab;
 
 
 // 6 | Lights Out
@@ -29,13 +29,13 @@ public class Gen_006 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final HashMap<Ixy, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
+		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				// floor
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				dao = lobbyData.get(new Ixy(x, z));
+				dao = lobbyData.get(new Iab(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {

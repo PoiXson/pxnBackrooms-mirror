@@ -12,7 +12,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
-import com.poixson.tools.dao.Ixy;
+import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -83,7 +83,7 @@ public class Gen_005 extends GenBackrooms {
 
 
 
-	public void pregenerate(Map<Ixy, HotelData> data,
+	public void pregenerate(Map<Iab, HotelData> data,
 			final int chunkX, final int chunkZ) {
 		HotelData dao;
 		int xx, zz;
@@ -94,7 +94,7 @@ public class Gen_005 extends GenBackrooms {
 				xx = (chunkX * 16) + x;
 				value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new HotelData(value);
-				data.put(new Ixy(x, z), dao);
+				data.put(new Iab(x, z), dao);
 			}
 		}
 		HotelData daoN, daoS, daoE, daoW;
@@ -102,15 +102,15 @@ public class Gen_005 extends GenBackrooms {
 		// find walls
 		for (int z=-8; z<24; z++) {
 			for (int x=-8; x<24; x++) {
-				dao   = data.get(new Ixy(x,   z  ));
-				daoN  = data.get(new Ixy(x,   z-1));
-				daoS  = data.get(new Ixy(x,   z+1));
-				daoE  = data.get(new Ixy(x+1, z  ));
-				daoW  = data.get(new Ixy(x-1, z  ));
-				daoNE = data.get(new Ixy(x+1, z-1));
-				daoNW = data.get(new Ixy(x-1, z-1));
-				daoSE = data.get(new Ixy(x+1, z+1));
-				daoSW = data.get(new Ixy(x-1, z+1));
+				dao   = data.get(new Iab(x,   z  ));
+				daoN  = data.get(new Iab(x,   z-1));
+				daoS  = data.get(new Iab(x,   z+1));
+				daoE  = data.get(new Iab(x+1, z  ));
+				daoW  = data.get(new Iab(x-1, z  ));
+				daoNE = data.get(new Iab(x+1, z-1));
+				daoNW = data.get(new Iab(x-1, z-1));
+				daoSE = data.get(new Iab(x+1, z+1));
+				daoSW = data.get(new Iab(x-1, z+1));
 				if (NodeType.ROOM.equals(dao.type)) {
 					if ((daoN  != null && NodeType.HALL.equals(daoN.type))
 					||  (daoS  != null && NodeType.HALL.equals(daoS.type))
@@ -129,7 +129,7 @@ public class Gen_005 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final HashMap<Ixy, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
+		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		final int h  = this.level_h + 2;
@@ -143,7 +143,7 @@ public class Gen_005 extends GenBackrooms {
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
 					chunk.setBlock(x, this.level_y+yy+1, z, Material.SPRUCE_PLANKS);
-				dao = hotelData.get(new Ixy(x, z));
+				dao = hotelData.get(new Iab(x, z));
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
@@ -172,10 +172,10 @@ public class Gen_005 extends GenBackrooms {
 							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 						// ceiling
 						} else {
-							final HotelData daoN = hotelData.get(new Ixy(x, z-1));
-							final HotelData daoS = hotelData.get(new Ixy(x, z+1));
-							final HotelData daoE = hotelData.get(new Ixy(x+1, z));
-							final HotelData daoW = hotelData.get(new Ixy(x-1, z));
+							final HotelData daoN = hotelData.get(new Iab(x, z-1));
+							final HotelData daoS = hotelData.get(new Iab(x, z+1));
+							final HotelData daoE = hotelData.get(new Iab(x+1, z));
+							final HotelData daoW = hotelData.get(new Iab(x-1, z));
 							if (NodeType.WALL.equals(daoN.type)
 							||  NodeType.WALL.equals(daoS.type)
 							||  NodeType.WALL.equals(daoE.type)

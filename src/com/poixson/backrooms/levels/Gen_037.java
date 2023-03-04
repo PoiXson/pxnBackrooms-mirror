@@ -7,8 +7,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
-import com.poixson.commonmc.tools.BlockPlotter;
-import com.poixson.tools.dao.Ixy;
+import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -86,7 +85,7 @@ public class Gen_037 extends GenBackrooms {
 
 
 
-	public void pregenerate(Map<Ixy, PoolData> data,
+	public void pregenerate(final Map<Iab, PoolData> data,
 			final int chunkX, final int chunkZ) {
 		PoolData dao;
 		int xx, zz;
@@ -97,7 +96,7 @@ public class Gen_037 extends GenBackrooms {
 				xx = (chunkX * 16) + (rx * 8) + 4;
 				valueRoom = this.noisePoolRooms.getNoise(xx, zz);
 				dao = new PoolData(valueRoom);
-				data.put(new Ixy(rx, rz), dao);
+				data.put(new Iab(rx, rz), dao);
 			}
 		}
 	}
@@ -108,7 +107,7 @@ public class Gen_037 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final Map<Ixy, PoolData> poolData = ((PregenLevel0)pregen).pools;
+		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
 		final int y = this.level_y + this.subfloor + 1;
 		final int cy = this.level_y + this.subfloor + this.level_h + 1;
 		final int h = this.level_h + 2;
@@ -130,21 +129,22 @@ public class Gen_037 extends GenBackrooms {
 		boolean solid_ne, solid_nw, solid_se, solid_sw;
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
-				final BlockPlotter plotter = new BlockPlotter(chunk, rx*8, y, rz*8);
-				plotter.type('#', POOL_WALL_A   );
-				plotter.type('@', POOL_WALL_B   );
-				plotter.type('w', Material.WATER);
-				plotter.type('g', POOL_CEILING  );
-				final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(h, 8);
-				dao = poolData.get(new Ixy(rx, rz));
-				solid_n  = poolData.get(new Ixy(rx,   rz-1)).isSolid();
-				solid_s  = poolData.get(new Ixy(rx,   rz+1)).isSolid();
-				solid_e  = poolData.get(new Ixy(rx+1, rz  )).isSolid();
-				solid_w  = poolData.get(new Ixy(rx-1, rz  )).isSolid();
-				solid_ne = poolData.get(new Ixy(rx+1, rz-1)).isSolid();
-				solid_nw = poolData.get(new Ixy(rx-1, rz-1)).isSolid();
-				solid_se = poolData.get(new Ixy(rx+1, rz+1)).isSolid();
-				solid_sw = poolData.get(new Ixy(rx-1, rz+1)).isSolid();
+				final BlockPlotter plot = new BlockPlotter(chunk);
+				plot.axis("YZX").location(rx*8, y, rz*8);
+				plot.type('#', POOL_WALL_A   );
+				plot.type('@', POOL_WALL_B   );
+				plot.type('w', Material.WATER);
+				plot.type('g', POOL_CEILING  );
+				dao = poolData.get(new Iab(rx, rz));
+				solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
+				solid_s  = poolData.get(new Iab(rx,   rz+1)).isSolid();
+				solid_e  = poolData.get(new Iab(rx+1, rz  )).isSolid();
+				solid_w  = poolData.get(new Iab(rx-1, rz  )).isSolid();
+				solid_ne = poolData.get(new Iab(rx+1, rz-1)).isSolid();
+				solid_nw = poolData.get(new Iab(rx-1, rz-1)).isSolid();
+				solid_se = poolData.get(new Iab(rx+1, rz+1)).isSolid();
+				solid_sw = poolData.get(new Iab(rx-1, rz+1)).isSolid();
+				final StringBuilder[][] matrix = plot.getMatrix3D();
 				switch (dao.type) {
 				case SOLID: {
 					for (int iz=0; iz<8; iz++) {
@@ -313,7 +313,7 @@ public class Gen_037 extends GenBackrooms {
 					for (int iz=0; iz<8; iz++)
 						StringUtils.ReplaceWith(matrix[h-1][iz], ' ', 'g');
 				}
-				plotter.place3D("YZX", matrix);
+				plot.run();
 			} // end room x
 		} // end room z
 	}

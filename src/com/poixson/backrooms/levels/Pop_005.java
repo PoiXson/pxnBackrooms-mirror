@@ -12,10 +12,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.poixson.commonmc.tools.BlockPlotter;
-import com.poixson.tools.dao.Insew;
-import com.poixson.tools.dao.Ixy;
-import com.poixson.tools.dao.Ixywd;
+import com.poixson.tools.dao.Iabcd;
 
 
 // 5 | Hotel
@@ -43,7 +40,7 @@ public class Pop_005 extends BlockPopulator {
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
 		final int y = this.gen.level_y + SUBFLOOR + 1;
-		Insew dao = this.findRoomWalls(x, y, z, region);
+		Iabcd dao = this.findRoomWalls(x, y, z, region);
 		if (dao == null) dao = this.findRoomWalls(x+10, y, z+10, region);
 		if (dao == null) dao = this.findRoomWalls(x,    y, z+10, region);
 		if (dao == null) dao = this.findRoomWalls(x+10, y, z,    region);
@@ -54,7 +51,7 @@ public class Pop_005 extends BlockPopulator {
 
 
 
-	public Insew findRoomWalls(final int x, final int y, final int z,
+	public Iabcd findRoomWalls(final int x, final int y, final int z,
 			final LimitedRegion region) {
 		// is wall
 		if (!Material.AIR.equals(region.getType(x, y, z)))
@@ -121,15 +118,15 @@ public class Pop_005 extends BlockPopulator {
 		||  foundE == Integer.MIN_VALUE
 		||  foundW == Integer.MIN_VALUE )
 			return null;
-		return new Insew(foundN, foundS, foundE, foundW);
+		return new Iabcd(foundN, foundS, foundE, foundW);
 	}
 
 
 
-	public void buildHotelRooms(final Insew dao, final int y,
+	public void buildHotelRooms(final Iabcd area, final int y,
 			final LimitedRegion region, double room_size) {
-		final int total_ns = dao.s - dao.n;
-		final int total_ew = dao.e - dao.w;
+		final int total_ns = area.b - area.a;
+		final int total_ew = area.c - area.d;
 		final int rooms_deep = (int) Math.floor( ((double)total_ns) / room_size );
 		final int rooms_wide = (int) Math.floor( ((double)total_ew) / room_size );
 		if (rooms_deep < 1 || rooms_wide < 1) return;
@@ -144,7 +141,7 @@ public class Pop_005 extends BlockPopulator {
 		final int extra_z = (total_ns - (rooms_deep * room_depth)) + 1;
 		for (int iz=0; iz<rooms_deep; iz++) {
 			d = room_depth;
-			room_z = dao.n + (iz * d);
+			room_z = area.a + (iz * d);
 			if (iz == rooms_deep_half) d      += extra_z;
 			if (iz >  rooms_deep_half) room_z += extra_z;
 			for (int ix=0; ix<rooms_wide; ix++) {
@@ -152,7 +149,7 @@ public class Pop_005 extends BlockPopulator {
 				&&  iz != 0 && iz != rooms_deep-1)
 					continue;
 				w = room_width;
-				room_x = dao.w + (ix * w);
+				room_x = area.d + (ix * w);
 				if (ix == rooms_wide_half) w      += extra_x;
 				if (ix >  rooms_wide_half) room_x += extra_x;
 				// north
@@ -245,9 +242,8 @@ public class Pop_005 extends BlockPopulator {
 
 	public void buildHotelRoom(final int x, final int y, final int z, final int w, final int d,
 			final BlockFace direction, final LimitedRegion region) {
-		final Ixywd loc = Rotate(new Ixywd(x, z, w, d), direction);
-		final int wh = (int) Math.floor( ((double)loc.w) * 0.5 );
-		final int dh = (int) Math.floor( ((double)loc.d) * 0.5 );
+		final int wh = (int) Math.floor( (double)area.c * 0.5 );
+		final int dh = (int) Math.floor( (double)area.d * 0.5 );
 		double value = this.gen.noiseHotelRooms.getNoise(x, z);
 		// wall
 		final Material block_wall;
@@ -315,15 +311,15 @@ public class Pop_005 extends BlockPopulator {
 		default: block_bed = Material.RED_BED;        break;
 		}
 		// pregen room
-		final HashMap<Ixy, HotelRoomDAO> room = new HashMap<Ixy, HotelRoomDAO>();
+		final HashMap<Iab, HotelRoomDAO> room = new HashMap<Iab, HotelRoomDAO>();
 		HotelRoomType type;
-		for (int iz=0; iz<loc.d; iz++) {
-			for (int ix=0; ix<loc.w; ix++) {
+		for (int iz=0; iz<area.d; iz++) {
+			for (int ix=0; ix<area.c; ix++) {
 				value = this.gen.noiseHotelRooms.getNoise(x+ix, z+iz);
 				type = HotelRoomType.EMPTY;
 				// wall
-				if (ix == 0 || ix == loc.w-1
-				||  iz == 0 || iz == loc.d-1 ) {
+				if (ix == 0 || ix == area.c-1
+				||  iz == 0 || iz == area.d-1 ) {
 					type = HotelRoomType.WALL;
 				}
 				if (ix == wh && iz == dh) {
@@ -339,83 +335,82 @@ public class Pop_005 extends BlockPopulator {
 					}
 				}
 				// bed
-				if (ix == wh && iz == loc.d-2) {
+				if (ix == wh && iz == area.d-2) {
 					type = HotelRoomType.BED;
 				}
 				room.put(
-					new Ixy(ix, iz),
+					new Iab(ix, iz),
 					new HotelRoomDAO(value, type, block_wall, block_carpet, block_bed)
 				);
 			}
 		}
 		// build room
-		final BlockPlotter plotter = new BlockPlotter(region, x, y, z);
-		plotter.setW(loc.w);
-		plotter.setD(loc.d);
+		final BlockPlotter plot = new BlockPlotter(region, );
+		plot.axis();
+		plot.location(x, y, z);
+		plot.w = area.c;
+		plot.d = area.d;
 		HotelRoomDAO dao;
-		for (int iz=0; iz<loc.d; iz++) {
-			for (int ix=0; ix<loc.w; ix++) {
-				dao = room.get(new Ixy(ix, iz));
+		for (int iz=0; iz<area.d; iz++) {
+			for (int ix=0; ix<area.c; ix++) {
+				dao = room.get(new Iab(ix, iz));
 				// carpet
 				if (!HotelRoomType.WALL.equals(dao.type))
-					plotter.setRotBlock(ix, 0, iz, direction, dao.block_carpet);
+					plot.setRotBlock(ix, 0, iz, direction, dao.block_carpet);
 				switch (dao.type) {
 				case LAMP:
 					if (Gen_005.ENABLE_ROOF) {
-						plotter.setRotBlock(ix, 6, iz, direction, Material.REDSTONE_BLOCK);
-						plotter.setRotBlock(ix, 5, iz, direction, Material.REDSTONE_LAMP, "on");
+						plot.setRotBlock(ix, 6, iz, direction, Material.REDSTONE_BLOCK);
+						plot.setRotBlock(ix, 5, iz, direction, Material.REDSTONE_LAMP, "on");
 					}
 					break;
 				case WALL:
-					for (int iy=0; iy<7; iy++) {
-						plotter.setRotBlock(ix, iy, iz, direction, dao.block_wall);
-					}
+					for (int iy=0; iy<7; iy++)
+						plot.setRotBlock(ix, iy, iz, direction, dao.block_wall);
 					break;
 				case DOOR:
 				case DOOR_INSET:
-					plotter.setRotBlock(ix, 0, iz-1, direction, Material.BLACK_GLAZED_TERRACOTTA);
-					for (int iy=1; iy<5; iy++) {
-						plotter.setRotBlock(ix, iy, iz-1, direction, Material.AIR);
-					}
-					plotter.setRotBlock(ix, 4, iz, direction, HOTEL_WALL,
+					plot.setRotBlock(ix, 0, iz-1, direction, Material.BLACK_GLAZED_TERRACOTTA);
+					for (int iy=1; iy<5; iy++)
+						plot.setRotBlock(ix, iy, iz-1, direction, Material.AIR);
+					plot.setRotBlock(ix, 4, iz, direction, HOTEL_WALL,
 						(BlockFace.NORTH.equals(direction) || BlockFace.SOUTH.equals(direction) ? "x" : "z"));
 					for (int i=0; i<2; i++) {
-						plotter.setRotBlock(ix, i+5, iz, direction, dao.block_wall);
+						plot.setRotBlock(ix, i+5, iz, direction, dao.block_wall);
 					}
 					break;
 				default:
 					// ceiling
-					if (Gen_005.ENABLE_ROOF) {
-						plotter.setRotBlock(ix, 6, iz, direction, Material.SMOOTH_STONE);
-						plotter.setRotBlock(ix, 5, iz, direction, Material.SMOOTH_STONE_SLAB, "top");
+					if (ENABLE_ROOF && Gen_005.ENABLE_ROOF) {
+						plot.setRotBlock(ix, 6, iz, direction, Material.SMOOTH_STONE);
+						plot.setRotBlock(ix, 5, iz, direction, Material.SMOOTH_STONE_SLAB, "top");
 					}
 					break;
 				}
 				switch (dao.type) {
 				case DOOR:
-					plotter.setRotBlock(ix, 1, iz-1, direction, Material.DARK_OAK_DOOR, "bottom,"+direction.toString());
-					plotter.setRotBlock(ix, 2, iz-1, direction, Material.DARK_OAK_DOOR, "top,"   +direction.toString());
-					plotter.setRotBlock(ix, 3, iz,   direction, HOTEL_WALL);
+					plot.setRotBlock(ix, 1, iz-1, direction, Material.DARK_OAK_DOOR, "bottom,"+direction.toString().toLowerCase());
+					plot.setRotBlock(ix, 2, iz-1, direction, Material.DARK_OAK_DOOR, "top,"   +direction.toString().toLowerCase());
+					plot.setRotBlock(ix, 3, iz,   direction, HOTEL_WALL);
 					break;
 				case DOOR_INSET:
-					for (int iy=1; iy<4; iy++) {
-						plotter.setRotBlock(ix, iy, iz, direction, HOTEL_WALL);
-					}
-					plotter.setRotBlock(ix, 3, iz-1, direction, Material.SOUL_WALL_TORCH, direction.toString());
+					for (int iy=1; iy<4; iy++)
+						plot.setRotBlock(ix, iy, iz, direction, HOTEL_WALL);
+					plot.setRotBlock(ix, 3, iz-1, direction, Material.REDSTONE_WALL_TORCH, direction.toString().toLowerCase());
 					break;
 				case BED:
-					plotter.setRotBlock(ix, 1, iz, direction, dao.block_bed);
-						Bed bed = (Bed) plotter.getRotBlockData(ix, 1, iz, direction);
+					plot.setRotBlock(ix, 1, iz, direction, dao.block_bed);
+						Bed bed = (Bed) plot.getRotBlockData(ix, 1, iz, direction);
 						bed.setFacing(Rotate(direction, 0.5));
 						bed.setPart(Bed.Part.HEAD);
-						plotter.setRotBlockData(ix, 1, iz, direction, bed);
-					plotter.setRotBlock(ix, 1, iz-1, direction, dao.block_bed);
-						bed = (Bed) plotter.getRotBlockData(ix, 1, iz-1, direction);
+						plot.setRotBlockData(ix, 1, iz, direction, bed);
+					plot.setRotBlock(ix, 1, iz-1, direction, dao.block_bed);
+						bed = (Bed) plot.getRotBlockData(ix, 1, iz-1, direction);
 						bed.setFacing(Rotate(direction, 0.5));
 						bed.setPart(Bed.Part.FOOT);
-						plotter.setRotBlockData(ix, 1, iz-1, direction, bed);
-					plotter.setRotBlock(ix-1, 1, iz, direction, Material.SCAFFOLDING);
-					plotter.setRotBlock(ix+1, 1, iz, direction, Material.SCAFFOLDING);
+						plot.setRotBlockData(ix, 1, iz-1, direction, bed);
+					plot.setRotBlock(ix-1, 1, iz, direction, Material.SCAFFOLDING);
+					plot.setRotBlock(ix+1, 1, iz, direction, Material.SCAFFOLDING);
 					break;
 				default: break;
 				}

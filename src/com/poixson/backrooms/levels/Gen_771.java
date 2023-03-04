@@ -11,8 +11,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.commonmc.tools.BlockPlotter;
-import com.poixson.tools.dao.Ixy;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.FastNoiseLiteD.RotationType3D;
@@ -123,57 +121,60 @@ public class Gen_771 extends GenBackrooms {
 	}
 	protected void generateCenterArch(final ChunkData chunk,
 			final char axisA, final char axisB, final int x, final int z) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y+this.level_h+1, z);
-		plotter.type('@', Material.CHISELED_POLISHED_BLACKSTONE);
-		plotter.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
-		plotter.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB);
-		plotter.type('=', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top");
-		plotter.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
+		final BlockPlotter plot = new BlockPlotter(chunk, 8, 4);
+		plot.location(x, this.level_y+this.level_h+1, z);
+		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE);
+		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB);
+		plot.type('=', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top");
+		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
 		// small arch
 		{
 			final BlockFace direction = AxToFace(axisA);
-			plotter.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, direction.getOppositeFace().toString().toLowerCase());
-			plotter.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, direction.toString().toLowerCase()+",top");
-			final StringBuilder[] matrix = plotter.getEmptyMatrix2D(5);
+			plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, direction.getOppositeFace().toString().toLowerCase());
+			plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, direction.toString().toLowerCase()+",top");
+			final StringBuilder[] matrix = plot.getMatrix2D();
 			matrix[4].append("#L"  );
 			matrix[3].append(" ^L" );
 			matrix[2].append("  ^L");
 			matrix[1].append("   |");
 			matrix[0].append("   @");
-			plotter.place2D("u"+axisA, matrix);
+			plot.axis("u"+axisA).run();
 		}
 		// large arch
 		{
-			plotter.setY(plotter.getY() + 5);
-			final StringBuilder[] matrix = plotter.getEmptyMatrix2D(8);
+			plot.y(plot.y() + 5);
+			final StringBuilder[] matrix = plot.getMatrix2D();
 			for (int i=0; i<8; i++) {
 				matrix[i]
 					.append(StringUtils.Repeat(i*2, ' '))
 					.append("-#=");
 			}
 			matrix[7].setLength( matrix[7].length()-1 );
-			plotter.place2D("u"+Rotate(axisB, 0.5), matrix);
+			plot.axis("u"+Rotate(axisB, 0.5)).run();
 		}
 	}
 
 
 
 	protected void generateCenterRoad(final ChunkData chunk, final BlockFace quarter) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, (this.level_y+this.level_h)-3);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(5, 16);
-		plotter.type('#', Material.POLISHED_BLACKSTONE);
-		plotter.type('X', Material.GILDED_BLACKSTONE);
-		plotter.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
-		plotter.type('*', Material.BLACKSTONE);
-		plotter.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plotter.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
-		plotter.type('.', Material.LIGHT, "15");
-		plotter.type(',', Material.LIGHT, "9");
+		final BlockPlotter plot = new BlockPlotter(chunk, 16, 5, 16);
+		plot.axis("u"+FaceToAx(quarter));
+		plot.y( (this.level_y+this.level_h)-3 );
+		final StringBuilder[][] matrix = plot.getMatrix3D();
+		plot.type('#', Material.POLISHED_BLACKSTONE);
+		plot.type('X', Material.GILDED_BLACKSTONE);
+		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
+		plot.type('*', Material.BLACKSTONE);
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
+		plot.type('.', Material.LIGHT, "15");
+		plot.type(',', Material.LIGHT, "9");
 		switch (quarter) {
-		case NORTH_EAST: plotter.setX( 0); plotter.setZ(15); break;
-		case NORTH_WEST: plotter.setX(15); plotter.setZ(15); break;
-		case SOUTH_EAST: plotter.setX( 0); plotter.setZ( 0); break;
-		case SOUTH_WEST: plotter.setX(15); plotter.setZ( 0); break;
+		case NORTH_EAST: plot.x( 0); plot.z(15); break;
+		case NORTH_WEST: plot.x(15); plot.z(15); break;
+		case SOUTH_EAST: plot.x( 0); plot.z( 0); break;
+		case SOUTH_WEST: plot.x(15); plot.z( 0); break;
 		default: throw new RuntimeException("Unknown quarter: " + quarter.toString());
 		}
 		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
@@ -193,23 +194,24 @@ public class Gen_771 extends GenBackrooms {
 		matrix[0][14].append(""              ); matrix[1][14].append("###"            ); matrix[2][14].append("#####"           ); matrix[3][14].append("*####"           ); matrix[4][14].append("     +++"        );
 		matrix[0][15].append(""              ); matrix[1][15].append(""               ); matrix[2][15].append("###"             ); matrix[3][15].append("*##"             ); matrix[4][15].append("  . ++"          );
 		// place blocks
-		final String axis = "u" + FaceToAx(quarter);
-		plotter.place3D(axis, matrix);
+		plot.run();
 	}
 
 	protected void generateCenterLamp(final ChunkData chunk, final BlockFace quarter) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, this.level_y+this.level_h+14);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(9, 3);
-		plotter.type('|', Material.CHAIN);
-		plotter.type('L', Material.SHROOMLIGHT);
-		plotter.type('R', Material.SHROOMLIGHT);
-		plotter.type('i', Material.LIGHTNING_ROD);
-		plotter.type('v', Material.SCULK_VEIN, "autoface");
+		final BlockPlotter plot = new BlockPlotter(chunk, 3, 9, 3);
+		plot.axis( "d"+FaceToAx(quarter) );
+		plot.y( this.level_y+this.level_h+14 );
+		final StringBuilder[][] matrix = plot.getMatrix3D();
+		plot.type('|', Material.CHAIN);
+		plot.type('L', Material.SHROOMLIGHT);
+		plot.type('R', Material.SHROOMLIGHT);
+		plot.type('i', Material.LIGHTNING_ROD);
+		plot.type('v', Material.SCULK_VEIN, "autoface");
 		switch (quarter) {
-		case NORTH_EAST: plotter.setX( 0); plotter.setZ(15); break;
-		case NORTH_WEST: plotter.setX(15); plotter.setZ(15); break;
-		case SOUTH_EAST: plotter.setX( 0); plotter.setZ( 0); break;
-		case SOUTH_WEST: plotter.setX(15); plotter.setZ( 0); break;
+		case NORTH_EAST: plot.x( 0); plot.z(15); break;
+		case NORTH_WEST: plot.x(15); plot.z(15); break;
+		case SOUTH_EAST: plot.x( 0); plot.z( 0); break;
+		case SOUTH_WEST: plot.x(15); plot.z( 0); break;
 		default: throw new RuntimeException("Unknown quarter: " + quarter.toString());
 		}
 		matrix[0][0].append("i");
@@ -221,8 +223,7 @@ public class Gen_771 extends GenBackrooms {
 		matrix[7][0].append("Lv "); matrix[7][1].append("v");
 		matrix[8][0].append("v  ");
 		// place blocks
-		final String axis = "d" + FaceToAx(quarter);
-		plotter.place3D(axis, matrix);
+		plot.run();
 	}
 
 
@@ -308,56 +309,58 @@ public class Gen_771 extends GenBackrooms {
 	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y+this.level_h, z);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(3, 16);
-		plotter.type('#', Material.POLISHED_BLACKSTONE);
-		plotter.type('*', Material.BLACKSTONE);
-		plotter.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plotter.type('i', Material.SOUL_LANTERN);
-		plotter.type('L', Material.LIGHT, "15");
+		final BlockPlotter plot = new BlockPlotter(chunk, 3, 16, 3);
+		plot.axis("u"+FaceToAx(direction)+FaceToAx(side));
+		plot.location(x, this.level_y+this.level_h, z);
+		final StringBuilder[][] matrix = plot.getMatrix3D();
+		plot.type('#', Material.POLISHED_BLACKSTONE);
+		plot.type('*', Material.BLACKSTONE);
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plot.type('i', Material.SOUL_LANTERN);
+		plot.type('L', Material.LIGHT, "15");
 		double value_light;
-		final Ixy dir = FaceToIxy(direction);
+		final Iab dir = FaceToIxy(direction);
 		final int cx = chunkX * 16;
 		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
 			matrix[1][i].append("   +");
 			matrix[0][i].append("*##" );
-			value_light = this.noiseRoadLights.getNoise(cx+(dir.x*i), cz+(dir.y*i)) % 0.5;
+			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
 			if (value_light > THRESH_LIGHT) {
 				matrix[2][i].append("   i");
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
 		}
 		// place blocks
-		final String axis = "u" + FaceToAx(direction) + FaceToAx(side);
-		plotter.place3D(axis, matrix);
+		plot.run();
 	}
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y, z);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(3, 16);
-		plotter.type('#', Material.POLISHED_BLACKSTONE);
-		plotter.type('*', Material.BLACKSTONE);
-		plotter.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plotter.type('i', Material.LANTERN);
-		plotter.type('L', Material.LIGHT, "15");
+		final BlockPlotter plot = new BlockPlotter(chunk, 3, 16, 3);
+		plot.axis("u"+FaceToAx(direction)+FaceToAx(side));
+		plot.location(x, this.level_y, z);
+		final StringBuilder[][] matrix = plot.getMatrix3D();
+		plot.type('#', Material.POLISHED_BLACKSTONE);
+		plot.type('*', Material.BLACKSTONE);
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plot.type('i', Material.LANTERN);
+		plot.type('L', Material.LIGHT, "15");
 		double value_light;
-		final Ixy dir = FaceToIxy(direction);
+		final Iab dir = FaceToIxy(direction);
 		final int cx = chunkX * 16;
 		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
 			matrix[1][i].append("   +");
 			matrix[0][i].append("*##" );
-			value_light = this.noiseRoadLights.getNoise(cx+(dir.x*i), cz+(dir.y*i)) % 0.5;
+			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
 			if (value_light > THRESH_LIGHT) {
 				matrix[2][i].append("   i");
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
 		}
 		// place blocks
-		final String axis = "u" + FaceToAx(direction) + FaceToAx(side);
-		plotter.place3D(axis, matrix);
+		plot.run();
 	}
 
 
@@ -370,28 +373,30 @@ public class Gen_771 extends GenBackrooms {
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plotter = new BlockPlotter(chunk, x, this.level_y, z);
-		final StringBuilder[][] matrix = plotter.getEmptyMatrix3D(this.level_h+2, 2);
-		plotter.type('#', Material.DEEPSLATE_BRICKS);
-		plotter.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +direction.getOppositeFace().toString().toLowerCase());
-		plotter.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.toString().toLowerCase());
-		plotter.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.getOppositeFace().toString().toLowerCase());
-		plotter.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom,"+side.getOppositeFace().toString().toLowerCase());
-		plotter.type('w', Material.DARK_OAK_PLANKS);
-		plotter.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
-		plotter.type('/', Material.SPRUCE_TRAPDOOR,  "top,"+side.toString().toLowerCase());
-		plotter.type('~', Material.CRIMSON_TRAPDOOR, "top,"+side.getOppositeFace().toString().toLowerCase());
-		plotter.type('d', Material.SPRUCE_DOOR, "top,"   +direction.toString().toLowerCase());
-		plotter.type('D', Material.SPRUCE_DOOR, "bottom,"+direction.toString().toLowerCase());
-		plotter.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
-		plotter.type('-', Material.DARK_OAK_PRESSURE_PLATE);
-		plotter.type('+', Material.DEEPSLATE_TILE_WALL);
-		plotter.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
-		plotter.type('U', Material.BARREL, "up");
-		plotter.type(',', Material.LIGHT,  "15");
-		plotter.type('W', Material.WATER);
-		plotter.type('.', Material.AIR);
+		final BlockPlotter plot = new BlockPlotter(chunk, this.level_h+2, 2, 5);
+		plot.axis("u"+FaceToAx(direction)+FaceToAx(side));
+		plot.location(x, this.level_y, z);
+		plot.type('#', Material.DEEPSLATE_BRICKS);
+		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +direction.getOppositeFace().toString().toLowerCase());
+		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.toString().toLowerCase());
+		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.getOppositeFace().toString().toLowerCase());
+		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom,"+side.getOppositeFace().toString().toLowerCase());
+		plot.type('w', Material.DARK_OAK_PLANKS);
+		plot.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
+		plot.type('/', Material.SPRUCE_TRAPDOOR,  "top,"+side.toString().toLowerCase());
+		plot.type('~', Material.CRIMSON_TRAPDOOR, "top,"+side.getOppositeFace().toString().toLowerCase());
+		plot.type('d', Material.SPRUCE_DOOR, "top,"   +direction.toString().toLowerCase());
+		plot.type('D', Material.SPRUCE_DOOR, "bottom,"+direction.toString().toLowerCase());
+		plot.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
+		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE);
+		plot.type('+', Material.DEEPSLATE_TILE_WALL);
+		plot.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
+		plot.type('U', Material.BARREL, "up");
+		plot.type(',', Material.LIGHT,  "15");
+		plot.type('W', Material.WATER);
+		plot.type('.', Material.AIR);
 		int h = this.level_h;
+		final StringBuilder[][] matrix = plot.getMatrix3D();
 		switch (type) {
 		// loot chest
 		case PILLAR_LOOT:
@@ -490,8 +495,7 @@ public class Gen_771 extends GenBackrooms {
 		}
 		default: break;
 		}
-		final String axis = "u" + FaceToAx(direction) + FaceToAx(side);
-		plotter.place3D(axis, matrix);
+		plot.run();
 	}
 
 

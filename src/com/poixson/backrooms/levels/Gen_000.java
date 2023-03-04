@@ -19,11 +19,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
-import com.poixson.commonmc.tools.BlockPlotter;
-import com.poixson.commonmc.tools.DelayedBlockPlotter;
 import com.poixson.commonmc.tools.DelayedChestFiller;
-import com.poixson.tools.dao.Ixy;
-import com.poixson.tools.dao.Ixyz;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.tools.dao.Iab;
+import com.poixson.tools.dao.Iabc;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -97,7 +96,7 @@ public class Gen_000 extends GenBackrooms {
 
 
 
-	public void pregenerate(Map<Ixy, LobbyData> data,
+	public void pregenerate(Map<Iab, LobbyData> data,
 			final int chunkX, final int chunkZ) {
 		LobbyData dao;
 		int xx, zz;
@@ -108,14 +107,14 @@ public class Gen_000 extends GenBackrooms {
 				xx = (chunkX * 16) + x;
 				valueWall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new LobbyData(valueWall);
-				data.put(new Ixy(x, z), dao);
+				data.put(new Iab(x, z), dao);
 			}
 		}
 		// find wall distance
 		LobbyData dao_near;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-				dao = data.get(new Ixy(x, z));
+				dao = data.get(new Iab(x, z));
 				if (dao.isWall) {
 					dao.wall_dist = 0;
 					continue;
@@ -123,7 +122,7 @@ public class Gen_000 extends GenBackrooms {
 				for (int i=1; i<3; i++) {
 					dao.boxed = 0;
 					// north
-					dao_near = data.get(new Ixy(x, z-i));
+					dao_near = data.get(new Iab(x, z-i));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -131,7 +130,7 @@ public class Gen_000 extends GenBackrooms {
 						dao.boxed++;
 					}
 					// south
-					dao_near = data.get(new Ixy(x, z+i));
+					dao_near = data.get(new Iab(x, z+i));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -139,7 +138,7 @@ public class Gen_000 extends GenBackrooms {
 						dao.boxed++;
 					}
 					// east
-					dao_near = data.get(new Ixy(x+i, z));
+					dao_near = data.get(new Iab(x+i, z));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -147,7 +146,7 @@ public class Gen_000 extends GenBackrooms {
 						dao.boxed++;
 					}
 					// west
-					dao_near = data.get(new Ixy(x-i, z));
+					dao_near = data.get(new Iab(x-i, z));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -158,25 +157,25 @@ public class Gen_000 extends GenBackrooms {
 					if (dao.boxed > 2) {
 						// north-east
 						if (dao.wall_n || dao.wall_e) {
-							dao_near = data.get(new Ixy(x+i, z-i));
+							dao_near = data.get(new Iab(x+i, z-i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
 						// north-west
 						if (dao.wall_n || dao.wall_w) {
-							dao_near = data.get(new Ixy(x-i, z-i));
+							dao_near = data.get(new Iab(x-i, z-i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
 						// south-east
 						if (dao.wall_s || dao.wall_e) {
-							dao_near = data.get(new Ixy(x+i, z+i));
+							dao_near = data.get(new Iab(x+i, z+i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
 						// south-west
 						if (dao.wall_s || dao.wall_w) {
-							dao_near = data.get(new Ixy(x-i, z+i));
+							dao_near = data.get(new Iab(x-i, z+i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
@@ -198,10 +197,10 @@ public class Gen_000 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final HashMap<Ixy, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
-		final HashMap<Ixy, BasementData> basementData = ((PregenLevel0)pregen).basement;
-		final LinkedList<DelayedBlockPlotter> delayed = new LinkedList<DelayedBlockPlotter>();
-		final LinkedList<Ixyz> chests = new LinkedList<Ixyz>();
+		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
+		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
+		final LinkedList<BlockPlotter> delayedPlotters = new LinkedList<BlockPlotter>();
+		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
 		LobbyData dao;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
@@ -214,7 +213,7 @@ public class Gen_000 extends GenBackrooms {
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
 					chunk.setBlock(x, this.level_y+yy+1, z, LOBBY_SUBFLOOR);
-				dao = lobbyData.get(new Ixy(x, z));
+				dao = lobbyData.get(new Iab(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
@@ -254,7 +253,7 @@ public class Gen_000 extends GenBackrooms {
 							final Barrel barrel = (Barrel) chunk.getBlockData(x, y+1, z);
 							barrel.setFacing(BlockFace.UP);
 							chunk.setBlock(x, y+1, z, barrel);
-							chests.add(new Ixyz(xx, y+1, zz));
+							chests.add(new Iabc(xx, y+1, zz));
 						} else
 						// portal to basement
 						if (dao.boxed     == 7
@@ -264,7 +263,7 @@ public class Gen_000 extends GenBackrooms {
 							BasementData base;
 							for (int iz=-2; iz<3; iz++) {
 								for (int ix=-2; ix<3; ix++) {
-									base = basementData.get(new Ixy(ix+x, iz+z));
+									base = basementData.get(new Iab(ix+x, iz+z));
 									if (base != null
 									&&  base.isWall) {
 										found_basement_wall = true;
@@ -274,20 +273,18 @@ public class Gen_000 extends GenBackrooms {
 							}
 							if (!found_basement_wall) {
 								final int h = this.level_h + SUBFLOOR + 5;
-								final String axis;
-								final int xxx, zzz;
+								final BlockPlotter plot = new BlockPlotter(chunk, h, 6, 5);
 								switch (dao.box_dir) {
-								case NORTH: axis = "YzX"; xxx = x - 2; zzz = z + 2; break;
-								case SOUTH: axis = "YZX"; xxx = x - 2; zzz = z - 2; break;
-								case EAST:  axis = "YXZ"; xxx = x - 2; zzz = z - 2; break;
-								case WEST:  axis = "YxZ"; xxx = x + 2; zzz = z - 2; break;
+								case NORTH: plot.axis("une").location(x-2, y-6, z+2); break;
+								case SOUTH: plot.axis("use").location(x-2, y-6, z-2); break;
+								case EAST:  plot.axis("ues").location(x-2, y-6, z-2); break;
+								case WEST:  plot.axis("uws").location(x+2, y-6, z-2); break;
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
-								final BlockPlotter plot = new BlockPlotter(chunk, xxx, y-6, zzz);
 								plot.type('.', Material.AIR              );
 								plot.type('=', Material.YELLOW_TERRACOTTA);
 								plot.type('x', Material.BEDROCK          );
-								final StringBuilder[][] matrix = plot.getEmptyMatrix3D(h, 6);
+								final StringBuilder[][] matrix = plot.getMatrix3D();
 								for (int i=0; i<h; i++) {
 									// bottom
 									if (i == 0) {
@@ -334,7 +331,7 @@ public class Gen_000 extends GenBackrooms {
 										matrix[i][5].append("     ");
 									}
 								} // end for i
-								delayed.add(new DelayedBlockPlotter(plot, axis, matrix));
+								delayedPlotters.add(plot);
 							}
 						} // end portal to basement
 					} // end special
@@ -346,13 +343,13 @@ public class Gen_000 extends GenBackrooms {
 			} // end x
 		} // end z
 		// place delayed blocks
-		if (!delayed.isEmpty()) {
-			for (final DelayedBlockPlotter plot : delayed)
+		if (!delayedPlotters.isEmpty()) {
+			for (final BlockPlotter plot : delayedPlotters)
 				plot.run();
 		}
 		if (!chests.isEmpty()) {
-			for (final Ixyz loc : chests) {
-				(new ChestFiller_000(this.plugin, "level0", loc.x, loc.y, loc.z))
+			for (final Iabc loc : chests) {
+				(new ChestFiller_000(this.plugin, "level0", loc.a, loc.b, loc.c))
 					.start();
 			}
 		}
