@@ -3,8 +3,11 @@ main: com.poixson.backrooms.BackroomsPlugin
 version: ${project.version}
 api-version: ${spigot-short-version}
 load: STARTUP
-depend: [ Multiverse-Core, pxnCommonPluginMC ]
-softdepend: [ dynmap ]
+depend:
+  - pxnCommonPluginMC
+  - Multiverse-Core
+softdepend:
+  - dynmap
 authors: [ lorenzop ]
 website: ${project.url}
 description: ${project.description}
