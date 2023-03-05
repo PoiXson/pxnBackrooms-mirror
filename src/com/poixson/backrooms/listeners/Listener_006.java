@@ -46,7 +46,7 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 				&&  Material.LEVER.equals(block.getType())) {
 					final Block blk = block.getRelative(BlockFace.UP, diff_y);
 					if (Material.LEVER.equals(blk.getType())) {
-						this.doLeverTP(block.getLocation(), diff_y);
+						this.doLeverTP(6, block.getLocation(), diff_y);
 						(new DelayedLever(this.plugin, block.getLocation(), false, 10L))
 							.start();
 					}
@@ -57,7 +57,7 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 				&&  Material.LEVER.equals(block.getType())) {
 					final Block blk = block.getRelative(BlockFace.DOWN, diff_y);
 					if (Material.LEVER.equals(blk.getType())) {
-						this.doLeverTP(block.getLocation(), 0-diff_y);
+						this.doLeverTP(0, block.getLocation(), 0-diff_y);
 						(new DelayedLever(this.plugin, block.getLocation(), true, 10L))
 							.start();
 					}
@@ -70,13 +70,17 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 
 
 
-	protected void doLeverTP(final Location leverLoc, final int y) {
+	protected void doLeverTP(final int to_level, final Location leverLoc, final int y) {
 		final World world = leverLoc.getWorld();
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (world.equals(player.getWorld())) {
 				final Location playerLoc = player.getLocation();
 				if (playerLoc.distance(leverLoc) < 8.0) {
+					if (to_level == 6)
+						player.setInvisible(true);
 					player.teleport( playerLoc.add(0.0, y, 0.0) );
+					if (to_level != 6)
+						player.setInvisible(false);
 				}
 			}
 		}
