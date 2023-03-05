@@ -272,65 +272,72 @@ public class Gen_000 extends GenBackrooms {
 								}
 							}
 							if (!found_basement_wall) {
-								final int h = this.level_h + SUBFLOOR + 5;
+								final int h = Level_000.H_023 + this.level_h + (SUBFLOOR*3) + (SUBCEILING*2);
 								final BlockPlotter plot = new BlockPlotter(chunk, h, 6, 5);
 								switch (dao.box_dir) {
-								case NORTH: plot.axis("une").location(x-2, y-6, z+2); break;
-								case SOUTH: plot.axis("use").location(x-2, y-6, z-2); break;
-								case EAST:  plot.axis("ues").location(x-2, y-6, z-2); break;
-								case WEST:  plot.axis("uws").location(x+2, y-6, z-2); break;
+								case NORTH: plot.axis("une").location(x-2, 0, z+2); break;
+								case SOUTH: plot.axis("use").location(x-2, 0, z-2); break;
+								case EAST:  plot.axis("ues").location(x-2, 0, z-2); break;
+								case WEST:  plot.axis("uws").location(x+2, 0, z-2); break;
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
+								plot.y((cy - h) + 1);
 								plot.type('.', Material.AIR              );
 								plot.type('=', Material.YELLOW_TERRACOTTA);
 								plot.type('x', Material.BEDROCK          );
+								plot.type('g', Material.GLOWSTONE        );
+								plot.type('m', Material.MOSS_BLOCK       );
 								final StringBuilder[][] matrix = plot.getMatrix3D();
-								for (int i=0; i<h; i++) {
-									// bottom
-									if (i == 0) {
-										matrix[i][0].append("xxxxx");
-										matrix[i][1].append("xxxxx");
-										matrix[i][2].append("xxxxx");
-										matrix[i][3].append("xxxxx");
-										matrix[i][4].append("xx.xx");
-										matrix[i][5].append("xxxxx");
-									} else
-									// subfloor
-									if (i < 6) {
-										matrix[i][0].append("xxxxx");
-										matrix[i][1].append("xxxxx");
-										matrix[i][2].append("xx.xx");
-										matrix[i][3].append("xx.xx");
-										matrix[i][4].append("xx.xx");
-										matrix[i][5].append("xxxxx");
-									} else
-									// floor
-									if (i == 6) {
-										matrix[i][0].append("     ");
+								// bottom
+								matrix[0][0].append("xxxxx");
+								matrix[0][1].append("xxxxx");
+								matrix[0][2].append("xxxxx");
+								matrix[0][3].append("xxgxx");
+								matrix[0][4].append("xg.gx");
+								matrix[0][5].append("xxgxx");
+								// lower area
+								for (int iy=1; iy<5; iy++) {
+									matrix[iy][1].append(" xxx ");
+									matrix[iy][2].append(" x.x ");
+									matrix[iy][3].append(" x.x ");
+									matrix[iy][4].append(" x.x ");
+									matrix[iy][5].append(" xxx ");
+								}
+								// lower ceiling
+								matrix[5][1].append(" xxx ");
+								matrix[5][2].append(" x.x ");
+								matrix[5][3].append(" xxx ");
+								matrix[5][4].append(" xxx ");
+								matrix[5][5].append(" xxx ");
+								// shaft
+								final int hh = h - this.level_h - 1;
+								for (int i=6; i<hh; i++) {
+									if (i > 6 && i < Level_000.H_023+8) {
+										matrix[i][0].append("mmmmm");
+										matrix[i][1].append("mxxxm");
+										matrix[i][2].append("mx.xm");
+										matrix[i][3].append("mxxxm");
+										matrix[i][4].append("mmmmm");
+									} else {
 										matrix[i][1].append(" xxx ");
 										matrix[i][2].append(" x.x ");
 										matrix[i][3].append(" xxx ");
-										matrix[i][4].append(" xxx ");
-										matrix[i][5].append("     ");
-									} else
-									// top
-									if (i > h-2) {
-										matrix[i][0].append("=====");
-										matrix[i][1].append("=xxx=");
-										matrix[i][2].append("=xxx=");
-										matrix[i][3].append("=xxx=");
-										matrix[i][4].append("== ==");
-										matrix[i][5].append("     ");
-									// walls
-									} else {
-										matrix[i][0].append("=====");
-										matrix[i][1].append("=xxx=");
-										matrix[i][2].append("=x.x=");
-										matrix[i][3].append("=x.x=");
-										matrix[i][4].append("==.==");
-										matrix[i][5].append("     ");
 									}
-								} // end for i
+								}
+								// opening
+								for (int i=hh; i<h-1; i++) {
+									matrix[i][0].append("=====");
+									matrix[i][1].append("=xxx=");
+									matrix[i][2].append("=x.x=");
+									matrix[i][3].append("=x.x=");
+									matrix[i][4].append("==.==");
+								}
+								// top
+								matrix[h-1][0].append("=====");
+								matrix[h-1][1].append("=xxx=");
+								matrix[h-1][2].append("=xxx=");
+								matrix[h-1][3].append("=xxx=");
+								matrix[h-1][4].append("== ==");
 								delayedPlotters.add(plot);
 							}
 						} // end portal to basement
