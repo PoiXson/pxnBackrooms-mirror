@@ -25,7 +25,7 @@ import com.poixson.tools.dao.Iab;
 //  19 | Attic
 //   5 | Hotel
 //  37 | Poolrooms
-//   6 | lights out
+//   6 | Lights Out
 //   0 | Lobby
 //   1 | Basement
 public class Level_000 extends LevelBackrooms {
@@ -36,22 +36,22 @@ public class Level_000 extends LevelBackrooms {
 	// basement
 	public static final int Y_001 = 0;
 	public static final int H_001 = 30;
-	// lobby                        0     + 30      3        + 3          + 1 = 37
 	public static final int Y_000 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_000 = 4;
-	// lights out                   37    + 4     + 3        + 3          + 3 = 50
+	// lobby
+	// lights out
 	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 3;
 	public static final int H_006 = 5;
-	// pools                        50    + 5     + 1 = 56
+	// pools
 	public static final int Y_037 = Y_006 + H_006 + 1;
 	public static final int H_037 = 10;
-	// hotel                        56    + 10    + 3        + 3          + 3 = 75
+	// hotel
 	public static final int Y_005 = Y_037 + H_037 + SUBFLOOR + SUBCEILING + 3;
-	public static final int H_005 = 6;
-	// attic                        75    + 6     + 3        + 3          + 1 = 88
+	public static final int H_005 = 5;
+	// attic
 	public static final int Y_019 = Y_005 + H_005 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_019 = 10;
-	// radio station                88    + 10    + 3        + 3          + 1 = 105
+	// radio station
 	public static final int Y_309 = Y_019 + H_019 + SUBFLOOR + SUBCEILING + 1;
 
 	// generators
@@ -74,7 +74,7 @@ public class Level_000 extends LevelBackrooms {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(  1, "basement",  "Basement",   Y_001+H_001+SUBFLOOR+1);
+			gen_tpl.add(  1, "basement",  "Basement",   Y_001+10);
 			gen_tpl.add(  0, "lobby",     "Lobby",      Y_000+H_000+SUBFLOOR+1);
 			gen_tpl.add(  6, "lightsout", "Lights Out", Y_006+H_006           );
 			gen_tpl.add( 37, "poolrooms", "Poolrooms",  Y_037+H_037+         1);
@@ -84,13 +84,13 @@ public class Level_000 extends LevelBackrooms {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001, SUBFLOOR, SUBCEILING)); // basement
-		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000, SUBFLOOR, SUBCEILING)); // lobby
-		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006                      )); // lights out
-		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037, SUBFLOOR, SUBCEILING)); // pools
-		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005, SUBFLOOR, SUBCEILING)); // hotel
-		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019, SUBFLOOR, SUBCEILING)); // attic
-		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0, SUBFLOOR            )); // radio station
+		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001)); // basement
+		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000)); // lobby
+		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006)); // lights out
+		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037)); // pools
+		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005)); // hotel
+		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019)); // attic
+		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0)); // radio station
 		// listeners
 		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);

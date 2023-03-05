@@ -67,8 +67,8 @@ public class Gen_037 extends GenBackrooms {
 
 
 	public enum RoomType {
-		SOLID,
 		OPEN,
+		SOLID,
 	};
 	public class PoolData implements PreGenData {
 		public final double valueRoom;
@@ -110,9 +110,9 @@ public class Gen_037 extends GenBackrooms {
 	public void generate(final PreGenData pregen,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
-		final int y = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_y + SUBFLOOR + this.level_h + 1;
+		final Map<Iab, PoolData> poolData = ((PregenLevel0)pregen).pools;
+		final int y  = this.level_y + SUBFLOOR + 1;
+		final int cy = y + this.level_h + 1;
 		final int h = this.level_h + 2;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
@@ -266,7 +266,7 @@ public class Gen_037 extends GenBackrooms {
 					}
 					break;
 				}
-				default: {
+				case OPEN: {
 					for (int iz=0; iz<8; iz++) {
 						matrix[0][iz].append(StringUtils.Repeat(8, '#'));
 						for (int iy=1; iy<h; iy++)
@@ -305,6 +305,7 @@ public class Gen_037 extends GenBackrooms {
 					}
 					break;
 				}
+				default: throw new RuntimeException("Unknown pool room type: " + dao.type.toString());
 				} // end type switch
 				// water
 				for (int iz=0; iz<8; iz++) {

@@ -1,6 +1,5 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
 import java.util.HashMap;
@@ -108,10 +107,11 @@ public class Gen_001 extends GenBackrooms {
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		final int h  = this.level_h + 1;
+		int xx, zz;
 		for (int z=0; z<16; z++) {
+			zz = (chunkZ * 16) + z;
 			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
+				xx = (chunkX * 16) + x;
 				// basement floor
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
@@ -121,19 +121,13 @@ public class Gen_001 extends GenBackrooms {
 				// wall
 				if (dao.isWall) {
 					for (int yy=0; yy<h; yy++) {
-						if (yy > 6) {
-							chunk.setBlock(x, y+yy, z, Material.BEDROCK);
-						} else {
-							chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
-						}
+						if (yy > 6) chunk.setBlock(x, y+yy, z, Material.BEDROCK);
+						else        chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
 					}
 				// room
 				} else {
-					if (dao.isWet) {
-						chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
-					} else {
-						chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
-					}
+					if (dao.isWet) chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
+					else           chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
 					// basement lights
 					final int modX10 = Math.abs(xx) % 10;
 					final int modZ10 = Math.abs(zz) % 10;
@@ -153,15 +147,12 @@ public class Gen_001 extends GenBackrooms {
 							}
 						}
 					}
-				}
+				} // end wall/room
 				// basement ceiling
 				if (ENABLE_ROOF) {
 					chunk.setBlock(x, cy, z, Material.BEDROCK);
-					if (dao.isWet) {
-						chunk.setBlock(x, cy+1, z, Material.WATER);
-					} else {
-						chunk.setBlock(x, cy+1, z, Material.STONE);
-					}
+					if (dao.isWet) chunk.setBlock(x, cy+1, z, Material.WATER);
+					else           chunk.setBlock(x, cy+1, z, Material.STONE);
 				}
 			} // end x
 		} // end z

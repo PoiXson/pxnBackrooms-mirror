@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -36,9 +37,8 @@ public class Gen_866 extends GenBackrooms {
 		if (!ENABLE_GENERATE) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-//				final int xx = (chunkX * 16) + x;
-//				final int zz = (chunkZ * 16) + z;
-/*
+				final int xx = (chunkX * 16) + x;
+				final int zz = (chunkZ * 16) + z;
 				// subfloor
 				chunk.setBlock(x, 0, z, Material.BEDROCK);
 				chunk.setBlock(x, 1, z, Material.ACACIA_PLANKS);
@@ -68,7 +68,6 @@ public class Gen_866 extends GenBackrooms {
 //						chunk.setBlock(x, y, z, Material.GRASS);
 //					}
 				}
-*/
 			} // end x
 		} // end z
 	}

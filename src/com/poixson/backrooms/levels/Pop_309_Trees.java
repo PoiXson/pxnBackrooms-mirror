@@ -34,6 +34,7 @@ public class Pop_309_Trees extends TreePopulator {
 	@Override
 	public boolean isTree(final int x, final int z) {
 		if (!Gen_309.ENABLE_GENERATE) return false;
+		if (!Pop_309.ENABLE_GENERATE) return false;
 		if (!Gen_309.ENABLE_ROOF)     return false;
 		if (!super.isTree(x, z))                            return false;
 		if (this.gen.isCenterClearing(x, z))                return false;

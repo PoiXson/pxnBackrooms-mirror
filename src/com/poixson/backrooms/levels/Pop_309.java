@@ -13,6 +13,8 @@ import org.bukkit.generator.WorldInfo;
 // 309 | Radio Station
 public class Pop_309 extends BlockPopulator {
 
+	public static final boolean ENABLE_GENERATE = true;
+
 	protected final Gen_309 gen;
 
 
@@ -34,6 +36,7 @@ public class Pop_309 extends BlockPopulator {
 
 	public void populate0x0(final LimitedRegion region) {
 		if (!Gen_309.ENABLE_GENERATE) return;
+		if (!ENABLE_GENERATE)         return;
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {
 			if (Material.AIR.equals(region.getType(0, this.gen.level_y+i, 15))) {

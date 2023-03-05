@@ -9,11 +9,14 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
 import com.poixson.commonmc.tools.LineTracer;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 
 
 // 37 | Poolrooms
 public class Pop_037 extends BlockPopulator {
+
+	public static final boolean ENABLE_GENERATE = true;
 
 	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 
@@ -46,7 +49,6 @@ public class Pop_037 extends BlockPopulator {
 			this.starting_points = list.toArray(new Iab[0]);
 		}
 	}
-
 
 
 	public class TunnelTracer extends LineTracer {
@@ -117,6 +119,7 @@ public class Pop_037 extends BlockPopulator {
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
 		if (!Gen_037.ENABLE_GENERATE) return;
+		if (!ENABLE_GENERATE)         return;
 		// trace tunnels
 		final LinkedList<TunnelTracer> tunnelTracers = new LinkedList<TunnelTracer>();
 		{
@@ -142,7 +145,7 @@ public class Pop_037 extends BlockPopulator {
 		// place blocks for tunnels
 		Iab last;
 		for (final TunnelTracer tracer : tunnelTracers) {
-			final BlockPlotter plotter = new BlockPlotter(region, 6, 7);
+			final BlockPlotter plot = new BlockPlotter(region, 6, 7);
 			plot.y(this.gen.level_y + 7);
 			plot.type('.', Material.AIR);
 			plot.type('#', POOL_WALL_A );
@@ -156,26 +159,23 @@ public class Pop_037 extends BlockPopulator {
 			int dirX;
 			last = null;
 			boolean first = true;
-			String axis;
 			POINTS_LOOP:
 			for (final Iab loc : tracer.points) {
-//TODO
-if (region.isInRegion(loc.x, 73, loc.y)) region.setType(loc.x, 73, loc.y, Material.GLOWSTONE);
 				if (last == null) {
 					last = loc;
 					continue POINTS_LOOP;
 				}
-				plot.x(loc.x);
-				plot.z(loc.y);
+				plot.x(loc.a);
+				plot.z(loc.b);
 				// find direction
-				dirX = loc.x - last.x;
-				if (dirX == 0) { plot.axis("YX"); plotter.x(plotter.x() - 3);
-				} else {         plot.axis("YZ"); plotter.z(plotter.z() - 3); }
+				dirX = loc.a - last.a;
+				if (dirX == 0) { plot.axis("YX"); plot.x(plot.x() - 3);
+				} else {         plot.axis("YZ"); plot.z(plot.z() - 3); }
 				plot.run();
 				if (first) {
 					first = false;
-					if (dirX == 0) plot.z(last.y);
-					else           plot.x(last.x);
+					if (dirX == 0) plot.z(last.b);
+					else           plot.x(last.a);
 					plot.run();
 				}
 				last = loc;

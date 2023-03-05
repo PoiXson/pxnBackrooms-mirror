@@ -206,24 +206,24 @@ public class Gen_000 extends GenBackrooms {
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		int xx, zz;
 		for (int z=0; z<16; z++) {
+			zz = (chunkZ * 16) + z;
 			for (int x=0; x<16; x++) {
 				xx = (chunkX * 16) + x;
-				zz = (chunkZ * 16) + z;
 				// lobby floor
 				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(x, this.level_y+yy+1, z, LOBBY_SUBFLOOR);
+				for (int iy=0; iy<SUBFLOOR; iy++)
+					chunk.setBlock(x, this.level_y+iy+1, z, LOBBY_SUBFLOOR);
 				dao = lobbyData.get(new Iab(x, z));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
 					// lobby walls
 					final int h = this.level_h + 3;
-					for (int yy=0; yy<h; yy++) {
-						chunk.setBlock(x, y+yy, z, LOBBY_WALL);
-					}
+					for (int iy=0; iy<h; iy++)
+						chunk.setBlock(x, y+iy, z, LOBBY_WALL);
 				// room
 				} else {
+					// floor
 					chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
 					if (ENABLE_ROOF) {
 						final int modX6 = Math.abs(xx) % 7;
@@ -336,6 +336,7 @@ public class Gen_000 extends GenBackrooms {
 						} // end portal to basement
 					} // end special
 				} // end wall/room
+				// subceiling
 				if (ENABLE_ROOF) {
 					for (int i=1; i<SUBCEILING; i++)
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
