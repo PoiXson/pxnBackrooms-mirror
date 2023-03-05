@@ -3,6 +3,8 @@ package com.poixson.backrooms.listeners;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,8 +30,7 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 
 	protected final int level_y;
 
-	protected final HashMap<String, ArrayList<Location>> playerLights =
-			new HashMap<String, ArrayList<Location>>();
+	protected final HashMap<UUID, List<Location>> playerLights = new HashMap<UUID, List<Location>>();
 
 
 
@@ -45,7 +46,7 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 		super.unregister();
 		synchronized (this.playerLights) {
 			Block blk;
-			for (final ArrayList<Location> list : this.playerLights.values()) {
+			for (final List<Location> list : this.playerLights.values()) {
 				for (final Location loc : list) {
 					blk = loc.getBlock();
 					if (Material.REDSTONE_TORCH.equals(blk.getType()))
@@ -62,15 +63,13 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 	public void onPlayerMoveNormal(final PlayerMoveNormalEvent event) {
 		final Location to = event.getTo();
 		final Player player = event.getPlayer();
-		final World world = player.getWorld();
-		final int level = this.plugin.getLevelFromWorld(world.getName());
-		int lvl = (level==0 ? this.plugin.getPlayerLevel(player) : Integer.MIN_VALUE);
+		final int level = this.plugin.getPlayerLevel(player);
+		final World world = to.getWorld();
 		// basement
-		if (lvl == 1) {
-			final ArrayList<Location> lights = this.getPlayerLightsList(player);
+		if (level == 1) {
+			final List<Location> lights = this.getPlayerLightsList(player.getUniqueId());
 			// turn off lights
 			{
-//TODO: check other players
 				Location loc;
 				Block blk;
 				final Iterator<Location> it = lights.iterator();
@@ -78,9 +77,11 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 					loc = it.next();
 					if (to.distance(loc) > BASEMENT_LIGHT_RADIUS) {
 						it.remove();
-						blk = loc.getBlock();
-						if (Material.REDSTONE_TORCH.equals(blk.getType()))
-							blk.setType(Material.BEDROCK);
+						if (this.canTurnOff(loc)) {
+							blk = loc.getBlock();
+							if (Material.REDSTONE_TORCH.equals(blk.getType()))
+								blk.setType(Material.BEDROCK);
+						}
 					}
 				}
 			}
@@ -103,14 +104,14 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 			}
 		// not basement
 		} else {
-			final String uuid = player.getUniqueId().toString();
+			// player left the basement
+			final UUID uuid = player.getUniqueId();
 			if (this.playerLights.containsKey(uuid)) {
-				Block blk;
-				for (final Location loc : this.playerLights.get(uuid)) {
-					blk = loc.getBlock();
-					if (Material.REDSTONE_TORCH.equals(blk.getType()))
-						blk.setType(Material.BEDROCK);
-				}
+				// turn off all lights for player
+				final List<Location> list = this.playerLights.get(uuid);
+				this.playerLights.remove(uuid);
+				for (final Location loc : list)
+					this.lightTurnOff(loc);
 				this.playerLights.remove(uuid);
 			}
 		}
@@ -118,32 +119,33 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 
 
 
-	public ArrayList<Location> getPlayerLightsList(final Player player) {
-		return this.getPlayerLightsList(player.getUniqueId().toString());
+	protected void lightTurnOff(final Location loc) {
+		if (this.canTurnOff(loc)) {
+			final Block block = loc.getBlock();
+			if (Material.REDSTONE_TORCH.equals(block.getType()))
+				block.setType(Material.BEDROCK);
+		}
 	}
-	public ArrayList<Location> getPlayerLightsList(final String uuid) {
+	protected boolean canTurnOff(final Location loc) {
+		for (final List<Location> list : this.playerLights.values()) {
+			if (list.contains(loc))
+				return false;
+		}
+		return true;
+	}
+
+
+
+	protected List<Location> getPlayerLightsList(final UUID uuid) {
 		// existing list
 		{
-			final ArrayList<Location> list = this.playerLights.get(uuid);
+			final List<Location> list = this.playerLights.get(uuid);
 			if (list != null)
 				return list;
 		}
-		// cleanup
-//TODO: improve this
-		if (this.playerLights.size() % 5 == 0) {
-			String key;
-			ArrayList<Location> list;
-			final Iterator<String> it = this.playerLights.keySet().iterator();
-			while (it.hasNext()) {
-				key = it.next();
-				list = this.playerLights.get(key);
-				if (list == null || list.isEmpty())
-					this.playerLights.remove(key);
-			}
-		}
 		// new list
 		{
-			final ArrayList<Location> list = new ArrayList<Location>();
+			final List<Location> list = new ArrayList<Location>();
 			this.playerLights.put(uuid, list);
 			return list;
 		}
