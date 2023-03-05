@@ -34,7 +34,6 @@ import com.poixson.backrooms.levels.Level_078;
 import com.poixson.backrooms.levels.Level_151;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.levels.Level_866;
-import com.poixson.backrooms.listeners.ItemDespawnListener;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
@@ -61,7 +60,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 	// listeners
 	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
-	protected final AtomicReference<ItemDespawnListener>  itemDespawnListener  = new AtomicReference<ItemDespawnListener>(null);
 
 	// dynmap config generator
 	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
@@ -139,14 +137,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
-		// item despawn listener
-		{
-			final ItemDespawnListener listener = new ItemDespawnListener(this);
-			final ItemDespawnListener previous = this.itemDespawnListener.getAndSet(listener);
-			if (previous != null)
-				previous.unregister();
-			listener.register();
-		}
 	}
 
 	@Override
@@ -173,12 +163,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// teleport chance
 		this.tpManager.set(null);
-		// item despawn listener
-		{
-			final ItemDespawnListener listener = this.itemDespawnListener.getAndSet(null);
-			if (listener != null)
-				listener.unregister();
-		}
 		this.dynmap_perspective.set(null);
 	}
 
