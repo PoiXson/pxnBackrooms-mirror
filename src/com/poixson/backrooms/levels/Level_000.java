@@ -27,6 +27,7 @@ import com.poixson.tools.dao.Iab;
 //  37 | Poolrooms
 //   6 | Lights Out
 //   0 | Lobby
+//  23 | Overgrowth
 //   1 | Basement
 public class Level_000 extends LevelBackrooms {
 
@@ -36,9 +37,12 @@ public class Level_000 extends LevelBackrooms {
 	// basement
 	public static final int Y_001 = 0;
 	public static final int H_001 = 30;
-	public static final int Y_000 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
-	public static final int H_000 = 4;
+	// overgrowth
+	public static final int Y_023 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
+	public static final int H_023 = 5;
 	// lobby
+	public static final int Y_000 = Y_023 + H_023 + SUBFLOOR + SUBCEILING + 1;
+	public static final int H_000 = 5;
 	// lights out
 	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 3;
 	public static final int H_006 = 5;
@@ -56,6 +60,7 @@ public class Level_000 extends LevelBackrooms {
 
 	// generators
 	public final Gen_001 gen_001;
+	public final Gen_023 gen_023;
 	public final Gen_000 gen_000;
 	public final Gen_006 gen_006;
 	public final Gen_037 gen_037;
@@ -75,6 +80,7 @@ public class Level_000 extends LevelBackrooms {
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
 			gen_tpl.add(  1, "basement",  "Basement",   Y_001+10);
+			gen_tpl.add( 23, "overgrow",  "Overgrowth", Y_023+8);
 			gen_tpl.add(  0, "lobby",     "Lobby",      Y_000+H_000+SUBFLOOR+1);
 			gen_tpl.add(  6, "lightsout", "Lights Out", Y_006+H_006           );
 			gen_tpl.add( 37, "poolrooms", "Poolrooms",  Y_037+H_037+         1);
@@ -85,6 +91,7 @@ public class Level_000 extends LevelBackrooms {
 		}
 		// generators
 		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001)); // basement
+		this.gen_023 = this.register(new Gen_023(plugin, Y_023, H_023)); // overgrowth
 		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000)); // lobby
 		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006)); // lights out
 		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037)); // pools
@@ -118,6 +125,7 @@ public class Level_000 extends LevelBackrooms {
 		final int x, z;
 		switch (level) {
 		case 1:  // basement
+		case 23: // overgrowth
 		case 0:  // lobby
 		case 6:  // lights out
 		case 37: // pools
@@ -139,6 +147,7 @@ public class Level_000 extends LevelBackrooms {
 	public Location getSpawn(final int level, final int x, final int z) {
 		switch (level) {
 		case   1: return this.getSpawn(level, H_001, x, Y_001+SUBFLOOR, z); // basement
+		case  23: return this.getSpawn(level, H_023, x, Y_023+SUBFLOOR, z); // overgrowth
 		case   0: return this.getSpawn(level, H_000, x, Y_000+SUBFLOOR, z); // lobby
 		case   6: return this.getSpawn(level, H_006, x, Y_006,          z); // lights out
 		case  37: return this.getSpawn(level, H_037, x, Y_037+SUBFLOOR, z); // pools
@@ -151,7 +160,8 @@ public class Level_000 extends LevelBackrooms {
 
 	@Override
 	public int getLevelFromY(final int y) {
-		if (y < Y_000) return 1;  // basement
+		if (y < Y_023) return 1;  // basement
+		if (y < Y_000) return 23; // overgrowth
 		if (y < Y_006) return 0;  // lobby
 		if (y < Y_037) return 6;  // lights out
 		if (y < Y_005) return 37; // pools
@@ -163,6 +173,7 @@ public class Level_000 extends LevelBackrooms {
 	public int getY(final int level) {
 		switch (level) {
 		case 1:   return Y_001; // basement
+		case 23:  return Y_023; // overgrowth
 		case 0:   return Y_000; // lobby
 		case 6:   return Y_006; // lights out
 		case 37:  return Y_037; // pools
@@ -176,7 +187,8 @@ public class Level_000 extends LevelBackrooms {
 	@Override
 	public int getMaxY(final int level) {
 		switch (level) {
-		case 1:   return Y_000 - 1; // basement
+		case 1:   return Y_023 - 1; // basement
+		case 23:  return Y_000 - 1; // overgrowth
 		case 0:   return Y_006 - 1; // lobby
 		case 6:   return Y_037 - 1; // lights out
 		case 37:  return Y_005 - 1; // pools
@@ -210,6 +222,7 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // pools
 		// generate
 		this.gen_001.generate(pregen, chunk, chunkX, chunkZ); // basement
+		this.gen_023.generate(pregen, chunk, chunkX, chunkZ); // overgrowth
 		this.gen_000.generate(pregen, chunk, chunkX, chunkZ); // lobby
 		this.gen_006.generate(pregen, chunk, chunkX, chunkZ); // lights out
 		this.gen_037.generate(pregen, chunk, chunkX, chunkZ); // pools
