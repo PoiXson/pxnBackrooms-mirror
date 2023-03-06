@@ -32,4 +32,9 @@
 	"block.minecraft.light_blue_terracotta": "White Poolrooms Wall",
 	"block.minecraft.acacia_sign": "Lights Out Sign",
 	"block.minecraft.acacia_wall_sign": "Lights Out Wall Sign",
+	"block.minecraft.end_stone": "Plastic Cheese",
+	"block.minecraft.end_stone_bricks": "Blocks of Plastic Cheese",
+	"block.minecraft.end_stone_brick_stairs": "Plastic Cheese Stairs",
+	"block.minecraft.end_stone_brick_slab": "Plastic Cheese Slab",
+	"block.minecraft.end_stone_brick_wall": "Plastic Cheese Wall"
 }
