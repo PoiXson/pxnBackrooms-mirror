@@ -2,6 +2,7 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
 
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -21,6 +22,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 public abstract class LevelBackrooms extends ChunkGenerator {
@@ -80,9 +82,17 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			gen.setSeed(seed);
 		}
 		// generate
-		this.generate(chunk, chunkX, chunkZ);
+		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
+		this.generate(chunkX, chunkZ, chunk, delayed_plotters);
+		// place delayed blocks
+		if (!delayed_plotters.isEmpty()) {
+			for (final BlockPlotter plot : delayed_plotters)
+				plot.run();
+			delayed_plotters.clear();
+		}
 	}
-	protected abstract void generate(final ChunkData chunk, final int chunkX, final int chunkZ);
+	protected abstract void generate(final int chunkX, final int chunkZ,
+			final ChunkData chunk, final LinkedList<BlockPlotter> plots);
 
 
 

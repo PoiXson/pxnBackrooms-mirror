@@ -6,11 +6,13 @@ import static com.poixson.commonmc.utils.LocationUtils.FaceToIxy;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 import static com.poixson.commonmc.utils.LocationUtils.ValueToFaceQuarter;
 
+import java.util.LinkedList;
+
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
 import com.poixson.utils.FastNoiseLiteD.RotationType3D;
@@ -45,9 +47,9 @@ public class Gen_771 extends GenBackrooms {
 
 
 
-	public Gen_771(final BackroomsPlugin plugin,
+	public Gen_771(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 		// road lanterns
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseRoadLights.setFrequency(0.3);
@@ -68,8 +70,8 @@ public class Gen_771 extends GenBackrooms {
 
 //TODO: change to use pregenerate function
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++)

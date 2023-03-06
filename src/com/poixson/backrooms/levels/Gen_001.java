@@ -3,13 +3,14 @@ package com.poixson.backrooms.levels;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -40,9 +41,9 @@ public class Gen_001 extends GenBackrooms {
 
 
 
-	public Gen_001(final BackroomsPlugin plugin,
+	public Gen_001(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 		// basement wall noise
 		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
 		this.noiseBasementWalls.setFrequency(0.033);
@@ -99,8 +100,8 @@ public class Gen_001 extends GenBackrooms {
 		}
 	}
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;

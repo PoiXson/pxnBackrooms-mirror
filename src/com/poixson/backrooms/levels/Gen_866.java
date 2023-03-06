@@ -1,9 +1,11 @@
 package com.poixson.backrooms.levels;
 
+import java.util.LinkedList;
+
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 
@@ -20,9 +22,9 @@ public class Gen_866 extends GenBackrooms {
 
 
 
-	public Gen_866(final BackroomsPlugin plugin,
+	public Gen_866(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 		// field
 		this.noiseField = this.register(new FastNoiseLiteD());
 		this.noiseField.setFrequency(0.006);
@@ -32,8 +34,8 @@ public class Gen_866 extends GenBackrooms {
 
 
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {

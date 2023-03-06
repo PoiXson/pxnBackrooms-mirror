@@ -2,10 +2,13 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.utils.RandomUtils.Rnd10K;
 
+import java.util.LinkedList;
+
 import org.bukkit.Location;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 9 | Suburbs
@@ -26,7 +29,7 @@ public class Level_009 extends LevelBackrooms {
 			gen_tpl.add(9, "suburbs", "Suburbs");
 		}
 		// generators
-		this.gen = this.register(new Gen_009(plugin, LEVEL_Y, 0));
+		this.gen = this.register(new Gen_009(this, LEVEL_Y, 0));
 	}
 
 
@@ -54,8 +57,9 @@ public class Level_009 extends LevelBackrooms {
 
 
 	@Override
-	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
-		this.gen.generate(null, chunk, chunkX, chunkZ);
+	protected void generate(final int chunkX, final int chunkZ,
+			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
+		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

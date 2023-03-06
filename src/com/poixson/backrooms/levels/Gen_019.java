@@ -3,10 +3,12 @@ package com.poixson.backrooms.levels;
 import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
+import java.util.LinkedList;
+
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -32,9 +34,9 @@ public class Gen_019 extends GenBackrooms {
 
 
 
-	public Gen_019(final BackroomsPlugin plugin,
+	public Gen_019(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 		this.level_m = Math.floorDiv(this.level_h, 2);
 		// attic walls
 		this.noiseAtticWalls = this.register(new FastNoiseLiteD());
@@ -49,8 +51,8 @@ public class Gen_019 extends GenBackrooms {
 
 
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 1;

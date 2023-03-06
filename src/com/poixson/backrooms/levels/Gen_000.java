@@ -19,7 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.DelayedChestFiller;
@@ -54,9 +53,9 @@ public class Gen_000 extends GenBackrooms {
 
 
 
-	public Gen_000(final BackroomsPlugin plugin,
+	public Gen_000(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 		// lobby walls
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLobbyWalls.setFrequency(0.022);
@@ -195,12 +194,11 @@ public class Gen_000 extends GenBackrooms {
 	}
 
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
-		final LinkedList<BlockPlotter> delayedPlotters = new LinkedList<BlockPlotter>();
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
 		LobbyData dao;
 		final int y  = this.level_y + SUBFLOOR + 1;
@@ -339,7 +337,7 @@ public class Gen_000 extends GenBackrooms {
 								matrix[h-1][2].append("=xxx=");
 								matrix[h-1][3].append("=xxx=");
 								matrix[h-1][4].append("== ==");
-								delayedPlotters.add(plot);
+								plots.add(plot);
 							}
 						} // end portal to basement
 					} // end special
@@ -351,11 +349,6 @@ public class Gen_000 extends GenBackrooms {
 				}
 			} // end x
 		} // end z
-		// place delayed blocks
-		if (!delayedPlotters.isEmpty()) {
-			for (final BlockPlotter plot : delayedPlotters)
-				plot.run();
-		}
 		if (!chests.isEmpty()) {
 			for (final Iabc loc : chests) {
 				(new ChestFiller_000(this.plugin, "level0", loc.a, loc.b, loc.c))

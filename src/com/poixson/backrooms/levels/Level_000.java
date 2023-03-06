@@ -18,6 +18,7 @@ import com.poixson.backrooms.levels.Gen_005.HotelData;
 import com.poixson.backrooms.levels.Gen_037.PoolData;
 import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 
 
@@ -90,14 +91,14 @@ public class Level_000 extends LevelBackrooms {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen_001 = this.register(new Gen_001(plugin, Y_001, H_001)); // basement
-		this.gen_023 = this.register(new Gen_023(plugin, Y_023, H_023)); // overgrowth
-		this.gen_000 = this.register(new Gen_000(plugin, Y_000, H_000)); // lobby
-		this.gen_006 = this.register(new Gen_006(plugin, Y_006, H_006)); // lights out
-		this.gen_037 = this.register(new Gen_037(plugin, Y_037, H_037)); // pools
-		this.gen_005 = this.register(new Gen_005(plugin, Y_005, H_005)); // hotel
-		this.gen_019 = this.register(new Gen_019(plugin, Y_019, H_019)); // attic
-		this.gen_309 = this.register(new Gen_309(plugin, Y_309,     0)); // radio station
+		this.gen_001 = this.register(new Gen_001(this, Y_001, H_001)); // basement
+		this.gen_023 = this.register(new Gen_023(this, Y_023, H_023)); // overgrowth
+		this.gen_000 = this.register(new Gen_000(this, Y_000, H_000)); // lobby
+		this.gen_006 = this.register(new Gen_006(this, Y_006, H_006)); // lights out
+		this.gen_037 = this.register(new Gen_037(this, Y_037, H_037)); // pools
+		this.gen_005 = this.register(new Gen_005(this, Y_005, H_005)); // hotel
+		this.gen_019 = this.register(new Gen_019(this, Y_019, H_019)); // attic
+		this.gen_309 = this.register(new Gen_309(this, Y_309,     0)); // radio station
 		// listeners
 		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);
@@ -213,7 +214,8 @@ public class Level_000 extends LevelBackrooms {
 
 
 	@Override
-	protected void generate(final ChunkData chunk, final int chunkX, final int chunkZ) {
+	protected void generate(final int chunkX, final int chunkZ,
+			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
 		// pre-generate
 		final PregenLevel0 pregen = new PregenLevel0();
 		this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
@@ -221,14 +223,14 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
 		this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // pools
 		// generate
-		this.gen_001.generate(pregen, chunk, chunkX, chunkZ); // basement
-		this.gen_023.generate(pregen, chunk, chunkX, chunkZ); // overgrowth
-		this.gen_000.generate(pregen, chunk, chunkX, chunkZ); // lobby
-		this.gen_006.generate(pregen, chunk, chunkX, chunkZ); // lights out
-		this.gen_037.generate(pregen, chunk, chunkX, chunkZ); // pools
-		this.gen_005.generate(pregen, chunk, chunkX, chunkZ); // hotel
-		this.gen_019.generate(pregen, chunk, chunkX, chunkZ); // attic
-		this.gen_309.generate(pregen, chunk, chunkX, chunkZ); // radio station
+		this.gen_001.generate(pregen, chunk, plots, chunkX, chunkZ); // basement
+		this.gen_023.generate(pregen, chunk, plots, chunkX, chunkZ); // overgrowth
+		this.gen_000.generate(pregen, chunk, plots, chunkX, chunkZ); // lobby
+		this.gen_006.generate(pregen, chunk, plots, chunkX, chunkZ); // lights out
+		this.gen_037.generate(pregen, chunk, plots, chunkX, chunkZ); // pools
+		this.gen_005.generate(pregen, chunk, plots, chunkX, chunkZ); // hotel
+		this.gen_019.generate(pregen, chunk, plots, chunkX, chunkZ); // attic
+		this.gen_309.generate(pregen, chunk, plots, chunkX, chunkZ); // radio station
 	}
 
 

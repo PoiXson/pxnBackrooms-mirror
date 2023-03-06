@@ -2,15 +2,16 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.PathTracer;
 import com.poixson.commonmc.tools.TreePopulator;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 
@@ -41,9 +42,9 @@ public class Gen_309 extends GenBackrooms {
 
 
 
-	public Gen_309(final BackroomsPlugin plugin,
+	public Gen_309(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 		// path
 		this.noisePath = this.register(new FastNoiseLiteD());
 		this.noisePath.setFrequency(0.01f);
@@ -80,8 +81,8 @@ public class Gen_309 extends GenBackrooms {
 
 
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final int y = this.level_y + SUBFLOOR + 1;
 		for (int z=0; z<16; z++) {

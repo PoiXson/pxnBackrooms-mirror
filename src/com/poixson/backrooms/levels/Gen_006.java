@@ -1,13 +1,14 @@
 package com.poixson.backrooms.levels;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 
 
@@ -18,16 +19,16 @@ public class Gen_006 extends GenBackrooms {
 
 
 
-	public Gen_006(final BackroomsPlugin plugin,
+	public Gen_006(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
-		super(plugin, level_y, level_h);
+		super(backlevel, level_y, level_h);
 	}
 
 
 
 	@Override
-	public void generate(final PreGenData pregen,
-			final ChunkData chunk, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen, final ChunkData chunk,
+			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao;
