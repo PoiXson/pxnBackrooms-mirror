@@ -46,7 +46,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public static final String LOG_PREFIX  = "[pxnBackrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + "[Backrooms] " + ChatColor.WHITE;
 
-	protected static final String GENERATOR_NAME = "Backrooms";
+	public static final String GENERATOR_NAME = "pxnBackrooms";
 //TODO: set the version automatically
 	protected static final String DEFAULT_RESOURCE_PACK = "http://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-0.1.1.zip";
 

@@ -153,7 +153,7 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			case 78: env = Environment.THE_END; break;
 			default: env = Environment.NORMAL;  break;
 			}
-			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, "pxnBackrooms", true))
+			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, BackroomsPlugin.GENERATOR_NAME, true))
 				throw new RuntimeException("Failed to create world: " + name);
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();
@@ -168,7 +168,7 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			mvworld.setBedRespawn(true);
 			mvworld.setDifficulty(Difficulty.HARD);
 			mvworld.setPVPMode(true);
-			mvworld.setGenerator("");
+			mvworld.setGenerator(BackroomsPlugin.GENERATOR_NAME);
 			mvworld.setRespawnToWorld("level0");
 			world.setGameRule(GameRule.KEEP_INVENTORY,             Boolean.TRUE );
 			world.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS,       Boolean.TRUE );
