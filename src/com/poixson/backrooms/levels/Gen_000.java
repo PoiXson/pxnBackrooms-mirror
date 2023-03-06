@@ -46,6 +46,7 @@ public class Gen_000 extends GenBackrooms {
 
 	public static final Material LOBBY_WALL     = Material.YELLOW_TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR = Material.OAK_PLANKS;
+	public static final Material LOBBY_CARPET   = Material.LIGHT_GRAY_WOOL;
 
 	// noise
 	protected final FastNoiseLiteD noiseLobbyWalls;
@@ -224,7 +225,7 @@ public class Gen_000 extends GenBackrooms {
 				// room
 				} else {
 					// floor
-					chunk.setBlock(x, y, z, Material.LIGHT_GRAY_WOOL);
+					chunk.setBlock(x, y, z, LOBBY_CARPET);
 					if (ENABLE_ROOF) {
 						final int modX6 = Math.abs(xx) % 7;
 						final int modZ6 = Math.abs(zz) % 7;
@@ -234,14 +235,14 @@ public class Gen_000 extends GenBackrooms {
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
 							final BlockData block = chunk.getBlockData(x, cy, z);
 							((Lightable)block).setLit(true);
-							chunk.setBlock(x, cy, z, block);
+							chunk.setBlock(x, cy,   z, block);
 							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 						} else {
 							// ceiling
 							chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
 							final Slab slab = (Slab) chunk.getBlockData(x, cy, z);
 							slab.setType(Slab.Type.TOP);
-							chunk.setBlock(x, cy, z, slab);
+							chunk.setBlock(x, cy,   z, slab);
 							chunk.setBlock(x, cy+1, z, Material.STONE);
 						}
 					}
