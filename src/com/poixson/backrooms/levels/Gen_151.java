@@ -52,11 +52,10 @@ public class Gen_151 extends GenBackrooms {
 		if (!ENABLE_GENERATE) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
-//				final int xx = (chunkX * 16) + x;
+				final int xx = (chunkX * 16) + x;
 //				final int zz = (chunkZ * 16) + z;
 				chunk.setBlock(x, 0, z, Material.BEDROCK);
 				chunk.setBlock(x, 1, z, Material.STONE);
-/*
 				int y  = this.level_y + SUBFLOOR + 1;
 				int cy = this.level_y + SUBFLOOR + this.level_h + 1;
 				// lobby floor
@@ -67,16 +66,14 @@ public class Gen_151 extends GenBackrooms {
 				y += SUBFLOOR;
 				final double value = this.noiseHouseWalls.getNoiseRot(xx, cy, 0.25);
 				if (value < -0.9 || value > 0.9) {
-					for (int iy=0; iy<3; iy++) {
+					for (int iy=0; iy<3; iy++)
 						chunk.setBlock(x, y+iy, z, HOUSE_WALLS);
-					}
 				}
-				if (BUILD_ROOF) {
+				if (ENABLE_ROOF) {
 					cy++;
 					for (int i=0; i<SUBCEILING; i++)
 						chunk.setBlock(x, cy+i, z, HOUSE_FLOOR);
 				}
-*/
 			} // end x
 		} // end z
 	}

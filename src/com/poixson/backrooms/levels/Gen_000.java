@@ -79,6 +79,7 @@ public class Gen_000 extends GenBackrooms {
 
 
 	public class LobbyData implements PreGenData {
+
 		public final double valueWall;
 		public final boolean isWall;
 		public boolean wall_n = false;
@@ -88,10 +89,15 @@ public class Gen_000 extends GenBackrooms {
 		public int wall_dist = 5;
 		public int boxed = 0;
 		public BlockFace box_dir = null;
+
 		public LobbyData(final double valueWall) {
 			this.valueWall = valueWall;
-			this.isWall = (valueWall > THRESH_WALL_L && valueWall < THRESH_WALL_H);
+			this.isWall = (
+				valueWall > THRESH_WALL_L &&
+				valueWall < THRESH_WALL_H
+			);
 		}
+
 	}
 
 
@@ -202,7 +208,7 @@ public class Gen_000 extends GenBackrooms {
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
 		LobbyData dao;
 		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
+		final int cy = this.level_h + y + 1;
 		int xx, zz;
 		for (int z=0; z<16; z++) {
 			zz = (chunkZ * 16) + z;

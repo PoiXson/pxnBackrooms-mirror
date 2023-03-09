@@ -29,6 +29,8 @@ public class Gen_005 extends GenBackrooms {
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
 
+	public static final double THRESH_ROOM_HALL = 0.65;
+
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 
@@ -68,18 +70,17 @@ public class Gen_005 extends GenBackrooms {
 		WALL
 	};
 
-	public class HotelData implements PreGenData {
 //TODO: add wall_1_away
+	public class HotelData implements PreGenData {
+
 		public final double value;
 		public NodeType type;
+
 		public HotelData(final double value) {
 			this.value = value;
-			if (value > 0.65) {
-				this.type = NodeType.HALL;
-			} else {
-				this.type = NodeType.ROOM;
-			}
+			this.type = (value>THRESH_ROOM_HALL ? NodeType.HALL : NodeType.ROOM);
 		}
+
 	}
 
 

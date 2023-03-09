@@ -64,20 +64,24 @@ public class Gen_001 extends GenBackrooms {
 
 
 	public class BasementData implements PreGenData {
+
 		public final double valueWall;
 		public final double valueMoistA;
 		public final double valueMoistB;
 		public boolean isWall;
 		public boolean isWet;
+
 		public BasementData(final double valueWall, final double valueMoistA, final double valueMoistB) {
 			this.valueWall   = valueWall;
 			this.valueMoistA = valueMoistA;
 			this.valueMoistB = valueMoistB;
 			this.isWall = (valueWall > THRESH_WALL);
-			this.isWet  =
-				(valueMoistA > THRESH_MOIST) ||
-				(valueMoistB > THRESH_MOIST);
+			this.isWet = (
+				valueMoistA > THRESH_MOIST ||
+				valueMoistB > THRESH_MOIST
+			);
 		}
+
 	}
 
 

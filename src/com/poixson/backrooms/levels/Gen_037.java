@@ -25,6 +25,8 @@ public class Gen_037 extends GenBackrooms {
 	public static final boolean ENABLE_GENERATE = true;
 	public static final boolean ENABLE_ROOF     = true;
 
+	public static final int WATER_DEPTH = 3;
+
 	public static final Material POOL_WALL_A  = Material.BLUE_TERRACOTTA;
 	public static final Material POOL_WALL_B  = Material.LIGHT_BLUE_TERRACOTTA;
 	public static final Material POOL_CEILING = Material.GLOWSTONE;
@@ -71,20 +73,25 @@ public class Gen_037 extends GenBackrooms {
 		OPEN,
 		SOLID,
 	};
+
 	public class PoolData implements PreGenData {
-		public final double valueRoom;
-		public final RoomType type;
-		public PoolData(final double valueRoom) {
-			this.valueRoom = valueRoom;
-			if (valueRoom < 0.2) {
+
+		public final double valueRoom, valuePortalHotel, valuePortalLobby;
+		public RoomType type;
+
+		public PoolData(final int x, final int z) {
+			this.valueRoom        = Gen_037.this.noisePoolRooms.getNoise(x, z);
+			if (this.valueRoom < THRESH_ROOM) {
 				this.type = RoomType.SOLID;
 			} else {
 				this.type = RoomType.OPEN;
 			}
 		}
+
 		public boolean isSolid() {
 			return RoomType.SOLID.equals(this.type);
 		}
+
 	}
 
 
@@ -93,13 +100,11 @@ public class Gen_037 extends GenBackrooms {
 			final int chunkX, final int chunkZ) {
 		PoolData dao;
 		int xx, zz;
-		double valueRoom;
 		for (int rz=-1; rz<3; rz++) {
 			zz = (chunkZ * 16) + (rz * 8) + 4;
 			for (int rx=-1; rx<3; rx++) {
 				xx = (chunkX * 16) + (rx * 8) + 4;
-				valueRoom = this.noisePoolRooms.getNoise(xx, zz);
-				dao = new PoolData(valueRoom);
+				dao = new PoolData(xx, zz);
 				data.put(new Iab(rx, rz), dao);
 			}
 		}
@@ -113,8 +118,8 @@ public class Gen_037 extends GenBackrooms {
 		if (!ENABLE_GENERATE) return;
 		final Map<Iab, PoolData> poolData = ((PregenLevel0)pregen).pools;
 		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = y + this.level_h + 1;
-		final int h = this.level_h + 2;
+		final int cy = this.level_h + y + 1;
+		final int h  = this.level_h + 2;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
 				// subfloor
@@ -133,7 +138,7 @@ public class Gen_037 extends GenBackrooms {
 		boolean solid_ne, solid_nw, solid_se, solid_sw;
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
-				final BlockPlotter plot = new BlockPlotter(chunk);
+				final BlockPlotter plot = new BlockPlotter(chunk, h, 8, 8);
 				plot.axis("YZX").location(rx*8, y, rz*8);
 				plot.type('#', POOL_WALL_A   );
 				plot.type('@', POOL_WALL_B   );
@@ -310,7 +315,7 @@ public class Gen_037 extends GenBackrooms {
 				} // end type switch
 				// water
 				for (int iz=0; iz<8; iz++) {
-					for (int iy=0; iy<4; iy++)
+					for (int iy=0; iy<=WATER_DEPTH; iy++)
 						StringUtils.ReplaceWith(matrix[iy][iz], ' ', 'w');
 				}
 				// ceiling

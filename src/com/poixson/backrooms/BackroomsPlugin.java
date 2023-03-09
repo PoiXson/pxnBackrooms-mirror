@@ -90,7 +90,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			}
 		}
 		// backrooms levels
-		new Level_000(this); // lobby, lights out, basement, hotel, attic, poolrooms, radio station
+		new Level_000(this); // lobby, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
 		new Level_009(this); // suburbs
 		new Level_010(this); // field of wheat
 		new Level_011(this); // city
@@ -254,31 +254,39 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 	public int getPlayerLevel(final UUID uuid) {
 		final Player player = Bukkit.getPlayer(uuid);
-		if (player == null)
-			return Integer.MIN_VALUE;
-		return this.getPlayerLevel(player);
+		return (
+			player == null
+			? Integer.MIN_VALUE
+			: this.getPlayerLevel(player)
+		);
 	}
 	public int getPlayerLevel(final Player player) {
-		if (player == null)
-			return Integer.MIN_VALUE;
-		final int lvl = this.getLevelFromWorld(player.getWorld());
-		final LevelBackrooms backlevel = this.getBackroomsLevel(lvl);
-		return backlevel.getLevelFromY(player.getLocation().getBlockY());
+		if (player != null) {
+			final int lvl = this.getLevelFromWorld(player.getWorld());
+			if (lvl >= 0) {
+				final LevelBackrooms backlevel = this.getBackroomsLevel(lvl);
+				if (backlevel != null)
+					return backlevel.getLevelFromY(player.getLocation().getBlockY());
+			}
+		}
+		return Integer.MIN_VALUE;
 	}
 	public int getLevelFromWorld(final World world) {
-		if (world == null)
-			return Integer.MIN_VALUE;
-		return this.getLevelFromWorld(world.getName());
+		return (
+			world == null
+			? Integer.MIN_VALUE
+			: this.getLevelFromWorld(world.getName())
+		);
 	}
 	public int getLevelFromWorld(final String worldName) {
-		if (worldName == null || worldName.isEmpty())
-			return Integer.MIN_VALUE;
-		if (!worldName.startsWith("level"))
-			return Integer.MIN_VALUE;
-		final int level = Integer.parseInt(worldName.substring(5));
-		if (!isValidLevel(level))
-			return Integer.MIN_VALUE;
-		return level;
+		if (worldName != null && !worldName.isEmpty()) {
+			if (worldName.startsWith("level")) {
+				final int level = Integer.parseInt(worldName.substring(5));
+				if (isValidLevel(level))
+					return level;
+			}
+		}
+		return Integer.MIN_VALUE;
 	}
 
 	public void assertValidLevel(final int level) {
@@ -296,10 +304,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public World getWorldFromLevel(final int level) {
-		final String worldName = "level" + Integer.toString(level);
-		if (Utils.isEmpty(worldName))
-			return null;
-		return Bukkit.getWorld(worldName);
+		return Bukkit.getWorld( "level" + Integer.toString(level) );
 	}
 
 
