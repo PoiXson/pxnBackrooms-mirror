@@ -23,7 +23,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_001 extends GenBackrooms {
 
 	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final int LAMP_Y = 6;
 
@@ -110,7 +109,6 @@ public class Gen_001 extends GenBackrooms {
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
 		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		final int h  = this.level_h + 1;
 		int xx, zz;
 		for (int z=0; z<16; z++) {
@@ -153,12 +151,6 @@ public class Gen_001 extends GenBackrooms {
 						}
 					}
 				} // end wall/room
-				// basement ceiling
-				if (ENABLE_ROOF) {
-					chunk.setBlock(x, cy, z, Material.BEDROCK);
-					if (dao.isWet) chunk.setBlock(x, cy+1, z, Material.WATER);
-					else           chunk.setBlock(x, cy+1, z, Material.STONE);
-				}
 			} // end x
 		} // end z
 	}
