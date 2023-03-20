@@ -18,6 +18,11 @@ Beg
 Why?
 Outpost removed
 Outpost destroyed
+He is destroying my home
+They are destroying my home
+You bring the doom to us all
+Reality will shatter along with my home
+You must stop him
 I didn't expect you so soon
 Wasn't there an outpost here?
 You've been here before
@@ -37,7 +42,10 @@ I'm watching
 Smile, I'm watching you
 I'm behind you
 Watch your step
+Let me in
+Let me out
 The water is cold
+SO COLD
 I crave a human
 One bite at a time
 Who are you?
