@@ -4,7 +4,6 @@ import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,8 +26,7 @@ public class Command_TP extends pxnCommand {
 
 
 	@Override
-	public boolean run(final CommandSender sender,
-			final Command cmd, final String[] args) {
+	public boolean run(final CommandSender sender, final String[] args) {
 		final Player player = (sender instanceof Player ? (Player)sender : null);
 		if (player != null && !player.hasPermission("backrooms.tp")) {
 			player.sendMessage(CHAT_PREFIX + "You don't have permission to use this.");

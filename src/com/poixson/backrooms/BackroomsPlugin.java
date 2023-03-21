@@ -58,7 +58,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<TeleportManager> tpManager = new AtomicReference<TeleportManager>(null);
 
 	// listeners
-	protected final AtomicReference<Commands>             commandListener      = new AtomicReference<Commands>(null);
+	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
 
 	// dynmap config generator
@@ -122,7 +122,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// commands listener
 		{
 			final Commands listener = new Commands(this);
-			final Commands previous = this.commandListener.getAndSet(listener);
+			final Commands previous = this.commands.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
@@ -151,7 +151,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.backlevels.clear();
 		// commands listener
 		{
-			final Commands listener = this.commandListener.getAndSet(null);
+			final Commands listener = this.commands.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
