@@ -13,13 +13,13 @@ import com.poixson.commonmc.tools.commands.pxnCommand;
 import com.poixson.utils.NumberUtils;
 
 
-public class CommandTP extends pxnCommand {
+public class Command_TP extends pxnCommand {
 
 	protected final BackroomsPlugin plugin;
 
 
 
-	public CommandTP(final BackroomsPlugin plugin) {
+	public Command_TP(final BackroomsPlugin plugin) {
 		super("tp", "teleport");
 		this.plugin = plugin;
 	}

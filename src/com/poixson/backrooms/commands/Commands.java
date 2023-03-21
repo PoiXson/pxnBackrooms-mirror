@@ -21,7 +21,7 @@ public class Commands extends pxnCommandsHandler {
 			plugin,
 			"backrooms"
 		);
-		this.addCommand(new CommandTP(plugin));
+		this.addCommand(new Command_TP(plugin));
 	}
 
 
