@@ -1,14 +1,14 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.utils.RandomUtils.Rnd10K;
-
 import java.util.LinkedList;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.utils.RandomUtils;
 import com.poixson.backrooms.listeners.Listener_771;
 
 
@@ -55,19 +55,16 @@ public class Level_771 extends LevelBackrooms {
 
 
 	@Override
-	public Location getSpawn(final int level) {
-		int x = (Rnd10K() * 2) - 10000;
-		int z = (Rnd10K() * 2) - 10000;
-		if (Math.abs(x) > Math.abs(z)) {
-			z = 0;
-		} else {
-			x = 0;
-		}
-		return this.getSpawn(level, x, z);
-	}
-	@Override
-	public Location getSpawn(final int level, final int x, final int z) {
-		return this.getSpawn(level, 10, x, LEVEL_Y+LEVEL_H, z);
+	public Location getNewSpawn(final int level) {
+		final int distance = this.plugin.getSpawnDistance();
+		final int y = this.getY(level);
+		int x = RandomUtils.GetRandom(0-distance, distance);
+		int z = RandomUtils.GetRandom(0-distance, distance);
+		if (Math.abs(x) > Math.abs(z)) z = 0;
+		else                           x = 0;
+		final World world = this.plugin.getWorldFromLevel(level);
+		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+		return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
 	}
 
 	@Override
@@ -77,6 +74,10 @@ public class Level_771 extends LevelBackrooms {
 	@Override
 	public int getMaxY(final int level) {
 		return LEVEL_Y + LEVEL_H + 20;
+	}
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 771);
 	}
 
 

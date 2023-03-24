@@ -49,6 +49,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public static final String GENERATOR_NAME = "pxnBackrooms";
 //TODO: set the version automatically
 	protected static final String DEFAULT_RESOURCE_PACK = "http://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-0.1.1.zip";
+	protected static final int DEFAULT_SPAWN_DISTANCE = 10000;
 
 	// backrooms levels
 	protected final HashMap<Integer, LevelBackrooms> backlevels = new HashMap<Integer, LevelBackrooms>();
@@ -223,12 +224,19 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
+		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
 	}
 
 
 
 	public boolean enableDynmapConfigGen() {
 		return this.config.get().getBoolean("Enable Dynmap Config Gen");
+	}
+
+
+
+	public int getSpawnDistance() {
+		return this.config.get().getInt("Spawn Distance");
 	}
 
 

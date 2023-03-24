@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.LinkedList;
@@ -10,10 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
+import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.PluginManager;
@@ -23,9 +24,12 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.utils.RandomUtils;
 
 
 public abstract class LevelBackrooms extends ChunkGenerator {
+	public static final int DEFAULT_SPAWN_SEARCH_HEIGHT = 10;
+	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 50;
 
 	protected final BackroomsPlugin plugin;
 
@@ -96,55 +100,76 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
 	public int getLevelFromY(final int y) {
 		return this.getMainLevel();
 	}
 	public abstract int getY(final int level);
 	public abstract int getMaxY(final int level);
 
-	public abstract Location getSpawn(final int level);
-	public abstract Location getSpawn(final int level, final int x, final int z);
+	public abstract boolean containsLevel(final int level);
 
-	public Location getSpawn(final int level, final int h,
-			final int x, final int y, final int z) {
-		final World world = this.plugin.getWorldFromLevel(level);
-		// search location
-		for (int i=0; i<h; i++) {
-			if (Material.AIR.equals(world.getType(x, y+i,   z))
-			&&  Material.AIR.equals(world.getType(x, y+i+1, z)) )
-				return world.getBlockAt(x, y+i, z).getLocation();
-		}
-		// search near
-		for (int i=0; i<10; i++) {
-			// north
-			if (Material.AIR.equals(world.getType(x, y,   z-i))
-			&&  Material.AIR.equals(world.getType(x, y+1, z-i)) )
-				return world.getBlockAt(x, y, z-i).getLocation();
-			// south
-			if (Material.AIR.equals(world.getType(x, y,   z+i))
-			&&  Material.AIR.equals(world.getType(x, y+1, z+i)) )
-				return world.getBlockAt(x, y, z+i).getLocation();
-			// east
-			if (Material.AIR.equals(world.getType(x+i, y,   z))
-			&&  Material.AIR.equals(world.getType(x+i, y+1, z)) )
-				return world.getBlockAt(x+i, y, z).getLocation();
-			// west
-			if (Material.AIR.equals(world.getType(x-i, y,   z))
-			&&  Material.AIR.equals(world.getType(x-i, y+1, z)) )
-				return world.getBlockAt(x-i, y, z).getLocation();
+	public Location validateSpawn(final Location loc) {
+		return validateSpawn(loc, DEFAULT_SPAWN_SEARCH_HEIGHT);
+	}
+	public Location validateSpawn(final Location loc, final int height) {
+		final World world = loc.getWorld();
+		Block blockA = loc.getBlock();
+		Block blockB;
+		final int x = loc.getBlockX();
+		final int y = loc.getBlockY();
+		final int z = loc.getBlockZ();
+		for (int i=0; i<height; i++) {
+			blockB = world.getBlockAt(x, y+i+1, z);
+			if (blockA.isPassable()
+			&&  blockB.isPassable())
+				return blockA.getLocation();
+			blockA = blockB;
 		}
 		return null;
 	}
+
+	public Location getNewSpawn(final int level) {
+		final int distance = this.plugin.getSpawnDistance();
+		final int y = this.getY(level);
+		final int x = RandomUtils.GetRandom(0-distance, distance);
+		final int z = RandomUtils.GetRandom(0-distance, distance);
+		final World world = this.plugin.getWorldFromLevel(level);
+		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+		return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
+	}
+
+	public Location getSpawnNear(final Location loc) {
+		return getSpawnNear(loc, DEFAULT_SPAWN_NEAR_DISTANCE);
+	}
+	public Location getSpawnNear(final Location loc, final int distance) {
+		final int distanceMin = Math.floorDiv(distance, 3);
+		final World world = loc.getWorld();
+		final int y = loc.getBlockY();
+		int x, z;
+		Location near, valid;
+		for (int i=0; i<10; i++) {
+			x = loc.getBlockX() + RandomUtils.GetRandom(distanceMin, distance);
+			z = loc.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance);
+			near = world.getBlockAt(x, y+i, z).getLocation();
+			valid = this.validateSpawn(near);
+			if (valid != null)
+				return valid;
+		}
+		LOG.warning(LOG_PREFIX + "Failed to find a safe spawn location: " + loc.toString());
+		return loc;
+	}
+
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
 		final int level = this.plugin.getLevelFromWorld(world);
-		Location loc;
-		for (int i=0; i<10; i++) {
-			loc = this.getSpawn(level);
-			if (loc.getWorld().equals(world))
-				return loc;
-		}
-		return this.getSpawn(level);
+		final int y = this.getY(level);
+		final Location loc = world.getBlockAt(0, y, 0).getLocation();
+		return this.getSpawnNear(loc);
 	}
 
 

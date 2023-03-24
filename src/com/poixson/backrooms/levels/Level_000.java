@@ -1,7 +1,5 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.utils.RandomUtils.Rnd10K;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +18,7 @@ import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
+import com.poixson.utils.RandomUtils;
 
 
 // 309 | Radio Station
@@ -122,8 +121,7 @@ public class Level_000 extends LevelBackrooms {
 
 
 	@Override
-	public Location getSpawn(final int level) {
-		final int x, z;
+	public Location getNewSpawn(final int level) {
 		switch (level) {
 		case 1:  // basement
 		case 23: // overgrowth
@@ -132,32 +130,22 @@ public class Level_000 extends LevelBackrooms {
 		case 37: // pools
 		case 5:  // hotel
 		case 19: // attic
-			x = (Rnd10K() * 2) - 10000;
-			z = (Rnd10K() * 2) - 10000;
-			break;
-		case 309: // radio station
-//TODO: improve this
-			x = (Rnd10K() / 5) - 1000;
-			z = Rnd10K();
-			break;
-		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+			return super.getNewSpawn(level);
+		// radio station
+		case 309: {
+			final int distance = this.plugin.getSpawnDistance();
+			final int y = this.getY(level);
+			final int z = RandomUtils.GetRandom(0, distance);
+			final int x = this.gen_309.getPathX(z);
+			final World world = this.plugin.getWorldFromLevel(level);
+			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+			return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
 		}
-		return this.getSpawn(level, x, z);
-	}
-	@Override
-	public Location getSpawn(final int level, final int x, final int z) {
-		switch (level) {
-		case   1: return this.getSpawn(level, H_001, x, Y_001+SUBFLOOR, z); // basement
-		case  23: return this.getSpawn(level, H_023, x, Y_023+SUBFLOOR, z); // overgrowth
-		case   0: return this.getSpawn(level, H_000, x, Y_000+SUBFLOOR, z); // lobby
-		case   6: return this.getSpawn(level, H_006, x, Y_006,          z); // lights out
-		case  37: return this.getSpawn(level, H_037, x, Y_037+SUBFLOOR, z); // pools
-		case   5: return this.getSpawn(level, H_005, x, Y_005+SUBFLOOR, z); // hotel
-		case  19: return this.getSpawn(level, H_019, x, Y_019+SUBFLOOR, z); // attic
-		case 309: return this.getSpawn(level,    10, x, Y_309+SUBFLOOR, z); // radio station
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
+
+
 
 	@Override
 	public int getLevelFromY(final int y) {
@@ -199,6 +187,22 @@ public class Level_000 extends LevelBackrooms {
 		default: break;
 		}
 		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+	}
+	@Override
+	public boolean containsLevel(final int level) {
+		switch (level) {
+		case 1:   // basement
+		case 23:  // overgrowth
+		case 0:   // lobby
+		case 6:   // lights out
+		case 37:  // pools
+		case 5:   // hotel
+		case 19:  // attic
+		case 309: // radio station
+			return true;
+		default: break;
+		}
+		return false;
 	}
 
 

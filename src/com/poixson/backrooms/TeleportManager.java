@@ -142,30 +142,29 @@ public class TeleportManager {
 
 
 
-//TODO: random locations near cached location
 	public Location getSpawnLocation(final int level) {
+		final LevelBackrooms backlevel = this.plugin.getBackroomsLevel(level);
+		if (backlevel == null) {
+			LOG.warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
+			return null;
+		}
 		// cached spawn location
 		{
 			final Location loc = this.levelSpawns.get(Integer.valueOf(level));
 			if (loc != null)
-				return loc;
+				return backlevel.getSpawnNear(loc);
 		}
 		// find spawn location
 		{
-			final LevelBackrooms backrooms = this.plugin.getBackroomsLevel(level);
-			if (backrooms == null) {
-				LOG.warning(String.format("%sUnknown backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
-				return null;
-			}
 			Location loc = null;
 			for (int i=0; i<5; i++) {
-				loc = backrooms.getSpawn(level);
+				loc = backlevel.getNewSpawn(level);
 				if (loc != null)
 					break;
 			}
 			if (loc == null) throw new RuntimeException("Failed to find spawn location for level: " + Integer.toString(level));
 			this.levelSpawns.put(Integer.valueOf(level), loc);
-			return loc;
+			return backlevel.getSpawnNear(loc);
 		}
 	}
 

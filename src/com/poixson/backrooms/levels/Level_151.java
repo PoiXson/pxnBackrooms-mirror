@@ -2,8 +2,6 @@ package com.poixson.backrooms.levels;
 
 import java.util.LinkedList;
 
-import org.bukkit.Location;
-
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -36,16 +34,6 @@ public class Level_151 extends LevelBackrooms {
 
 
 
-//TODO
-	@Override
-	public Location getSpawn(final int level) {
-		return this.getSpawn(level, 0, 0);
-	}
-	@Override
-	public Location getSpawn(final int level, final int x, final int z) {
-		return this.getSpawn(level, 255, x, LEVEL_Y+SUBFLOOR, z);
-	}
-
 	@Override
 	public int getY(final int level) {
 		return LEVEL_Y;
@@ -53,6 +41,10 @@ public class Level_151 extends LevelBackrooms {
 	@Override
 	public int getMaxY(final int level) {
 		return 319;
+	}
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 151);
 	}
 
 

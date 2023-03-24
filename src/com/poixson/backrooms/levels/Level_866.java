@@ -1,10 +1,7 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.utils.RandomUtils.Rnd10K;
-
 import java.util.LinkedList;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -40,23 +37,16 @@ public class Level_866 extends LevelBackrooms {
 
 
 	@Override
-	public Location getSpawn(final int level) {
-		final int x = (Rnd10K() * 2) - 10000;
-		final int z = (Rnd10K() * 2) - 10000;
-		return this.getSpawn(level, x, z);
-	}
-	@Override
-	public Location getSpawn(final int level, final int x, final int z) {
-		return this.getSpawn(level, 10, x, LEVEL_Y+SUBFLOOR, z);
-	}
-
-	@Override
 	public int getY(final int level) {
 		return LEVEL_Y;
 	}
 	@Override
 	public int getMaxY(final int level) {
 		return LEVEL_Y + 20;
+	}
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 866);
 	}
 
 
