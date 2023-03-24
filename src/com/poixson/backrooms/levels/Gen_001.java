@@ -27,7 +27,7 @@ public class Gen_001 extends GenBackrooms {
 	public static final int LAMP_Y = 6;
 
 	public static final double THRESH_WALL  = 0.9;
-	public static final double THRESH_MOIST = 0.35;
+	public static final double THRESH_MOIST = 0.4;
 
 	public static final Material BASEMENT_WALL      = Material.MUD_BRICKS;
 	public static final Material BASEMENT_SUBFLOOR  = Material.DIRT;
@@ -55,7 +55,7 @@ public class Gen_001 extends GenBackrooms {
 		this.noiseBasementWalls.setCellularReturnType(CellularReturnType.Distance);
 		// moist noise
 		this.noiseMoist = this.register(new FastNoiseLiteD());
-		this.noiseMoist.setFrequency(0.03);
+		this.noiseMoist.setFrequency(0.015);
 		this.noiseMoist.setFractalOctaves(2);
 		this.noiseMoist.setFractalGain(2.0);
 	}
