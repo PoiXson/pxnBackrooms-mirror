@@ -15,8 +15,6 @@ import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
-import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 23 | Overgrowth
@@ -29,18 +27,11 @@ public class Gen_023 extends GenBackrooms {
 
 	public static final Material LOBBY_SUBFLOOR = Material.DIRT;
 
-	protected final FastNoiseLiteD noiseCarpet;
-
 
 
 	public Gen_023(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// moss carpets
-		this.noiseCarpet = this.register(new FastNoiseLiteD());
-		this.noiseCarpet.setFrequency(0.01);
-		this.noiseCarpet.setNoiseType(NoiseType.OpenSimplex2);
-		this.noiseCarpet.setFractalOctaves(1);
 	}
 
 
@@ -57,7 +48,6 @@ public class Gen_023 extends GenBackrooms {
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		int xx, zz;
-		double valueCarpet;
 		for (int z=0; z<16; z++) {
 			zz = (chunkZ * 16) + z;
 			for (int x=0; x<16; x++) {
@@ -78,8 +68,7 @@ public class Gen_023 extends GenBackrooms {
 				// room
 				} else {
 					// moss carpet
-					valueCarpet = this.noiseCarpet.getNoise(xx, zz);
-					if (valueCarpet > THRESH_CARPET)
+					if (dao_basement.isWet)
 						chunk.setBlock(x, this.level_y+SUBFLOOR+2, z, Material.MOSS_CARPET);
 					// ceiling
 					if (ENABLE_ROOF) {
