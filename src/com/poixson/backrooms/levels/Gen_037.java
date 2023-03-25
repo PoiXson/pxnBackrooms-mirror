@@ -58,7 +58,6 @@ public class Gen_037 extends GenBackrooms {
 		// tunnels
 		this.noiseTunnels = this.register(new FastNoiseLiteD());
 		this.noiseTunnels.setFrequency(0.015);
-		this.noiseTunnels.setFractalOctaves(1);
 		this.noiseTunnels.setNoiseType(NoiseType.Cellular);
 		this.noiseTunnels.setFractalType(FractalType.PingPong);
 		this.noiseTunnels.setFractalPingPongStrength(5.0);

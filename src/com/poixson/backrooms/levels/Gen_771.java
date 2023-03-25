@@ -14,8 +14,6 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.FastNoiseLiteD.NoiseType;
-import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 import com.poixson.utils.StringUtils;
 
 
@@ -53,17 +51,12 @@ public class Gen_771 extends GenBackrooms {
 		// road lanterns
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseRoadLights.setFrequency(0.3);
-		this.noiseRoadLights.setFractalOctaves(1);
 		// special exits
 		this.noiseSpecial = this.register(new FastNoiseLiteD());
 		this.noiseSpecial.setFrequency(0.5);
-		this.noiseSpecial.setFractalOctaves(1);
 		// chest loot
 		this.noiseLoot = this.register(new FastNoiseLiteD());
 		this.noiseLoot.setFrequency(0.1);
-		this.noiseLoot.setFractalOctaves(1);
-		this.noiseLoot.setNoiseType(NoiseType.OpenSimplex2);
-		this.noiseLoot.setRotationType3D(RotationType3D.ImproveXYPlanes);
 	}
 
 

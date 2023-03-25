@@ -30,7 +30,6 @@ import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
-import com.poixson.utils.FastNoiseLiteD.RotationType3D;
 
 
 // 0 | Lobby
@@ -67,13 +66,9 @@ public class Gen_000 extends GenBackrooms {
 		this.noiseLobbyWalls.setFractalPingPongStrength(2.28);
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
-		this.noiseLobbyWalls.setRotationType3D(RotationType3D.ImproveXYPlanes);
 		// chest loot
 		this.noiseLoot = this.register(new FastNoiseLiteD());
 		this.noiseLoot.setFrequency(0.1);
-		this.noiseLoot.setFractalOctaves(1);
-		this.noiseLoot.setNoiseType(NoiseType.OpenSimplex2);
-		this.noiseLoot.setRotationType3D(RotationType3D.ImproveXYPlanes);
 	}
 
 

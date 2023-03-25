@@ -49,7 +49,6 @@ public class Gen_005 extends GenBackrooms {
 		// hotel walls
 		this.noiseHotelWalls = this.register(new FastNoiseLiteD());
 		this.noiseHotelWalls.setFrequency(0.02);
-		this.noiseHotelWalls.setFractalOctaves(1);
 		this.noiseHotelWalls.setCellularJitter(0.3);
 		this.noiseHotelWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseHotelWalls.setFractalType(FractalType.PingPong);
@@ -57,7 +56,6 @@ public class Gen_005 extends GenBackrooms {
 		// hotel rooms
 		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
 		this.noiseHotelRooms.setFrequency(0.008);
-		this.noiseHotelRooms.setFractalOctaves(1);
 		// populators
 		this.popRooms = new Pop_005(this);
 	}
