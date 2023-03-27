@@ -48,7 +48,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public static final String GENERATOR_NAME = "pxnBackrooms";
 //TODO: set the version automatically
-	protected static final String DEFAULT_RESOURCE_PACK = "http://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-0.1.1.zip";
+	protected static final String DEFAULT_RESOURCE_PACK = "https://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack.zip";
 	protected static final int DEFAULT_SPAWN_DISTANCE = 10000;
 
 	// backrooms levels
