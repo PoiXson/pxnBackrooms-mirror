@@ -9,8 +9,8 @@ fi
 \pushd  "resources/pack/"  >/dev/null  || exit 1
 	\zip -r -9  ../pxnBackrooms-resourcepack.zip *  || exit 1
 \popd >/dev/null
-\pushd  "../FoodRot/resources/pack/"  >/dev/null  || exit 1
-	\zip -r -9  ../../../pxnBackrooms/resources/pxnBackrooms-resourcepack.zip *  \
+\pushd  "../FoodRot/resourcepack/"  >/dev/null  || exit 1
+	\zip -r -9  ../../pxnBackrooms/resources/pxnBackrooms-resourcepack.zip *  \
 		--exclude pack.mcmeta  || exit 1
 \popd >/dev/null
 
