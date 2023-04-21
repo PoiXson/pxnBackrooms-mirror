@@ -16,6 +16,7 @@ Don't open the door
 Oops
 Beg
 Why?
+Why does everything look the same
 Outpost removed
 Outpost destroyed
 He is destroying my home
@@ -27,6 +28,20 @@ I didn't expect you so soon
 Wasn't there an outpost here?
 You've been here before
 You're going in circles
+I've been here for days
+It feels like I'm going in circles
+You're not supposed to be here
+You shouldn't have come here
+It goes on forever
+It never ends
+This place never ends
+I don't remember coming this way before
+You're not alone in here
+The buzzing never stops
+What is that buzzing?
+This place is not meant for the living
+Lost souls wander here forever
+The walls have eyes and ears and elbows
 I'm glad to see you're back
 You don't want the seeker to win
 I can't stop thinking about killing you
@@ -41,7 +56,10 @@ I see you
 I'm watching
 Smile, I'm watching you
 I'm behind you
+Something is watching us
 Watch your step
+Did you hear that too?
+I hear something moving
 Let me in
 Let me out
 The water is cold
@@ -54,9 +72,15 @@ They're here
 It's alive
 It's coming
 It's near
+Something is near
+The darkness is alive
 The time is near
+It's only a matter of time
 I put a spell on you
 This place is cursed
+There is no escape
+You cannot escape
+There's no way out
 No one escapes alive
 You will plead to escape
 Sometimes dead is better
