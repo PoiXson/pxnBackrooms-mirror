@@ -12,21 +12,24 @@ import com.poixson.commonmc.tools.commands.pxnCommand;
 import com.poixson.utils.NumberUtils;
 
 
-public class Command_TP extends pxnCommand {
+public class Command_TP extends pxnCommand<BackroomsPlugin> {
 
 	protected final BackroomsPlugin plugin;
 
 
 
 	public Command_TP(final BackroomsPlugin plugin) {
-		super("tp", "teleport");
+		super(plugin,
+			"tp",
+			"teleport"
+		);
 		this.plugin = plugin;
 	}
 
 
 
 	@Override
-	public boolean run(final CommandSender sender, final String[] args) {
+	public boolean run(final CommandSender sender, final String label, final String[] args) {
 		final Player player = (sender instanceof Player ? (Player)sender : null);
 		if (player != null && !player.hasPermission("backrooms.tp")) {
 			player.sendMessage(CHAT_PREFIX + "You don't have permission to use this.");
