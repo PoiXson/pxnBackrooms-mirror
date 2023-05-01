@@ -66,11 +66,11 @@ public class Gen_005 extends GenBackrooms {
 		WALL,
 	};
 
-//TODO: add wall_1_away
 	public class HotelData implements PreGenData {
 
 		public final double value;
 		public NodeType type;
+		public boolean hall_center = false;
 
 		public HotelData(final double value) {
 			this.value = value;
@@ -100,21 +100,69 @@ public class Gen_005 extends GenBackrooms {
 		// find walls
 		for (int z=-8; z<24; z++) {
 			for (int x=-8; x<24; x++) {
-				dao   = data.get(new Iab(x,   z  ));
-				daoN  = data.get(new Iab(x,   z-1));
-				daoS  = data.get(new Iab(x,   z+1));
-				daoE  = data.get(new Iab(x+1, z  ));
-				daoW  = data.get(new Iab(x-1, z  ));
-				daoNE = data.get(new Iab(x+1, z-1));
-				daoNW = data.get(new Iab(x-1, z-1));
-				daoSE = data.get(new Iab(x+1, z+1));
-				daoSW = data.get(new Iab(x-1, z+1));
+				dao = data.get(new Iab(x, z));
 				if (NodeType.ROOM.equals(dao.type)) {
-					if ((daoN  != null && NodeType.HALL.equals(daoN.type))
-					||  (daoS  != null && NodeType.HALL.equals(daoS.type))
-					||  (daoE  != null && NodeType.HALL.equals(daoE.type))
-					||  (daoW  != null && NodeType.HALL.equals(daoW.type))
-					||  (daoNE != null && NodeType.HALL.equals(daoNE.type))
+					daoN  = data.get(new Iab(x,   z-1));
+					daoS  = data.get(new Iab(x,   z+1));
+					daoE  = data.get(new Iab(x+1, z  ));
+					daoW  = data.get(new Iab(x-1, z  ));
+					daoNE = data.get(new Iab(x+1, z-1));
+					daoNW = data.get(new Iab(x-1, z-1));
+					daoSE = data.get(new Iab(x+1, z+1));
+					daoSW = data.get(new Iab(x-1, z+1));
+					if (daoN != null && NodeType.HALL.equals(daoN.type)) {
+						dao.type = NodeType.WALL;
+						LOOP_I:
+						for (int i=3; i<9; i++) {
+							daoN = data.get(new Iab(x, z-i));
+							if (daoN == null) break LOOP_I;
+							if (!NodeType.HALL.equals(daoN.type)) {
+								daoN = data.get(new Iab(x, z-Math.floorDiv(i, 2)));
+								daoN.hall_center = true;
+								break LOOP_I;
+							}
+						}
+					}
+					if (daoS != null && NodeType.HALL.equals(daoS.type)) {
+						dao.type = NodeType.WALL;
+						LOOP_I:
+						for (int i=3; i<9; i++) {
+							daoS = data.get(new Iab(x, z+i));
+							if (daoS == null) break LOOP_I;
+							if (!NodeType.HALL.equals(daoS.type)) {
+								daoS = data.get(new Iab(x, z+Math.floorDiv(i, 2)));
+								daoS.hall_center = true;
+								break LOOP_I;
+							}
+						}
+					}
+					if (daoE != null && NodeType.HALL.equals(daoE.type)) {
+						dao.type = NodeType.WALL;
+						LOOP_I:
+						for (int i=3; i<9; i++) {
+							daoE = data.get(new Iab(x+i, z));
+							if (daoE == null) break LOOP_I;
+							if (!NodeType.HALL.equals(daoE.type)) {
+								daoE = data.get(new Iab(x+Math.floorDiv(i, 2), z));
+								daoE.hall_center = true;
+								break LOOP_I;
+							}
+						}
+					}
+					if (daoW != null && NodeType.HALL.equals(daoW.type)) {
+						dao.type = NodeType.WALL;
+						LOOP_I:
+						for (int i=3; i<9; i++) {
+							daoW = data.get(new Iab(x-i, z));
+							if (daoW == null) break LOOP_I;
+							if (!NodeType.HALL.equals(daoW.type)) {
+								daoW = data.get(new Iab(x-Math.floorDiv(i, 2), z));
+								daoW.hall_center = true;
+								break LOOP_I;
+							}
+						}
+					}
+					if ((daoNE != null && NodeType.HALL.equals(daoNE.type))
 					||  (daoNW != null && NodeType.HALL.equals(daoNW.type))
 					||  (daoSE != null && NodeType.HALL.equals(daoSE.type))
 					||  (daoSW != null && NodeType.HALL.equals(daoSW.type)) )
@@ -175,16 +223,12 @@ public class Gen_005 extends GenBackrooms {
 							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
 						// ceiling
 						} else {
-							final HotelData daoN = hotelData.get(new Iab(x, z-1));
-							final HotelData daoS = hotelData.get(new Iab(x, z+1));
-							final HotelData daoE = hotelData.get(new Iab(x+1, z));
-							final HotelData daoW = hotelData.get(new Iab(x-1, z));
-							if (NodeType.WALL.equals(daoN.type)
-							||  NodeType.WALL.equals(daoS.type)
-							||  NodeType.WALL.equals(daoE.type)
-							||  NodeType.WALL.equals(daoW.type) ) {
+							if (NodeType.WALL.equals(hotelData.get(new Iab(x, z-1)).type) // north
+							||  NodeType.WALL.equals(hotelData.get(new Iab(x, z+1)).type) // south
+							||  NodeType.WALL.equals(hotelData.get(new Iab(x+1, z)).type) // east
+							||  NodeType.WALL.equals(hotelData.get(new Iab(x-1, z)).type))// west
 								chunk.setBlock(x, cy, z, Material.SMOOTH_STONE);
-							} else {
+							else {
 								chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
 								final Slab slab = (Slab) chunk.getBlockData(x, cy, z);
 								slab.setType(Slab.Type.TOP);
@@ -194,7 +238,8 @@ public class Gen_005 extends GenBackrooms {
 					}
 					break;
 				}
-				default: break;
+				case ROOM: break;
+				default: throw new RuntimeException("Unknown hotel type: " + dao.type.toString());
 				}
 				if (ENABLE_ROOF) {
 					for (int i=0; i<SUBCEILING; i++) {
