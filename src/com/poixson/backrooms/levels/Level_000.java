@@ -14,6 +14,7 @@ import com.poixson.backrooms.levels.Gen_005.HotelData;
 import com.poixson.backrooms.levels.Gen_037.PoolData;
 import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
+import com.poixson.backrooms.listeners.Listener_023;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.RandomUtils;
@@ -75,6 +76,7 @@ public class Level_000 extends LevelBackrooms {
 	// listeners
 	protected final Listener_001 listener_001;
 	protected final Listener_006 listener_006;
+	protected final Listener_023 listener_023;
 
 
 
@@ -110,6 +112,7 @@ public class Level_000 extends LevelBackrooms {
 		// listeners
 		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);
+		this.listener_023 = new Listener_023(plugin);
 	}
 
 
@@ -119,12 +122,14 @@ public class Level_000 extends LevelBackrooms {
 		super.register();
 		this.listener_001.register();
 		this.listener_006.register();
+		this.listener_023.register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
 		this.listener_001.unregister();
 		this.listener_006.unregister();
+		this.listener_023.unregister();
 	}
 
 
