@@ -38,10 +38,10 @@ public class Level_000 extends LevelBackrooms {
 	public static final int Y_001 = 0;
 	public static final int H_001 = 30;
 	// overgrowth
-	public static final int Y_023 = Y_001 + H_001 + SUBFLOOR + SUBCEILING + 1;
+	public static final int Y_023 = Y_001 + H_001 + SUBFLOOR + 2;
 	public static final int H_023 = 5;
 	// lobby
-	public static final int Y_000 = Y_023 + H_023 + SUBFLOOR + SUBCEILING + 1;
+	public static final int Y_000 = Y_023 + H_023 + SUBFLOOR + SUBCEILING + 3;
 	public static final int H_000 = 5;
 	// lights out
 	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 3;

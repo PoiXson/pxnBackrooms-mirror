@@ -148,7 +148,7 @@ public class Gen_037 extends GenBackrooms {
 				// subceiling
 				if (ENABLE_ROOF) {
 					for (int iy=0; iy<SUBCEILING; iy++)
-						chunk.setBlock(ix, cy+iy+2, iz, POOLS_SUBCEILING);
+						chunk.setBlock(ix, cy+iy+1, iz, POOLS_SUBCEILING);
 				}
 			}
 		}
