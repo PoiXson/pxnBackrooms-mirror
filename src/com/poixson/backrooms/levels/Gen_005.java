@@ -38,9 +38,6 @@ public class Gen_005 extends GenBackrooms {
 	protected final FastNoiseLiteD noiseHotelWalls;
 	protected final FastNoiseLiteD noiseHotelRooms;
 
-	// populators
-	public final Pop_005 popRooms;
-
 
 
 	public Gen_005(final LevelBackrooms backlevel,
@@ -56,8 +53,6 @@ public class Gen_005 extends GenBackrooms {
 		// hotel rooms
 		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
 		this.noiseHotelRooms.setFrequency(0.008);
-		// populators
-		this.popRooms = new Pop_005(this);
 	}
 
 

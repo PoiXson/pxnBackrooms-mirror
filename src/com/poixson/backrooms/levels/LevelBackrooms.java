@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.block.Block;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.PluginManager;
@@ -34,6 +35,8 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 	protected final BackroomsPlugin plugin;
 
 	protected final CopyOnWriteArraySet<GenBackrooms> gens = new CopyOnWriteArraySet<GenBackrooms>();
+	protected final CopyOnWriteArraySet<PopBackrooms> pops = new CopyOnWriteArraySet<PopBackrooms>();
+	protected final PopulatorManager popman = new PopulatorManager();
 
 	protected final int mainlevel;
 
@@ -58,6 +61,30 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
+	protected class PopulatorManager extends BlockPopulator {
+		@Override
+		public void populate(final WorldInfo worldInfo, final Random rnd,
+				final int chunkX, final int chunkZ, final LimitedRegion region) {
+			final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
+			// block plotters
+			for (final PopBackrooms pop : LevelBackrooms.this.pops)
+				pop.populate(chunkX, chunkZ, region, delayed_plotters);
+			// place delayed blocks
+			if (!delayed_plotters.isEmpty()) {
+				for (final BlockPlotter plot : delayed_plotters)
+					plot.run();
+				delayed_plotters.clear();
+			}
+		}
+	}
+
+	@Override
+	public List<BlockPopulator> getDefaultPopulators(final World world) {
+		return Arrays.asList(this.popman);
+	}
+
+
+
 	public int getMainLevel() {
 		return this.mainlevel;
 	}
@@ -73,6 +100,10 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 	protected <T extends GenBackrooms> T register(final T gen) {
 		this.gens.add(gen);
 		return gen;
+	}
+	protected <T extends PopBackrooms> T register(final T pop) {
+		this.pops.add(pop);
+		return pop;
 	}
 
 

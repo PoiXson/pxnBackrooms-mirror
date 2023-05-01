@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.commonmc.tools.PathTracer;
-import com.poixson.commonmc.tools.TreePopulator;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -33,12 +32,9 @@ public class Gen_309 extends GenBackrooms {
 	protected final FastNoiseLiteD noisePathGround;
 	protected final FastNoiseLiteD noiseTrees;
 
-	// populators
-	protected final TreePopulator treePop;
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
-	public final Pop_309 popRadio;
 
 
 
@@ -58,10 +54,8 @@ public class Gen_309 extends GenBackrooms {
 		// tree noise
 		this.noiseTrees = this.register(new FastNoiseLiteD());
 		this.noiseTrees.setFrequency(0.2f);
-		// populators
-		this.treePop = new Pop_309_Trees(this);
+		// path locations
 		this.pathTrace = new PathTracer(this.noisePath, 18, this.getPathCacheMap());
-		this.popRadio = new Pop_309(this);
 	}
 
 

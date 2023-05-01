@@ -39,9 +39,6 @@ public class Gen_037 extends GenBackrooms {
 	protected final FastNoiseLiteD noisePoolRooms;
 	protected final FastNoiseLiteD noiseTunnels;
 
-	// populators
-	public final Pop_037 popPools;
-
 
 
 	public Gen_037(final LevelBackrooms backlevel,
@@ -62,8 +59,6 @@ public class Gen_037 extends GenBackrooms {
 		this.noiseTunnels.setFractalType(FractalType.PingPong);
 		this.noiseTunnels.setFractalPingPongStrength(5.0);
 		this.noiseTunnels.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		// populators
-		this.popPools = new Pop_037(this);
 	}
 
 

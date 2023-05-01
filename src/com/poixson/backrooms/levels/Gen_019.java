@@ -29,9 +29,6 @@ public class Gen_019 extends GenBackrooms {
 	// noise
 	protected final FastNoiseLiteD noiseAtticWalls;
 
-	// populators
-	public final Pop_019 popAttic;
-
 
 
 	public Gen_019(final LevelBackrooms backlevel,
@@ -44,8 +41,6 @@ public class Gen_019 extends GenBackrooms {
 		this.noiseAtticWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseAtticWalls.setFractalType(FractalType.PingPong);
 		this.noiseAtticWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		// populators
-		this.popAttic = new Pop_019(this);
 	}
 
 

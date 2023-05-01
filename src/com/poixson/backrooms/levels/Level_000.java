@@ -2,11 +2,9 @@ package com.poixson.backrooms.levels;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
@@ -68,6 +66,12 @@ public class Level_000 extends LevelBackrooms {
 	public final Gen_019 gen_019;
 	public final Gen_309 gen_309;
 
+	// populators
+	public final Pop_005 pop_005;
+	public final Pop_019 pop_019;
+	public final Pop_037 pop_037;
+	public final Pop_309 pop_309;
+
 	// listeners
 	protected final Listener_001 listener_001;
 	protected final Listener_006 listener_006;
@@ -98,6 +102,11 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_005 = this.register(new Gen_005(this, Y_005, H_005)); // hotel
 		this.gen_019 = this.register(new Gen_019(this, Y_019, H_019)); // attic
 		this.gen_309 = this.register(new Gen_309(this, Y_309,     0)); // radio station
+		// populators
+		this.pop_005 = this.register(new Pop_005(this)); // hotel
+		this.pop_019 = this.register(new Pop_019(this)); // attic
+		this.pop_037 = this.register(new Pop_037(this)); // pools
+		this.pop_309 = this.register(new Pop_309(this)); // radio station
 		// listeners
 		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);
@@ -235,20 +244,6 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_005.generate(pregen, chunk, plots, chunkX, chunkZ); // hotel
 		this.gen_019.generate(pregen, chunk, plots, chunkX, chunkZ); // attic
 		this.gen_309.generate(pregen, chunk, plots, chunkX, chunkZ); // radio station
-	}
-
-
-
-	@Override
-	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		final LinkedList<BlockPopulator> list = new LinkedList<BlockPopulator>();
-		if (Gen_309.ENABLE_ROOF)
-			list.add(this.gen_309.treePop);
-		list.add(this.gen_309.popRadio);
-		list.add(this.gen_005.popRooms);
-		list.add(this.gen_019.popAttic);
-		list.add(this.gen_037.popPools);
-		return list;
 	}
 
 
