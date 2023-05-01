@@ -16,7 +16,7 @@ public class Gen_866 extends GenBackrooms {
 	public static final boolean ENABLE_ROOF     = true;
 
 	// noise
-	protected final FastNoiseLiteD noiseField;
+	public final FastNoiseLiteD noiseField;
 
 	protected int rndLast = 0;
 

@@ -47,8 +47,8 @@ public class Gen_000 extends GenBackrooms {
 	public static final Material LOBBY_CARPET   = Material.LIGHT_GRAY_WOOL;
 
 	// noise
-	protected final FastNoiseLiteD noiseLobbyWalls;
-	protected final FastNoiseLiteD noiseLoot;
+	public final FastNoiseLiteD noiseLobbyWalls;
+	public final FastNoiseLiteD noiseLoot;
 
 
 

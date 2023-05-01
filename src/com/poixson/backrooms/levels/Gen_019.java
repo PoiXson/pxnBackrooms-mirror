@@ -27,7 +27,7 @@ public class Gen_019 extends GenBackrooms {
 	public final int level_m;
 
 	// noise
-	protected final FastNoiseLiteD noiseAtticWalls;
+	public final FastNoiseLiteD noiseAtticWalls;
 
 
 

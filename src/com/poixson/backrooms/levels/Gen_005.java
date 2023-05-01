@@ -35,8 +35,8 @@ public class Gen_005 extends GenBackrooms {
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
 
 	// noise
-	protected final FastNoiseLiteD noiseHotelWalls;
-	protected final FastNoiseLiteD noiseHotelRooms;
+	public final FastNoiseLiteD noiseHotelWalls;
+	public final FastNoiseLiteD noiseHotelRooms;
 
 
 

@@ -36,8 +36,8 @@ public class Gen_037 extends GenBackrooms {
 
 
 	// noise
-	protected final FastNoiseLiteD noisePoolRooms;
-	protected final FastNoiseLiteD noiseTunnels;
+	public final FastNoiseLiteD noisePoolRooms;
+	public final FastNoiseLiteD noiseTunnels;
 
 
 

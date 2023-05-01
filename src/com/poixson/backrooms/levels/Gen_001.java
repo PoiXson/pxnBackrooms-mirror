@@ -35,8 +35,8 @@ public class Gen_001 extends GenBackrooms {
 	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
 
 	// noise
-	protected final FastNoiseLiteD noiseBasementWalls;
-	protected final FastNoiseLiteD noiseMoist;
+	public final FastNoiseLiteD noiseBasementWalls;
+	public final FastNoiseLiteD noiseMoist;
 
 
 

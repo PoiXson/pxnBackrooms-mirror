@@ -28,9 +28,9 @@ public class Gen_309 extends GenBackrooms {
 	public static final Material PATH_TREE_LEAVES = Material.BIRCH_LEAVES;
 
 	// noise
-	protected final FastNoiseLiteD noisePath;
-	protected final FastNoiseLiteD noisePathGround;
-	protected final FastNoiseLiteD noiseTrees;
+	public final FastNoiseLiteD noisePath;
+	public final FastNoiseLiteD noisePathGround;
+	public final FastNoiseLiteD noiseTrees;
 
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =

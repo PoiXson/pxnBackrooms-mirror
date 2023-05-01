@@ -31,9 +31,9 @@ public class Gen_771 extends GenBackrooms {
 	public static final int PILLAR_B_OFFSET = 10;
 
 	// noise
-	protected final FastNoiseLiteD noiseRoadLights;
-	protected final FastNoiseLiteD noiseSpecial;
-	protected final FastNoiseLiteD noiseLoot;
+	public final FastNoiseLiteD noiseRoadLights;
+	public final FastNoiseLiteD noiseSpecial;
+	public final FastNoiseLiteD noiseLoot;
 
 	public enum PillarType {
 		PILLAR_NORM,
