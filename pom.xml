@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Tue Mar 21 11:35:07 PM EDT 2023 -->
+<!-- Generated: Sun Apr 30 09:27:07 PM EDT 2023 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -34,7 +34,7 @@
 		<spigot-api-version>1.19.3-R0.1-SNAPSHOT</spigot-api-version>
 		<common-core-version>[4.0.0,)</common-core-version>
 		<common-plugin-mc-version>[4.0.0,)</common-plugin-mc-version>
-		<foodrot-version>[0.0.0,)</foodrot-version>
+		<morefoods-api-version>[0.0.0,)</morefoods-api-version>
 		<Multiverse-Core-version>4.3.1</Multiverse-Core-version>
 
 	</properties>
@@ -217,10 +217,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<artifactId>foodrot</artifactId>
+			<artifactId>morefoods-api</artifactId>
 			<groupId>com.poixson</groupId>
-			<version>${foodrot-version}</version>
-			<scope>provided</scope>
+			<version>${morefoods-api-version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>Multiverse-Core</artifactId>
