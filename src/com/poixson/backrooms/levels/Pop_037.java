@@ -16,7 +16,6 @@ import com.poixson.tools.dao.Iab;
 // 37 | Poolrooms
 public class Pop_037 extends BlockPopulator {
 
-	public static final boolean ENABLE_GENERATE = true;
 
 	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 
@@ -119,7 +118,6 @@ public class Pop_037 extends BlockPopulator {
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
 		if (!Gen_037.ENABLE_GENERATE) return;
-		if (!ENABLE_GENERATE)         return;
 		// trace tunnels
 		final LinkedList<TunnelTracer> tunnelTracers = new LinkedList<TunnelTracer>();
 		{

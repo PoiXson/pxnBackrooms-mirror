@@ -10,8 +10,6 @@ import org.bukkit.generator.WorldInfo;
 // 19 | Attic
 public class Pop_019 extends BlockPopulator {
 
-	public static final boolean ENABLE_GENERATE = true;
-
 	protected final Gen_019 gen;
 
 
@@ -27,7 +25,6 @@ public class Pop_019 extends BlockPopulator {
 	public void populate(final WorldInfo world, final Random rnd,
 	final int chunkX, final int chunkZ, final LimitedRegion region) {
 		if (!Gen_019.ENABLE_GENERATE) return;
-		if (!ENABLE_GENERATE)         return;
 	}
 
 
