@@ -272,6 +272,7 @@ public class Gen_000 extends GenBackrooms {
 								}
 							}
 							if (!found_basement_wall) {
+								((Level_000)this.backlevel).portal_0_to_1.add(xx, zz);
 								final int h = Level_000.H_023 + this.level_h + (SUBFLOOR*3) + (SUBCEILING*2);
 								final BlockPlotter plot = new BlockPlotter(chunk, h, 6, 5);
 								switch (dao.box_dir) {

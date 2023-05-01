@@ -15,6 +15,7 @@ import com.poixson.backrooms.levels.Gen_037.PoolData;
 import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.backrooms.listeners.Listener_023;
+import com.poixson.commonmc.tools.locationstore.LocationStoreManager;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.RandomUtils;
@@ -78,6 +79,12 @@ public class Level_000 extends LevelBackrooms {
 	protected final Listener_006 listener_006;
 	protected final Listener_023 listener_023;
 
+	// exit locations
+	public final LocationStoreManager portal_0_to_1;
+	public final LocationStoreManager portal_0_to_37;
+	public final LocationStoreManager portal_5_to_37;
+	public final LocationStoreManager cheese_rooms;
+
 
 
 	public Level_000(final BackroomsPlugin plugin) {
@@ -113,6 +120,11 @@ public class Level_000 extends LevelBackrooms {
 		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);
 		this.listener_023 = new Listener_023(plugin);
+		// exit locations
+		this.portal_0_to_1  = (new LocationStoreManager("level0", "portal_0_to_1" )).start(plugin); // lobby to basement
+		this.portal_0_to_37 = (new LocationStoreManager("level0", "portal_0_to_37")).start(plugin); // lobby to pools
+		this.portal_5_to_37 = (new LocationStoreManager("level0", "portal_5_to_37")).start(plugin); // hotel to pools
+		this.cheese_rooms   = (new LocationStoreManager("level0", "cheese_rooms"  )).start(plugin); // cheese hotel room
 	}
 
 
@@ -130,6 +142,10 @@ public class Level_000 extends LevelBackrooms {
 		this.listener_001.unregister();
 		this.listener_006.unregister();
 		this.listener_023.unregister();
+		this.portal_0_to_1.saveAll();
+		this.portal_0_to_37.saveAll();
+		this.portal_5_to_37.saveAll();
+		this.cheese_rooms.saveAll();
 	}
 
 
