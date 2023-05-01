@@ -132,6 +132,7 @@ public class Gen_005 extends GenBackrooms {
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		final int h  = this.level_h + 2;
 		int xx, zz;
+		int mod_x, mod_z;
 		HotelData dao;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
@@ -162,7 +163,11 @@ public class Gen_005 extends GenBackrooms {
 					chunk.setBlock(x, y, z, tile);
 					if (ENABLE_ROOF) {
 						// ceiling light
-						if (xx % 5 == 0 && zz % 5 == 0) {
+						mod_x = xx % 5;
+						mod_z = zz % 5;
+						if (dao.hall_center
+						&& (mod_x >= 0 && mod_x < 2)
+						&& (mod_z >= 1 && mod_z < 4)) {
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
 							final Lightable lamp = (Lightable) chunk.getBlockData(x, cy, z);
 							lamp.setLit(true);
