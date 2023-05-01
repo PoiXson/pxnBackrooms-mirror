@@ -112,6 +112,13 @@ public class Gen_309 extends GenBackrooms {
 
 
 
+	public int getPathX(final int z) {
+		if (z < 0) return 0;
+		return this.pathTrace.getPathX(z);
+	}
+
+
+
 	public ConcurrentHashMap<Integer, Double> getPathCacheMap() {
 		// existing
 		{
