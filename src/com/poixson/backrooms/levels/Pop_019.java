@@ -8,7 +8,7 @@ import org.bukkit.generator.WorldInfo;
 
 
 // 19 | Attic
-public class Pop_019 extends BlockPopulator {
+public class Pop_019 implements PopBackrooms {
 
 	protected final Gen_019 gen;
 

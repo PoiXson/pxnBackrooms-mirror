@@ -17,7 +17,7 @@ import com.poixson.tools.dao.Iabcd;
 
 
 // 5 | Hotel
-public class Pop_005 extends BlockPopulator {
+public class Pop_005 implements PopBackrooms {
 
 
 	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;

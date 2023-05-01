@@ -14,8 +14,7 @@ import com.poixson.tools.dao.Iab;
 
 
 // 37 | Poolrooms
-public class Pop_037 extends BlockPopulator {
-
+public class Pop_037 implements PopBackrooms {
 
 	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 

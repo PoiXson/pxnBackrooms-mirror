@@ -10,9 +10,9 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
 
-// 309 | Radio Station
-public class Pop_309 extends BlockPopulator {
 
+// 309 | Radio Station
+public class Pop_309 implements PopBackrooms {
 
 	protected final Gen_309 gen;
 
