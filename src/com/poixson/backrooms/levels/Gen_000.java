@@ -372,7 +372,7 @@ public class Gen_000 extends GenBackrooms {
 		@Override
 		public void fill(final Inventory chest) {
 //TODO
-final ItemStack item = new ItemStack(Material.BREAD);
+			final ItemStack item = new ItemStack(Material.BREAD);
 			final Location loc = chest.getLocation();
 			final int xx = loc.getBlockX();
 			final int zz = loc.getBlockZ();

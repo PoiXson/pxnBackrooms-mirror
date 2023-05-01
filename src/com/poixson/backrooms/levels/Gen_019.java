@@ -1,8 +1,5 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
-import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
-
 import java.util.LinkedList;
 
 import org.bukkit.Material;

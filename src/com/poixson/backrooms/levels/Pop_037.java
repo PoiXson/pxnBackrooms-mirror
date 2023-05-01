@@ -1,12 +1,9 @@
 package com.poixson.backrooms.levels;
 
 import java.util.LinkedList;
-import java.util.Random;
 
 import org.bukkit.Material;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.poixson.commonmc.tools.LineTracer;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -29,9 +26,9 @@ public class Pop_037 implements PopBackrooms {
 
 
 
-	public Pop_037(final Gen_037 gen) {
+	public Pop_037(final Level_000 level0) {
 		super();
-		this.gen = gen;
+		this.gen = level0.gen_037;
 		// find starting points
 		{
 			final LinkedList<Iab> list = new LinkedList<Iab>();
@@ -114,8 +111,8 @@ public class Pop_037 implements PopBackrooms {
 
 
 	@Override
-	public void populate(final WorldInfo world, final Random rnd,
-	final int chunkX, final int chunkZ, final LimitedRegion region) {
+	public void populate(final int chunkX, final int chunkZ,
+	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		if (!Gen_037.ENABLE_GENERATE) return;
 		// trace tunnels
 		final LinkedList<TunnelTracer> tunnelTracers = new LinkedList<TunnelTracer>();

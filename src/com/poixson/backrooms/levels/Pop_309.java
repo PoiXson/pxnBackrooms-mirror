@@ -2,12 +2,10 @@ package com.poixson.backrooms.levels;
 
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
 
-import java.util.Random;
+import java.util.LinkedList;
 
 import org.bukkit.Material;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 
 
@@ -18,15 +16,16 @@ public class Pop_309 implements PopBackrooms {
 
 
 
-	public Pop_309(final Gen_309 gen) {
-		this.gen = gen;
+	public Pop_309(final Level_000 level0) {
+		this.gen = level0.gen_309;
+		this.treePop = new Pop_309_Trees(this.gen);
 	}
 
 
 
 	@Override
-	public void populate(final WorldInfo world, final Random rnd,
-	final int chunkX, final int chunkZ, final LimitedRegion region) {
+	public void populate(final int chunkX, final int chunkZ,
+	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		if (chunkX == 0 && chunkZ == 0)
 			this.populate0x0(region);
 	}
@@ -70,10 +69,7 @@ public class Pop_309 implements PopBackrooms {
 					}
 				}
 				// floor
-				
-				
-				
-				
+//TODO
 			}
 		}
 	}

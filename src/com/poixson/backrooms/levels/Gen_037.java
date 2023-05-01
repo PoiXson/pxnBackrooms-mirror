@@ -134,7 +134,8 @@ public class Gen_037 extends GenBackrooms {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final Map<Iab, PoolData> poolData = ((PregenLevel0)pregen).pools;
+		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
+		final Map<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_h + y + 1;
 		final int h  = this.level_h + 2;

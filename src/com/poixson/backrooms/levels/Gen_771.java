@@ -1,8 +1,7 @@
 package com.poixson.backrooms.levels;
 
-import static com.poixson.commonmc.utils.LocationUtils.AxToFace;
-import static com.poixson.commonmc.utils.LocationUtils.FaceToAx;
-import static com.poixson.commonmc.utils.LocationUtils.FaceToIxy;
+import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
+import static com.poixson.commonmc.utils.LocationUtils.FaceToIxz;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 import static com.poixson.commonmc.utils.LocationUtils.ValueToFaceQuarter;
 
@@ -158,13 +157,13 @@ public class Gen_771 extends GenBackrooms {
 		plot.y( (this.level_y+this.level_h)-3 );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
-		plot.type('X', Material.GILDED_BLACKSTONE);
 		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
+		plot.type('X', Material.GILDED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
 		plot.type('.', Material.LIGHT, "15");
-		plot.type(',', Material.LIGHT, "9");
+		plot.type(',', Material.LIGHT,  "9");
 		plot.axis(axis)
 			.y((this.level_y + this.level_h) - 3)
 			.x((0-chunkX)*15)
@@ -227,9 +226,9 @@ public class Gen_771 extends GenBackrooms {
 
 
 	protected void generateRoad(final ChunkData chunk, final int chunkX, final int chunkZ) {
-		final BlockFace direction, side;
 		int x = 0;
 		int z = 0;
+		final BlockFace direction, side;
 		if (chunkZ <-1) { direction = BlockFace.NORTH; z = 15; } else
 		if (chunkZ > 0) { direction = BlockFace.SOUTH; z =  0; } else
 		if (chunkX > 0) { direction = BlockFace.EAST;  x =  0; } else
@@ -250,8 +249,8 @@ public class Gen_771 extends GenBackrooms {
 			break;
 		default: throw new RuntimeException("Unknown direction: " + direction.toString());
 		}
-		// road
-		this.generateRoadTop(chunk, direction, side, chunkX, chunkZ, x, z);
+		// axis roads
+		this.generateRoadTop(   chunk, direction, side, chunkX, chunkZ, x, z);
 		this.generateRoadBottom(chunk, direction, side, chunkX, chunkZ, x, z);
 		// pillar
 		{
@@ -313,7 +312,7 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('i', Material.SOUL_LANTERN);
 		plot.type('L', Material.LIGHT, "15");
 		double value_light;
-		final Iab dir = FaceToIxy(direction);
+		final Iab dir = FaceToIxz(direction);
 		final int cx = chunkX * 16;
 		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
@@ -325,7 +324,6 @@ public class Gen_771 extends GenBackrooms {
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
 		}
-		// place blocks
 		plot.run();
 	}
 	protected void generateRoadBottom(final ChunkData chunk,
@@ -342,7 +340,7 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('i', Material.LANTERN);
 		plot.type('L', Material.LIGHT, "15");
 		double value_light;
-		final Iab dir = FaceToIxy(direction);
+		final Iab dir = FaceToIxz(direction);
 		final int cx = chunkX * 16;
 		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
@@ -354,7 +352,6 @@ public class Gen_771 extends GenBackrooms {
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
 		}
-		// place blocks
 		plot.run();
 	}
 

@@ -108,14 +108,18 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate world
+
+
+
 	@Override
 	public void generateSurface(final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
 		// seed
 		final int seed = Long.valueOf( worldInfo.getSeed() ).intValue();
-		for (final GenBackrooms gen : this.gens) {
+		for (final GenBackrooms gen : this.gens)
 			gen.setSeed(seed);
-		}
 		// generate
 		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
 		this.generate(chunkX, chunkZ, chunk, delayed_plotters);
@@ -205,15 +209,16 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
+	// -------------------------------------------------------------------------------
+	// create world
+
+
+
 	public static void MakeWorld(final int level, final String seed) {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
 		final String name = "level" + Integer.toString(level);
 		if (!manager.isMVWorld(name, false)) {
-			LOG.warning(String.format(
-				"%sCreating backrooms level: %d",
-				BackroomsPlugin.LOG_PREFIX,
-				Integer.valueOf(level)
-			));
+			LOG.warning(LOG_PREFIX + "Creating backrooms level: " + Integer.toString(level));
 			final Environment env;
 			switch (level) {
 			case 78: env = Environment.THE_END; break;
@@ -342,7 +347,7 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 	public static MultiverseCore GetMVCore() {
 		final PluginManager pm = Bukkit.getServer().getPluginManager();
 		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
-		if (mvcore == null) throw new RuntimeException("Multiverse-Core plugin not found");
+		if (mvcore == null) throw new RuntimeException("Plugin not found: Multiverse-Core");
 		return mvcore;
 	}
 

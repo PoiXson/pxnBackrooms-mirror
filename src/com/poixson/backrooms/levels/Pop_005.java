@@ -3,15 +3,13 @@ package com.poixson.backrooms.levels;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 
+import java.util.LinkedList;
 import java.util.HashMap;
-import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Bed;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.poixson.tools.dao.Iabcd;
 
@@ -26,16 +24,16 @@ public class Pop_005 implements PopBackrooms {
 
 
 
-	public Pop_005(final Gen_005 gen) {
-		super();
-		this.gen = gen;
+	public Pop_005(final Level_000 level0) {
+		this.level0 = level0;
+		this.gen    = level0.gen_005;
 	}
 
 
 
 	@Override
-	public void populate(final WorldInfo world, final Random rnd,
-	final int chunkX, final int chunkZ, final LimitedRegion region) {
+	public void populate(final int chunkX, final int chunkZ,
+	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		if (!Gen_005.ENABLE_GENERATE) return;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
@@ -51,6 +49,7 @@ public class Pop_005 implements PopBackrooms {
 
 
 
+	// returns x z w d
 	public Iabcd findRoomWalls(final int x, final int y, final int z,
 			final LimitedRegion region) {
 		// is wall
@@ -65,18 +64,14 @@ public class Pop_005 implements PopBackrooms {
 		int foundW = Integer.MIN_VALUE;
 		Material type;
 		for (int i=2; i<34; i++) {
-			if (!region.isInRegion(x, y, z-i)
-			||  !region.isInRegion(x, y, z+i)
-			||  !region.isInRegion(x+i, y, z)
-			||  !region.isInRegion(x-i, y, z) )
-				break;
 			if (foundN != Integer.MIN_VALUE
 			&&  foundS != Integer.MIN_VALUE
 			&&  foundE != Integer.MIN_VALUE
 			&&  foundW != Integer.MIN_VALUE )
 				break;
 			// north
-			if (foundN == Integer.MIN_VALUE) {
+			if (foundN == Integer.MIN_VALUE
+			&& region.isInRegion(x, y, z-i)) {
 				type = region.getType(x, y, z-i);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
 				if (HOTEL_WALL.equals(type))
@@ -85,7 +80,8 @@ public class Pop_005 implements PopBackrooms {
 				if (!Material.AIR.equals(type)) return null;
 			}
 			// south
-			if (foundS == Integer.MIN_VALUE) {
+			if (foundS == Integer.MIN_VALUE
+			&& region.isInRegion(x, y, z+i)) {
 				type = region.getType(x, y, z+i);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
 				if (HOTEL_WALL.equals(type))
@@ -94,7 +90,8 @@ public class Pop_005 implements PopBackrooms {
 				if (!Material.AIR.equals(type)) return null;
 			}
 			// east
-			if (foundE == Integer.MIN_VALUE) {
+			if (foundE == Integer.MIN_VALUE
+			&& region.isInRegion(x+i, y, z)) {
 				type = region.getType(x+i, y, z);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
 				if (HOTEL_WALL.equals(type))
@@ -103,7 +100,8 @@ public class Pop_005 implements PopBackrooms {
 				if (!Material.AIR.equals(type)) return null;
 			}
 			// west
-			if (foundW == Integer.MIN_VALUE) {
+			if (foundW == Integer.MIN_VALUE
+			&& region.isInRegion(x-i, y, z)) {
 				type = region.getType(x-i, y, z);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
 				if (HOTEL_WALL.equals(type))
@@ -118,11 +116,13 @@ public class Pop_005 implements PopBackrooms {
 		||  foundE == Integer.MIN_VALUE
 		||  foundW == Integer.MIN_VALUE )
 			return null;
-		return new Iabcd(foundN, foundS, foundE, foundW);
+		//               x,      z,      w,             d
+		return new Iabcd(foundW, foundN, foundE-foundW, foundS-foundN);
 	}
 
 
 
+	// group of rooms
 	public void buildHotelRooms(final Iabcd area, final int y,
 			final LimitedRegion region, double room_size) {
 		final int total_ns = area.b - area.a;

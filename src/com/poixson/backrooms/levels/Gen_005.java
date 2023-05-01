@@ -63,7 +63,7 @@ public class Gen_005 extends GenBackrooms {
 	public enum NodeType {
 		HALL,
 		ROOM,
-		WALL
+		WALL,
 	};
 
 //TODO: add wall_1_away
@@ -120,8 +120,8 @@ public class Gen_005 extends GenBackrooms {
 					||  (daoSW != null && NodeType.HALL.equals(daoSW.type)) )
 						dao.type = NodeType.WALL;
 				}
-			}
-		}
+			} // end for x
+		} // end for z
 	}
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
@@ -155,9 +155,9 @@ public class Gen_005 extends GenBackrooms {
 					final Directional tile = (Directional) chunk.getBlockData(x, y, z);
 					if (z % 2 == 0) {
 						if (x % 2 == 0) tile.setFacing(BlockFace.NORTH);
-						else            tile.setFacing(BlockFace.WEST);
+						else            tile.setFacing(BlockFace.WEST );
 					} else {
-						if (x % 2 == 0) tile.setFacing(BlockFace.EAST);
+						if (x % 2 == 0) tile.setFacing(BlockFace.EAST );
 						else            tile.setFacing(BlockFace.SOUTH);
 					}
 					chunk.setBlock(x, y, z, tile);

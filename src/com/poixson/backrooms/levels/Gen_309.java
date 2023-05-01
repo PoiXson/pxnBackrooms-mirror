@@ -32,6 +32,7 @@ public class Gen_309 extends GenBackrooms {
 	public final FastNoiseLiteD noisePathGround;
 	public final FastNoiseLiteD noiseTrees;
 
+	// path locations
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
