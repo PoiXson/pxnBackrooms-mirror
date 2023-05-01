@@ -28,13 +28,14 @@ public class Gen_037 extends GenBackrooms {
 
 	public static final int WATER_DEPTH = 3;
 
-	public static final Material POOL_WALL_A  = Material.BLUE_TERRACOTTA;
-	public static final Material POOL_WALL_B  = Material.LIGHT_BLUE_TERRACOTTA;
-	public static final Material POOL_CEILING = Material.GLOWSTONE;
-
+	public static final Material POOL_WALL_A      = Material.PRISMARINE_BRICKS;
+	public static final Material POOL_WALL_B      = Material.PRISMARINE;
+	public static final Material POOLS_CEILING    = Material.GLOWSTONE;
 	public static final Material POOLS_SUBFLOOR   = Material.DARK_PRISMARINE;
 	public static final Material POOLS_SUBCEILING = Material.DARK_PRISMARINE;
 
+	public static final double THRESH_ROOM   = 0.2;
+	public static final double THRESH_PORTAL = 0.5;
 
 	// noise
 	public final FastNoiseLiteD noisePoolRooms;

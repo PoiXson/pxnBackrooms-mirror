@@ -7,12 +7,15 @@ import java.util.LinkedList;
 import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 309 | Radio Station
 public class Pop_309 implements PopBackrooms {
 
 	protected final Gen_309 gen;
+
+	protected final Pop_309_Trees treePop;
 
 
 
@@ -26,6 +29,9 @@ public class Pop_309 implements PopBackrooms {
 	@Override
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+		// trees
+		this.treePop.populate(null, null, chunkX, chunkZ, region);
+		// radio station
 		if (chunkX == 0 && chunkZ == 0)
 			this.populate0x0(region);
 	}
