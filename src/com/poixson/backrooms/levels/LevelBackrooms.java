@@ -3,20 +3,25 @@ package com.poixson.backrooms.levels;
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.block.Block;
+import org.bukkit.entity.SpawnCategory;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.PluginManager;
 
@@ -260,6 +265,26 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			world.setGameRule(GameRule.SPAWN_RADIUS,                Integer.valueOf(50));
 			world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, Integer.valueOf( 1));
 			world.setGameRule(GameRule.SNOW_ACCUMULATION_HEIGHT,    Integer.valueOf( 8));
+			// game mode
+			switch (level) {
+			case 771: mvworld.setGameMode(GameMode.ADVENTURE); break;
+			default:  mvworld.setGameMode(GameMode.SURVIVAL ); break;
+			}
+			// fixed spawn
+			final int y;
+			switch (level) {
+			case 0:   y = Level_000.Y_000; break;
+			case 9:   y = Level_009.LEVEL_Y; break;
+			case 10:  y = Level_010.LEVEL_Y; break;
+			case 11:  y = Level_011.LEVEL_Y; break;
+			case 33:  y = Level_033.LEVEL_Y; break;
+			case 78:  y = 200;               break;
+			case 151: y = Level_151.LEVEL_Y; break;
+			case 771: y = Level_771.LEVEL_Y; break;
+			case 866: y = Level_866.LEVEL_Y; break;
+			default:  y = 0;                 break;
+			}
+			mvworld.setSpawnLocation(world.getBlockAt(0, y, 0).getLocation());
 			// time
 			switch (level) {
 			case 0:  // lobby
@@ -338,6 +363,15 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
 			default:
 				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;
+			}
+		}
+		// not retained after restart
+		{
+			final World world = Bukkit.getWorld(name);
+			if (world == null) throw new NullPointerException("Failed to find world: " + name);
+			switch (level) {
+			case 33: world.setTicksPerSpawns(SpawnCategory.MONSTER,   1); break;
+			default: world.setTicksPerSpawns(SpawnCategory.MONSTER, 100); break;
 			}
 		}
 	}
