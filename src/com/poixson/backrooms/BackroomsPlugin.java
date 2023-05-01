@@ -37,7 +37,6 @@ import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
-import com.poixson.utils.Utils;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
@@ -260,6 +259,15 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		return levels;
 	}
+	public int getMainLevel(final int level) {
+		if (this.backlevels.containsKey(Integer.valueOf(level)))
+			return level;
+		for (final Entry<Integer, LevelBackrooms> entry : this.backlevels.entrySet()) {
+			if (entry.getValue().containsLevel(level))
+				return entry.getKey().intValue();
+		}
+		return Integer.MIN_VALUE;
+	}
 	public int getPlayerLevel(final UUID uuid) {
 		final Player player = Bukkit.getPlayer(uuid);
 		return (
@@ -296,50 +304,62 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		return Integer.MIN_VALUE;
 	}
+	public World getWorldFromLevel(final int level) {
+		final int lvl = this.getMainLevel(level);
+		if (lvl == Integer.MIN_VALUE)
+			return null;
+		return Bukkit.getWorld("level" + Integer.toString(lvl));
+	}
+
+
 
 	public void assertValidLevel(final int level) {
 		if (!this.isValidLevel(level))
 			throw new RuntimeException("Invalid backrooms level: " + Integer.toString(level));
 	}
 	public boolean isValidLevel(final int level) {
+		if (this.isValidWorld(level))
+			return true;
+		for (final LevelBackrooms backlevel : this.backlevels.values()) {
+			if (backlevel.containsLevel(level))
+				return true;
+		}
+		return false;
+	}
+	public boolean isValidWorld(final int level) {
 		return this.backlevels.containsKey(Integer.valueOf(level));
 	}
-	public boolean isValidLevel(final World world) {
+	public boolean isValidWorld(final World world) {
 		final int level = this.getLevelFromWorld(world);
-		return this.isValidLevel(level);
+		return this.isValidWorld(level);
 	}
 
 
 
-	public World getWorldFromLevel(final int level) {
-		return Bukkit.getWorld( "level" + Integer.toString(level) );
-	}
-
-
-
-	public void noclip(final Player player, final int level) {
-		if (level == Integer.MIN_VALUE) {
+	public void noclip(final Player player, final int level_to) {
+		if (level_to == Integer.MIN_VALUE) {
 			this.noclip(player);
 			return;
 		}
 		final TeleportManager manager = this.tpManager.get();
-		Location loc = manager.getSpawnLocation(level);
+		Location loc = manager.getSpawnLocation(level_to);
 		if (loc == null) {
-			final World world = this.getWorldFromLevel(level);
+			LOG.warning(LOG_PREFIX + "Failed to find spawn for level: " + Integer.toString(level_to));
+			final World world = this.getWorldFromLevel(level_to);
 			if (world == null) {
-				LOG.warning(String.format("%sUnknown backrooms world for level: %d", LOG_PREFIX, Integer.valueOf(level)));
+				LOG.warning(LOG_PREFIX + "Unknown backrooms world for level: " + Integer.toString(level_to));
 				return;
 			}
 			loc = world.getSpawnLocation();
 		}
-		LOG.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level));
+		LOG.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level_to));
 		player.teleport(loc);
 	}
 	public int noclip(final Player player) {
-		final int levelFrom = this.getPlayerLevel(player);
-		final int levelTo = this.noclip(levelFrom);
-		this.noclip(player, levelTo);
-		return levelTo;
+		final int level_from = this.getPlayerLevel(player);
+		final int level_to = this.noclip(level_from);
+		this.noclip(player, level_to);
+		return level_to;
 	}
 	public int noclip(final int level_from) {
 		final TeleportManager manager = this.tpManager.get();
@@ -353,7 +373,20 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public LevelBackrooms getBackroomsLevel(final int level) {
-		return this.backlevels.get(Integer.valueOf(level));
+		// main level
+		{
+			final LevelBackrooms backlevel = this.backlevels.get(Integer.valueOf(level));
+			if (backlevel != null)
+				return backlevel;
+		}
+		// level in world
+		{
+			for (final LevelBackrooms backlevel : this.backlevels.values()) {
+				if (backlevel.containsLevel(level))
+					return backlevel;
+			}
+		}
+		return null;
 	}
 
 
