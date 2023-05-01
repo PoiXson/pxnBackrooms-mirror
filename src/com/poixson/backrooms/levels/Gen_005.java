@@ -52,7 +52,10 @@ public class Gen_005 extends GenBackrooms {
 		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		// hotel rooms
 		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
-		this.noiseHotelRooms.setFrequency(0.008);
+		this.noiseHotelRooms.setFrequency(0.01);
+		this.noiseHotelRooms.setFractalOctaves(2);
+		this.noiseHotelRooms.setFractalType(FractalType.FBm);
+		this.noiseHotelRooms.setFractalGain(0.6);
 	}
 
 
