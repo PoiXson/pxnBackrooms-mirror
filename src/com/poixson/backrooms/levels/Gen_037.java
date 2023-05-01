@@ -9,6 +9,7 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
@@ -38,6 +39,8 @@ public class Gen_037 extends GenBackrooms {
 	// noise
 	public final FastNoiseLiteD noisePoolRooms;
 	public final FastNoiseLiteD noiseTunnels;
+	public final FastNoiseLiteD noisePortalLobby;
+	public final FastNoiseLiteD noisePortalHotel;
 
 
 
@@ -59,6 +62,14 @@ public class Gen_037 extends GenBackrooms {
 		this.noiseTunnels.setFractalType(FractalType.PingPong);
 		this.noiseTunnels.setFractalPingPongStrength(5.0);
 		this.noiseTunnels.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
+		// portal to lobby
+		this.noisePortalLobby = this.register(new FastNoiseLiteD());
+		this.noisePortalLobby.setFrequency(0.02);
+		this.noisePortalLobby.setFractalOctaves(2);
+		this.noisePortalLobby.setFractalType(FractalType.FBm);
+		// portal to hotel
+		this.noisePortalHotel = this.register(new FastNoiseLiteD());
+		this.noisePortalHotel.setFrequency(0.01);
 	}
 
 
@@ -71,14 +82,27 @@ public class Gen_037 extends GenBackrooms {
 	public class PoolData implements PreGenData {
 
 		public final double valueRoom, valuePortalHotel, valuePortalLobby;
+		public final boolean possiblePortalHotel;
+		public final boolean possiblePortalLobby;
 		public RoomType type;
 
 		public PoolData(final int x, final int z) {
 			this.valueRoom        = Gen_037.this.noisePoolRooms.getNoise(x, z);
+			this.valuePortalHotel = Gen_037.this.noisePortalHotel.getNoise(x, z);
+			this.valuePortalLobby = Gen_037.this.noisePortalLobby.getNoise(x, z);
 			if (this.valueRoom < THRESH_ROOM) {
 				this.type = RoomType.SOLID;
+				this.possiblePortalHotel = (this.valuePortalHotel > THRESH_PORTAL);
+				this.possiblePortalLobby = false;
 			} else {
 				this.type = RoomType.OPEN;
+				this.possiblePortalHotel = false;
+				this.possiblePortalLobby = (
+					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x, z-1) &&
+					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x, z+1) &&
+					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x+1, z) &&
+					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x-1, z)
+				);
 			}
 		}
 
@@ -302,6 +326,72 @@ public class Gen_037 extends GenBackrooms {
 								StringUtils.ReplaceInString(matrix[iy][7], "@@", 0);
 								StringUtils.ReplaceInString(matrix[iy][6], "@",  0);
 							}
+						}
+					}
+					// portal to lobby
+					if (dao.possiblePortalLobby) {
+						int xx, zz;
+						LobbyData lobby;
+						boolean foundWall = false;
+						Z_LOOP:
+						for (int iz=0; iz<8; iz++) {
+							zz = (rz * 8) + iz;
+							for (int ix=0; ix<8; ix++) {
+								xx = (rx * 8) + ix;
+								lobby = lobbyData.get(new Iab(xx, zz));
+								if (lobby.isWall) {
+									foundWall = true;
+									break Z_LOOP;
+								}
+							}
+						}
+						if (!foundWall) {
+							xx = (chunkX * 16) + (rx * 8);
+							zz = (chunkZ * 16) + (rz * 8);
+							((Level_000)this.backlevel).portal_0_to_37.add(xx, zz);
+							final int hh = Level_000.H_000 + SUBCEILING + Level_000.H_006 + SUBFLOOR + 5;
+							final BlockPlotter pp = new BlockPlotter(chunk);
+							pp.axis("use")
+								.h(hh+1).w(6).d(6)
+								.x(rx*8).z(rz*8).y(Level_000.Y_000+SUBFLOOR);
+							pp.type('#', Material.BEDROCK  );
+							pp.type('g', Material.GLOWSTONE);
+							pp.type('.', Material.AIR      );
+							pp.type(',', Material.WATER, "8");
+							final StringBuilder[][] mtx = pp.getMatrix3D();
+							// floor
+							mtx[0][0].append(" #### "); mtx[1][0].append(" #### ");
+							mtx[0][1].append("##gg##"); mtx[1][1].append("##,,##");
+							mtx[0][2].append("#gggg#"); mtx[1][2].append("#,,,,#");
+							mtx[0][3].append("#gggg#"); mtx[1][3].append("#,,,,#");
+							mtx[0][4].append("##gg##"); mtx[1][4].append("##,,##");
+							mtx[0][5].append(" #### "); mtx[1][5].append(" #### ");
+							final int hhh = Level_000.H_000 + 3;
+							for (int i=2; i<hhh; i++) {
+								mtx[i][0].append(" .... ");
+								mtx[i][1].append("..,,..");
+								mtx[i][2].append(".,,,,.");
+								mtx[i][3].append(".,,,,.");
+								mtx[i][4].append("..,,..");
+								mtx[i][5].append(" .... ");
+							}
+							// shaft
+							for (int i=hhh; i<hh; i++) {
+								mtx[i][0].append(" #### ");
+								mtx[i][1].append("##,,##");
+								mtx[i][2].append("#,,,,#");
+								mtx[i][3].append("#,,,,#");
+								mtx[i][4].append("##,,##");
+								mtx[i][5].append(" #### ");
+							}
+							// top
+							mtx[hh][0].append("  gg  ");
+							mtx[hh][1].append(" g,,g ");
+							mtx[hh][2].append("g,,,,g");
+							mtx[hh][3].append("g,,,,g");
+							mtx[hh][4].append(" g,,g ");
+							mtx[hh][5].append("  gg  ");
+							plots.add(pp);
 						}
 					}
 					break;
