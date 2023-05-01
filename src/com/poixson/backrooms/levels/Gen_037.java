@@ -132,12 +132,13 @@ public class Gen_037 extends GenBackrooms {
 		boolean solid_ne, solid_nw, solid_se, solid_sw;
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
-				final BlockPlotter plot = new BlockPlotter(chunk, h, 8, 8);
-				plot.axis("YZX").location(rx*8, y, rz*8);
-				plot.type('#', POOL_WALL_A   );
-				plot.type('@', POOL_WALL_B   );
-				plot.type('w', Material.WATER);
-				plot.type('g', POOL_CEILING  );
+				final BlockPlotter plot = new BlockPlotter(chunk);
+				plot.axis("use");
+				plot.location(y, rz*8, rx*8).size(h, 8, 8);
+				plot.type('#', POOL_WALL_A);
+				plot.type('@', POOL_WALL_B);
+				plot.type('w', Material.WATER, "0");
+				plot.type('g', POOLS_CEILING);
 				dao = poolData.get(new Iab(rx, rz));
 				solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
 				solid_s  = poolData.get(new Iab(rx,   rz+1)).isSolid();

@@ -330,9 +330,9 @@ public class Pop_005 implements PopBackrooms {
 			}
 		}
 		// build room
-		final BlockPlotter plot = new BlockPlotter(region, );
+		final BlockPlotter plot = new BlockPlotter(region);
 		plot.axis();
-		plot.location(x, y, z);
+		plot.location(y, x, z);
 		plot.w = area.c;
 		plot.d = area.d;
 		HotelRoomDAO dao;

@@ -142,7 +142,8 @@ public class Pop_037 implements PopBackrooms {
 		// place blocks for tunnels
 		Iab last;
 		for (final TunnelTracer tracer : tunnelTracers) {
-			final BlockPlotter plot = new BlockPlotter(region, 6, 7);
+			final BlockPlotter plot = new BlockPlotter(region);
+			plot.size(6, 7);
 			plot.y(this.gen.level_y + 7);
 			plot.type('.', Material.AIR);
 			plot.type('#', POOL_WALL_A );

@@ -165,13 +165,11 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
 		plot.type('.', Material.LIGHT, "15");
 		plot.type(',', Material.LIGHT, "9");
-		switch (quarter) {
-		case NORTH_EAST: plot.x( 0); plot.z(15); break;
-		case NORTH_WEST: plot.x(15); plot.z(15); break;
-		case SOUTH_EAST: plot.x( 0); plot.z( 0); break;
-		case SOUTH_WEST: plot.x(15); plot.z( 0); break;
-		default: throw new RuntimeException("Unknown quarter: " + quarter.toString());
-		}
+		plot.axis(axis)
+			.y((this.level_y + this.level_h) - 3)
+			.x((0-chunkX)*15)
+			.z((0-chunkZ)*15)
+			.h(5).w(16).d(16);
 		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
 		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
 		matrix[0][ 2].append("##########---" ); matrix[1][ 2].append(" , , , , , , ##"); matrix[2][ 2].append("             ###"); matrix[3][ 2].append("**X##X##########"); matrix[4][ 2].append("                ");
@@ -304,9 +302,10 @@ public class Gen_771 extends GenBackrooms {
 	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plot = new BlockPlotter(chunk, 3, 16, 3);
-		plot.axis("u"+FaceToAx(direction)+FaceToAx(side));
-		plot.location(x, this.level_y+this.level_h, z);
+		final BlockPlotter plot = new BlockPlotter(chunk);
+		plot.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.x(x).y(this.level_y+this.level_h).z(z)
+			.size(3, 16, 3);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
@@ -332,9 +331,10 @@ public class Gen_771 extends GenBackrooms {
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plot = new BlockPlotter(chunk, 3, 16, 3);
-		plot.axis("u"+FaceToAx(direction)+FaceToAx(side));
-		plot.location(x, this.level_y, z);
+		final BlockPlotter plot = new BlockPlotter(chunk);
+		plot.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.x(x).y(this.level_y).z(z)
+			.size(3, 16, 3);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
@@ -368,9 +368,10 @@ public class Gen_771 extends GenBackrooms {
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plot = new BlockPlotter(chunk, this.level_h+2, 2, 5);
-		plot.axis("u"+FaceToAx(direction)+FaceToAx(side));
-		plot.location(x, this.level_y, z);
+		final BlockPlotter plot = new BlockPlotter(chunk);
+		plot.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.x(x).y(this.level_y).z(z)
+			.size(this.level_h+2, 2, 5);
 		plot.type('#', Material.DEEPSLATE_BRICKS);
 		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +direction.getOppositeFace().toString().toLowerCase());
 		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top,"   +side.toString().toLowerCase());
