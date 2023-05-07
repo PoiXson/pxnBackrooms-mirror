@@ -1,15 +1,15 @@
 package com.poixson.backrooms.levels;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.levels.Gen_000.LobbyData;
+import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
-import com.poixson.utils.FastNoiseLiteD.FractalType;
-import com.poixson.utils.FastNoiseLiteD.NoiseType;
+import com.poixson.tools.dao.Iab;
 
 
 // 19 | Attic
@@ -21,23 +21,11 @@ public class Gen_019 extends GenBackrooms {
 	public static final Material ATTIC_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material ATTIC_WALLS = Material.SPRUCE_PLANKS;
 
-	public final int level_m;
-
-	// noise
-	public final FastNoiseLiteD noiseAtticWalls;
-
 
 
 	public Gen_019(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		this.level_m = Math.floorDiv(this.level_h, 2);
-		// attic walls
-		this.noiseAtticWalls = this.register(new FastNoiseLiteD());
-		this.noiseAtticWalls.setFrequency(0.02);
-		this.noiseAtticWalls.setNoiseType(NoiseType.Cellular);
-		this.noiseAtticWalls.setFractalType(FractalType.PingPong);
-		this.noiseAtticWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 	}
 
 
@@ -46,29 +34,36 @@ public class Gen_019 extends GenBackrooms {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GENERATE) return;
-		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_y + SUBFLOOR + this.level_h + 1;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
-				// lobby floor
-				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int yy=0; yy<SUBFLOOR; yy++) {
-					chunk.setBlock(x, this.level_y+yy+1, z, ATTIC_FLOOR);
-				}
-				final double value = this.noiseAtticWalls.getNoiseRot(xx, zz, 0.25);
-				if (value < -0.9 || value > 0.9) {
-					for (int iy=0; iy<3; iy++) {
-						chunk.setBlock(x, y+iy, z, ATTIC_WALLS);
-					}
-				}
-				// second floor
-				chunk.setBlock(x, y+this.level_m, z, ATTIC_WALLS);
+		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
+		LobbyData dao;
+		final int y  = this.level_y + Level_000.SUBFLOOR + 1;
+		int xx, zz;
+		int modX7, modZ7;
+		for (int iz=0; iz<16; iz++) {
+			zz = (chunkZ * 16) + iz;
+			for (int ix=0; ix<16; ix++) {
+				xx = (chunkX * 16) + ix;
+				dao = lobbyData.get(new Iab(ix, iz));
+				if (dao == null) continue;
+				modX7 = (xx < 0 ? 1-xx : xx) % 7;
+				modZ7 = (zz < 0 ? 1-zz : zz) % 7;
 				if (ENABLE_ROOF) {
-					for (int i=0; i<SUBCEILING; i++) {
-						chunk.setBlock(x, cy+i+1, z, ATTIC_FLOOR);
-					}
+					// beam
+					if (modX7 == 0 || modZ7 == 0)
+						chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, Material.SPRUCE_WOOD);
+					// lantern
+					if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6)
+						chunk.setBlock(ix, this.level_y+dao.wall_dist+2, iz, Material.LANTERN);
+				}
+				// attic floor
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
+				for (int iy=0; iy<Level_000.SUBFLOOR; iy++)
+					chunk.setBlock(ix, this.level_y+iy+1, iz, ATTIC_FLOOR);
+				// wall
+				if (dao.isWall) {
+					// lobby walls
+					for (int iy=0; iy<this.level_h+1; iy++)
+						chunk.setBlock(ix, y+iy, iz, (iy>6 ? Material.BEDROCK : ATTIC_WALLS));
 				}
 			} // end x
 		} // end z

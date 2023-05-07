@@ -56,7 +56,7 @@ public class Level_000 extends LevelBackrooms {
 	public static final int Y_019 = Y_005 + H_005 + SUBFLOOR + SUBCEILING + 1;
 	public static final int H_019 = 10;
 	// radio station
-	public static final int Y_309 = Y_019 + H_019 + SUBFLOOR + SUBCEILING + 1;
+	public static final int Y_309 = Y_019 + H_019 + SUBFLOOR + 1;
 
 	// generators
 	public final Gen_001 gen_001;
