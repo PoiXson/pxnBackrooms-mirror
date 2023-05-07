@@ -42,6 +42,8 @@ public class Gen_000 extends GenBackrooms {
 	public static final double THRESH_WALL_H = 0.5;
 	public static final double THRESH_LOOT   = 0.65;
 
+	public static final int WALL_SEARCH_DIST = 6;
+
 	public static final Material LOBBY_WALL     = Material.YELLOW_TERRACOTTA;
 	public static final Material LOBBY_SUBFLOOR = Material.OAK_PLANKS;
 	public static final Material LOBBY_CARPET   = Material.LIGHT_GRAY_WOOL;
@@ -81,7 +83,7 @@ public class Gen_000 extends GenBackrooms {
 		public boolean wall_s = false;
 		public boolean wall_e = false;
 		public boolean wall_w = false;
-		public int wall_dist = 5;
+		public int wall_dist = WALL_SEARCH_DIST;
 		public int boxed = 0;
 		public BlockFace box_dir = null;
 
@@ -120,7 +122,7 @@ public class Gen_000 extends GenBackrooms {
 					dao.wall_dist = 0;
 					continue;
 				}
-				for (int i=1; i<3; i++) {
+				for (int i=1; i<WALL_SEARCH_DIST; i++) {
 					dao.boxed = 0;
 					// north
 					dao_near = data.get(new Iab(x, z-i));
@@ -229,7 +231,7 @@ public class Gen_000 extends GenBackrooms {
 						final int  modX7 = (xx < 0 ? 1-xx : xx) % 7;
 						final int  modZ7 = (zz < 0 ? 0-zz : zz) % 7;
 						if (modZ7 == 0 && modX7 < 2
-						&& dao.wall_dist > 1) {
+						&& dao.wall_dist > 2) {
 							// ceiling lights
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
 							final BlockData block = chunk.getBlockData(x, cy, z);
