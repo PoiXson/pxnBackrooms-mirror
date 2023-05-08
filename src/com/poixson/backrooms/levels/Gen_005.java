@@ -213,9 +213,9 @@ public class Gen_005 extends GenBackrooms {
 						// ceiling light
 						mod_x = xx % 5;
 						mod_z = zz % 5;
-						if (dao.hall_center
-						&& (mod_x >= 0 && mod_x < 2)
-						&& (mod_z >= 1 && mod_z < 4)) {
+						if (dao.hall_center && (
+						(mod_x >= 0 && mod_x < 2) ||
+						(mod_z >= 1 && mod_z < 4) )) {
 							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
 							final Lightable lamp = (Lightable) chunk.getBlockData(x, cy, z);
 							lamp.setLit(true);
