@@ -10,6 +10,7 @@ import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
+import com.poixson.utils.FastNoiseLiteD;
 
 
 // 19 | Attic
@@ -21,11 +22,18 @@ public class Gen_019 extends GenBackrooms {
 	public static final Material ATTIC_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material ATTIC_WALLS = Material.SPRUCE_PLANKS;
 
+	// noise
+	public final FastNoiseLiteD noiseLamps;
+
 
 
 	public Gen_019(final LevelBackrooms backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
+		// lanterns
+		this.noiseLamps = this.register(new FastNoiseLiteD());
+		this.noiseLamps.setFrequency(0.045);
+		this.noiseLamps.setFractalOctaves(1);
 	}
 
 
@@ -36,6 +44,7 @@ public class Gen_019 extends GenBackrooms {
 		if (!ENABLE_GENERATE) return;
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao;
+		double valueLamp;
 		final int y  = this.level_y + Level_000.SUBFLOOR + 1;
 		int xx, zz;
 		int modX7, modZ7;
@@ -52,8 +61,11 @@ public class Gen_019 extends GenBackrooms {
 					if (modX7 == 0 || modZ7 == 0)
 						chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, Material.SPRUCE_WOOD);
 					// lantern
-					if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6)
-						chunk.setBlock(ix, this.level_y+dao.wall_dist+2, iz, Material.LANTERN);
+					if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6) {
+						valueLamp = this.noiseLamps.getNoise(xx, zz);
+						if (valueLamp < 0.0)
+							chunk.setBlock(ix, this.level_y+dao.wall_dist+2, iz, Material.LANTERN);
+					}
 				}
 				// attic floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
