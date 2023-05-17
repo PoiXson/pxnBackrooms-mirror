@@ -12,6 +12,9 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 // 866 | Dirtfield
 public class Level_866 extends LevelBackrooms {
 
+	public static final boolean ENABLE_GEN_866 = true;
+	public static final boolean ENABLE_TOP_866 = true;
+
 	public static final int LEVEL_Y = 0;
 	public static final int SUBFLOOR = 3;
 

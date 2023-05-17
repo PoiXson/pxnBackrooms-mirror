@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_033.ENABLE_GEN_033;
+
 import java.util.LinkedList;
 
 import org.bukkit.Material;
@@ -10,9 +12,6 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 // 33 | Run For Your Life!
 public class Gen_033 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 
 
@@ -26,7 +25,7 @@ public class Gen_033 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_033) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 //				final int xx = (chunkX * 16) + x;

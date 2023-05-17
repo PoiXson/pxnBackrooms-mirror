@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_037;
+
 import java.util.LinkedList;
 
 import org.bukkit.Material;
@@ -113,7 +115,7 @@ public class Pop_037 implements PopBackrooms {
 	@Override
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
-		if (!Gen_037.ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_037) return;
 		// trace tunnels
 		final LinkedList<TunnelTracer> tunnelTracers = new LinkedList<TunnelTracer>();
 		{

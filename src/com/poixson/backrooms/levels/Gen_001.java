@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_001;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
 import java.util.HashMap;
@@ -21,8 +22,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 // 1 | Basement
 public class Gen_001 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
 
 	public static final int LAMP_Y = 6;
 
@@ -105,7 +104,7 @@ public class Gen_001 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_001) return;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
 		final int y  = this.level_y + SUBFLOOR + 1;

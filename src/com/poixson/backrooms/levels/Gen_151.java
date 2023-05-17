@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_151.ENABLE_GEN_151;
+import static com.poixson.backrooms.levels.Level_151.ENABLE_TOP_151;
 import static com.poixson.backrooms.levels.Level_151.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_151.SUBFLOOR;
 
@@ -18,8 +20,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 151 | Dollhouse
 public class Gen_151 extends GenBackrooms {
 
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
@@ -49,7 +49,7 @@ public class Gen_151 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_151) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 				final int xx = (chunkX * 16) + x;
@@ -69,7 +69,7 @@ public class Gen_151 extends GenBackrooms {
 					for (int iy=0; iy<3; iy++)
 						chunk.setBlock(x, y+iy, z, HOUSE_WALLS);
 				}
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_151) {
 					cy++;
 					for (int i=0; i<SUBCEILING; i++)
 						chunk.setBlock(x, cy+i, z, HOUSE_FLOOR);

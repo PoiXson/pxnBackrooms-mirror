@@ -11,6 +11,8 @@ import com.poixson.backrooms.listeners.Listener_078;
 // 78 | Space
 public class Level_078 extends LevelBackrooms {
 
+	public static final boolean ENABLE_GEN_078 = true;
+
 	// generators
 	public final Gen_078 gen;
 

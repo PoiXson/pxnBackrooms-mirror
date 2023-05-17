@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_010.ENABLE_GEN_010;
+
 import java.util.LinkedList;
 
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -9,8 +11,6 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 // 10 | Field of Wheat
 public class Gen_010 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
 
 
 
@@ -24,7 +24,7 @@ public class Gen_010 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_010) return;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {
 //				final int xx = (chunkX * 16) + x;

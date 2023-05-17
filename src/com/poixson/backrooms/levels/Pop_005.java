@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_005;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ public class Pop_005 implements PopBackrooms {
 	@Override
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
-		if (!Gen_005.ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_005) return;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
 		final int y = this.gen.level_y + SUBFLOOR + 1;

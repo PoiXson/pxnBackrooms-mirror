@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_005;
+import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_005;
 import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
@@ -25,9 +27,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 // 5 | Hotel
 public class Gen_005 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final double THRESH_ROOM_HALL = 0.65;
 
@@ -174,7 +173,7 @@ public class Gen_005 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_005) return;
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
@@ -209,7 +208,7 @@ public class Gen_005 extends GenBackrooms {
 						else            tile.setFacing(BlockFace.SOUTH);
 					}
 					chunk.setBlock(x, y, z, tile);
-					if (ENABLE_ROOF) {
+					if (ENABLE_TOP_005) {
 						// ceiling light
 						mod_x = xx % 5;
 						mod_z = zz % 5;
@@ -241,7 +240,7 @@ public class Gen_005 extends GenBackrooms {
 				case ROOM: break;
 				default: throw new RuntimeException("Unknown hotel type: " + dao.type.toString());
 				}
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_005) {
 					for (int i=0; i<SUBCEILING; i++) {
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
 					}

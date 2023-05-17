@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
 import java.util.LinkedList;
@@ -17,9 +18,6 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 // 309 | Radio Station
 public class Gen_309 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
@@ -78,7 +76,7 @@ public class Gen_309 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_309) return;
 		final int y = this.level_y + SUBFLOOR + 1;
 		for (int z=0; z<16; z++) {
 			for (int x=0; x<16; x++) {

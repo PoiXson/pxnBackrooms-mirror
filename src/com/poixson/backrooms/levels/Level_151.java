@@ -10,6 +10,9 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 // 151 | Dollhouse
 public class Level_151 extends LevelBackrooms {
 
+	public static final boolean ENABLE_GEN_151 = true;
+	public static final boolean ENABLE_TOP_151 = true;
+
 	public static final int SUBFLOOR   = 3;
 	public static final int SUBCEILING = 3;
 

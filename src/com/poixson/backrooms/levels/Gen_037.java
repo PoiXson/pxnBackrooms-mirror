@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_037;
+import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_037;
 import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
@@ -22,9 +24,6 @@ import com.poixson.utils.StringUtils;
 
 // 37 | Poolrooms
 public class Gen_037 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final int WATER_DEPTH = 3;
 
@@ -134,7 +133,7 @@ public class Gen_037 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_037) return;
 		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		final int y  = this.level_y + SUBFLOOR + 1;
@@ -147,7 +146,7 @@ public class Gen_037 extends GenBackrooms {
 				for (int iy=0; iy<SUBFLOOR; iy++)
 					chunk.setBlock(ix, this.level_y+iy+1, iz, POOLS_SUBFLOOR);
 				// subceiling
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_037) {
 					for (int iy=0; iy<SUBCEILING; iy++)
 						chunk.setBlock(ix, cy+iy+1, iz, POOLS_SUBCEILING);
 				}
@@ -406,7 +405,7 @@ public class Gen_037 extends GenBackrooms {
 						StringUtils.ReplaceWith(matrix[iy][iz], ' ', 'w');
 				}
 				// ceiling
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_037) {
 					for (int iz=0; iz<8; iz++)
 						StringUtils.ReplaceWith(matrix[h-1][iz], ' ', 'g');
 				}

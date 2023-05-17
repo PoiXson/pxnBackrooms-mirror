@@ -10,6 +10,9 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 // 11 | City
 public class Level_011 extends LevelBackrooms {
 
+	public static final boolean ENABLE_GEN_011 = true;
+	public static final boolean ENABLE_TOP_011 = true;
+
 	public static final int LEVEL_Y = 0;
 
 	// generators

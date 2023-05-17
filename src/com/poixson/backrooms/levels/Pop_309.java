@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_309;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.LinkedList;
@@ -39,7 +40,7 @@ public class Pop_309 implements PopBackrooms {
 
 
 	public void populate0x0(final LimitedRegion region) {
-		if (!Gen_309.ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_309) return;
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {
 			if (Material.AIR.equals(region.getType(0, this.gen.level_y+i, 15))) {

@@ -1,5 +1,6 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_771.ENABLE_GEN_771;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToIxz;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
@@ -26,8 +27,6 @@ import com.poixson.utils.StringUtils;
 
 // 771 | Crossroads
 public class Gen_771 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
 
 	public static final double THRESH_LIGHT  = 0.42; // lanterns
 	public static final double THRESH_LADDER = 0.81; // ladder shaft
@@ -71,7 +70,7 @@ public class Gen_771 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_771) return;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++)
 				chunk.setBlock(ix, this.level_y, iz, Material.BARRIER);

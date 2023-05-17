@@ -15,6 +15,8 @@ import com.poixson.backrooms.listeners.Listener_771;
 // 771 | Crossroads
 public class Level_771 extends LevelBackrooms {
 
+	public static final boolean ENABLE_GEN_771 = true;
+
 	public static final int LEVEL_Y = -61;
 	public static final int LEVEL_H = 360;
 

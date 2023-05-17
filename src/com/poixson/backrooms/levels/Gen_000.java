@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_000;
+import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_000;
 import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
@@ -34,9 +36,6 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 // 0 | Lobby
 public class Gen_000 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final double THRESH_WALL_L = 0.38;
 	public static final double THRESH_WALL_H = 0.5;
@@ -199,7 +198,7 @@ public class Gen_000 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_000) return;
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
@@ -227,7 +226,7 @@ public class Gen_000 extends GenBackrooms {
 				} else {
 					// floor
 					chunk.setBlock(x, y, z, LOBBY_CARPET);
-					if (ENABLE_ROOF) {
+					if (ENABLE_TOP_000) {
 						final int  modX7 = (xx < 0 ? 1-xx : xx) % 7;
 						final int  modZ7 = (zz < 0 ? 0-zz : zz) % 7;
 						if (modZ7 == 0 && modX7 < 2
@@ -348,7 +347,7 @@ public class Gen_000 extends GenBackrooms {
 					} // end special
 				} // end wall/room
 				// subceiling
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_000) {
 					for (int i=1; i<SUBCEILING; i++)
 						chunk.setBlock(x, cy+i+1, z, Material.STONE);
 				}

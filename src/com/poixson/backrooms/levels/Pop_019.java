@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_019;
+
 import java.util.LinkedList;
 
 import org.bukkit.generator.LimitedRegion;
@@ -20,7 +22,7 @@ public class Pop_019 implements PopBackrooms {
 	@Override
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
-		if (!Gen_019.ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_019) return;
 //TODO
 	}
 

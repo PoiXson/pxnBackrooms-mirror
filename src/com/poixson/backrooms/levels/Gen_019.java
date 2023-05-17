@@ -1,5 +1,8 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_019;
+import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_019;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -15,9 +18,6 @@ import com.poixson.utils.FastNoiseLiteD;
 
 // 19 | Attic
 public class Gen_019 extends GenBackrooms {
-
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
 
 	public static final Material ATTIC_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material ATTIC_WALLS = Material.SPRUCE_PLANKS;
@@ -41,7 +41,7 @@ public class Gen_019 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_019) return;
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao;
 		double valueLamp;
@@ -56,7 +56,7 @@ public class Gen_019 extends GenBackrooms {
 				if (dao == null) continue;
 				modX7 = (xx < 0 ? 1-xx : xx) % 7;
 				modZ7 = (zz < 0 ? 1-zz : zz) % 7;
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_019) {
 					// beam
 					if (modX7 == 0 || modZ7 == 0)
 						chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, Material.SPRUCE_WOOD);

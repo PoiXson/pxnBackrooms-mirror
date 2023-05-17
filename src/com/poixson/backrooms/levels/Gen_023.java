@@ -1,5 +1,7 @@
 package com.poixson.backrooms.levels;
 
+import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_023;
+import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_023;
 import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
 import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
 
@@ -20,9 +22,6 @@ import com.poixson.tools.dao.Iab;
 // 23 | Overgrowth
 public class Gen_023 extends GenBackrooms {
 
-	public static final boolean ENABLE_GENERATE = true;
-	public static final boolean ENABLE_ROOF     = true;
-
 	public static final double THRESH_CARPET = 0.4;
 
 	public static final Material LOBBY_SUBFLOOR = Material.DIRT;
@@ -39,7 +38,7 @@ public class Gen_023 extends GenBackrooms {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GENERATE) return;
+		if (!ENABLE_GEN_023) return;
 		final PregenLevel0 pregen0 = (PregenLevel0) pregen;
 		final HashMap<Iab, LobbyData>    lobbyData    = pregen0.lobby;
 		final HashMap<Iab, BasementData> basementData = pregen0.basement;
@@ -71,7 +70,7 @@ public class Gen_023 extends GenBackrooms {
 					if (dao_basement.isWet)
 						chunk.setBlock(x, this.level_y+SUBFLOOR+2, z, Material.MOSS_CARPET);
 					// ceiling
-					if (ENABLE_ROOF) {
+					if (ENABLE_TOP_023) {
 						final int modX6 = Math.abs(xx) % 7;
 						final int modZ6 = Math.abs(zz) % 7;
 						if (modZ6 == 0 && modX6 < 2
@@ -89,7 +88,7 @@ public class Gen_023 extends GenBackrooms {
 					}
 				}
 				// subceiling
-				if (ENABLE_ROOF) {
+				if (ENABLE_TOP_023) {
 					for (int iy=0; iy<SUBCEILING; iy++)
 						chunk.setBlock(x, cy+iy+1, z, Material.STONE);
 				}
