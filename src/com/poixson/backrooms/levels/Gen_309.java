@@ -78,14 +78,13 @@ public class Gen_309 extends GenBackrooms {
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_309) return;
 		final int y = this.level_y + SUBFLOOR + 1;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
-				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				for (int i=0; i<SUBFLOOR; i++) {
-					chunk.setBlock(x, this.level_y+i+1, z, Material.STONE);
-				}
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
+				final int xx = (chunkX * 16) + ix;
+				final int zz = (chunkZ * 16) + iz;
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
+				for (int iy=0; iy<SUBFLOOR; iy++)
+					chunk.setBlock(ix, this.level_y+iy+1, iz, Material.STONE);
 				final double ground;
 				{
 					final double g = this.noisePathGround.getNoise(xx, zz);
@@ -96,16 +95,16 @@ public class Gen_309 extends GenBackrooms {
 				for (int i=0; i<elevation; i++) {
 					if (i >= elevation-1) {
 						if (this.pathTrace.isPath(xx, zz, PATH_WIDTH)) {
-							chunk.setBlock(x, y+i, z, Material.DIRT_PATH);
+							chunk.setBlock(ix, y+i, iz, Material.DIRT_PATH);
 						} else {
-							chunk.setBlock(x, y+i, z, Material.GRASS_BLOCK);
+							chunk.setBlock(ix, y+i, iz, Material.GRASS_BLOCK);
 						}
 					} else {
-						chunk.setBlock(x, y+i, z, Material.DIRT);
+						chunk.setBlock(ix, y+i, iz, Material.DIRT);
 					}
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 

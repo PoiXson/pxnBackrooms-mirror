@@ -47,28 +47,28 @@ public class Gen_023 extends GenBackrooms {
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		int xx, zz;
-		for (int z=0; z<16; z++) {
-			zz = (chunkZ * 16) + z;
-			for (int x=0; x<16; x++) {
-				xx = (chunkX * 16) + x;
-				dao_lobby = lobbyData.get(new Iab(x, z));
-				dao_basement = basementData.get(new Iab(x, z));
+		for (int iz=0; iz<16; iz++) {
+			zz = (chunkZ * 16) + iz;
+			for (int ix=0; ix<16; ix++) {
+				xx = (chunkX * 16) + ix;
+				dao_lobby = lobbyData.get(new Iab(ix, iz));
+				dao_basement = basementData.get(new Iab(ix, iz));
 				// floor
-				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				chunk.setBlock(x, this.level_y+1, z, dao_basement.isWet ? Material.WATER : LOBBY_SUBFLOOR);
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
+				chunk.setBlock(ix, this.level_y+1, iz, dao_basement.isWet ? Material.WATER : LOBBY_SUBFLOOR);
 				for (int iy=1; iy<SUBFLOOR; iy++)
-					chunk.setBlock(x, this.level_y+iy+1, z, LOBBY_SUBFLOOR);
-				chunk.setBlock(x, this.level_y+SUBFLOOR+1, z, Material.MOSSY_COBBLESTONE);
+					chunk.setBlock(ix, this.level_y+iy+1, iz, LOBBY_SUBFLOOR);
+				chunk.setBlock(ix, this.level_y+SUBFLOOR+1, iz, Material.MOSSY_COBBLESTONE);
 				// wall
 				if (dao_lobby.isWall) {
 					final int h = this.level_h + 1;
 					for (int yi=0; yi<h; yi++)
-						chunk.setBlock(x, y+yi+1, z, Material.MOSS_BLOCK);
+						chunk.setBlock(ix, y+yi+1, iz, Material.MOSS_BLOCK);
 				// room
 				} else {
 					// moss carpet
 					if (dao_basement.isWet)
-						chunk.setBlock(x, this.level_y+SUBFLOOR+2, z, Material.MOSS_CARPET);
+						chunk.setBlock(ix, this.level_y+SUBFLOOR+2, iz, Material.MOSS_CARPET);
 					// ceiling
 					if (ENABLE_TOP_023) {
 						final int modX6 = Math.abs(xx) % 7;
@@ -76,24 +76,27 @@ public class Gen_023 extends GenBackrooms {
 						if (modZ6 == 0 && modX6 < 2
 						&& dao_lobby.wall_dist > 1) {
 							// ceiling lights
-							chunk.setBlock(x, cy,   z, Material.VERDANT_FROGLIGHT);
-							chunk.setBlock(x, cy-1, z, Material.WEEPING_VINES);
+							chunk.setBlock(ix, cy,   iz, Material.VERDANT_FROGLIGHT);
+							chunk.setBlock(ix, cy-1, iz, Material.WEEPING_VINES);
 						} else {
 							// ceiling
-							chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
-							final Slab slab = (Slab) chunk.getBlockData(x, cy, z);
-							slab.setType(Slab.Type.TOP);
-							chunk.setBlock(x, cy, z, slab);
+							chunk.setBlock(ix, cy, iz, Material.SMOOTH_STONE_SLAB);
+							final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
+							// random concurrent modification exception
+							synchronized (slab) {
+								slab.setType(Slab.Type.TOP);
+								chunk.setBlock(ix, cy, iz, slab);
+							}
 						}
 					}
 				}
 				// subceiling
 				if (ENABLE_TOP_023) {
 					for (int iy=0; iy<SUBCEILING; iy++)
-						chunk.setBlock(x, cy+iy+1, z, Material.STONE);
+						chunk.setBlock(ix, cy+iy+1, iz, Material.STONE);
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 

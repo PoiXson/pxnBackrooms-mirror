@@ -25,12 +25,12 @@ public class Gen_078 extends GenBackrooms {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_078) return;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-//				final int xx = (chunkX * 16) + x;
-//				final int zz = (chunkZ * 16) + z;
-			} // end x
-		} // end z
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
+//				final int xx = (chunkX * 16) + ix;
+//				final int zz = (chunkZ * 16) + iz;
+			} // end ix
+		} // end iz
 	}
 
 

@@ -32,21 +32,20 @@ public class Gen_006 extends GenBackrooms {
 		if (!ENABLE_GEN_006) return;
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
 				// floor
-				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
-				dao = lobbyData.get(new Iab(x, z));
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
+				dao = lobbyData.get(new Iab(ix, iz));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
 					// lobby walls
-					for (int yy=0; yy<this.level_h; yy++) {
-						chunk.setBlock(x, this.level_y+yy+1, z, Material.GLOWSTONE);
-					}
-				} // end wall/room
-			} // end x
-		} // end z
+					for (int iy=0; iy<this.level_h; iy++)
+						chunk.setBlock(ix, this.level_y+iy+1, iz, Material.GLOWSTONE);
+				}
+			} // end ix
+		} // end iz
 	}
 
 

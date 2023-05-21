@@ -377,22 +377,22 @@ public class Gen_037 extends GenBackrooms {
 							mtx[0][4].append("##gg##"); mtx[1][4].append("##,,##");
 							mtx[0][5].append(" #### "); mtx[1][5].append(" #### ");
 							final int hhh = Level_000.H_000 + 3;
-							for (int i=2; i<hhh; i++) {
-								mtx[i][0].append(" .... ");
-								mtx[i][1].append("..,,..");
-								mtx[i][2].append(".,,,,.");
-								mtx[i][3].append(".,,,,.");
-								mtx[i][4].append("..,,..");
-								mtx[i][5].append(" .... ");
+							for (int yi=2; yi<hhh; yi++) {
+								mtx[yi][0].append(" .... ");
+								mtx[yi][1].append("..,,..");
+								mtx[yi][2].append(".,,,,.");
+								mtx[yi][3].append(".,,,,.");
+								mtx[yi][4].append("..,,..");
+								mtx[yi][5].append(" .... ");
 							}
 							// shaft
-							for (int i=hhh; i<hh; i++) {
-								mtx[i][0].append(" #### ");
-								mtx[i][1].append("##,,##");
-								mtx[i][2].append("#,,,,#");
-								mtx[i][3].append("#,,,,#");
-								mtx[i][4].append("##,,##");
-								mtx[i][5].append(" #### ");
+							for (int yi=hhh; yi<hh; yi++) {
+								mtx[yi][0].append(" #### ");
+								mtx[yi][1].append("##,,##");
+								mtx[yi][2].append("#,,,,#");
+								mtx[yi][3].append("#,,,,#");
+								mtx[yi][4].append("##,,##");
+								mtx[yi][5].append(" #### ");
 							}
 							// top
 							mtx[hh][0].append("  gg  ");

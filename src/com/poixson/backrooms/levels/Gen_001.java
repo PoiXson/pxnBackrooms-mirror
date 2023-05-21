@@ -94,15 +94,15 @@ public class Gen_001 extends GenBackrooms {
 		BasementData dao;
 		int xx, zz;
 		double valueWall, valueMoistA, valueMoistB;
-		for (int z=0; z<16; z++) {
-			zz = (chunkZ * 16) + z;
-			for (int x=0; x<16; x++) {
-				xx = (chunkX * 16) + x;
+		for (int iz=0; iz<16; iz++) {
+			zz = (chunkZ * 16) + iz;
+			for (int ix=0; ix<16; ix++) {
+				xx = (chunkX * 16) + ix;
 				valueWall   = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
 				valueMoistA = this.noiseMoist.getNoise(xx, zz);
 				valueMoistB = this.noiseMoist.getNoise(zz, xx);
 				dao = new BasementData(valueWall, valueMoistA, valueMoistB);
-				data.put(new Iab(x, z), dao);
+				data.put(new Iab(ix, iz), dao);
 			}
 		}
 	}
@@ -115,48 +115,47 @@ public class Gen_001 extends GenBackrooms {
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int h  = this.level_h + 1;
 		int xx, zz;
-		for (int z=0; z<16; z++) {
-			zz = (chunkZ * 16) + z;
-			for (int x=0; x<16; x++) {
-				xx = (chunkX * 16) + x;
+		for (int iz=0; iz<16; iz++) {
+			zz = (chunkZ * 16) + iz;
+			for (int ix=0; ix<16; ix++) {
+				xx = (chunkX * 16) + ix;
 				// basement floor
-				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(x, this.level_y+yy+1, z, BASEMENT_SUBFLOOR);
-				dao = basementData.get(new Iab(x, z));
+					chunk.setBlock(ix, this.level_y+yy+1, iz, BASEMENT_SUBFLOOR);
+				dao = basementData.get(new Iab(ix, iz));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
 					for (int yy=0; yy<h; yy++) {
-						if (yy > 6) chunk.setBlock(x, y+yy, z, Material.BEDROCK);
-						else        chunk.setBlock(x, y+yy, z, BASEMENT_WALL);
+						if (yy > 6) chunk.setBlock(ix, y+yy, iz, Material.BEDROCK);
+						else        chunk.setBlock(ix, y+yy, iz, BASEMENT_WALL);
 					}
 				// room
 				} else {
-					if (dao.isWet) chunk.setBlock(x, y, z, BASEMENT_FLOOR_WET);
-					else           chunk.setBlock(x, y, z, BASEMENT_FLOOR_DRY);
+					if (dao.isWet) chunk.setBlock(ix, y, iz, BASEMENT_FLOOR_WET);
+					else           chunk.setBlock(ix, y, iz, BASEMENT_FLOOR_DRY);
 					// basement lights
 					final int modX10 = Math.abs(xx) % 10;
 					final int modZ10 = Math.abs(zz) % 10;
 					if (modZ10 == 0) {
 						if (modX10 < 3 || modX10 > 7) {
-							chunk.setBlock(x, y+LAMP_Y, z, Material.REDSTONE_LAMP);
+							chunk.setBlock(ix, y+LAMP_Y, iz, Material.REDSTONE_LAMP);
 							switch (modX10) {
-							case 0: chunk.setBlock(x, y+LAMP_Y+1, z, Material.BEDROCK);       break;
+							case 0: chunk.setBlock(ix, y+LAMP_Y+1, iz, Material.BEDROCK);       break;
 							case 1:
-							case 9: chunk.setBlock(x, y+LAMP_Y+1, z, Material.REDSTONE_WIRE); break;
+							case 9: chunk.setBlock(ix, y+LAMP_Y+1, iz, Material.REDSTONE_WIRE); break;
 							case 2:
 							case 8:
-								for (int iy=0; iy<5; iy++) {
-									chunk.setBlock(x, y+iy+LAMP_Y+1, z, Material.CHAIN);
-								}
+								for (int iy=0; iy<5; iy++)
+									chunk.setBlock(ix, y+iy+LAMP_Y+1, iz, Material.CHAIN);
 								break;
 							}
 						}
 					}
 				} // end wall/room
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 

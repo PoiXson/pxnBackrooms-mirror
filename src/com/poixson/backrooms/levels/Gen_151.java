@@ -50,32 +50,32 @@ public class Gen_151 extends GenBackrooms {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_151) return;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-//				final int zz = (chunkZ * 16) + z;
-				chunk.setBlock(x, 0, z, Material.BEDROCK);
-				chunk.setBlock(x, 1, z, Material.STONE);
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
+				final int xx = (chunkX * 16) + ix;
+//				final int zz = (chunkZ * 16) + iz;
+				chunk.setBlock(ix, 0, iz, Material.BEDROCK);
+				chunk.setBlock(ix, 1, iz, Material.STONE);
 				int y  = this.level_y + SUBFLOOR + 1;
 				int cy = this.level_y + SUBFLOOR + this.level_h + 1;
 				// lobby floor
-				chunk.setBlock(x, y, z, Material.BEDROCK);
+				chunk.setBlock(ix, y, iz, Material.BEDROCK);
 				y++;
 				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(x, y+yy, z, HOUSE_FLOOR);
+					chunk.setBlock(ix, y+yy, iz, HOUSE_FLOOR);
 				y += SUBFLOOR;
 				final double value = this.noiseHouseWalls.getNoiseRot(xx, cy, 0.25);
 				if (value < -0.9 || value > 0.9) {
 					for (int iy=0; iy<3; iy++)
-						chunk.setBlock(x, y+iy, z, HOUSE_WALLS);
+						chunk.setBlock(ix, y+iy, iz, HOUSE_WALLS);
 				}
 				if (ENABLE_TOP_151) {
 					cy++;
 					for (int i=0; i<SUBCEILING; i++)
-						chunk.setBlock(x, cy+i, z, HOUSE_FLOOR);
+						chunk.setBlock(ix, cy+i, iz, HOUSE_FLOOR);
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 

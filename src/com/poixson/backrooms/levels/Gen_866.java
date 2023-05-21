@@ -36,14 +36,14 @@ public class Gen_866 extends GenBackrooms {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_866) return;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				final int xx = (chunkX * 16) + x;
-				final int zz = (chunkZ * 16) + z;
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
+				final int xx = (chunkX * 16) + ix;
+				final int zz = (chunkZ * 16) + iz;
 				// subfloor
-				chunk.setBlock(x, 0, z, Material.BEDROCK);
-				chunk.setBlock(x, 1, z, Material.ACACIA_PLANKS);
-				chunk.setBlock(x, 2, z, Material.SMOOTH_RED_SANDSTONE);
+				chunk.setBlock(ix, 0, iz, Material.BEDROCK);
+				chunk.setBlock(ix, 1, iz, Material.ACACIA_PLANKS);
+				chunk.setBlock(ix, 2, iz, Material.SMOOTH_RED_SANDSTONE);
 				final double value = this.noiseField.getNoise(xx, zz);
 //				final double mx = ((double)xx) + value;
 //				final double mz = ((double)zz) + (value * 5.0);
@@ -53,12 +53,11 @@ public class Gen_866 extends GenBackrooms {
 				final double hh = h - ((double)ih);
 				final boolean isHalf = (hh > 0.6);
 				int y = this.level_y + 3;
-				for (int iy=0; iy<ih; iy++) {
-					chunk.setBlock(x, y+iy, z, Material.SMOOTH_RED_SANDSTONE);
-				}
+				for (int iy=0; iy<ih; iy++)
+					chunk.setBlock(ix, y+iy, iz, Material.SMOOTH_RED_SANDSTONE);
 				y += ih;
 				if (isHalf) {
-					chunk.setBlock(x, y, z, Material.SMOOTH_RED_SANDSTONE_SLAB);
+					chunk.setBlock(ix, y, iz, Material.SMOOTH_RED_SANDSTONE_SLAB);
 				} else {
 //					final int rnd = NumberUtils.GetNewRandom(0, 999, this.rndLast) % 100;
 //					this.rndLast = rnd;
@@ -69,8 +68,8 @@ public class Gen_866 extends GenBackrooms {
 //						chunk.setBlock(x, y, z, Material.GRASS);
 //					}
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 

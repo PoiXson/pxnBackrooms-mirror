@@ -104,20 +104,20 @@ public class Gen_000 extends GenBackrooms {
 		LobbyData dao;
 		int xx, zz;
 		double valueWall;
-		for (int z=-1; z<17; z++) {
-			zz = (chunkZ * 16) + z;
-			for (int x=-1; x<17; x++) {
-				xx = (chunkX * 16) + x;
+		for (int iz=-1; iz<17; iz++) {
+			zz = (chunkZ * 16) + iz;
+			for (int ix=-1; ix<17; ix++) {
+				xx = (chunkX * 16) + ix;
 				valueWall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
 				dao = new LobbyData(valueWall);
-				data.put(new Iab(x, z), dao);
+				data.put(new Iab(ix, iz), dao);
 			}
 		}
 		// find wall distance
 		LobbyData dao_near;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-				dao = data.get(new Iab(x, z));
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
+				dao = data.get(new Iab(ix, iz));
 				if (dao.isWall) {
 					dao.wall_dist = 0;
 					continue;
@@ -125,7 +125,7 @@ public class Gen_000 extends GenBackrooms {
 				for (int i=1; i<WALL_SEARCH_DIST; i++) {
 					dao.boxed = 0;
 					// north
-					dao_near = data.get(new Iab(x, z-i));
+					dao_near = data.get(new Iab(ix, iz-i));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -133,7 +133,7 @@ public class Gen_000 extends GenBackrooms {
 						dao.boxed++;
 					}
 					// south
-					dao_near = data.get(new Iab(x, z+i));
+					dao_near = data.get(new Iab(ix, iz+i));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -141,7 +141,7 @@ public class Gen_000 extends GenBackrooms {
 						dao.boxed++;
 					}
 					// east
-					dao_near = data.get(new Iab(x+i, z));
+					dao_near = data.get(new Iab(ix+i, iz));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -149,7 +149,7 @@ public class Gen_000 extends GenBackrooms {
 						dao.boxed++;
 					}
 					// west
-					dao_near = data.get(new Iab(x-i, z));
+					dao_near = data.get(new Iab(ix-i, iz));
 					if (dao_near != null && dao_near.isWall) {
 						if (dao.wall_dist > i)
 							dao.wall_dist = i;
@@ -160,25 +160,25 @@ public class Gen_000 extends GenBackrooms {
 					if (dao.boxed > 2) {
 						// north-east
 						if (dao.wall_n || dao.wall_e) {
-							dao_near = data.get(new Iab(x+i, z-i));
+							dao_near = data.get(new Iab(ix+i, iz-i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
 						// north-west
 						if (dao.wall_n || dao.wall_w) {
-							dao_near = data.get(new Iab(x-i, z-i));
+							dao_near = data.get(new Iab(ix-i, iz-i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
 						// south-east
 						if (dao.wall_s || dao.wall_e) {
-							dao_near = data.get(new Iab(x+i, z+i));
+							dao_near = data.get(new Iab(ix+i, iz+i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
 						// south-west
 						if (dao.wall_s || dao.wall_w) {
-							dao_near = data.get(new Iab(x-i, z+i));
+							dao_near = data.get(new Iab(ix-i, iz+i));
 							if (dao_near != null && dao_near.isWall)
 								dao.boxed++;
 						}
@@ -192,8 +192,8 @@ public class Gen_000 extends GenBackrooms {
 						}
 					}
 				} // end distance loop
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 	@Override
@@ -207,54 +207,55 @@ public class Gen_000 extends GenBackrooms {
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_h + y + 1;
 		int xx, zz;
-		for (int z=0; z<16; z++) {
-			zz = (chunkZ * 16) + z;
-			for (int x=0; x<16; x++) {
-				xx = (chunkX * 16) + x;
+		int modX7, modZ7;
+		for (int iz=0; iz<16; iz++) {
+			zz = (chunkZ * 16) + iz;
+			for (int ix=0; ix<16; ix++) {
+				xx = (chunkX * 16) + ix;
 				// lobby floor
-				chunk.setBlock(x, this.level_y, z, Material.BEDROCK);
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int iy=0; iy<SUBFLOOR; iy++)
-					chunk.setBlock(x, this.level_y+iy+1, z, LOBBY_SUBFLOOR);
-				dao = lobbyData.get(new Iab(x, z));
+					chunk.setBlock(ix, this.level_y+iy+1, iz, LOBBY_SUBFLOOR);
+				dao = lobbyData.get(new Iab(ix, iz));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
 					// lobby walls
 					final int h = this.level_h + 3;
 					for (int iy=0; iy<h; iy++)
-						chunk.setBlock(x, y+iy, z, LOBBY_WALL);
+						chunk.setBlock(ix, y+iy, iz, LOBBY_WALL);
 				// room
 				} else {
 					// floor
-					chunk.setBlock(x, y, z, LOBBY_CARPET);
+					chunk.setBlock(ix, y, iz, LOBBY_CARPET);
 					if (ENABLE_TOP_000) {
-						final int  modX7 = (xx < 0 ? 1-xx : xx) % 7;
-						final int  modZ7 = (zz < 0 ? 0-zz : zz) % 7;
+						modX7 = (xx < 0 ? 1-xx : xx) % 7;
+						modZ7 = (zz < 0 ? 0-zz : zz) % 7;
 						if (modZ7 == 0 && modX7 < 2
 						&& dao.wall_dist > 2) {
 							// ceiling lights
-							chunk.setBlock(x, cy, z, Material.REDSTONE_LAMP);
-							final BlockData block = chunk.getBlockData(x, cy, z);
+							chunk.setBlock(ix, cy, iz, Material.REDSTONE_LAMP);
+							final BlockData block = chunk.getBlockData(ix, cy, iz);
 							((Lightable)block).setLit(true);
-							chunk.setBlock(x, cy,   z, block);
-							chunk.setBlock(x, cy+1, z, Material.REDSTONE_BLOCK);
+							chunk.setBlock(ix, cy,   iz, block);
+							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
 						} else {
 							// ceiling
-							chunk.setBlock(x, cy, z, Material.SMOOTH_STONE_SLAB);
-							final Slab slab = (Slab) chunk.getBlockData(x, cy, z);
+							chunk.setBlock(ix, cy, iz, Material.SMOOTH_STONE_SLAB);
+							final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
 							slab.setType(Slab.Type.TOP);
-							chunk.setBlock(x, cy,   z, slab);
-							chunk.setBlock(x, cy+1, z, Material.STONE);
+							chunk.setBlock(ix, cy,   iz, slab);
+							chunk.setBlock(ix, cy+1, iz, Material.STONE);
 						}
 					}
 					// special
 					if (dao.boxed > 4) {
 						// barrel
 						if (dao.wall_dist == 1) {
-							chunk.setBlock(x, y+1, z, Material.BARREL);
-							final Barrel barrel = (Barrel) chunk.getBlockData(x, y+1, z);
+							chunk.setBlock(ix, y+1, iz, Material.BARREL);
+							final Barrel barrel = (Barrel) chunk.getBlockData(ix, y+1, iz);
 							barrel.setFacing(BlockFace.UP);
-							chunk.setBlock(x, y+1, z, barrel);
+							chunk.setBlock(ix, y+1, iz, barrel);
 							chests.add(new Iabc(xx, y+1, zz));
 						} else
 						// portal to basement
@@ -263,9 +264,9 @@ public class Gen_000 extends GenBackrooms {
 						&&  dao.box_dir != null) {
 							boolean found_basement_wall = false;
 							BasementData base;
-							for (int iz=-2; iz<3; iz++) {
-								for (int ix=-2; ix<3; ix++) {
-									base = basementData.get(new Iab(ix+x, iz+z));
+							for (int izb=-2; izb<3; izb++) {
+								for (int ixb=-2; ixb<3; ixb++) {
+									base = basementData.get(new Iab(ixb+ix, izb+iz));
 									if (base != null
 									&&  base.isWall) {
 										found_basement_wall = true;
@@ -284,10 +285,10 @@ public class Gen_000 extends GenBackrooms {
 									.y((cy - h) + 1)
 									.whd(5, h, 6);
 								switch (dao.box_dir) {
-								case NORTH: factory.xz(x-3, z-4); break;
-								case SOUTH: factory.xz(x,   z  ); break;
-								case EAST:  factory.xz(x-2, z-2); break;
-								case WEST:  factory.xz(x-4, z-3); break;
+								case NORTH: factory.xz(ix-3, iz-4); break;
+								case SOUTH: factory.xz(ix,   iz  ); break;
+								case EAST:  factory.xz(ix-2, iz-2); break;
+								case WEST:  factory.xz(ix-4, iz-3); break;
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
 								final BlockPlotter plot = factory.build();
@@ -304,49 +305,60 @@ public class Gen_000 extends GenBackrooms {
 								matrix[0][3].append("xxgxx");
 								matrix[0][4].append("xg.gx");
 								matrix[0][5].append("xxgxx");
+								int iy = 0;
 								// lower area
-								for (int iy=1; iy<5; iy++) {
-									matrix[iy][1].append(" xxx ");
-									matrix[iy][2].append(" x.x ");
-									matrix[iy][3].append(" x.x ");
-									matrix[iy][4].append(" x.x ");
-									matrix[iy][5].append(" xxx ");
+								for (int i=1; i<3; i++) {
+									iy++;
+									matrix[iy][1].append(" xxx");
+									matrix[iy][2].append(" x.x");
+									matrix[iy][3].append(" x.x");
+									matrix[iy][4].append(" x.x");
+									matrix[iy][5].append(" xxx");
 								}
 								// lower ceiling
-								matrix[5][1].append(" xxx ");
-								matrix[5][2].append(" x.x ");
-								matrix[5][3].append(" xxx ");
-								matrix[5][4].append(" xxx ");
-								matrix[5][5].append(" xxx ");
-								// shaft
-								final int hh = h - this.level_h - 1;
-								for (int i=6; i<hh; i++) {
-									if (i > 6 && i < Level_000.H_023+8) {
-										matrix[i][0].append("mmmmm");
-										matrix[i][1].append("mxxxm");
-										matrix[i][2].append("mx.xm");
-										matrix[i][3].append("mxxxm");
-										matrix[i][4].append("mmmmm");
-									} else {
-										matrix[i][1].append(" xxx ");
-										matrix[i][2].append(" x.x ");
-										matrix[i][3].append(" xxx ");
-									}
+								iy++;
+								matrix[iy][1].append(" xxx");
+								matrix[iy][2].append(" x.x");
+								matrix[iy][3].append(" xxx");
+								matrix[iy][4].append(" xxx");
+								matrix[iy][5].append(" xxx");
+								iy++;
+								matrix[iy][1].append(" xxx");
+								matrix[iy][2].append(" x.x");
+								matrix[iy][3].append(" xxx");
+								// shaft through overgrowth
+								for (int i=-1; i<Level_000.H_023; i++) {
+									iy++;
+									matrix[iy][0].append("mmmmm");
+									matrix[iy][1].append("mxxxm");
+									matrix[iy][2].append("mx.xm");
+									matrix[iy][3].append("mxxxm");
+									matrix[iy][4].append("mmmmm");
 								}
-								// opening
-								for (int i=hh; i<h-1; i++) {
-									matrix[i][0].append("=====");
-									matrix[i][1].append("=xxx=");
-									matrix[i][2].append("=x.x=");
-									matrix[i][3].append("=x.x=");
-									matrix[i][4].append("==.==");
+								// shaft between overgrowth and lobby
+								final int hh = SUBCEILING + SUBFLOOR + 2;
+								for (int i=0; i<hh; i++) {
+									iy++;
+									matrix[iy][1].append(" xxx");
+									matrix[iy][2].append(" x.x");
+									matrix[iy][3].append(" xxx");
+								}
+								// opening in lobby
+								for (int i=0; i<Level_000.H_000; i++) {
+									iy++;
+									matrix[iy][0].append("=====");
+									matrix[iy][1].append("=xxx=");
+									matrix[iy][2].append("=x.x=");
+									matrix[iy][3].append("=x.x=");
+									matrix[iy][4].append("==.==");
 								}
 								// top
-								matrix[h-1][0].append("=====");
-								matrix[h-1][1].append("=xxx=");
-								matrix[h-1][2].append("=xxx=");
-								matrix[h-1][3].append("=xxx=");
-								matrix[h-1][4].append("== ==");
+								iy++;
+								matrix[iy][0].append("=====");
+								matrix[iy][1].append("=xxx=");
+								matrix[iy][2].append("=xxx=");
+								matrix[iy][3].append("=xxx=");
+								matrix[iy][4].append("== ==");
 								plots.add(plot);
 							}
 						} // end portal to basement
@@ -355,10 +367,10 @@ public class Gen_000 extends GenBackrooms {
 				// subceiling
 				if (ENABLE_TOP_000) {
 					for (int i=1; i<SUBCEILING; i++)
-						chunk.setBlock(x, cy+i+1, z, Material.STONE);
+						chunk.setBlock(ix, cy+i+1, iz, Material.STONE);
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 		if (!chests.isEmpty()) {
 			for (final Iabc loc : chests) {
 				(new ChestFiller_000(this.plugin, "level0", loc.a, loc.b, loc.c))

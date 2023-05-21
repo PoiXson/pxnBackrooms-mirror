@@ -77,8 +77,8 @@ public class Gen_019 extends GenBackrooms {
 					for (int iy=0; iy<this.level_h+1; iy++)
 						chunk.setBlock(ix, y+iy, iz, (iy>6 ? Material.BEDROCK : ATTIC_WALLS));
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 

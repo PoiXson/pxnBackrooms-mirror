@@ -26,27 +26,25 @@ public class Gen_033 extends GenBackrooms {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_033) return;
-		for (int z=0; z<16; z++) {
-			for (int x=0; x<16; x++) {
-//				final int xx = (chunkX * 16) + x;
-//				final int zz = (chunkZ * 16) + z;
-				switch (x) {
+		for (int iz=0; iz<16; iz++) {
+			for (int ix=0; ix<16; ix++) {
+//				final int xx = (chunkX * 16) + ix;
+//				final int zz = (chunkZ * 16) + iz;
+				switch (ix) {
 				case 0:
 				case 15:
-					for (int y=0; y<this.level_h; y++) {
-						chunk.setBlock(x, y+this.level_y+2, z, Material.BEDROCK);
-					}
+					for (int iy=0; iy<this.level_h; iy++)
+						chunk.setBlock(ix, iy+this.level_y+2, iz, Material.BEDROCK);
 					break;
 				case 1:
 				case 14:
-					for (int y=0; y<this.level_h; y++) {
-						chunk.setBlock(x, y+this.level_y+2, z, Material.BLACKSTONE);
-					}
+					for (int iy=0; iy<this.level_h; iy++)
+						chunk.setBlock(ix, iy+this.level_y+2, iz, Material.BLACKSTONE);
 					break;
 				default: break;
 				}
-			} // end x
-		} // end z
+			} // end ix
+		} // end iz
 	}
 
 
