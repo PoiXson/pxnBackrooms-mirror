@@ -97,6 +97,7 @@ public class Level_000 extends LevelBackrooms {
 
 	// exit locations
 	public final LocationStoreManager portal_0_to_1;
+	public final LocationStoreManager portal_0_to_6;
 	public final LocationStoreManager portal_0_to_37;
 	public final LocationStoreManager portal_1_to_771;
 	public final LocationStoreManager portal_5_to_37;
@@ -139,6 +140,7 @@ public class Level_000 extends LevelBackrooms {
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
 		this.portal_0_to_1   = (new LocationStoreManager("level0", "portal_0_to_1"  )).start(plugin); // lobby to basement
+		this.portal_0_to_6   = (new LocationStoreManager("level0", "portal_0_to_6"  )).start(plugin); // lobby to lights out
 		this.portal_0_to_37  = (new LocationStoreManager("level0", "portal_0_to_37" )).start(plugin); // lobby to pools
 		this.portal_1_to_771 = (new LocationStoreManager("level0", "portal_1_to_771")).start(plugin); // basement to crossroads
 		this.portal_5_to_37  = (new LocationStoreManager("level0", "portal_5_to_37" )).start(plugin); // hotel to pools
@@ -161,6 +163,7 @@ public class Level_000 extends LevelBackrooms {
 		this.listener_006.unregister();
 		this.listener_023.unregister();
 		this.portal_0_to_1.saveAll();
+		this.portal_0_to_6.saveAll();
 		this.portal_0_to_37.saveAll();
 		this.portal_1_to_771.saveAll();
 		this.portal_5_to_37.saveAll();
