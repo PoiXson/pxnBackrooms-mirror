@@ -139,45 +139,81 @@ public class Pop_037 implements PopBackrooms {
 			}
 		}
 		// place blocks for tunnels
-		Iab last;
 		for (final TunnelTracer tracer : tunnelTracers) {
-			final BlockPlotter plot = new BlockPlotter(region);
-			plot.size(6, 7);
-			plot.y(this.gen.level_y + 7);
-			plot.type('.', Material.AIR);
-			plot.type('#', POOL_WALL_A );
-			final StringBuilder[] matrix = plot.getMatrix2D();
-			matrix[5].append(" ##### ");
-			matrix[4].append("##...##");
-			matrix[3].append("#.....#");
-			matrix[2].append("#.....#");
-			matrix[1].append("#.....#");
-			matrix[0].append("#######");
-			int dirX;
-			last = null;
-			boolean first = true;
-			POINTS_LOOP:
+			int x_low  = Integer.MAX_VALUE;
+			int z_low  = Integer.MAX_VALUE;
+			int x_high = Integer.MIN_VALUE;
+			int z_high = Integer.MIN_VALUE;
 			for (final Iab loc : tracer.points) {
-				if (last == null) {
-					last = loc;
-					continue POINTS_LOOP;
-				}
-				plot.x(loc.a);
-				plot.z(loc.b);
-				// find direction
-				dirX = loc.a - last.a;
-				if (dirX == 0) { plot.axis("YX"); plot.x(plot.x() - 3);
-				} else {         plot.axis("YZ"); plot.z(plot.z() - 3); }
-				plot.run();
-				if (first) {
-					first = false;
-					if (dirX == 0) plot.z(last.b);
-					else           plot.x(last.a);
-					plot.run();
-				}
-				last = loc;
+				if (x_low  > loc.a) x_low  = loc.a;
+				if (z_low  > loc.b) z_low  = loc.b;
+				if (x_high < loc.a) x_high = loc.a;
+				if (z_high < loc.b) z_high = loc.b;
 			}
-		}
+			if (x_low == Integer.MAX_VALUE
+			||  z_low == Integer.MAX_VALUE
+			||  x_high == Integer.MIN_VALUE
+			||  z_high == Integer.MIN_VALUE)
+				continue;
+			x_low -= 3; x_high += 4;
+			z_low -= 3; z_high += 4;
+			int w = Math.abs(x_high - x_low);
+			int d = Math.abs(z_high - z_low);
+			int xx, zz;
+			final int yy = this.gen.level_y + 7;
+			for (int iz=0; iz<d; iz++) {
+				zz = z_low + iz;
+				for (int ix=0; ix<w; ix++) {
+					xx = x_low + ix;
+					int distance = Integer.MAX_VALUE;
+					int dist;
+					for (final Iab loc : tracer.points) {
+						dist = ShortestDistance(xx, zz, loc.a, loc.b);
+						if (distance > dist)
+							distance = dist;
+						if (distance == 0)
+							break;
+					}
+					if (region.isInRegion(xx, 0, zz)) {
+						if (distance < 2) {
+							if (POOL_WALL_B.equals(region.getType(xx, yy, zz)))
+								region.setType(xx, yy, zz, POOL_WALL_A);
+							for (int iy=1; iy<5; iy++) {
+								if (POOL_WALL_B.equals(region.getType(xx, yy+iy, zz)))
+									region.setType(xx, yy+iy, zz, Material.AIR);
+							}
+							if (POOL_WALL_B.equals(region.getType(xx, yy+5, zz)))
+								region.setType(xx, yy+5, zz, POOL_WALL_A);
+						} else
+						if (distance == 2) {
+							if (POOL_WALL_B.equals(region.getType(xx, yy, zz)))
+								region.setType(xx, yy, zz, POOL_WALL_A);
+							for (int iy=1; iy<4; iy++) {
+								if (POOL_WALL_B.equals(region.getType(xx, yy+iy, zz)))
+									region.setType(xx, yy+iy, zz, Material.AIR);
+							}
+							if (POOL_WALL_B.equals(region.getType(xx, yy+4, zz)))
+								region.setType(xx, yy+4, zz, POOL_WALL_A);
+						} else
+						if (distance == 3) {
+							for (int iy=0; iy<4; iy++) {
+								if (POOL_WALL_B.equals(region.getType(xx, yy+iy, zz)))
+									region.setType(xx, yy+iy, zz, POOL_WALL_A);
+							}
+						}
+					}
+				} // end for ix
+			} // end for iz
+		} // end tracers loop
+	}
+
+
+
+	public static int ShortestDistance(final int x1, final int z1, final int x2, final int z2) {
+		return Math.max(
+			Math.min( Math.abs(x1-x2), Math.abs(x2-x1) ),
+			Math.min( Math.abs(z1-z2), Math.abs(z2-z1) )
+		);
 	}
 
 
