@@ -13,6 +13,7 @@ import com.poixson.backrooms.levels.Gen_005;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.hotel.HotelRoomSpecs.RoomTheme;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
@@ -47,9 +48,14 @@ public class HotelRoomGuest implements HotelRoom {
 		final int w = area.c;
 		final int d = area.d;
 		final int h = Level_000.H_005 + 2;
-		final BlockPlotter plot = new BlockPlotter(region);
-		plot.axis("use").rotate(direction.getOppositeFace());
-		plot.location(y, z, x).size(h, d, w);
+		final BlockPlotter plot =
+			(new PlotterFactory())
+			.placer(region)
+			.axis("use")
+			.rotate(direction.getOppositeFace())
+			.xyz(x, y, z)
+			.whd(w, h, d)
+			.build();
 		plot.type('#', specs.walls);
 		plot.type(',', specs.carpet);
 		plot.type('.', Material.AIR);

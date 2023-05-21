@@ -14,6 +14,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -157,9 +158,13 @@ public class Gen_037 extends GenBackrooms {
 		boolean solid_ne, solid_nw, solid_se, solid_sw;
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
-				final BlockPlotter plot = new BlockPlotter(chunk);
-				plot.axis("use");
-				plot.location(y, rz*8, rx*8).size(h, 8, 8);
+				final BlockPlotter plot =
+					(new PlotterFactory())
+					.placer(chunk)
+					.axis("use")
+					.xyz(rx*8, y, rz*8)
+					.whd(8, h, 8)
+					.build();
 				plot.type('#', POOL_WALL_A);
 				plot.type('@', POOL_WALL_B);
 				plot.type('w', Material.WATER, "0");
@@ -351,10 +356,14 @@ public class Gen_037 extends GenBackrooms {
 							zz = (chunkZ * 16) + (rz * 8);
 							((Level_000)this.backlevel).portal_0_to_37.add(xx, zz);
 							final int hh = Level_000.H_000 + SUBCEILING + Level_000.H_006 + SUBFLOOR + 5;
-							final BlockPlotter pp = new BlockPlotter(chunk);
-							pp.axis("use")
-								.h(hh+1).w(6).d(6)
-								.x(rx*8).z(rz*8).y(Level_000.Y_000+SUBFLOOR);
+							final BlockPlotter pp =
+								(new PlotterFactory())
+								.placer(chunk)
+								.axis("use")
+								.xz(rx*8, rz*8)
+								.y(Level_000.Y_000+SUBFLOOR)
+								.whd(6, hh+1, 6)
+								.build();
 							pp.type('#', Material.BEDROCK  );
 							pp.type('g', Material.GLOWSTONE);
 							pp.type('.', Material.AIR      );

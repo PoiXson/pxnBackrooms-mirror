@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
@@ -103,7 +104,14 @@ public class Gen_771 extends GenBackrooms {
 	}
 	protected void generateCenterArches(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
-		final BlockPlotter plot = new BlockPlotter(chunk);
+		final BlockPlotter plot =
+			(new PlotterFactory())
+			.placer(chunk)
+			.axis(axis)
+			.xz((0-chunkX)*15, (0-chunkZ)*15)
+			.y(this.level_y + this.level_h + 2)
+			.whd(16, 14, 4)
+			.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
 		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top"   );
 		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "bottom");
@@ -114,11 +122,6 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('!', Material.LIGHTNING_ROD);
 		plot.type('8', Material.CHAIN);
 		plot.type('G', Material.SHROOMLIGHT);
-		plot.axis(axis)
-			.y(this.level_y + this.level_h + 2)
-			.x((0-chunkX)*15)
-			.z((0-chunkZ)*15)
-			.size(14, 16, 4);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[13][ 0].append("!");
 		// big arch
@@ -145,7 +148,14 @@ public class Gen_771 extends GenBackrooms {
 	}
 	protected void generateCenterFloor(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
-		final BlockPlotter plot = new BlockPlotter(chunk);
+		final BlockPlotter plot =
+			(new PlotterFactory())
+			.placer(chunk)
+			.axis(axis)
+			.xz((0-chunkX)*15, (0-chunkZ)*15)
+			.y((this.level_y + this.level_h) - 3)
+			.whd(16, 5, 16)
+			.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
 		plot.type('X', Material.GILDED_BLACKSTONE);
@@ -154,11 +164,6 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
 		plot.type('.', Material.LIGHT, "15");
 		plot.type(',', Material.LIGHT,  "9");
-		plot.axis(axis)
-			.y((this.level_y + this.level_h) - 3)
-			.x((0-chunkX)*15)
-			.z((0-chunkZ)*15)
-			.h(5).w(16).d(16);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
 		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
@@ -221,16 +226,20 @@ public class Gen_771 extends GenBackrooms {
 	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plot = new BlockPlotter(chunk);
-		plot.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
-			.x(x).y(this.level_y+this.level_h).z(z)
-			.size(3, 16, 3);
-		final StringBuilder[][] matrix = plot.getMatrix3D();
+		final BlockPlotter plot =
+			(new PlotterFactory())
+			.placer(chunk)
+			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.xz(x, z)
+			.y(this.level_y+this.level_h)
+			.whd(16, 3, 16)
+			.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('i', Material.SOUL_LANTERN);
 		plot.type('L', Material.LIGHT, "15");
+		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
 		final int cx = chunkX * 16;
@@ -249,16 +258,20 @@ public class Gen_771 extends GenBackrooms {
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plot = new BlockPlotter(chunk);
-		plot.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
-			.x(x).y(this.level_y).z(z)
-			.size(3, 16, 3);
-		final StringBuilder[][] matrix = plot.getMatrix3D();
+		final BlockPlotter plot =
+				(new PlotterFactory())
+				.placer(chunk)
+				.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+				.xz(x, z)
+				.y(this.level_y)
+				.whd(16, 3, 16)
+				.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('i', Material.LANTERN);
 		plot.type('L', Material.LIGHT, "15");
+		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
 		final int cx = chunkX * 16;
@@ -330,10 +343,14 @@ public class Gen_771 extends GenBackrooms {
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockPlotter plot = new BlockPlotter(chunk);
-		plot.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
-			.x(x).y(this.level_y).z(z)
-			.size(this.level_h+2, 2, 5);
+		final BlockPlotter plot =
+				(new PlotterFactory())
+				.placer(chunk)
+				.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+				.xz(x, z)
+				.y(this.level_y)
+				.whd(2, this.level_h+2, 5)
+				.build();
 		plot.type('#', Material.DEEPSLATE_BRICKS);
 		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top",    direction.getOppositeFace().toString().toLowerCase());
 		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.toString().toLowerCase());

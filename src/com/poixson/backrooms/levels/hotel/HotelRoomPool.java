@@ -16,6 +16,7 @@ import com.poixson.backrooms.levels.Gen_005;
 import com.poixson.backrooms.levels.Gen_037;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.utils.StringUtils;
 
@@ -64,9 +65,14 @@ public class HotelRoomPool implements HotelRoom {
 		final int w = area.c;
 		final int d = area.d;
 		final int th = Level_000.H_037 + Level_000.H_005 + SUBCEILING + SUBFLOOR + 5;
-		final BlockPlotter plot = new BlockPlotter(region);
-		plot.axis("use").rotate(direction.getOppositeFace());
-		plot.location(yy, z, x).size(th, d, w);
+		final BlockPlotter plot =
+			(new PlotterFactory())
+			.placer(region)
+			.axis("use")
+			.rotate(direction.getOppositeFace())
+			.xyz(x, yy, z)
+			.whd(w, th, d)
+			.build();
 		plot.type('#', Gen_037.POOL_WALL_A);
 		plot.type('@', Gen_037.POOL_WALL_B);
 		plot.type('.', Material.AIR);

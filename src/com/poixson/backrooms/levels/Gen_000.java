@@ -25,6 +25,7 @@ import com.poixson.backrooms.levels.Gen_001.BasementData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabc;
 import com.poixson.utils.FastNoiseLiteD;
@@ -275,16 +276,21 @@ public class Gen_000 extends GenBackrooms {
 							if (!found_basement_wall) {
 								((Level_000)this.backlevel).portal_0_to_1.add(xx, zz);
 								final int h = Level_000.H_023 + this.level_h + (SUBFLOOR*3) + (SUBCEILING*2);
-								final BlockPlotter plot = new BlockPlotter(chunk);
+								final PlotterFactory factory =
+									(new PlotterFactory())
+									.placer(chunk)
+									.axis("use")
+									.rotate(dao.box_dir)
+									.y((cy - h) + 1)
+									.whd(5, h, 6);
 								switch (dao.box_dir) {
-								case NORTH: plot.axis("une").x(x-2).z(z+2); break;
-								case SOUTH: plot.axis("use").x(x-2).z(z-2); break;
-								case EAST:  plot.axis("ues").x(x-2).z(z-2); break;
-								case WEST:  plot.axis("uws").x(x+2).z(z-2); break;
+								case NORTH: factory.xz(x-3, z-4); break;
+								case SOUTH: factory.xz(x,   z  ); break;
+								case EAST:  factory.xz(x-2, z-2); break;
+								case WEST:  factory.xz(x-4, z-3); break;
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
-								plot.y((cy - h) + 1);
-								plot.size(h, 6, 5);
+								final BlockPlotter plot = factory.build();
 								plot.type('.', Material.AIR              );
 								plot.type('=', Material.YELLOW_TERRACOTTA);
 								plot.type('x', Material.BEDROCK          );
