@@ -1,7 +1,5 @@
 package com.poixson.backrooms.listeners;
 
-import static com.poixson.utils.RandomUtils.Rnd10K;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.plugin.xListener;
 import com.poixson.tools.xTime;
+import com.poixson.utils.RandomUtils;
 import com.poixson.utils.Utils;
 
 
@@ -73,7 +72,7 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 			}
 			default: return;
 			}
-			final int rnd = Rnd10K();
+			final int rnd = RandomUtils.GetRandom(0, 9999);
 			if (rnd % 10 < 5)
 				return;
 			// noclip into the backrooms
