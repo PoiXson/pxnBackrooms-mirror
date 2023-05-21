@@ -1,7 +1,6 @@
 package com.poixson.backrooms.levels;
 
 import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_019;
-import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_019;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -56,16 +55,14 @@ public class Gen_019 extends GenBackrooms {
 				if (dao == null) continue;
 				modX7 = (xx < 0 ? 1-xx : xx) % 7;
 				modZ7 = (zz < 0 ? 1-zz : zz) % 7;
-				if (ENABLE_TOP_019) {
-					// beam
-					if (modX7 == 0 || modZ7 == 0)
-						chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, Material.SPRUCE_WOOD);
-					// lantern
-					if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6) {
-						valueLamp = this.noiseLamps.getNoise(xx, zz);
-						if (valueLamp < 0.0)
-							chunk.setBlock(ix, this.level_y+dao.wall_dist+2, iz, Material.LANTERN);
-					}
+				// beam
+				if (modX7 == 0 || modZ7 == 0)
+					chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, Material.SPRUCE_WOOD);
+				// lantern
+				if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6) {
+					valueLamp = this.noiseLamps.getNoise(xx, zz);
+					if (valueLamp < 0.0)
+						chunk.setBlock(ix, this.level_y+dao.wall_dist+2, iz, Material.LANTERN);
 				}
 				// attic floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);

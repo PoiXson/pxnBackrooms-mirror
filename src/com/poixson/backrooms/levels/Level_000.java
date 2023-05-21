@@ -41,10 +41,8 @@ public class Level_000 extends LevelBackrooms {
 	public static final boolean ENABLE_GEN_001 = true;
 
 	public static final boolean ENABLE_TOP_309 = true;
-	public static final boolean ENABLE_TOP_019 = true;
 	public static final boolean ENABLE_TOP_005 = true;
 	public static final boolean ENABLE_TOP_037 = true;
-	public static final boolean ENABLE_TOP_006 = true;
 	public static final boolean ENABLE_TOP_000 = true;
 	public static final boolean ENABLE_TOP_023 = true;
 	public static final boolean ENABLE_TOP_001 = true;
