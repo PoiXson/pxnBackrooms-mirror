@@ -134,12 +134,11 @@ public class Gen_309 extends GenBackrooms {
 
 
 
-	public boolean isCenterClearing(final int x, final int z) {
+	public double getCenterClearingDistance(final int x, final int z, final double strength) {
 		if (Math.abs(x) > 100 || Math.abs(z) > 100)
-			return false;
-		final double distance = Math.sqrt( Math.pow((double)x, 2.0) + Math.pow((double)z, 2.0) )
-			+ (this.noisePath.getNoise(x*5, z*5) * 8.0);
-		return (distance < 80.0);
+			return Double.MAX_VALUE;
+		return Math.sqrt( Math.pow((double)x, 2.0) + Math.pow((double)z, 2.0) )
+			+ (this.noisePath.getNoise(x*5, z*5) * strength);
 	}
 
 

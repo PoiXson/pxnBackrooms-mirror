@@ -35,11 +35,11 @@ public class Pop_309_Trees extends TreePopulator {
 
 	@Override
 	public boolean isTree(final int x, final int z) {
-		if (!ENABLE_GEN_309) return false;
-		if (!ENABLE_TOP_309) return false;
-		if (!super.isTree(x, z))                            return false;
-		if (this.gen.isCenterClearing(x, z))                return false;
-		if (this.gen.pathTrace.isPath(x, z, PATH_CLEARING)) return false;
+		if (!ENABLE_GEN_309)     return false;
+		if (!ENABLE_TOP_309)     return false;
+		if (!super.isTree(x, z)) return false;
+		if (this.gen.getCenterClearingDistance(x, z, 8.0) < 80.0) return false;
+		if (this.gen.pathTrace.isPath(x, z, PATH_CLEARING))       return false;
 		return true;
 	}
 
