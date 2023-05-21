@@ -1,3 +1,4 @@
+/*
 package com.poixson.backrooms.levels;
 
 import static com.poixson.backrooms.levels.Level_010.ENABLE_GEN_010;
@@ -39,3 +40,4 @@ public class Gen_010 extends GenBackrooms {
 
 
 }
+*/

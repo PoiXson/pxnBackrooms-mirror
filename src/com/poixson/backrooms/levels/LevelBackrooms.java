@@ -274,14 +274,14 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			final int y;
 			switch (level) {
 			case 0:   y = Level_000.Y_000; break;
-			case 9:   y = Level_009.LEVEL_Y; break;
-			case 10:  y = Level_010.LEVEL_Y; break;
-			case 11:  y = Level_011.LEVEL_Y; break;
-			case 33:  y = Level_033.LEVEL_Y; break;
+//			case 9:   y = Level_009.LEVEL_Y; break;
+//			case 10:  y = Level_010.LEVEL_Y; break;
+//			case 11:  y = Level_011.LEVEL_Y; break;
+//			case 33:  y = Level_033.LEVEL_Y; break;
 			case 78:  y = 200;               break;
-			case 151: y = Level_151.LEVEL_Y; break;
+//			case 151: y = Level_151.LEVEL_Y; break;
 			case 771: y = Level_771.LEVEL_Y; break;
-			case 866: y = Level_866.LEVEL_Y; break;
+//			case 866: y = Level_866.LEVEL_Y; break;
 			default:  y = 0;                 break;
 			}
 			mvworld.setSpawnLocation(world.getBlockAt(0, y, 0).getLocation());

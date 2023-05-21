@@ -26,14 +26,7 @@ import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
 import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.backrooms.levels.Level_000;
-import com.poixson.backrooms.levels.Level_009;
-import com.poixson.backrooms.levels.Level_010;
-import com.poixson.backrooms.levels.Level_011;
-import com.poixson.backrooms.levels.Level_033;
-import com.poixson.backrooms.levels.Level_078;
-import com.poixson.backrooms.levels.Level_151;
 import com.poixson.backrooms.levels.Level_771;
-import com.poixson.backrooms.levels.Level_866;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
@@ -91,14 +84,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// backrooms levels
 		new Level_000(this); // lobby, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
-		new Level_009(this); // suburbs
-		new Level_010(this); // field of wheat
-		new Level_011(this); // city
-		new Level_033(this); // run for your life
-		new Level_078(this); // space
-		new Level_151(this); // dollhouse
+//		new Level_009(this); // suburbs
+//		new Level_010(this); // field of wheat
+//		new Level_011(this); // city
+//		new Level_033(this); // run for your life
+//		new Level_078(this); // space
+//		new Level_151(this); // dollhouse
 		new Level_771(this); // crossroads
-		new Level_866(this); // dirtfield
+//		new Level_866(this); // dirtfield
 		this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
 		// create worlds (after server starts)
 		(new BukkitRunnable() {
