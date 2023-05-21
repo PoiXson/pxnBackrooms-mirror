@@ -23,7 +23,7 @@ public class Pop_005 implements PopBackrooms {
 	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
 
 	protected final Level_000 level0;
-	protected final Gen_005 gen;
+	protected final Gen_005   gen;
 
 
 
@@ -205,7 +205,7 @@ public class Pop_005 implements PopBackrooms {
 				// pool room
 				final BlockFace pool_direction = room_pool.canBuildHere(room_area, region);
 				if (pool_direction != null) {
-					((Level_000)this.gen.backlevel).portal_5_to_37.add(room_area.a, room_area.b);
+					this.level0.portal_5_to_37.add(room_area.a, room_area.b);
 					room_pool.build(room_area, y, direction, region, plots);
 				// hotel guest room
 				} else {
