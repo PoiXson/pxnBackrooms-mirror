@@ -237,7 +237,7 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plot.type('i', Material.SOUL_LANTERN);
+		plot.type('i', Material.LANTERN);
 		plot.type('L', Material.LIGHT, "15");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
@@ -269,7 +269,7 @@ public class Gen_771 extends GenBackrooms {
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plot.type('i', Material.LANTERN);
+		plot.type('i', Material.SOUL_LANTERN);
 		plot.type('L', Material.LIGHT, "15");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
