@@ -17,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.levels.Gen_001;
 import com.poixson.backrooms.levels.Level_000;
+import com.poixson.commonmc.events.OutsideOfWorldEvent;
 import com.poixson.commonmc.events.PlayerMoveNormalEvent;
 import com.poixson.commonmc.tools.plugin.xListener;
 
@@ -148,6 +149,24 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 			final List<Location> list = new ArrayList<Location>();
 			this.playerLights.put(uuid, list);
 			return list;
+		}
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// void/sky teleport
+
+
+
+	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
+		final Player player = event.getPlayer();
+		switch (event.getOutsideWhere()) {
+		case SKY:  this.plugin.noclip(player,  78); break; // to space
+//TODO: teleport relative to basement exit
+		case VOID: this.plugin.noclip(player, 771); break; // to crossroads
+		default: throw new RuntimeException("Unknown OutsideOfWorld event type");
 		}
 	}
 
