@@ -88,7 +88,6 @@ public class Level_000 extends LevelBackrooms {
 
 	// populators
 	public final Pop_005 pop_005;
-	public final Pop_019 pop_019;
 	public final Pop_037 pop_037;
 	public final Pop_309 pop_309;
 
@@ -131,7 +130,6 @@ public class Level_000 extends LevelBackrooms {
 		this.gen_309 = this.register(new Gen_309(this, Y_309,     0)); // radio station
 		// populators
 		this.pop_005 = this.register(new Pop_005(this)); // hotel
-		this.pop_019 = this.register(new Pop_019(this)); // attic
 		this.pop_037 = this.register(new Pop_037(this)); // pools
 		this.pop_309 = this.register(new Pop_309(this)); // radio station
 		// listeners
