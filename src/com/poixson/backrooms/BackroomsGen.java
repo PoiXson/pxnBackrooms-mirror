@@ -1,19 +1,18 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms;
 
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 
-public abstract class GenBackrooms {
+public abstract class BackroomsGen {
 
 	protected final BackroomsPlugin plugin;
-	protected final LevelBackrooms backlevel;
+	protected final BackroomsLevel backlevel;
 
 	protected final CopyOnWriteArraySet<FastNoiseLiteD> noises = new CopyOnWriteArraySet<FastNoiseLiteD>();
 
@@ -22,7 +21,7 @@ public abstract class GenBackrooms {
 
 
 
-	public GenBackrooms(final LevelBackrooms backlevel,
+	public BackroomsGen(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		this.plugin    = backlevel.plugin;
 		this.backlevel = backlevel;

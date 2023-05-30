@@ -11,11 +11,11 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 10 | Field of Wheat
-public class Gen_010 extends GenBackrooms {
+public class Gen_010 extends BackroomsGen {
 
 
 
-	public Gen_010(final LevelBackrooms backlevel,
+	public Gen_010(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 	}

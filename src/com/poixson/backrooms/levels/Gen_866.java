@@ -13,7 +13,7 @@ import com.poixson.utils.FastNoiseLiteD;
 
 
 // 866 | Dirtfield
-public class Gen_866 extends GenBackrooms {
+public class Gen_866 extends BackroomsGen {
 
 	// noise
 	public final FastNoiseLiteD noiseField;
@@ -22,7 +22,7 @@ public class Gen_866 extends GenBackrooms {
 
 
 
-	public Gen_866(final LevelBackrooms backlevel,
+	public Gen_866(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// field

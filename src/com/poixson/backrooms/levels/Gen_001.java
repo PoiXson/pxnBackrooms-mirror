@@ -10,6 +10,9 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
@@ -21,7 +24,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 1 | Basement
-public class Gen_001 extends GenBackrooms {
+public class Gen_001 extends BackroomsGen {
 
 	public static final int LAMP_Y = 6;
 
@@ -41,7 +44,7 @@ public class Gen_001 extends GenBackrooms {
 
 
 
-	public Gen_001(final LevelBackrooms backlevel,
+	public Gen_001(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// basement wall noise

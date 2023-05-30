@@ -13,7 +13,6 @@ import org.bukkit.Location;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.tools.xTime;
 import com.poixson.utils.NumberUtils;
 import com.poixson.utils.RandomUtils;
@@ -143,7 +142,7 @@ public class TeleportManager {
 
 
 	public Location getSpawnLocation(final int level) {
-		final LevelBackrooms backlevel = this.plugin.getBackroomsLevel(level);
+		final BackroomsLevel backlevel = this.plugin.getBackroomsLevel(level);
 		if (backlevel == null) {
 			LOG.warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
 			return null;

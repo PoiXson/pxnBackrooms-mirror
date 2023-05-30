@@ -19,7 +19,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 151 | Dollhouse
-public class Gen_151 extends GenBackrooms {
+public class Gen_151 extends BackroomsGen {
 
 
 	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
@@ -32,7 +32,7 @@ public class Gen_151 extends GenBackrooms {
 
 
 
-	public Gen_151(final LevelBackrooms backlevel,
+	public Gen_151(final BackroomsLevel backlevel,
 			final int level_y, final int level_h,
 			final int subfloor, final int subceiling) {
 		super(backlevel, level_y, level_h);

@@ -11,11 +11,11 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 9 | Suburbs
-public class Gen_009 extends GenBackrooms {
+public class Gen_009 extends BackroomsGen {
 
 
 
-	public Gen_009(final LevelBackrooms backlevel,
+	public Gen_009(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 	}

@@ -10,11 +10,12 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.BackroomsPop;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 309 | Radio Station
-public class Pop_309 implements PopBackrooms {
+public class Pop_309 implements BackroomsPop {
 
 	protected final Gen_309 gen;
 

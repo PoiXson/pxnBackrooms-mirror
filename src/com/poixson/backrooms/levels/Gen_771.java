@@ -18,6 +18,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
@@ -27,7 +30,7 @@ import com.poixson.utils.StringUtils;
 
 
 // 771 | Crossroads
-public class Gen_771 extends GenBackrooms {
+public class Gen_771 extends BackroomsGen {
 
 	public static final double THRESH_LIGHT  = 0.42; // lanterns
 	public static final double THRESH_LADDER = 0.81; // ladder shaft
@@ -52,7 +55,7 @@ public class Gen_771 extends GenBackrooms {
 
 
 
-	public Gen_771(final LevelBackrooms backlevel,
+	public Gen_771(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// road lanterns

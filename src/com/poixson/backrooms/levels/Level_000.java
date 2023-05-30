@@ -6,7 +6,9 @@ import java.util.LinkedList;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Gen_001.BasementData;
@@ -29,7 +31,7 @@ import com.poixson.utils.RandomUtils;
 //   0 | Lobby
 //  23 | Overgrowth
 //   1 | Basement
-public class Level_000 extends LevelBackrooms {
+public class Level_000 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_309 = true;
 	public static final boolean ENABLE_GEN_019 = true;

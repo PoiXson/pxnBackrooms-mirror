@@ -16,6 +16,9 @@ import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
@@ -26,7 +29,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
 // 5 | Hotel
-public class Gen_005 extends GenBackrooms {
+public class Gen_005 extends BackroomsGen {
 
 	public static final double THRESH_ROOM_HALL = 0.65;
 
@@ -39,7 +42,7 @@ public class Gen_005 extends GenBackrooms {
 
 
 
-	public Gen_005(final LevelBackrooms backlevel,
+	public Gen_005(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// hotel walls

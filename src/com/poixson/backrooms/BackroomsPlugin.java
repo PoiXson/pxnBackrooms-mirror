@@ -24,7 +24,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
-import com.poixson.backrooms.levels.LevelBackrooms;
 import com.poixson.backrooms.levels.Level_000;
 import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
@@ -44,7 +43,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected static final int DEFAULT_SPAWN_DISTANCE = 10000;
 
 	// backrooms levels
-	protected final HashMap<Integer, LevelBackrooms> backlevels = new HashMap<Integer, LevelBackrooms>();
+	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
 
 	// chance to teleport to levels
@@ -99,17 +98,17 @@ public class BackroomsPlugin extends xJavaPlugin {
 			public void run() {
 //TODO: this is converting long to string
 				final String seed = Long.toString( Bukkit.getWorld("world").getSeed() );
-				final Iterator<Entry<Integer, LevelBackrooms>> it = BackroomsPlugin.this.backlevels.entrySet().iterator();
+				final Iterator<Entry<Integer, BackroomsLevel>> it = BackroomsPlugin.this.backlevels.entrySet().iterator();
 				while (it.hasNext()) {
-					final Entry<Integer, LevelBackrooms> entry = it.next();
+					final Entry<Integer, BackroomsLevel> entry = it.next();
 					final int level = entry.getKey().intValue();
 					if (entry.getValue().isWorldMain(level))
-						LevelBackrooms.MakeWorld(level, seed);
+						BackroomsLevel.MakeWorld(level, seed);
 				}
 			}
 		}).runTask(this);
 		// register levels
-		for (final LevelBackrooms level : this.backlevels.values()) {
+		for (final BackroomsLevel level : this.backlevels.values()) {
 			level.register();
 		}
 		// commands listener
@@ -138,7 +137,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// finish filling chests
 		DelayedChestFiller.stop();
 		// unload levels
-		for (final LevelBackrooms lvl : this.backlevels.values()) {
+		for (final BackroomsLevel lvl : this.backlevels.values()) {
 			lvl.unregister();
 		}
 		this.backlevels.clear();
@@ -238,7 +237,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public LevelBackrooms register(final int level, final LevelBackrooms backlevel) {
+	public BackroomsLevel register(final int level, final BackroomsLevel backlevel) {
 		this.backlevels.put(Integer.valueOf(level), backlevel);
 		return backlevel;
 	}
@@ -255,7 +254,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int getMainLevel(final int level) {
 		if (this.backlevels.containsKey(Integer.valueOf(level)))
 			return level;
-		for (final Entry<Integer, LevelBackrooms> entry : this.backlevels.entrySet()) {
+		for (final Entry<Integer, BackroomsLevel> entry : this.backlevels.entrySet()) {
 			if (entry.getValue().containsLevel(level))
 				return entry.getKey().intValue();
 		}
@@ -273,7 +272,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (player != null) {
 			final int lvl = this.getLevelFromWorld(player.getWorld());
 			if (lvl >= 0) {
-				final LevelBackrooms backlevel = this.getBackroomsLevel(lvl);
+				final BackroomsLevel backlevel = this.getBackroomsLevel(lvl);
 				if (backlevel != null)
 					return backlevel.getLevelFromY(player.getLocation().getBlockY());
 			}
@@ -313,7 +312,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public boolean isValidLevel(final int level) {
 		if (this.isValidWorld(level))
 			return true;
-		for (final LevelBackrooms backlevel : this.backlevels.values()) {
+		for (final BackroomsLevel backlevel : this.backlevels.values()) {
 			if (backlevel.containsLevel(level))
 				return true;
 		}
@@ -365,16 +364,16 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public LevelBackrooms getBackroomsLevel(final int level) {
+	public BackroomsLevel getBackroomsLevel(final int level) {
 		// main level
 		{
-			final LevelBackrooms backlevel = this.backlevels.get(Integer.valueOf(level));
+			final BackroomsLevel backlevel = this.backlevels.get(Integer.valueOf(level));
 			if (backlevel != null)
 				return backlevel;
 		}
 		// level in world
 		{
-			for (final LevelBackrooms backlevel : this.backlevels.values()) {
+			for (final BackroomsLevel backlevel : this.backlevels.values()) {
 				if (backlevel.containsLevel(level))
 					return backlevel;
 			}

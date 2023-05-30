@@ -12,6 +12,9 @@ import org.bukkit.block.data.FaceAttachable.AttachedFace;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -20,13 +23,13 @@ import com.poixson.utils.FastNoiseLiteD;
 
 
 // 6 | Lights Out
-public class Gen_006 extends GenBackrooms {
+public class Gen_006 extends BackroomsGen {
 
 	public final FastNoiseLiteD noiseLightSwitch;
 
 
 
-	public Gen_006(final LevelBackrooms backlevel,
+	public Gen_006(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// light switch

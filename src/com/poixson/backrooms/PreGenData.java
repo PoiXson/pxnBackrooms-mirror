@@ -1,4 +1,4 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms;
 
 
 public interface PreGenData {

@@ -9,7 +9,7 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 9 | Suburbs
-public class Level_009 extends LevelBackrooms {
+public class Level_009 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_009 = true;
 	public static final boolean ENABLE_TOP_009 = true;

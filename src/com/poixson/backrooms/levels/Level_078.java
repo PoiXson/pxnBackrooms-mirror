@@ -10,7 +10,7 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 78 | Space
-public class Level_078 extends LevelBackrooms {
+public class Level_078 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_078 = true;
 

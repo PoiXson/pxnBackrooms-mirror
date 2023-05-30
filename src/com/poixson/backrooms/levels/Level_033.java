@@ -9,7 +9,7 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 33 | Run For Your Life!
-public class Level_033 extends LevelBackrooms {
+public class Level_033 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_033 = true;
 	public static final boolean ENABLE_TOP_033 = true;

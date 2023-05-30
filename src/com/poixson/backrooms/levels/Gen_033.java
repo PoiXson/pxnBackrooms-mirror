@@ -12,11 +12,11 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 33 | Run For Your Life!
-public class Gen_033 extends GenBackrooms {
+public class Gen_033 extends BackroomsGen {
 
 
 
-	public Gen_033(final LevelBackrooms backlevel,
+	public Gen_033(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 	}

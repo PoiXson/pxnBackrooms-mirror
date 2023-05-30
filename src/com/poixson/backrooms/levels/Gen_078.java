@@ -11,11 +11,11 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 78 | Space
-public class Gen_078 extends GenBackrooms {
+public class Gen_078 extends BackroomsGen {
 
 
 
-	public Gen_078(final LevelBackrooms backlevel,
+	public Gen_078(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 	}

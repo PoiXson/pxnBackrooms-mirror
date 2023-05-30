@@ -10,6 +10,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.commonmc.tools.PathTracer;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -17,7 +20,7 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
 // 309 | Radio Station
-public class Gen_309 extends GenBackrooms {
+public class Gen_309 extends BackroomsGen {
 
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
@@ -37,7 +40,7 @@ public class Gen_309 extends GenBackrooms {
 
 
 
-	public Gen_309(final LevelBackrooms backlevel,
+	public Gen_309(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// path

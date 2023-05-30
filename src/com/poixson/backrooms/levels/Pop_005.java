@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.levels.hotel.HotelRoomGuest;
 import com.poixson.backrooms.levels.hotel.HotelRoomPool;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -16,7 +17,7 @@ import com.poixson.tools.dao.Iabcd;
 
 
 // 5 | Hotel
-public class Pop_005 implements PopBackrooms {
+public class Pop_005 implements BackroomsPop {
 
 	public static final int ROOM_SIZE = 7;
 

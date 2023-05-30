@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.levels.Gen_000.LobbyData;
 import com.poixson.backrooms.levels.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -16,7 +19,7 @@ import com.poixson.utils.FastNoiseLiteD;
 
 
 // 19 | Attic
-public class Gen_019 extends GenBackrooms {
+public class Gen_019 extends BackroomsGen {
 
 	public static final Material ATTIC_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material ATTIC_WALLS = Material.SPRUCE_PLANKS;
@@ -26,7 +29,7 @@ public class Gen_019 extends GenBackrooms {
 
 
 
-	public Gen_019(final LevelBackrooms backlevel,
+	public Gen_019(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// lanterns

@@ -11,11 +11,11 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 11 | City
-public class Gen_011 extends GenBackrooms {
+public class Gen_011 extends BackroomsGen {
 
 
 
-	public Gen_011(final LevelBackrooms backlevel,
+	public Gen_011(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 	}

@@ -8,11 +8,12 @@ import java.util.LinkedList;
 import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.BackroomsPop;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
 
 
-public class Pop_001 implements PopBackrooms {
+public class Pop_001 implements BackroomsPop {
 
 	public static final int WELL_SIZE   = 5;
 	public static final int WELL_HEIGHT = 2;

@@ -7,13 +7,14 @@ import java.util.LinkedList;
 import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.BackroomsPop;
 import com.poixson.commonmc.tools.LineTracer;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 
 
 // 37 | Poolrooms
-public class Pop_037 implements PopBackrooms {
+public class Pop_037 implements BackroomsPop {
 
 	public static final int SUBFLOOR = Level_000.SUBFLOOR;
 

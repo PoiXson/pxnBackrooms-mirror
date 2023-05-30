@@ -9,7 +9,7 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
 // 10 | Field of Wheat
-public class Level_010 extends LevelBackrooms {
+public class Level_010 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_010 = true;
 

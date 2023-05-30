@@ -1,4 +1,4 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
@@ -28,38 +28,39 @@ import org.bukkit.plugin.PluginManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.levels.Level_000;
+import com.poixson.backrooms.levels.Level_771;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.RandomUtils;
 
 
-public abstract class LevelBackrooms extends ChunkGenerator {
+public abstract class BackroomsLevel extends ChunkGenerator {
 	public static final int DEFAULT_SPAWN_SEARCH_HEIGHT = 10;
 	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 50;
 
 	protected final BackroomsPlugin plugin;
 
-	protected final CopyOnWriteArraySet<GenBackrooms> gens = new CopyOnWriteArraySet<GenBackrooms>();
-	protected final CopyOnWriteArraySet<PopBackrooms> pops = new CopyOnWriteArraySet<PopBackrooms>();
+	protected final CopyOnWriteArraySet<BackroomsGen> gens = new CopyOnWriteArraySet<BackroomsGen>();
+	protected final CopyOnWriteArraySet<BackroomsPop> pops = new CopyOnWriteArraySet<BackroomsPop>();
 	protected final PopulatorManager popman = new PopulatorManager();
 
 	protected final int mainlevel;
 
 
 
-	public LevelBackrooms(final BackroomsPlugin plugin, final int mainlevel) {
+	public BackroomsLevel(final BackroomsPlugin plugin, final int mainlevel) {
 		this.plugin    = plugin;
 		this.mainlevel = mainlevel;
 		plugin.register(this.getMainLevel(), this);
 	}
 
 	public void register() {
-		for (final GenBackrooms gen : this.gens) {
+		for (final BackroomsGen gen : this.gens) {
 			gen.register();
 		}
 	}
 	public void unregister() {
-		for (final GenBackrooms gen : this.gens) {
+		for (final BackroomsGen gen : this.gens) {
 			gen.unregister();
 		}
 	}
@@ -72,7 +73,7 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 				final int chunkX, final int chunkZ, final LimitedRegion region) {
 			final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
 			// block plotters
-			for (final PopBackrooms pop : LevelBackrooms.this.pops)
+			for (final BackroomsPop pop : BackroomsLevel.this.pops)
 				pop.populate(chunkX, chunkZ, region, delayed_plotters);
 			// place delayed blocks
 			if (!delayed_plotters.isEmpty()) {
@@ -102,11 +103,11 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 
 
 
-	protected <T extends GenBackrooms> T register(final T gen) {
+	protected <T extends BackroomsGen> T register(final T gen) {
 		this.gens.add(gen);
 		return gen;
 	}
-	protected <T extends PopBackrooms> T register(final T pop) {
+	protected <T extends BackroomsPop> T register(final T pop) {
 		this.pops.add(pop);
 		return pop;
 	}
@@ -123,7 +124,7 @@ public abstract class LevelBackrooms extends ChunkGenerator {
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
 		// seed
 		final int seed = Long.valueOf( worldInfo.getSeed() ).intValue();
-		for (final GenBackrooms gen : this.gens)
+		for (final BackroomsGen gen : this.gens)
 			gen.setSeed(seed);
 		// generate
 		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
