@@ -54,19 +54,19 @@ public class Pop_309 implements BackroomsPop {
 					&&  distance <= 67.0) {
 						boolean found = false;
 						int sy = this.gen.level_y;
-						SURFACE_LOOP:
+						LOOP_SURFACE:
 						for (int i=0; i<10; i++) {
 							final Material type = region.getType(xx, sy+i, zz);
 							if (Material.AIR.equals(type)) {
 								found = true;
 								sy += i;
-								break SURFACE_LOOP;
+								break LOOP_SURFACE;
 							}
 						}
 						if (found) {
 							final int path_x = this.gen.getPathX(zz);
 							if (zz > 0
-							&& xx < path_x+5
+							&&  xx < path_x+5
 							&&  xx > path_x-5)
 								continue LOOP_X;
 							for (int iy=0; iy<5; iy++) {

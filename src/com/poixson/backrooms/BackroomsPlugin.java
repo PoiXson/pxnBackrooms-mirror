@@ -71,8 +71,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		{
 			final String pack = Bukkit.getResourcePack();
 			if (pack == null || pack.isEmpty()) {
-				LOG.warning(LOG_PREFIX + "Resource pack not set");
-				LOG.warning(LOG_PREFIX + "You can use this one: " + DEFAULT_RESOURCE_PACK);
+				LOG.warning(LOG_PREFIX + "Resource pack not set; You can use this one: " + DEFAULT_RESOURCE_PACK);
 			} else {
 				LOG.info(String.format(
 					"%sUsing resource pack: %s",

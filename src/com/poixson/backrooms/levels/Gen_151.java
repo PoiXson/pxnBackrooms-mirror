@@ -21,11 +21,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 151 | Dollhouse
 public class Gen_151 extends BackroomsGen {
 
-
 	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
 	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
-
-	public final int level_m;
 
 	// noise
 	public final FastNoiseLiteD noiseHouseWalls;
@@ -36,7 +33,6 @@ public class Gen_151 extends BackroomsGen {
 			final int level_y, final int level_h,
 			final int subfloor, final int subceiling) {
 		super(backlevel, level_y, level_h);
-		this.level_m = Math.floorDiv(this.level_h, 2);
 		// attic walls
 		this.noiseHouseWalls = this.register(new FastNoiseLiteD());
 		this.noiseHouseWalls.setFrequency(0.02);

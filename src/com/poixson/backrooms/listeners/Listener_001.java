@@ -29,15 +29,12 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 
 	public static final int LAMP_Y = Gen_001.LAMP_Y;
 
-	protected final int level_y;
-
 	protected final HashMap<UUID, List<Location>> playerLights = new HashMap<UUID, List<Location>>();
 
 
 
 	public Listener_001(final BackroomsPlugin plugin) {
 		super(plugin);
-		this.level_y = Level_000.Y_001;
 	}
 
 
@@ -86,7 +83,7 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 					}
 				}
 			}
-			final int y = this.level_y + LAMP_Y + 5;
+			final int y = Level_000.Y_001 + LAMP_Y + 5;
 			final int r = BASEMENT_LIGHT_RADIUS;
 			int xx, zz;
 			for (int iz=0-r-1; iz<r; iz+=10) {
@@ -159,13 +156,14 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 
 
 
+//TODO: teleport relative to exit
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
 		final Player player = event.getPlayer();
 		switch (event.getOutsideWhere()) {
-		case SKY:  this.plugin.noclip(player,  78); break; // to space
-//TODO: teleport relative to basement exit
-		case VOID: this.plugin.noclip(player, 771); break; // to crossroads
+		case SKY:  this.plugin.noclip(player, 771); break; // to crossroads
+//TODO: teleport to 78
+		case VOID: this.plugin.noclip(player, 771); break; // to space
 		default: throw new RuntimeException("Unknown OutsideOfWorld event type");
 		}
 	}
