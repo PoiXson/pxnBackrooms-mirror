@@ -17,7 +17,7 @@ import com.poixson.commonmc.tools.DelayedLever;
 import com.poixson.commonmc.tools.plugin.xListener;
 
 
-//lobby/lights-out teleport
+// level 6 - lobby/lights-out teleport
 public class Listener_006 extends xListener<BackroomsPlugin> {
 
 	protected final Level_000 level0;
