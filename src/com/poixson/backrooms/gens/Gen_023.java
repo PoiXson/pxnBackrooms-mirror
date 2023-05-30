@@ -1,9 +1,9 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_023;
-import static com.poixson.backrooms.levels.Level_000.ENABLE_TOP_023;
-import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
-import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_023;
+import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_023;
+import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
+import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,9 +15,9 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.backrooms.levels.Gen_000.LobbyData;
-import com.poixson.backrooms.levels.Gen_001.BasementData;
-import com.poixson.backrooms.levels.Level_000.PregenLevel0;
+import com.poixson.backrooms.gens.Gen_000.LobbyData;
+import com.poixson.backrooms.gens.Gen_001.BasementData;
+import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;
 

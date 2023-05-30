@@ -1,6 +1,6 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.levels.Level_000.ENABLE_GEN_037;
+import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_037;
 
 import java.util.LinkedList;
 
@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
+import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.LineTracer;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iab;

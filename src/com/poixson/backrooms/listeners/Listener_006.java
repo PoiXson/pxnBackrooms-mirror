@@ -12,7 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.backrooms.levels.Level_000;
+import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.DelayedLever;
 import com.poixson.commonmc.tools.plugin.xListener;
 

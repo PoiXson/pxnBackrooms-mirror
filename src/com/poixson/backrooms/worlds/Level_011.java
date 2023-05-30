@@ -1,5 +1,5 @@
 /*
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.worlds;
 
 import java.util.LinkedList;
 

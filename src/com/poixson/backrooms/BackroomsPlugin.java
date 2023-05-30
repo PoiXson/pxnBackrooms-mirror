@@ -24,9 +24,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
-import com.poixson.backrooms.levels.Level_000;
-import com.poixson.backrooms.levels.Level_771;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
+import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
 

@@ -1,7 +1,7 @@
 /*
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.levels.Level_078.ENABLE_GEN_078;
+import static com.poixson.backrooms.worlds.Level_078.ENABLE_GEN_078;
 
 import java.util.LinkedList;
 

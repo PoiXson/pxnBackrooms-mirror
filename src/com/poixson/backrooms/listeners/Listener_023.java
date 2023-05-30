@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.backrooms.levels.Level_000;
+import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plugin.xListener;
 import com.poixson.morefoods.MoreFoodsAPI;
 

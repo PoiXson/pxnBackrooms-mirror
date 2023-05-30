@@ -1,4 +1,4 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.worlds;
 
 import java.util.LinkedList;
 
@@ -8,6 +8,7 @@ import org.bukkit.World;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.RandomUtils;

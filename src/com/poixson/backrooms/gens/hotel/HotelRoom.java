@@ -1,4 +1,4 @@
-package com.poixson.backrooms.levels.hotel;
+package com.poixson.backrooms.gens.hotel;
 
 import java.util.LinkedList;
 

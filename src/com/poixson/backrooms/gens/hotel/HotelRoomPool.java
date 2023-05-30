@@ -1,8 +1,8 @@
-package com.poixson.backrooms.levels.hotel;
+package com.poixson.backrooms.gens.hotel;
 
-import static com.poixson.backrooms.levels.Gen_037.WATER_DEPTH;
-import static com.poixson.backrooms.levels.Level_000.SUBCEILING;
-import static com.poixson.backrooms.levels.Level_000.SUBFLOOR;
+import static com.poixson.backrooms.gens.Gen_037.WATER_DEPTH;
+import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
+import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 
@@ -12,9 +12,9 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
-import com.poixson.backrooms.levels.Gen_005;
-import com.poixson.backrooms.levels.Gen_037;
-import com.poixson.backrooms.levels.Level_000;
+import com.poixson.backrooms.gens.Gen_005;
+import com.poixson.backrooms.gens.Gen_037;
+import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iabcd;

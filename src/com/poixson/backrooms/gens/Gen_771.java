@@ -1,6 +1,6 @@
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.levels.Level_771.ENABLE_GEN_771;
+import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToIxz;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;

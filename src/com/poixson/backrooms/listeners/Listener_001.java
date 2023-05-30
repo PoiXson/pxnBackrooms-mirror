@@ -15,8 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.backrooms.levels.Gen_001;
-import com.poixson.backrooms.levels.Level_000;
+import com.poixson.backrooms.gens.Gen_001;
+import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.events.PlayerMoveNormalEvent;
 import com.poixson.commonmc.tools.plugin.xListener;
 

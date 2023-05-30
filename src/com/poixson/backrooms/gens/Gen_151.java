@@ -1,10 +1,10 @@
 /*
-package com.poixson.backrooms.levels;
+package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.levels.Level_151.ENABLE_GEN_151;
-import static com.poixson.backrooms.levels.Level_151.ENABLE_TOP_151;
-import static com.poixson.backrooms.levels.Level_151.SUBCEILING;
-import static com.poixson.backrooms.levels.Level_151.SUBFLOOR;
+import static com.poixson.backrooms.worlds.Level_151.ENABLE_GEN_151;
+import static com.poixson.backrooms.worlds.Level_151.ENABLE_TOP_151;
+import static com.poixson.backrooms.worlds.Level_151.SUBCEILING;
+import static com.poixson.backrooms.worlds.Level_151.SUBFLOOR;
 
 import java.util.LinkedList;
 

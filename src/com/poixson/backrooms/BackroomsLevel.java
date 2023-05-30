@@ -28,8 +28,8 @@ import org.bukkit.plugin.PluginManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.poixson.backrooms.levels.Level_000;
-import com.poixson.backrooms.levels.Level_771;
+import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.RandomUtils;
 

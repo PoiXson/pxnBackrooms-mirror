@@ -1,4 +1,4 @@
-package com.poixson.backrooms.levels.hotel;
+package com.poixson.backrooms.gens.hotel;
 
 import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
 import static com.poixson.commonmc.utils.LocationUtils.Rotate;
@@ -9,9 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
-import com.poixson.backrooms.levels.Gen_005;
-import com.poixson.backrooms.levels.Level_000;
-import com.poixson.backrooms.levels.hotel.HotelRoomSpecs.RoomTheme;
+import com.poixson.backrooms.gens.Gen_005;
+import com.poixson.backrooms.gens.hotel.HotelRoomSpecs.RoomTheme;
+import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iabcd;
