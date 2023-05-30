@@ -40,11 +40,13 @@ itemB.setItemMeta(potion);
 //TODO: teleport relative to exit
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
-		final Player player = event.getPlayer();
-		switch (event.getOutsideWhere()) {
-		case SKY:  this.plugin.noclip(player,  78); break; // to space
-		case VOID: this.plugin.noclip(player, 771); break; // to crossroads
-		default: throw new RuntimeException("Unknown OutsideOfWorld event type");
+		if (event.getOutsideDistance() > 20) {
+			final Player player = event.getPlayer();
+			switch (event.getOutsideWhere()) {
+			case SKY:  this.plugin.noclip(player,  78); break; // to space
+			case VOID: this.plugin.noclip(player, 771); break; // to crossroads
+			default: throw new RuntimeException("Unknown OutsideOfWorld event type");
+			}
 		}
 	}
 
