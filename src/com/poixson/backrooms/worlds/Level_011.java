@@ -13,10 +13,16 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 public class Level_011 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_011 = true;
-	public static final boolean ENABLE_TOP_011 = true;
+	public static final boolean ENABLE_GEN_308 = true;
 
-	public static final int Y_011 = 0;
-	public static final int Y_308 = 0;
+	public static final boolean ENABLE_TOP_011 = true;
+	public static final boolean ENABLE_TOP_308 = true;
+
+	// ikea
+	public static final int Y_308 = 100;
+	public static final int H_308 = 30;
+	// concrete jungle
+	public static final int Y_011 = Y_308 + H_308 + SUBFLOOR + SUBCEILING + 1;
 
 	// generators
 	public final Gen_011 gen_011;
@@ -29,11 +35,12 @@ public class Level_011 extends BackroomsLevel {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(11, "city", "City");
+			gen_tpl.add(308, "ikea", "Ikea", Y_308+1);
+			gen_tpl.add(11,  "city", "Concrete Jungle");
 		}
 		// generators
-		this.gen_011 = this.register(new Gen_011(this, Y_011, 0));
-		this.gen_308 = this.register(new Gen_308(this, Y_308, 0));
+		this.gen_308 = this.register(new Gen_308(this, Y_308, H_308)); // ikea
+		this.gen_011 = this.register(new Gen_011(this, Y_011, 0    )); // concrete jungle
 	}
 
 

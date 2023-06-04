@@ -39,6 +39,7 @@ public class Gen_866 extends BackroomsGen {
 		if (!ENABLE_GEN_866) return;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
+//TODO
 				final int xx = (chunkX * 16) + ix;
 				final int zz = (chunkZ * 16) + iz;
 				// subfloor

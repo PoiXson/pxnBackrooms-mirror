@@ -124,11 +124,11 @@ public class Level_000 extends BackroomsLevel {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(  1, "basement",  "Basement",   Y_001+10);
-			gen_tpl.add( 23, "overgrow",  "Overgrowth", Y_023+8);
+			gen_tpl.add(  1, "basement",  "Basement",   Y_001              +10);
+			gen_tpl.add( 23, "overgrow",  "Overgrowth", Y_023               +8);
 			gen_tpl.add(  0, "lobby",     "Lobby",      Y_000+H_000+SUBFLOOR+1);
 			gen_tpl.add(  6, "lightsout", "Lights Out", Y_006+H_006           );
-			gen_tpl.add( 37, "poolrooms", "Poolrooms",  Y_037+H_037+         1);
+			gen_tpl.add( 37, "poolrooms", "Poolrooms",  Y_037+H_037         +1);
 			gen_tpl.add( 05, "hotel",     "Hotel",      Y_005+H_005+SUBFLOOR+1);
 			gen_tpl.add( 19, "attic",     "Attic",      Y_019+H_019+SUBFLOOR+1);
 			gen_tpl.add(309, "radio",     "Radio Station"                     );

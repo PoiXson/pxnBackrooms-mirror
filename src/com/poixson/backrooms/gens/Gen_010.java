@@ -30,9 +30,7 @@ public class Gen_010 extends BackroomsGen {
 			for (int ix=0; ix<16; ix++) {
 //				final int xx = (chunkX * 16) + ix;
 //				final int zz = (chunkZ * 16) + iz;
-				
-				
-				
+//TODO
 			} // end ix
 		} // end iz
 	}
