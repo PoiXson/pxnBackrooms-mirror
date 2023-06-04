@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Sat Jun  3 11:00:44 PM EDT 2023 -->
+<!-- Generated: Sat Jun  3 11:02:10 PM EDT 2023 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -67,6 +67,7 @@
 					<include>app.properties</include>
 					<include>chances.json</include>
 					<include>quotes.txt</include>
+					<include>scripts/backrooms-radiostation.js</include>
 				</includes>
 			</resource>
 			<resource>
