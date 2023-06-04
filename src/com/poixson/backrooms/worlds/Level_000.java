@@ -235,9 +235,8 @@ public class Level_000 extends BackroomsLevel {
 		case 5:   return Y_005; // hotel
 		case 19:  return Y_019; // attic
 		case 309: return Y_309; // radio station
-		default: break;
+		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
-		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 	}
 	@Override
 	public int getMaxY(final int level) {
@@ -250,9 +249,8 @@ public class Level_000 extends BackroomsLevel {
 		case 5:   return Y_019 - 1; // hotel
 		case 19:  return Y_309 - 1; // attic
 		case 309: return 320;       // radio station
-		default: break;
+		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
-		throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 	}
 	@Override
 	public boolean containsLevel(final int level) {
@@ -266,9 +264,8 @@ public class Level_000 extends BackroomsLevel {
 		case 19:  // attic
 		case 309: // radio station
 			return true;
-		default: break;
+		default: return false;
 		}
-		return false;
 	}
 
 
