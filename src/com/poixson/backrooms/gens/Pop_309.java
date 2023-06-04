@@ -10,9 +10,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.commonmc.tools.scripts.CraftScript;
+import com.poixson.commonmc.tools.scripts.loader.ScriptLoader;
+import com.poixson.commonmc.tools.scripts.loader.ScriptLoader_File;
 
 
 // 309 | Radio Station
@@ -22,6 +26,7 @@ public class Pop_309 implements BackroomsPop {
 	public static final double FENCE_RADIUS         = 65.0;
 	public static final double FENCE_THICKNESS      =  1.3;
 
+	protected final BackroomsPlugin plugin;
 	protected final Gen_309 gen;
 
 	protected final Pop_309_Trees treePop;
@@ -29,7 +34,8 @@ public class Pop_309 implements BackroomsPop {
 
 
 	public Pop_309(final Level_000 level0) {
-		this.gen = level0.gen_309;
+		this.plugin = level0.getPlugin();
+		this.gen    = level0.gen_309;
 		this.treePop = new Pop_309_Trees(this.gen);
 	}
 
@@ -108,33 +114,17 @@ public class Pop_309 implements BackroomsPop {
 			LOG.warning("Failed to generate level 309 building; unknown y point.");
 			return;
 		}
-		// doorstep
-		for (int iz=16; iz<18; iz++) {
-			for (int ix=0; ix<2; ix++) {
-				region.setType(ix, y-1, iz, Material.STONE);
-			}
-		}
-		// radio station building
-		for (int iz=0; iz<16; iz++) {
-			for (int ix=0; ix<16; ix++) {
-				// subfloor
-				for (int iy=1; iy<4; iy++) {
-					region.setType(ix, y-iy, iz, Material.STONE);
-				}
-				region.setType(ix, y, iz, Material.AIR);
-				region.setType(ix, y+1, iz, Material.AIR);
-				// wall
-				if (iz == 15) {
-					for (int iy=0; iy<8; iy++) {
-						if (ix == 0 && (iy == 0 || iy == 1))
-							continue;
-						region.setType(ix, y+iy, iz, Material.STONE_BRICKS);
-					}
-				}
-				// floor
-//TODO
-			}
-		}
+		// radio station script
+		final ScriptLoader loader =
+			new ScriptLoader_File(
+				this.plugin,
+				"scripts", // local path
+				"scripts", // resource path
+				"backrooms-radiostation.js"
+			);
+		final CraftScript script = new CraftScript(loader, false);
+		script.setVariable("region", region);
+		script.run();
 	}
 
 

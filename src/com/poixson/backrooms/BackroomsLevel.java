@@ -103,6 +103,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
+	public BackroomsPlugin getPlugin() {
+		return this.plugin;
+	}
+
+
+
 	protected <T extends BackroomsGen> T register(final T gen) {
 		this.gens.add(gen);
 		return gen;
