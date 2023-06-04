@@ -89,11 +89,13 @@ public class Pop_309 implements BackroomsPop {
 
 
 
+	// radio station
 	public void populate0x0(final LimitedRegion region) {
 		if (!ENABLE_GEN_309) return;
+		// find surface
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {
-			if (Material.AIR.equals(region.getType(0, this.gen.level_y+i, 15))) {
+			if (Material.AIR.equals(region.getType(0, this.gen.level_y+i, 31))) {
 				y = this.gen.level_y + i;
 				break;
 			}
