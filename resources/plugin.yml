@@ -6,8 +6,8 @@ load: STARTUP
 depend:
   - pxnCommonPluginMC
   - Multiverse-Core
+  - MoreFoods
 softdepend:
-  - FoodRot
   - dynmap
 authors: [ lorenzop ]
 website: ${project.url}
