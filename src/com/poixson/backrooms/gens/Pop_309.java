@@ -18,6 +18,10 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 // 309 | Radio Station
 public class Pop_309 implements BackroomsPop {
 
+	public static final double FENCE_NOISE_STRENGTH =  2.0;
+	public static final double FENCE_RADIUS         = 65.0;
+	public static final double FENCE_THICKNESS      =  1.3;
+
 	protected final Gen_309 gen;
 
 	protected final Pop_309_Trees treePop;
@@ -50,9 +54,9 @@ public class Pop_309 implements BackroomsPop {
 				LOOP_X:
 				for (int ix=0; ix<16; ix++) {
 					xx = (chunkX * 16) + ix;
-					distance = this.gen.getCenterClearingDistance(xx, zz, 3.0);
-					if (distance >= 65.5
-					&&  distance <= 67.0) {
+					distance = this.gen.getCenterClearingDistance(xx, zz, FENCE_NOISE_STRENGTH);
+					if (distance >= FENCE_RADIUS
+					&&  distance <= FENCE_RADIUS + FENCE_THICKNESS) {
 						boolean found = false;
 						int sy = this.gen.level_y;
 						LOOP_SURFACE:
