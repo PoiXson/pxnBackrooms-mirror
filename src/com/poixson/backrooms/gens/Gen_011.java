@@ -10,7 +10,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
-// 11 | City
+// 11 | Concrete Jungle
 public class Gen_011 extends BackroomsGen {
 
 

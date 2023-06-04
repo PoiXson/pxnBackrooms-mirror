@@ -8,7 +8,7 @@ import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
-//  11 | City
+//  11 | Concrete Jungle
 // 308 | Ikea
 public class Level_011 extends BackroomsLevel {
 
@@ -41,29 +41,29 @@ public class Level_011 extends BackroomsLevel {
 	@Override
 	public int getLevelFromY(final int y) {
 		if (y < Y_011) return 308; // ikea
-		return 11;                 // city
+		return 11;                 // concrete jungle
 	}
 	@Override
 	public int getY(final int level) {
 		switch (level) {
+		case 11:  return Y_011; // concrete jungle
 		case 308: return Y_308; // ikea
-		case 11:  return Y_011; // city
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
 	@Override
 	public int getMaxY(final int level) {
 		switch (level) {
+		case 11:  return 320;       // concrete jungle
 		case 308: return Y_011 - 1; // ikea
-		case 11:  return 320;       // city
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
 	@Override
 	public boolean containsLevel(final int level) {
 		switch (level) {
+		case 11:  // concrete jungle
 		case 308: // ikea
-		case 11:  // city
 			return true;
 		default: return false;
 		}
