@@ -1,41 +1,64 @@
 
 importClass(Packages.org.bukkit.Material);
 
-importClass(Packages.com.poixson.commonmc.tools.plotter.PlotterFactory)
+importClass(Packages.com.poixson.commonmc.tools.plotter.PlotterFactory);
+importClass(Packages.com.poixson.utils.StringUtils);
 
 
 
-function radio_fence() {
+function radio_lot_ground() {
+	for (let iz=-16; iz<32; iz++) {
+		for (let ix=-16; ix<32; ix++) {
+			// gravel surface
+			for (let iy=surface_y-5; iy<surface_y; iy++) {
+				if (iy == surface_y-1
+				|| Material.AIR.equals(region.getType(ix, iy, iz)))
+					region.setType(ix, iy, iz, Material.GRAVEL);
+			}
+			// air above ground
+			for (let iy=surface_y; iy<surface_y+5; iy++)
+				region.setType(ix, iy, iz, Material.AIR);
+		}
+	}
+}
+
+function radio_lot_fence() {
 	let plot = (new PlotterFactory())
 		.placer(region)
 		.axis("use")
-		.whd(48, 6, 48)
+		.xyz(-16, surface_y, -16)
+		.whd(48, 5, 48)
 		.build();
 	plot.type('=', Material.COPPER_BLOCK);
 	plot.type('-', Material.CUT_COPPER_SLAB);
-	plot.type('I', Material.IRON_BARS);
-	plot.type('g', Material.GRAVEL);
+	plot.type('x', Material.IRON_BARS, "north", "south");
+	plot.type('X', Material.IRON_BARS, "east",  "west" );
+	plot.type('I', Material.MOSSY_STONE_BRICK_WALL);
 	let matrix = plot.getMatrix3D();
-	// gravel floor
-	for (let z=0; z<48; z++)
-		matrix[0][z].append('g'.repeat(48));
-	// fence
-	matrix[5][47].append('-'.repeat(48));
-	matrix[4][47].append('I'.repeat(48));
-	matrix[3][47].append('I'.repeat(48));
-	matrix[2][47].append('I'.repeat(48));
-	matrix[1][47].append('='.repeat(48));
-	matrix[5][0].append('-'.repeat(21)).append("      ").append('-'.repeat(21));
-	matrix[4][0].append('I'.repeat(21)).append("      ").append('I'.repeat(21));
-	matrix[3][0].append('I'.repeat(21)).append("      ").append('I'.repeat(21));
-	matrix[2][0].append('I'.repeat(21)).append("      ").append('I'.repeat(21));
-	matrix[1][0].append('='.repeat(21)).append("      ").append('='.repeat(21));
+	// north fence
+	matrix[4][0]            .append('-'.repeat(48));
+	matrix[3][0].append('I').append('X'.repeat(46)).append('I');
+	matrix[0][0]            .append('='.repeat(48));
+	matrix[2][0].append(matrix[3][0].toString());
+	matrix[1][0].append(matrix[3][0].toString());
+	// south fence
+	matrix[4][47]            .append('-'.repeat(48));
+	matrix[3][47].append('I').append('X'.repeat(46)).append('I');
+	matrix[0][47]            .append('='.repeat(48));
+	// front gate
+	let gate_pos = (path_start_x + 14) - (path_width * 0.5);
+	StringUtils.ReplaceInString(matrix[4][47], ' '.repeat(path_width+6), gate_pos);
+	StringUtils.ReplaceInString(matrix[3][47], ' '.repeat(path_width+6), gate_pos);
+	StringUtils.ReplaceInString(matrix[0][47], ' '.repeat(path_width+6), gate_pos);
+	matrix[2][47].append(matrix[3][47].toString());
+	matrix[1][47].append(matrix[3][47].toString());
+	// east/west fence
 	for (let z=1; z<47; z++) {
-		matrix[5][z].append("-").append(" ".repeat(46)).append("-");
-		matrix[4][z].append("I").append(" ".repeat(46)).append("I");
-		matrix[3][z].append("I").append(" ".repeat(46)).append("I");
-		matrix[2][z].append("I").append(" ".repeat(46)).append("I");
-		matrix[1][z].append("=").append(" ".repeat(46)).append("=");
+		matrix[4][z].append('-').append(' '.repeat(46)).append('-');
+		matrix[3][z].append('x').append(' '.repeat(46)).append('x');
+		matrix[0][z].append('=').append(' '.repeat(46)).append('=');
+		matrix[2][z].append(matrix[3][z].toString());
+		matrix[1][z].append(matrix[3][z].toString());
 	}
 	plot.run();
 }
@@ -97,5 +120,73 @@ function radio_antenna(x, y, z, size) {
 
 
 
-radio_fence();
-radio_antenna(0, 122, 0, 16);
+function radio_building_back(x, z, w, h, d) {
+	let plot = (new PlotterFactory())
+		.placer(region)
+		.axis("use")
+		.xyz(x, surface_y, z)
+		.whd(w, h, d)
+		.build();
+	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
+	plot.type('#', Material.POLISHED_BASALT);        // wall corner
+	plot.type('=', Material.POLISHED_ANDESITE);      // wall stripe
+	plot.type('-', Material.POLISHED_ANDESITE_SLAB); // wall top
+	plot.type('~', Material.STONE_SLAB);             // roof
+	let matrix = plot.getMatrix3D();
+	let wall, fill;
+	for (let iy=0; iy<h-1; iy++) {
+		wall = (iy==7  ? '=' : '@');
+		fill = (iy<h-2 ? ' ' : '~');
+		// north/south walls
+		matrix[iy][  0].append('#').append(wall.repeat(w-2)).append('#');
+		matrix[iy][d-1].append('#').append(wall.repeat(w-2)).append('#');
+		// east/west walls
+		for (let iz=1; iz<d-1; iz++)
+			matrix[iy][iz].append(wall).append(fill.repeat(w-2)).append(wall);
+	}
+	// wall top
+	matrix[h-1][  0].append('-'.repeat(w));
+	matrix[h-1][d-1].append('-'.repeat(w));
+	for (let iz=1; iz<d-1; iz++)
+		matrix[h-1][iz].append('-').append(' '.repeat(w-2)).append('-');
+	plot.run();
+}
+
+function radio_building_front(x, z, w, h, d) {
+	let plot = (new PlotterFactory())
+		.placer(region)
+		.axis("use")
+		.xyz(x, surface_y, z)
+		.whd(w, h, d)
+		.build();
+	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
+	plot.type('#', Material.POLISHED_BASALT);        // wall corner
+	plot.type('-', Material.POLISHED_ANDESITE_SLAB); // wall top
+	plot.type('~', Material.STONE_SLAB);             // roof
+	plot.type('.', Material.AIR);                    // inside wall
+	let matrix = plot.getMatrix3D();
+	let fill;
+	for (let iy=0; iy<h-1; iy++) {
+		fill = (iy<h-2 ? ' ' : '~');
+		// north/south walls
+		if (iy < h-2)
+		matrix[iy][  0].append('#').append('.'.repeat(w-2)).append('#');
+		matrix[iy][d-1].append('#').append('@'.repeat(w-2)).append('#');
+		// east/west walls
+		for (let iz=1; iz<d-1; iz++)
+			matrix[iy][iz].append('@').append(fill.repeat(w-2)).append('@');
+	}
+	// wall top
+	matrix[h-1][d-1].append('-'.repeat(w));
+	for (let iz=1; iz<d-1; iz++)
+		matrix[h-1][iz].append('-').append(' '.repeat(w-2)).append('-');
+	plot.run();
+}
+
+
+
+radio_lot_ground();
+radio_lot_fence();
+radio_building_back( -13, -13, 42, 16, 21);
+radio_building_front(-13,   7, 15,  9, 21);
+radio_antenna(-11, 135, -11, 16);

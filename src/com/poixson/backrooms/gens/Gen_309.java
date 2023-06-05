@@ -24,6 +24,7 @@ public class Gen_309 extends BackroomsGen {
 
 	public static final int PATH_WIDTH    = 3;
 	public static final int PATH_CLEARING = 10;
+	public static final int PATH_START_X  = 14;
 	public static final int PATH_START_Z  = 32;
 
 	public static final Material PATH_TREE_TRUNK  = Material.BIRCH_LOG;
@@ -58,7 +59,7 @@ public class Gen_309 extends BackroomsGen {
 		this.noiseTrees = this.register(new FastNoiseLiteD());
 		this.noiseTrees.setFrequency(0.2f);
 		// path locations
-		this.pathTrace = new PathTracer(this.noisePath, PATH_START_Z, this.getPathCacheMap());
+		this.pathTrace = new PathTracer(this.noisePath, PATH_START_X, PATH_START_Z, this.getPathCacheMap());
 	}
 
 
