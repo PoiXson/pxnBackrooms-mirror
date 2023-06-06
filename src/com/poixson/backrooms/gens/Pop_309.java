@@ -4,6 +4,7 @@ import static com.poixson.backrooms.gens.Gen_309.PATH_WIDTH;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_X;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_Z;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
+import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.LinkedList;
@@ -47,8 +48,10 @@ public class Pop_309 implements BackroomsPop {
 	@Override
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+		if (!ENABLE_GEN_309) return;
 		// trees
-		this.treePop.populate(null, null, chunkX, chunkZ, region);
+		if (ENABLE_TOP_309)
+			this.treePop.populate(null, null, chunkX, chunkZ, region);
 		// radio station
 		if (chunkX == 0 && chunkZ == 0) {
 			this.populate0x0(region);
@@ -56,47 +59,49 @@ public class Pop_309 implements BackroomsPop {
 		// fence around clearing
 		if (Math.abs(chunkX) < 8
 		&&  Math.abs(chunkZ) < 8) {
-			double distance;
-			int xx, zz;
-			for (int iz=0; iz<16; iz++) {
-				zz = (chunkZ * 16) + iz;
-				LOOP_X:
-				for (int ix=0; ix<16; ix++) {
-					xx = (chunkX * 16) + ix;
-					distance = this.gen.getCenterClearingDistance(xx, zz, FENCE_NOISE_STRENGTH);
-					if (distance >= FENCE_RADIUS
-					&&  distance <= FENCE_RADIUS + FENCE_THICKNESS) {
-						boolean found = false;
-						int sy = this.gen.level_y;
-						LOOP_SURFACE:
-						for (int i=0; i<10; i++) {
-							final Material type = region.getType(xx, sy+i, zz);
-							if (Material.AIR.equals(type)) {
-								found = true;
-								sy += i;
-								break LOOP_SURFACE;
+			if (ENABLE_TOP_309) {
+				double distance;
+				int xx, zz;
+				for (int iz=0; iz<16; iz++) {
+					zz = (chunkZ * 16) + iz;
+					LOOP_X:
+						for (int ix=0; ix<16; ix++) {
+							xx = (chunkX * 16) + ix;
+							distance = this.gen.getCenterClearingDistance(xx, zz, FENCE_NOISE_STRENGTH);
+							if (distance >= FENCE_RADIUS
+							&&  distance <= FENCE_RADIUS + FENCE_THICKNESS) {
+								boolean found = false;
+								int sy = this.gen.level_y;
+								LOOP_SURFACE:
+									for (int i=0; i<10; i++) {
+										final Material type = region.getType(xx, sy+i, zz);
+										if (Material.AIR.equals(type)) {
+											found = true;
+											sy += i;
+											break LOOP_SURFACE;
+										}
+									}
+								if (found) {
+									final int path_x = this.gen.getPathX(zz);
+									if (zz > 0
+									&&  xx < path_x+5
+									&&  xx > path_x-5)
+										continue LOOP_X;
+									for (int iy=0; iy<5; iy++) {
+										region.setType(xx, sy+iy, zz, Material.IRON_BARS);
+										final Fence fence = (Fence) region.getBlockData(xx, sy+iy, zz);
+										fence.setFace(BlockFace.NORTH, true);
+										fence.setFace(BlockFace.SOUTH, true);
+										fence.setFace(BlockFace.EAST,  true);
+										fence.setFace(BlockFace.WEST,  true);
+										region.setBlockData(xx, sy+iy, zz, fence);
+									}
+									region.setType(xx, sy+5, zz, Material.CUT_COPPER_SLAB);
+								}
 							}
-						}
-						if (found) {
-							final int path_x = this.gen.getPathX(zz);
-							if (zz > 0
-							&&  xx < path_x+5
-							&&  xx > path_x-5)
-								continue LOOP_X;
-							for (int iy=0; iy<5; iy++) {
-								region.setType(xx, sy+iy, zz, Material.IRON_BARS);
-								final Fence fence = (Fence) region.getBlockData(xx, sy+iy, zz);
-								fence.setFace(BlockFace.NORTH, true);
-								fence.setFace(BlockFace.SOUTH, true);
-								fence.setFace(BlockFace.EAST,  true);
-								fence.setFace(BlockFace.WEST,  true);
-								region.setBlockData(xx, sy+iy, zz, fence);
-							}
-							region.setType(xx, sy+5, zz, Material.CUT_COPPER_SLAB);
-						}
-					}
-				} // end ix
-			} // end iz
+						} // end ix
+				} // end iz
+			}
 		}
 	}
 
@@ -104,7 +109,6 @@ public class Pop_309 implements BackroomsPop {
 
 	// radio station
 	public void populate0x0(final LimitedRegion region) {
-		if (!ENABLE_GEN_309) return;
 		// find surface
 		int y = Integer.MIN_VALUE;
 		for (int i=0; i<10; i++) {
@@ -131,6 +135,7 @@ public class Pop_309 implements BackroomsPop {
 		script.setVariable("path_width",   PATH_WIDTH  );
 		script.setVariable("path_start_x", PATH_START_X);
 		script.setVariable("path_start_z", PATH_START_Z);
+		script.setVariable("enable_ceiling", ENABLE_TOP_309);
 		script.run();
 	}
 

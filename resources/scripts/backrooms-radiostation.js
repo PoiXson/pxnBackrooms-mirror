@@ -131,7 +131,11 @@ function radio_building_back(x, z, w, h, d) {
 	plot.type('#', Material.POLISHED_BASALT);        // wall corner
 	plot.type('=', Material.POLISHED_ANDESITE);      // wall stripe
 	plot.type('-', Material.POLISHED_ANDESITE_SLAB); // wall top
-	plot.type('~', Material.STONE_SLAB);             // roof
+	if (enable_ceiling) {
+		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
+	} else {
+		plot.type('~', Material.AIR); // roof
+	}
 	let matrix = plot.getMatrix3D();
 	let wall, fill;
 	for (let iy=0; iy<h-1; iy++) {
@@ -162,8 +166,12 @@ function radio_building_front(x, z, w, h, d) {
 	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
 	plot.type('#', Material.POLISHED_BASALT);        // wall corner
 	plot.type('-', Material.POLISHED_ANDESITE_SLAB); // wall top
-	plot.type('~', Material.STONE_SLAB);             // roof
 	plot.type('.', Material.AIR);                    // inside wall
+	if (enable_ceiling) {
+		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
+	} else {
+		plot.type('~', Material.AIR); // roof
+	}
 	let matrix = plot.getMatrix3D();
 	let fill;
 	for (let iy=0; iy<h-1; iy++) {
