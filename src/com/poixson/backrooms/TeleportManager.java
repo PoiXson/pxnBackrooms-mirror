@@ -19,6 +19,7 @@ import com.poixson.utils.RandomUtils;
 import com.poixson.utils.Utils;
 
 
+//TODO: might need to rewrite this
 public class TeleportManager {
 
 	protected final BackroomsPlugin plugin;
@@ -27,7 +28,7 @@ public class TeleportManager {
 	protected int rndLast = 0;
 
 	protected final long updatePeriod = xTime.ParseToLong("1h");
-	protected final long updateGrace  = xTime.ParseToLong("30s");
+	protected final long updateGrace  = xTime.ParseToLong("1m");
 	protected long timeUpdated = 0L;
 	protected long timeLast    = 0L;
 	protected final HashMap<Integer, Integer> levelsFromTo = new HashMap<Integer, Integer>();
