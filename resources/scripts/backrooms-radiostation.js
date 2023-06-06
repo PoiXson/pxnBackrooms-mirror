@@ -30,19 +30,19 @@ function radio_lot_fence() {
 		.whd(48, 5, 48)
 		.build();
 	plot.type('=', Material.COPPER_BLOCK);
-	plot.type('-', Material.CUT_COPPER_SLAB);
+	plot.type('_', Material.CUT_COPPER_SLAB);
 	plot.type('x', Material.IRON_BARS, "north", "south");
 	plot.type('X', Material.IRON_BARS, "east",  "west" );
 	plot.type('I', Material.MOSSY_STONE_BRICK_WALL);
 	let matrix = plot.getMatrix3D();
 	// north fence
-	matrix[4][0]            .append('-'.repeat(48));
+	matrix[4][0]            .append('_'.repeat(48));
 	matrix[3][0].append('I').append('X'.repeat(46)).append('I');
 	matrix[0][0]            .append('='.repeat(48));
 	matrix[2][0].append(matrix[3][0].toString());
 	matrix[1][0].append(matrix[3][0].toString());
 	// south fence
-	matrix[4][47]            .append('-'.repeat(48));
+	matrix[4][47]            .append('_'.repeat(48));
 	matrix[3][47].append('I').append('X'.repeat(46)).append('I');
 	matrix[0][47]            .append('='.repeat(48));
 	// front gate
@@ -54,7 +54,7 @@ function radio_lot_fence() {
 	matrix[1][47].append(matrix[3][47].toString());
 	// east/west fence
 	for (let z=1; z<47; z++) {
-		matrix[4][z].append('-').append(' '.repeat(46)).append('-');
+		matrix[4][z].append('_').append(' '.repeat(46)).append('_');
 		matrix[3][z].append('x').append(' '.repeat(46)).append('x');
 		matrix[0][z].append('=').append(' '.repeat(46)).append('=');
 		matrix[2][z].append(matrix[3][z].toString());
@@ -130,17 +130,21 @@ function radio_building_back(x, z, w, h, d) {
 	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
 	plot.type('#', Material.POLISHED_BASALT);        // wall corner
 	plot.type('=', Material.POLISHED_ANDESITE);      // wall stripe
-	plot.type('-', Material.POLISHED_ANDESITE_SLAB); // wall top
+	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
 	if (enable_ceiling) {
 		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
+		plot.type('-', Material.SMOOTH_STONE_SLAB, "top"); // ceiling
 	} else {
 		plot.type('~', Material.AIR); // roof
+		plot.type('-', Material.AIR); // ceiling
 	}
 	let matrix = plot.getMatrix3D();
 	let wall, fill;
 	for (let iy=0; iy<h-1; iy++) {
-		wall = (iy==7  ? '=' : '@');
-		fill = (iy<h-2 ? ' ' : '~');
+		wall = (iy==7 ? '=' : '@');
+		if (iy == h-2) fill = '~'; else
+		if (iy == h-3) fill = '-'; else
+			fill = ' ';
 		// north/south walls
 		matrix[iy][  0].append('#').append(wall.repeat(w-2)).append('#');
 		matrix[iy][d-1].append('#').append(wall.repeat(w-2)).append('#');
@@ -149,10 +153,10 @@ function radio_building_back(x, z, w, h, d) {
 			matrix[iy][iz].append(wall).append(fill.repeat(w-2)).append(wall);
 	}
 	// wall top
-	matrix[h-1][  0].append('-'.repeat(w));
-	matrix[h-1][d-1].append('-'.repeat(w));
+	matrix[h-1][  0].append('_'.repeat(w));
+	matrix[h-1][d-1].append('_'.repeat(w));
 	for (let iz=1; iz<d-1; iz++)
-		matrix[h-1][iz].append('-').append(' '.repeat(w-2)).append('-');
+		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_');
 	plot.run();
 }
 
@@ -165,17 +169,21 @@ function radio_building_front(x, z, w, h, d) {
 		.build();
 	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
 	plot.type('#', Material.POLISHED_BASALT);        // wall corner
-	plot.type('-', Material.POLISHED_ANDESITE_SLAB); // wall top
 	plot.type('.', Material.AIR);                    // inside wall
+	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
 	if (enable_ceiling) {
 		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
+		plot.type('-', Material.SMOOTH_STONE_SLAB, "top"); // ceiling
 	} else {
 		plot.type('~', Material.AIR); // roof
+		plot.type('-', Material.AIR); // ceiling
 	}
 	let matrix = plot.getMatrix3D();
 	let fill;
 	for (let iy=0; iy<h-1; iy++) {
-		fill = (iy<h-2 ? ' ' : '~');
+		if (iy == h-2) fill = '~'; else
+		if (iy == h-3) fill = '-'; else
+			fill = ' ';
 		// north/south walls
 		if (iy < h-2)
 		matrix[iy][  0].append('#').append('.'.repeat(w-2)).append('#');
@@ -185,9 +193,9 @@ function radio_building_front(x, z, w, h, d) {
 			matrix[iy][iz].append('@').append(fill.repeat(w-2)).append('@');
 	}
 	// wall top
-	matrix[h-1][d-1].append('-'.repeat(w));
+	matrix[h-1][d-1].append('_'.repeat(w));
 	for (let iz=1; iz<d-1; iz++)
-		matrix[h-1][iz].append('-').append(' '.repeat(w-2)).append('-');
+		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_');
 	plot.run();
 }
 
