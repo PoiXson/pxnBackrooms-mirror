@@ -127,9 +127,9 @@ function radio_building_back(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
-	plot.type('#', Material.POLISHED_BASALT);        // wall corner
-	plot.type('=', Material.POLISHED_ANDESITE);      // wall stripe
+	plot.type('@', Material.POLISHED_DIORITE      ); // wall fill
+	plot.type('#', Material.POLISHED_BASALT       ); // wall corner
+	plot.type('=', Material.POLISHED_ANDESITE     ); // wall stripe
 	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
 	if (enable_ceiling) {
 		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
@@ -167,10 +167,10 @@ function radio_building_front(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_DIORITE);       // wall fill
-	plot.type('#', Material.POLISHED_BASALT);        // wall corner
-	plot.type('.', Material.AIR);                    // inside wall
+	plot.type('@', Material.POLISHED_DIORITE      ); // wall fill
+	plot.type('#', Material.POLISHED_BASALT       ); // wall corner
 	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
+	plot.type('.', Material.AIR                   ); // inside wall
 	if (enable_ceiling) {
 		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
 		plot.type('-', Material.SMOOTH_STONE_SLAB, "top"); // ceiling
@@ -205,4 +205,4 @@ radio_lot_ground();
 radio_lot_fence();
 radio_building_back( -13, -13, 42, 16, 21);
 radio_building_front(-13,   7, 15,  9, 21);
-radio_antenna(-11, 135, -11, 16);
+radio_antenna(-11, 134, -11, 16);
