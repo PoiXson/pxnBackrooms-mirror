@@ -12,6 +12,7 @@ import org.bukkit.generator.LimitedRegion;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.gens.hotel.HotelRoomGuest;
 import com.poixson.backrooms.gens.hotel.HotelRoomPool;
+import com.poixson.backrooms.gens.hotel.HotelRoomStairs;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iabcd;
@@ -132,6 +133,7 @@ public class Pop_005 implements BackroomsPop {
 		// room builders
 		final HotelRoomGuest room_guest = new HotelRoomGuest(this.level0, this.gen.noiseHotelRooms);
 		final HotelRoomPool  room_pool  = new HotelRoomPool( this.level0);
+		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level0);
 		// area = x z w d
 		final int num_rooms_wide = Math.floorDiv(area.c, ROOM_SIZE);
 		final int num_rooms_deep = Math.floorDiv(area.d, ROOM_SIZE);
@@ -204,16 +206,23 @@ public class Pop_005 implements BackroomsPop {
 				case WEST:  room_area = new Iabcd(x-1, z,   d, w+1); break;
 				default: throw new RuntimeException("Unknown room direction: "+direction.toString());
 				}
+				// attic stairs
+				if (room_area.d == 9) {
+					if (room_stairs.checkAtticWall(region, room_area, direction)) {
+						this.level0.portal_5_to_19.add(room_area.a, room_area.b);
+						room_stairs.build(room_area, y, direction, region, plots);
+						continue LOOP_ROOM_X;
+					}
+				}
 				// pool room
 				final BlockFace pool_direction = room_pool.canBuildHere(room_area, region);
 				if (pool_direction != null) {
 					this.level0.portal_5_to_37.add(room_area.a, room_area.b);
 					room_pool.build(room_area, y, direction, region, plots);
-				// hotel guest room
-				} else {
-					// build room
-					room_guest.build(room_area, y, direction, region, plots);
+					continue LOOP_ROOM_X;
 				}
+				// hotel guest room
+				room_guest.build(room_area, y, direction, region, plots);
 			} // end ix
 		} // end iz
 	}
