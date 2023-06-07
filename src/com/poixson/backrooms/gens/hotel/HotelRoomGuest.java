@@ -22,6 +22,7 @@ import com.poixson.utils.StringUtils;
 public class HotelRoomGuest implements HotelRoom {
 
 	protected final Level_000 level0;
+
 	protected final FastNoiseLiteD noise;
 
 

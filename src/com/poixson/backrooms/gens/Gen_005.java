@@ -31,7 +31,7 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 5 | Hotel
 public class Gen_005 extends BackroomsGen {
 
-	public static final double THRESH_ROOM_HALL = 0.65;
+	public static final double THRESH_ROOM_HALL    = 0.65;
 
 	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
 	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;

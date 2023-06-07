@@ -74,7 +74,6 @@ public class Gen_019 extends BackroomsGen {
 					chunk.setBlock(ix, this.level_y+iy+1, iz, ATTIC_FLOOR);
 				// wall
 				if (dao.isWall) {
-					// lobby walls
 					for (int iy=0; iy<this.level_h+1; iy++)
 						chunk.setBlock(ix, y+iy, iz, (iy>6 ? Material.BEDROCK : ATTIC_WALLS));
 				}

@@ -61,9 +61,9 @@ public class HotelRoomPool implements HotelRoom {
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final int x = area.a;
 		final int z = area.b;
-		final int yy = Level_000.Y_037 + SUBFLOOR + 1;
 		final int w = area.c;
 		final int d = area.d;
+		final int yy = Level_000.Y_037 + SUBFLOOR + 1;
 		final int th = Level_000.H_037 + Level_000.H_005 + SUBCEILING + SUBFLOOR + 5;
 		final BlockPlotter plot =
 			(new PlotterFactory())
@@ -156,13 +156,17 @@ public class HotelRoomPool implements HotelRoom {
 					matrix[iy][iz].append('@').append(StringUtils.Repeat(w-2, ' ')).append('@');
 			}
 		} // end LOOP_Y
-		// hotel door
+		// door
 		final int door_x = Math.floorDiv(w, 2) - 2;
 		StringUtils.ReplaceInString(matrix[hy+4][0], "&&&&&", door_x);
-		StringUtils.ReplaceInString(matrix[hy+3][0], "$...$", door_x); StringUtils.ReplaceInString(matrix[hy+3][1], "&&&", door_x+1);
-		StringUtils.ReplaceInString(matrix[hy+2][0], "$.d.$", door_x); StringUtils.ReplaceInString(matrix[hy+2][1], "$.$", door_x+1);
-		StringUtils.ReplaceInString(matrix[hy+1][0], "$.D.$", door_x); StringUtils.ReplaceInString(matrix[hy+1][1], "$_$", door_x+1);
+		StringUtils.ReplaceInString(matrix[hy+3][0], "$...$", door_x);
+		StringUtils.ReplaceInString(matrix[hy+2][0], "$.d.$", door_x);
+		StringUtils.ReplaceInString(matrix[hy+1][0], "$.D.$", door_x);
 		StringUtils.ReplaceInString(matrix[hy  ][0], "$&&&$", door_x);
+		// front wall
+		StringUtils.ReplaceInString(matrix[hy+3][1], "&&&", door_x+1);
+		StringUtils.ReplaceInString(matrix[hy+2][1], "$.$", door_x+1);
+		StringUtils.ReplaceInString(matrix[hy+1][1], "$_$", door_x+1);
 		plot.run();
 	}
 

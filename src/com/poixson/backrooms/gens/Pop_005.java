@@ -131,8 +131,8 @@ public class Pop_005 implements BackroomsPop {
 	public void buildHotelRooms(final Iabcd area, final int y,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		// room builders
-		final HotelRoomGuest room_guest = new HotelRoomGuest(this.level0, this.gen.noiseHotelRooms);
-		final HotelRoomPool  room_pool  = new HotelRoomPool( this.level0);
+		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level0, this.gen.noiseHotelRooms);
+		final HotelRoomPool   room_pool   = new HotelRoomPool(  this.level0);
 		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level0);
 		// area = x z w d
 		final int num_rooms_wide = Math.floorDiv(area.c, ROOM_SIZE);
@@ -151,12 +151,12 @@ public class Pop_005 implements BackroomsPop {
 			z = area.b + (room_z * d);
 			if (room_z == rooms_mid_d) d += extra_z; else
 			if (room_z >  rooms_mid_d) z += extra_z;
-			LOOP_X:
+			LOOP_ROOM_X:
 			for (int room_x=0; room_x<num_rooms_wide; room_x++) {
 				// center of rooms
 				if (room_x != 0 && room_x != num_rooms_wide-1
 				&&  room_z != 0 && room_z != num_rooms_deep-1)
-					continue LOOP_X;
+					continue LOOP_ROOM_X;
 				w = room_width;
 				x = area.a + (room_x * w);
 				if (room_x == rooms_mid_w) w += extra_x; else
