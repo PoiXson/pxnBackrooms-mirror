@@ -19,17 +19,23 @@ import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabcd;
+import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
 
 public class HotelRoomStairs implements HotelRoom {
 
+	protected static final double THRESH_ATTIC_STAIRS = 0.8;
+
 	protected final Level_000 level0;
+
+	protected final FastNoiseLiteD noiseHotelStairs;
 
 
 
 	public HotelRoomStairs(final Level_000 level0) {
 		this.level0 = level0;
+		this.noiseHotelStairs = level0.gen_005.noiseHotelStairs;
 	}
 
 
@@ -154,18 +160,31 @@ public class HotelRoomStairs implements HotelRoom {
 
 	public boolean checkAtticWall(final LimitedRegion region,
 			final Iabcd room_area, final BlockFace direction) {
-		final Iab ab = FaceToIxz(direction);
-		final int xx = (room_area.a + room_area.c) - (8 * ab.a);
-		final int zz = (room_area.b + room_area.d) - (8 * ab.b);
-		final int yy = Level_000.Y_019 + SUBFLOOR + 1;
-		if (region.isInRegion(xx,             0, zz            )
-		&&  region.isInRegion(xx-room_area.c, 0, zz-room_area.d)) {
-			Material type;
-			// find attic wall
-			for (int iz=0; iz<room_area.d; iz++) {
-				for (int ix=0; ix<room_area.c; ix++) {
-					type = region.getType(xx-ix, yy+1, zz-iz);
-					if (Gen_019.ATTIC_WALLS.equals(type)) return false;
+		// make rare with noise
+		{
+			final double value = this.noiseHotelStairs.getNoise(room_area.a, room_area.b);
+			if (value < THRESH_ATTIC_STAIRS
+			||  value < this.noiseHotelStairs.getNoise(room_area.a, room_area.b-8)  // north
+			||  value < this.noiseHotelStairs.getNoise(room_area.a, room_area.b+8)  // south
+			||  value < this.noiseHotelStairs.getNoise(room_area.a+8, room_area.b)  // east
+			||  value < this.noiseHotelStairs.getNoise(room_area.a-8, room_area.b)) // west
+				return false;
+		}
+		// find attic walls
+		{
+			final Iab ab = FaceToIxz(direction);
+			final int xx = (room_area.a + room_area.c) - (8 * ab.a);
+			final int zz = (room_area.b + room_area.d) - (8 * ab.b);
+			final int yy = Level_000.Y_019 + SUBFLOOR + 1;
+			if (region.isInRegion(xx,             0, zz            )
+			&&  region.isInRegion(xx-room_area.c, 0, zz-room_area.d)) {
+				Material type;
+				// find attic wall
+				for (int iz=0; iz<room_area.d; iz++) {
+					for (int ix=0; ix<room_area.c; ix++) {
+						type = region.getType(xx-ix, yy+1, zz-iz);
+						if (Gen_019.ATTIC_WALLS.equals(type)) return false;
+					}
 				}
 			}
 		}
