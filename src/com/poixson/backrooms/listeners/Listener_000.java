@@ -26,16 +26,17 @@ public class Listener_000  extends xListener<BackroomsPlugin> {
 
 
 
-//TODO: teleport relative to exit
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
-		if (event.getOutsideDistance() > 20) {
-			final Player player = event.getPlayer();
-			switch (event.getOutsideWhere()) {
-			case SKY:  this.plugin.noclip(player, 771); break; // to crossroads
-//TODO: teleport to 78
-			case VOID: this.plugin.noclip(player, 771); break; // to space
-			default: throw new RuntimeException("Unknown OutsideOfWorld event type");
+		final int level = this.plugin.getLevelFromWorld(event.getTo().getWorld());
+		if (level == 0) {
+			if (event.getOutsideDistance() > 20) {
+				final Player player = event.getPlayer();
+				switch (event.getOutsideWhere()) {
+				case SKY:  this.plugin.noclip(player, 771); break; // to crossroads
+				case VOID: this.plugin.noclip(player, 309); break; // to radio station
+				default: throw new RuntimeException("Unknown OutsideOfWorld event type");
+				}
 			}
 		}
 	}

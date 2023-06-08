@@ -35,13 +35,14 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 	public void onBlockRedstone(final BlockRedstoneEvent event) {
 		final Block block = event.getBlock();
 		final World world = block.getWorld();
-		final String worldName = world.getName();
-		if ("level0".equals(worldName)) {
+		final int level = this.plugin.getLevelFromWorld(world);
+		if (level == 0) {
 			final int y = block.getY();
 			final int diff_y = (Level_000.Y_006 - Level_000.Y_000) - 4;
 			final int lvl = this.level0.getLevelFromY(y);
 			switch (lvl) {
-			case 0: // lobby
+			// lobby
+			case 0:
 				if (y == Level_000.Y_000 + 6
 				&&  Material.LEVER.equals(block.getType())) {
 					final Block blk = block.getRelative(BlockFace.UP, diff_y);
@@ -52,7 +53,8 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 					}
 				}
 				break;
-			case 6: // lights out
+			// lights out
+			case 6:
 				if (y == Level_000.Y_006 + 2
 				&&  Material.LEVER.equals(block.getType())) {
 					final Block blk = block.getRelative(BlockFace.DOWN, diff_y);
