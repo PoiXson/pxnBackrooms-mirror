@@ -27,6 +27,7 @@ import com.poixson.backrooms.dynmap.GeneratorPerspective;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskHourly;
+import com.poixson.backrooms.tasks.TeleportManager;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.DelayedChestFiller;
@@ -267,6 +268,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public TaskHourly getHourlyTask() {
 		return this.hourlyTask.get();
+	}
+	public TeleportManager getTeleportManager() {
+		return this.tpManager.get();
 	}
 	public QuoteAnnouncer getQuoteAnnouncer() {
 		return this.quoteAnnouncer.get();

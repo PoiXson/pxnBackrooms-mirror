@@ -1,7 +1,8 @@
-package com.poixson.backrooms;
+package com.poixson.backrooms.tasks;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,26 +14,21 @@ import org.bukkit.Location;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.poixson.tools.xTime;
+import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.utils.NumberUtils;
 import com.poixson.utils.RandomUtils;
-import com.poixson.utils.Utils;
 
 
-//TODO: might need to rewrite this
 public class TeleportManager {
 
 	protected final BackroomsPlugin plugin;
 
 	protected final HashMap<Integer, HashMap<Integer, Integer>> weights;
-	protected int rndLast = 0;
+	protected final HashMap<Integer, Location> cachedSpawns = new HashMap<Integer, Location>();
+	protected final HashMap<Integer, Integer> cachedToLevel = new HashMap<Integer, Integer>();
 
-	protected final long updatePeriod = xTime.ParseToLong("1h");
-	protected final long updateGrace  = xTime.ParseToLong("1m");
-	protected long timeUpdated = 0L;
-	protected long timeLast    = 0L;
-	protected final HashMap<Integer, Integer> levelsFromTo = new HashMap<Integer, Integer>();
-	protected final HashMap<Integer, Location> levelSpawns = new HashMap<Integer, Location>();
+	protected int rndLast = 0;
 
 
 
@@ -42,14 +38,14 @@ public class TeleportManager {
 		this.weights = weights;
 	}
 
-
-
 	public static TeleportManager Load(final BackroomsPlugin plugin) {
 		final HashMap<Integer, HashMap<Integer, Integer>> chances = new HashMap<Integer, HashMap<Integer, Integer>>();
 		final InputStream input = plugin.getResource("chances.json");
 		if (input == null) throw new RuntimeException("Failed to load chances.json");
 		final InputStreamReader reader = new InputStreamReader(input);
 		final JsonElement json = JsonParser.parseReader(reader);
+		SafeClose(reader);
+		SafeClose(input);
 		final Iterator<Entry<String, JsonElement>> it = json.getAsJsonObject().entrySet().iterator();
 		String key;
 		int level, lvl, w;
@@ -78,36 +74,37 @@ public class TeleportManager {
 
 
 
+	public void markUsed() {
+		this.plugin.getHourlyTask()
+			.markUsed();
+	}
+
+	public void flush() {
+		final int count = this.cachedSpawns.size();
+		this.cachedSpawns.clear();
+		this.cachedToLevel.clear();
+		if (count > 0)
+			LOG.info(LOG_PREFIX + "Rolling the teleport dice..");
+	}
+
+
+
 	public int getDestinationLevel(final int level_from) {
-		final long current = Utils.GetMS();
-		// since last update
-		final long sinceUpdate = current - this.timeUpdated;
-		if (sinceUpdate > this.updatePeriod) {
-			// since last tp
-			final long sinceLast = current - this.timeLast;
-			if (sinceLast > this.updateGrace) {
-				// reset from/to levels
-				LOG.info(LOG_PREFIX + "Rolling the teleport dice..");
-				this.timeUpdated = current;
-				this.levelsFromTo.clear();
-				this.levelSpawns.clear();
-			}
-		}
-		this.timeLast = current;
-		// cached from/to level
+		this.markUsed();
+		// cached
 		{
-			final Integer level = this.levelsFromTo.get(Integer.valueOf(level_from));
+			final Integer level = this.cachedToLevel.get(Integer.valueOf(level_from));
 			if (level != null)
 				return level.intValue();
 		}
 		// find from/to level
 		{
-			final int level = this._getDestinationLevel(level_from);
-			this.levelsFromTo.put(Integer.valueOf(level_from), Integer.valueOf(level));
+			final int level = this.findDestinationLevel(level_from);
+			this.cachedToLevel.putIfAbsent(Integer.valueOf(level_from), Integer.valueOf(level));
 			return level;
 		}
 	}
-	protected int _getDestinationLevel(final int level_from) {
+	protected int findDestinationLevel(final int level_from) {
 		final HashMap<Integer, Integer> weights = this.weights.get(Integer.valueOf(level_from));
 		if (weights == null)   throw new RuntimeException("Unknown backrooms level: " + Integer.toString(level_from));
 		if (weights.isEmpty()) throw new RuntimeException("Backrooms level has no weights set: " + Integer.toString(level_from));
@@ -142,30 +139,37 @@ public class TeleportManager {
 
 
 
+	public Location getSpawnArea(final int level) {
+		// cached
+		{
+			final Location spawn = this.cachedSpawns.get(Integer.valueOf(level));
+			if (spawn != null)
+				return spawn;
+		}
+		// find spawn
+		{
+			final BackroomsLevel backlevel = this.plugin.getBackroomsLevel(level);
+			if (backlevel == null) {
+				LOG.warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
+				return null;
+			}
+			final Location spawn = backlevel.getNewSpawnArea(level);
+			this.cachedSpawns.put(Integer.valueOf(level), spawn);
+			return spawn;
+		}
+	}
+
 	public Location getSpawnLocation(final int level) {
+		final Location spawn = this.getSpawnArea(level);
+		return this.getSpawnLocation(spawn, level);
+	}
+	public Location getSpawnLocation(final Location spawn, final int level) {
 		final BackroomsLevel backlevel = this.plugin.getBackroomsLevel(level);
 		if (backlevel == null) {
 			LOG.warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
 			return null;
 		}
-		// cached spawn location
-		{
-			final Location loc = this.levelSpawns.get(Integer.valueOf(level));
-			if (loc != null)
-				return backlevel.getSpawnNear(loc);
-		}
-		// find spawn location
-		{
-			Location loc = null;
-			for (int i=0; i<5; i++) {
-				loc = backlevel.getNewSpawn(level);
-				if (loc != null)
-					break;
-			}
-			if (loc == null) throw new RuntimeException("Failed to find spawn location for level: " + Integer.toString(level));
-			this.levelSpawns.put(Integer.valueOf(level), loc);
-			return backlevel.getSpawnNear(loc);
-		}
+		return backlevel.getSpawnNear(spawn);
 	}
 
 

@@ -1,5 +1,8 @@
 package com.poixson.backrooms.worlds;
 
+import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
+import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+
 import java.util.LinkedList;
 
 import org.bukkit.Location;
@@ -59,7 +62,7 @@ public class Level_771 extends BackroomsLevel {
 
 
 	@Override
-	public Location getNewSpawn(final int level) {
+	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
 		final int y = this.getY(level);
 		int x = RandomUtils.GetRandom(0-distance, distance);
@@ -70,14 +73,42 @@ public class Level_771 extends BackroomsLevel {
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
 	}
+	@Override
+	public Location getSpawnNear(final Location spawn, final int distance) {
+		final int distanceMin = Math.floorDiv(distance, 3);
+		final float yaw = (float) RandomUtils.GetRandom(0, 360);
+		final World world = spawn.getWorld();
+		final int y = spawn.getBlockY();
+		// true if north/south roads
+		final boolean axis = (spawn.getBlockX() == 0);
+		int x = 0;
+		int z = 0;
+		Location near, valid;
+		for (int t=0; t<10; t++) {
+			for (int iy=0; iy<10; iy++) {
+				if (axis) z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance);
+				else      x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance);
+				near = world.getBlockAt(x, y+iy, z).getLocation();
+				valid = this.validateSpawn(near);
+				if (valid != null) {
+					valid.setYaw(yaw);
+					return valid;
+				}
+			}
+		}
+		LOG.warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
+		return spawn;
+	}
+
+
 
 	@Override
 	public int getY(final int level) {
-		return LEVEL_Y + LEVEL_H;
+		return LEVEL_Y + LEVEL_H + 1;
 	}
 	@Override
 	public int getMaxY(final int level) {
-		return LEVEL_Y + LEVEL_H + 20;
+		return 320;
 	}
 	@Override
 	public boolean containsLevel(final int level) {

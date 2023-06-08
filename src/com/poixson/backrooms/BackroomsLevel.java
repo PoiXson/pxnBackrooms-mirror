@@ -180,7 +180,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		return null;
 	}
 
-	public Location getNewSpawn(final int level) {
+	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
 		final int y = this.getY(level);
 		final int x = RandomUtils.GetRandom(0-distance, distance);
@@ -190,25 +190,30 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
 	}
 
-	public Location getSpawnNear(final Location loc) {
-		return getSpawnNear(loc, DEFAULT_SPAWN_NEAR_DISTANCE);
+	public Location getSpawnNear(final Location spawn) {
+		return getSpawnNear(spawn, DEFAULT_SPAWN_NEAR_DISTANCE);
 	}
-	public Location getSpawnNear(final Location loc, final int distance) {
+	public Location getSpawnNear(final Location spawn, final int distance) {
 		final int distanceMin = Math.floorDiv(distance, 3);
-		final World world = loc.getWorld();
-		final int y = loc.getBlockY();
+		final float yaw = (float) RandomUtils.GetRandom(0, 360);
+		final World world = spawn.getWorld();
+		final int y = spawn.getBlockY();
 		int x, z;
 		Location near, valid;
-		for (int i=0; i<10; i++) {
-			x = loc.getBlockX() + RandomUtils.GetRandom(distanceMin, distance);
-			z = loc.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance);
-			near = world.getBlockAt(x, y+i, z).getLocation();
-			valid = this.validateSpawn(near);
-			if (valid != null)
-				return valid;
+		for (int t=0; t<10; t++) {
+			for (int iy=0; iy<10; iy++) {
+				x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance);
+				z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance);
+				near = world.getBlockAt(x, y+iy, z).getLocation();
+				valid = this.validateSpawn(near);
+				if (valid != null) {
+					valid.setYaw(yaw);
+					return valid;
+				}
+			}
 		}
-		LOG.warning(LOG_PREFIX + "Failed to find a safe spawn location: " + loc.toString());
-		return loc;
+		LOG.warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
+		return spawn;
 	}
 
 	@Override

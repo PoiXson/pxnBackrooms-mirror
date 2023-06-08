@@ -190,7 +190,7 @@ public class Level_000 extends BackroomsLevel {
 
 
 	@Override
-	public Location getNewSpawn(final int level) {
+	public Location getNewSpawnArea(final int level) {
 		switch (level) {
 		case 1:  // basement
 		case 23: // overgrowth
@@ -199,7 +199,7 @@ public class Level_000 extends BackroomsLevel {
 		case 37: // pools
 		case 5:  // hotel
 		case 19: // attic
-			return super.getNewSpawn(level);
+			return super.getNewSpawnArea(level);
 		// radio station
 		case 309: {
 			final int distance = this.plugin.getSpawnDistance();
