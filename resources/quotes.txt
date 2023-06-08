@@ -6,6 +6,10 @@ Keep out
 Enter here
 Restricted area
 The end is near
+Leave NOW
+This is my space
+Remove yourself
+Remove yourself from my area
 Please stop
 Please don't do that
 Don't do that
@@ -118,6 +122,6 @@ Jar of thumbs
 Jar of eyeballs
 I didn't do it
 Sleep at your own risk
-The exit is d
+The exit is d...
 The corners hide nightmares
 How old is this place
