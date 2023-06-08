@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
+import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskHourly;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_771;
@@ -49,6 +50,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// hourly task
 	protected final AtomicReference<TaskHourly> hourlyTask = new AtomicReference<TaskHourly>(null);
+
+	// quotes
+	protected final AtomicReference<QuoteAnnouncer> quoteAnnouncer = new AtomicReference<QuoteAnnouncer>(null);
 
 	// chance to teleport to levels
 	protected final AtomicReference<TeleportManager> tpManager = new AtomicReference<TeleportManager>(null);
@@ -128,6 +132,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// load teleport chance
 		this.tpManager.set(TeleportManager.Load(this));
+		// load quotes
+		this.quoteAnnouncer.set(QuoteAnnouncer.Load(this));
 		// hourly task
 		{
 			final TaskHourly task = new TaskHourly(this);
@@ -177,6 +183,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// teleport chance
 		this.tpManager.set(null);
 		this.dynmap_perspective.set(null);
+		// quotes
+		this.quoteAnnouncer.set(null);
 	}
 
 
@@ -259,6 +267,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public TaskHourly getHourlyTask() {
 		return this.hourlyTask.get();
+	}
+	public QuoteAnnouncer getQuoteAnnouncer() {
+		return this.quoteAnnouncer.get();
 	}
 
 
