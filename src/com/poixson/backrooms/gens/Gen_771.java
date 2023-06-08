@@ -117,16 +117,16 @@ public class Gen_771 extends BackroomsGen {
 			.y(this.level_y + this.level_h + 2)
 			.whd(16, 14, 4)
 			.build();
-		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS);
+		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS              );
 		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top"   );
 		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "bottom");
 		plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, Character.toString( Rotate(axis.charAt(2), 0.5))       );
 		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, Character.toString(        axis.charAt(2)      ), "top");
-		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
-		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE);
-		plot.type('!', Material.LIGHTNING_ROD);
-		plot.type('8', Material.CHAIN);
-		plot.type('G', Material.SHROOMLIGHT);
+		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL          );
+		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE            );
+		plot.type('!', Material.LIGHTNING_ROD                           );
+		plot.type('8', Material.CHAIN                                   );
+		plot.type('G', Material.SHROOMLIGHT                             );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[13][ 0].append("!");
 		// big arch
@@ -161,14 +161,14 @@ public class Gen_771 extends BackroomsGen {
 			.y((this.level_y + this.level_h) - 3)
 			.whd(16, 5, 16)
 			.build();
-		plot.type('#', Material.POLISHED_BLACKSTONE);
-		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
-		plot.type('X', Material.GILDED_BLACKSTONE);
-		plot.type('*', Material.BLACKSTONE);
+		plot.type('#', Material.POLISHED_BLACKSTONE            );
+		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE   );
+		plot.type('X', Material.GILDED_BLACKSTONE              );
+		plot.type('*', Material.BLACKSTONE                     );
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
-		plot.type('.', Material.LIGHT, "15");
-		plot.type(',', Material.LIGHT,  "9");
+		plot.type('.', Material.LIGHT, "15"                    );
+		plot.type(',', Material.LIGHT,  "9"                    );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
 		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
@@ -358,24 +358,24 @@ public class Gen_771 extends BackroomsGen {
 				.y(this.level_y)
 				.whd(2, this.level_h+2, 5)
 				.build();
-		plot.type('#', Material.DEEPSLATE_BRICKS);
+		plot.type('#', Material.DEEPSLATE_BRICKS                  );
+		plot.type('w', Material.DARK_OAK_PLANKS                   );
 		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top",    direction.getOppositeFace().toString().toLowerCase());
 		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.toString().toLowerCase());
 		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.getOppositeFace().toString().toLowerCase());
 		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom", side.getOppositeFace().toString().toLowerCase());
-		plot.type('w', Material.DARK_OAK_PLANKS);
 		plot.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
 		plot.type('/', Material.SPRUCE_TRAPDOOR,  "top", side.toString().toLowerCase());
 		plot.type('~', Material.CRIMSON_TRAPDOOR, "top", side.getOppositeFace().toString().toLowerCase());
 		plot.type('d', Material.SPRUCE_DOOR,      "top", direction.toString().toLowerCase());
 		plot.type('D', Material.SPRUCE_DOOR,   "bottom", direction.toString().toLowerCase());
 		plot.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
-		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE);
-		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface");
+		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE           );
+		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface"   );
 		plot.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
-		plot.type(',', Material.LIGHT,  "15");
-		plot.type('W', Material.WATER);
-		plot.type('.', Material.AIR);
+		plot.type(',', Material.LIGHT,  "15"                      );
+		plot.type('W', Material.WATER                             );
+		plot.type('.', Material.AIR                               );
 		int h = this.level_h;
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		switch (type) {
