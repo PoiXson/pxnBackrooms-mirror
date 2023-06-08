@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
+import com.poixson.backrooms.tasks.TaskHourly;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.DelayedChestFiller;
@@ -45,6 +46,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	// backrooms levels
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
+
+	// hourly task
+	protected final AtomicReference<TaskHourly> hourlyTask = new AtomicReference<TaskHourly>(null);
 
 	// chance to teleport to levels
 	protected final AtomicReference<TeleportManager> tpManager = new AtomicReference<TeleportManager>(null);
@@ -124,6 +128,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// load teleport chance
 		this.tpManager.set(TeleportManager.Load(this));
+		// hourly task
+		{
+			final TaskHourly task = new TaskHourly(this);
+			final TaskHourly previous = this.hourlyTask.getAndSet(task);
+			if (previous != null)
+				previous.stop();
+			task.start();
+		}
 		// player damage listener
 		{
 			final PlayerDamageListener listener = new PlayerDamageListener(this);
@@ -137,6 +149,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	public void onDisable() {
 		super.onDisable();
+		// hourly task
+		{
+			final TaskHourly task = this.hourlyTask.getAndSet(null);
+			if (task != null)
+				task.stop();
+		}
 		// finish filling chests
 		DelayedChestFiller.stop();
 		// unload levels
@@ -231,6 +249,16 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public int getSpawnDistance() {
 		return this.config.get().getInt("Spawn Distance");
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+
+
+
+	public TaskHourly getHourlyTask() {
+		return this.hourlyTask.get();
 	}
 
 
