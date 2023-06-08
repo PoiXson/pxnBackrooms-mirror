@@ -35,7 +35,7 @@ public class Gen_771 extends BackroomsGen {
 
 	public static final double THRESH_LIGHT  = 0.42; // lanterns
 	public static final double THRESH_LADDER = 0.81; // ladder shaft
-	public static final double THRESH_LOOT   = 0.78; // loot chest
+	public static final double THRESH_LOOT   = 0.7;  // loot chest
 	public static final double THRESH_VOID   = 0.85; // void shaft
 	public static final double THRESH_LOOT_A = 0.65; // loot type
 	public static final double THRESH_LOOT_B = 0.75; // loot type
