@@ -36,7 +36,7 @@ import com.poixson.utils.RandomUtils;
 
 public abstract class BackroomsLevel extends ChunkGenerator {
 	public static final int DEFAULT_SPAWN_SEARCH_HEIGHT = 10;
-	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 50;
+	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 100;
 
 	protected final BackroomsPlugin plugin;
 
