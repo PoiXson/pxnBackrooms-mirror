@@ -13,6 +13,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
+import com.poixson.commonmc.tools.locationstore.LocationStoreManager;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.RandomUtils;
 
@@ -31,6 +32,10 @@ public class Level_771 extends BackroomsLevel {
 	// listeners
 	protected final Listener_771 listener_771;
 
+	// loot
+	public final LocationStoreManager loot_chests_upper;
+	public final LocationStoreManager loot_chests_lower;
+
 
 
 	public Level_771(final BackroomsPlugin plugin) {
@@ -44,6 +49,9 @@ public class Level_771 extends BackroomsLevel {
 		this.gen = this.register(new Gen_771(this, LEVEL_Y, LEVEL_H));
 		// listeners
 		this.listener_771 = new Listener_771(plugin);
+		// loot
+		this.loot_chests_upper = (new LocationStoreManager("level771", "loot_upper"     )).start(plugin);
+		this.loot_chests_lower = (new LocationStoreManager("level771", "loot_lower"     )).start(plugin);
 	}
 
 
@@ -57,6 +65,8 @@ public class Level_771 extends BackroomsLevel {
 	public void unregister() {
 		super.unregister();
 		this.listener_771.unregister();
+		this.loot_chests_upper.saveAll();
+		this.loot_chests_lower.saveAll();
 	}
 
 

@@ -26,6 +26,7 @@ import com.poixson.backrooms.gens.Pop_001;
 import com.poixson.backrooms.gens.Pop_005;
 import com.poixson.backrooms.gens.Pop_037;
 import com.poixson.backrooms.gens.Pop_309;
+import com.poixson.backrooms.listeners.Listener_000;
 import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.backrooms.listeners.Listener_023;
@@ -105,6 +106,7 @@ public class Level_000 extends BackroomsLevel {
 	public final Pop_309 pop_309;
 
 	// listeners
+	protected final Listener_000 listener_000;
 	protected final Listener_001 listener_001;
 	protected final Listener_006 listener_006;
 	protected final Listener_023 listener_023;
@@ -117,6 +119,8 @@ public class Level_000 extends BackroomsLevel {
 	public final LocationStoreManager portal_5_to_19;
 	public final LocationStoreManager portal_5_to_37;
 	public final LocationStoreManager cheese_rooms;
+	// loot
+	public final LocationStoreManager loot_chests_0;
 
 
 
@@ -150,6 +154,7 @@ public class Level_000 extends BackroomsLevel {
 		this.pop_037 = this.register(new Pop_037(this)); // pools
 		this.pop_309 = this.register(new Pop_309(this)); // radio station
 		// listeners
+		this.listener_000 = new Listener_000(plugin);
 		this.listener_001 = new Listener_001(plugin);
 		this.listener_006 = new Listener_006(plugin, this);
 		this.listener_023 = new Listener_023(plugin);
@@ -161,6 +166,8 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_5_to_19  = (new LocationStoreManager("level0", "portal_5_to_19" )).start(plugin); // hotel to attic
 		this.portal_5_to_37  = (new LocationStoreManager("level0", "portal_5_to_37" )).start(plugin); // hotel to pools
 		this.cheese_rooms    = (new LocationStoreManager("level0", "cheese_rooms"   )).start(plugin); // cheese hotel room
+		// loot
+		this.loot_chests_0   = (new LocationStoreManager("level0", "loot_0"         )).start(plugin);
 	}
 
 
@@ -168,6 +175,7 @@ public class Level_000 extends BackroomsLevel {
 	@Override
 	public void register() {
 		super.register();
+		this.listener_000.register();
 		this.listener_001.register();
 		this.listener_006.register();
 		this.listener_023.register();
@@ -175,6 +183,7 @@ public class Level_000 extends BackroomsLevel {
 	@Override
 	public void unregister() {
 		super.unregister();
+		this.listener_000.unregister();
 		this.listener_001.unregister();
 		this.listener_006.unregister();
 		this.listener_023.unregister();
@@ -185,6 +194,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_5_to_19 .saveAll();
 		this.portal_5_to_37 .saveAll();
 		this.cheese_rooms   .saveAll();
+		this.loot_chests_0  .saveAll();
 	}
 
 

@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
+import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
@@ -48,7 +49,8 @@ public class Gen_771 extends BackroomsGen {
 	public enum PillarType {
 		PILLAR_NORM,
 		PILLAR_LADDER,
-		PILLAR_LOOT,
+		PILLAR_LOOT_UPPER,
+		PILLAR_LOOT_LOWER,
 		PILLAR_DROP,
 		PILLAR_VOID,
 	}
@@ -317,8 +319,10 @@ public class Gen_771 extends BackroomsGen {
 			else                    pillar_type = PillarType.PILLAR_DROP;   // drop shaft
 			} else                  pillar_type = PillarType.PILLAR_LADDER; // ladder shaft
 		} else {
-			if (valC > THRESH_LOOT) pillar_type = PillarType.PILLAR_LOOT; // loot chest
-			else                    pillar_type = PillarType.PILLAR_NORM; // normal pillar
+			if (valC < THRESH_LOOT) pillar_type = PillarType.PILLAR_NORM;   // normal pillar
+			else                                                            // loot chest
+			if (((int)Math.floor(valC*10000.0)) % 2 == 0) pillar_type = PillarType.PILLAR_LOOT_UPPER;
+			else                                          pillar_type = PillarType.PILLAR_LOOT_LOWER;
 		}
 		final BlockFace mirrored = direction.getOppositeFace();
 		final int mod_pillar;
@@ -376,7 +380,8 @@ public class Gen_771 extends BackroomsGen {
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		switch (type) {
 		// loot chest
-		case PILLAR_LOOT:
+		case PILLAR_LOOT_UPPER:
+		case PILLAR_LOOT_LOWER:
 		// normal pillar
 		case PILLAR_NORM: {
 			// top of pillar
@@ -402,11 +407,21 @@ public class Gen_771 extends BackroomsGen {
 			matrix[0][0].append("   $");
 			// loot chest
 			if (x == 0 && z == 0) {
-				if (PillarType.PILLAR_LOOT.equals(type)) {
+				if (PillarType.PILLAR_LOOT_UPPER.equals(type)
+				||  PillarType.PILLAR_LOOT_LOWER.equals(type)) {
 					final Iab dir = FaceToIxz(side);
 					final int xx = (dir.a * 2) + x;
 					final int zz = (dir.b * 2) + z;
-					final int yy = this.level_y + this.level_h + 1;
+					final int yy;
+					if (PillarType.PILLAR_LOOT_UPPER.equals(type)) {
+//TODO: duplicating 4 times
+						((Level_771)this.backlevel).loot_chests_upper.add((chunkX*16)+xx, (chunkZ*16)+zz);
+						yy = this.level_y + this.level_h + 1;
+					} else {
+//TODO: duplicating 4 times
+						((Level_771)this.backlevel).loot_chests_lower.add((chunkX*16)+xx, (chunkZ*16)+zz);
+						yy = this.level_y + 1;
+					}
 					chunk.setBlock(xx, yy, zz, Material.BARREL);
 					final BlockData data = chunk.getBlockData(xx, yy, zz);
 					((Barrel)data).setFacing(BlockFace.UP);
