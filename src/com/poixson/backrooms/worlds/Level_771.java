@@ -32,6 +32,10 @@ public class Level_771 extends BackroomsLevel {
 	// listeners
 	protected final Listener_771 listener_771;
 
+	// exit locations
+	public final LocationStoreManager portal_ladder;
+	public final LocationStoreManager portal_drop;
+	public final LocationStoreManager portal_void;
 	// loot
 	public final LocationStoreManager loot_chests_upper;
 	public final LocationStoreManager loot_chests_lower;
@@ -49,6 +53,10 @@ public class Level_771 extends BackroomsLevel {
 		this.gen = this.register(new Gen_771(this, LEVEL_Y, LEVEL_H));
 		// listeners
 		this.listener_771 = new Listener_771(plugin);
+		// exit locations
+		this.portal_ladder     = (new LocationStoreManager("level771", "portal_ladder" )).start(plugin); // upper/lower ladder
+		this.portal_drop       = (new LocationStoreManager("level771", "portal_drop"   )).start(plugin); // shaft to lower bridge
+		this.portal_void       = (new LocationStoreManager("level771", "portal_void"   )).start(plugin); // shaft to void
 		// loot
 		this.loot_chests_upper = (new LocationStoreManager("level771", "loot_upper"     )).start(plugin);
 		this.loot_chests_lower = (new LocationStoreManager("level771", "loot_lower"     )).start(plugin);
@@ -65,6 +73,9 @@ public class Level_771 extends BackroomsLevel {
 	public void unregister() {
 		super.unregister();
 		this.listener_771.unregister();
+		this.portal_ladder    .saveAll();
+		this.portal_drop      .saveAll();
+		this.portal_void      .saveAll();
 		this.loot_chests_upper.saveAll();
 		this.loot_chests_lower.saveAll();
 	}

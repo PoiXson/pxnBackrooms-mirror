@@ -434,6 +434,8 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// ladder shaft
 		case PILLAR_LADDER: {
+//TODO: duplicating 4 times
+			((Level_771)this.backlevel).portal_ladder.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h][0].append("   $");
 			// trapdoor
 			if (x == 0 && z == 0) {
@@ -468,6 +470,8 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// drop shaft to lower road
 		case PILLAR_DROP: {
+//TODO: duplicating 4 times
+			((Level_771)this.backlevel).portal_drop.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {
@@ -484,6 +488,8 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// void shaft
 		case PILLAR_VOID: {
+//TODO: duplicating 4 times
+			((Level_771)this.backlevel).portal_void.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {
