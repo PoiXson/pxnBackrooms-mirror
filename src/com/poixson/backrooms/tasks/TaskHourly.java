@@ -2,6 +2,7 @@ package com.poixson.backrooms.tasks;
 
 import static com.poixson.utils.Utils.GetMS;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -47,19 +48,21 @@ public class TaskHourly extends BukkitRunnable implements xStartStop {
 
 	@Override
 	public void run() {
-		final long time = GetMS();
-		final long sinceUpdated = time - this.lastUpdated;
-		// update period
-		if (sinceUpdated >= this.updatePeriod) {
-			final long sinceReset = time - this.lastUsed;
-			// within grace period
-			if (sinceReset <= this.updateGrace) {
-				if (sinceUpdated <= this.updatePeriod+this.maxGrace)
-					return;
+		if (Bukkit.getOnlinePlayers().size() > 0) {
+			final long time = GetMS();
+			final long sinceUpdated = time - this.lastUpdated;
+			// update period
+			if (sinceUpdated >= this.updatePeriod) {
+				final long sinceReset = time - this.lastUsed;
+				// within grace period
+				if (sinceReset <= this.updateGrace) {
+					if (sinceUpdated <= this.updatePeriod+this.maxGrace)
+						return;
+				}
+				// run hourly
+				this.lastUpdated = time;
+				this.update();
 			}
-			// run hourly
-			this.lastUpdated = time;
-			this.update();
 		}
 	}
 	protected void update() {
