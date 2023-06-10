@@ -35,10 +35,10 @@ fi
 		--exclude pack.mcmeta  || exit 1
 \popd >/dev/null
 # redstone terminal
-\pushd  "../RedstoneTerminal/resourcepack/"  >/dev/null  || exit 1
-	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${VERSION}.zip"  *  \
-		--exclude pack.mcmeta  || exit 1
-\popd >/dev/null
+#\pushd  "../RedstoneTerminal/resourcepack/"  >/dev/null  || exit 1
+#	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${VERSION}.zip"  *  \
+#		--exclude pack.mcmeta  || exit 1
+#\popd >/dev/null
 
 
 \sha1sum  "pxnBackrooms-resourcepack${VERSION}.zip" \
