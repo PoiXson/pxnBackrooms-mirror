@@ -17,8 +17,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.SpawnCategory;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.LimitedRegion;
@@ -144,6 +146,24 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 	protected abstract void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots);
+
+
+
+	@Override
+	public BiomeProvider getDefaultBiomeProvider(final WorldInfo worldInfo) {
+		return new BiomeProvider() {
+			private final List<Biome> biomes = new LinkedList<Biome>();
+			{ this.biomes.add(Biome.THE_VOID); }
+			@Override
+			public List<Biome> getBiomes(final WorldInfo worldInfo) {
+				return this.biomes;
+			}
+			@Override
+			public Biome getBiome(final WorldInfo worldInfo, final int x, final int y, final int z) {
+				return Biome.THE_VOID;
+			}
+		};
+	}
 
 
 
