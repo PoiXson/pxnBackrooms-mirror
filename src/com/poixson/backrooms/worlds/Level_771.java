@@ -54,12 +54,12 @@ public class Level_771 extends BackroomsLevel {
 		// listeners
 		this.listener_771 = new Listener_771(plugin);
 		// exit locations
-		this.portal_ladder     = (new LocationStoreManager("level771", "portal_ladder" )).start(plugin); // upper/lower ladder
-		this.portal_drop       = (new LocationStoreManager("level771", "portal_drop"   )).start(plugin); // shaft to lower bridge
-		this.portal_void       = (new LocationStoreManager("level771", "portal_void"   )).start(plugin); // shaft to void
+		this.portal_ladder     = new LocationStoreManager("level771", "portal_ladder" ); // upper/lower ladder
+		this.portal_drop       = new LocationStoreManager("level771", "portal_drop"   ); // shaft to lower bridge
+		this.portal_void       = new LocationStoreManager("level771", "portal_void"   ); // shaft to void
 		// loot
-		this.loot_chests_upper = (new LocationStoreManager("level771", "loot_upper"     )).start(plugin);
-		this.loot_chests_lower = (new LocationStoreManager("level771", "loot_lower"     )).start(plugin);
+		this.loot_chests_upper = new LocationStoreManager("level771", "loot_upper"    );
+		this.loot_chests_lower = new LocationStoreManager("level771", "loot_lower"    );
 	}
 
 
@@ -67,6 +67,11 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public void register() {
 		super.register();
+		this.portal_ladder    .start(plugin); // upper/lower ladder
+		this.portal_drop      .start(plugin); // shaft to lower bridge
+		this.portal_void      .start(plugin); // shaft to void
+		this.loot_chests_upper.start(plugin); // loot upper
+		this.loot_chests_lower.start(plugin); // loot lower
 		this.listener_771.register();
 	}
 	@Override

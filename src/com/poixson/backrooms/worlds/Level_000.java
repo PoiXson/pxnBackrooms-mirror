@@ -159,15 +159,15 @@ public class Level_000 extends BackroomsLevel {
 		this.listener_006 = new Listener_006(plugin, this);
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
-		this.portal_0_to_1   = (new LocationStoreManager("level0", "portal_0_to_1"  )).start(plugin); // lobby to basement
-		this.portal_0_to_6   = (new LocationStoreManager("level0", "portal_0_to_6"  )).start(plugin); // lobby to lights out
-		this.portal_0_to_37  = (new LocationStoreManager("level0", "portal_0_to_37" )).start(plugin); // lobby to pools
-		this.portal_1_to_771 = (new LocationStoreManager("level0", "portal_1_to_771")).start(plugin); // basement to crossroads
-		this.portal_5_to_19  = (new LocationStoreManager("level0", "portal_5_to_19" )).start(plugin); // hotel to attic
-		this.portal_5_to_37  = (new LocationStoreManager("level0", "portal_5_to_37" )).start(plugin); // hotel to pools
-		this.cheese_rooms    = (new LocationStoreManager("level0", "cheese_rooms"   )).start(plugin); // cheese hotel room
+		this.portal_0_to_1   = new LocationStoreManager("level0", "portal_0_to_1"  ); // lobby to basement
+		this.portal_0_to_6   = new LocationStoreManager("level0", "portal_0_to_6"  ); // lobby to lights out
+		this.portal_0_to_37  = new LocationStoreManager("level0", "portal_0_to_37" ); // lobby to pools
+		this.portal_1_to_771 = new LocationStoreManager("level0", "portal_1_to_771"); // basement to crossroads
+		this.portal_5_to_19  = new LocationStoreManager("level0", "portal_5_to_19" ); // hotel to attic
+		this.portal_5_to_37  = new LocationStoreManager("level0", "portal_5_to_37" ); // hotel to pools
+		this.cheese_rooms    = new LocationStoreManager("level0", "cheese_rooms"   ); // cheese hotel room
 		// loot
-		this.loot_chests_0   = (new LocationStoreManager("level0", "loot_0"         )).start(plugin);
+		this.loot_chests_0   = new LocationStoreManager("level0", "loot_0"         );
 	}
 
 
@@ -175,6 +175,14 @@ public class Level_000 extends BackroomsLevel {
 	@Override
 	public void register() {
 		super.register();
+		this.portal_0_to_1  .start(this.plugin); // lobby to basement
+		this.portal_0_to_6  .start(this.plugin); // lobby to lights out
+		this.portal_0_to_37 .start(this.plugin); // lobby to pools
+		this.portal_1_to_771.start(this.plugin); // basement to crossroads
+		this.portal_5_to_19 .start(this.plugin); // hotel to attic
+		this.portal_5_to_37 .start(this.plugin); // hotel to pools
+		this.cheese_rooms   .start(this.plugin); // cheese hotel room
+		this.loot_chests_0  .start(this.plugin); // loot
 		this.listener_000.register();
 		this.listener_001.register();
 		this.listener_006.register();
