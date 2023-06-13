@@ -115,7 +115,7 @@ public class Gen_771 extends BackroomsGen {
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
 			.y(this.level_y + this.level_h + 2)
-			.whd(16, 14, 4)
+			.whd(16, 14, 16)
 			.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS              );
 		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top"   );
