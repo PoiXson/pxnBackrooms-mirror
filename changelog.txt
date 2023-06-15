@@ -1,6 +1,13 @@
 pxnBackrooms - Backrooms world generator for minecraft
 
 
+2023-06-14 - 0.1.5
+==================
+* fix exceptions by delaying start and load of LocationStore
+* fixed index out of bounds error in level 771
+* set biome to void
+
+
 2023-06-09 - 0.1.3
 ==================
 * lots of fixes and finished levels
