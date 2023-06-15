@@ -54,45 +54,49 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 
 
 
-//TODO: not in backrooms levels
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerDamage(final EntityDamageEvent event) {
 		final Entity entity = event.getEntity();
 		if (entity instanceof Player) {
 			final Player player = (Player) entity;
-			final double health = player.getHealth();
-			final DamageCause cause = event.getCause();
-			switch (cause) {
-			case SUFFOCATION:
-			case VOID: {
-				final int count = this.incrementPlayerDamageCount(player.getUniqueId());
-				final int countMin = (health > MIN_DAMAGE ? 4 : 2);
-				if (count <= countMin)
-					return;
-				break;
-			}
-			default: return;
-			}
-			final int rnd = RandomUtils.GetRandom(0, 9999);
-			if (rnd % 10 < 5)
-				return;
-			// noclip into the backrooms
-			event.setCancelled(true);
-			this.plugin.noclip(player);
-			this.lastPlayerDamage.remove(player.getUniqueId());
-			// cleanup
-			if (this.lastPlayerDamage.size() % 5 == 0) {
-				final long time = Utils.GetMS();
-				final ArrayList<UUID> remove = new ArrayList<UUID>();
-				final Iterator<Entry<UUID, PlayerDamageDAO>> it = this.lastPlayerDamage.entrySet().iterator();
-				while (it.hasNext()) {
-					final Entry<UUID, PlayerDamageDAO> entry = it.next();
-					final PlayerDamageDAO dao = entry.getValue();
-					if (dao.last + DAMAGE_TIMEOUT > time)
-						remove.add(entry.getKey());
+			final int level = this.plugin.getPlayerLevel(player);
+			if (level < 0) { if (!player.hasPermission("noclipfront")) return;
+			} else {         if (!player.hasPermission("noclipback" )) return; }
+			{
+				final double health = player.getHealth();
+				final DamageCause cause = event.getCause();
+				switch (cause) {
+				case SUFFOCATION:
+				case VOID: {
+					final int count = this.incrementPlayerDamageCount(player.getUniqueId());
+					final int countMin = (health > MIN_DAMAGE ? 4 : 2);
+					if (count <= countMin)
+						return;
+					break;
 				}
-				for (final UUID uuid : remove) {
-					this.lastPlayerDamage.remove(uuid);
+				default: return;
+				}
+				final int rnd = RandomUtils.GetRandom(0, 9999);
+				if (rnd % 10 < 5)
+					return;
+				// noclip into the backrooms
+				event.setCancelled(true);
+				this.plugin.noclip(player);
+				this.lastPlayerDamage.remove(player.getUniqueId());
+				// cleanup
+				if (this.lastPlayerDamage.size() % 5 == 0) {
+					final long time = Utils.GetMS();
+					final ArrayList<UUID> remove = new ArrayList<UUID>();
+					final Iterator<Entry<UUID, PlayerDamageDAO>> it = this.lastPlayerDamage.entrySet().iterator();
+					while (it.hasNext()) {
+						final Entry<UUID, PlayerDamageDAO> entry = it.next();
+						final PlayerDamageDAO dao = entry.getValue();
+						if (dao.last + DAMAGE_TIMEOUT > time)
+							remove.add(entry.getKey());
+					}
+					for (final UUID uuid : remove) {
+						this.lastPlayerDamage.remove(uuid);
+					}
 				}
 			}
 		}
