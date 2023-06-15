@@ -314,12 +314,14 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 //			case 151: y = Level_151.LEVEL_Y; break;
 			case 771: y = Level_771.LEVEL_Y; break;
 //			case 866: y = Level_866.LEVEL_Y; break;
+//			case 7:   y = Level_007.LEVEL_Y; break; // thalassophobia
 			default:  y = 0;                 break;
 			}
 			mvworld.setSpawnLocation(world.getBlockAt(0, y, 0).getLocation());
 			// time
 			switch (level) {
 			case 0:  // lobby
+			case 7:  // thalassophobia
 			case 33: // run for your life
 			case 78: // space
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
@@ -334,6 +336,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			// weather
 			switch (level) {
 			case 0:   // lobby
+			case 7:   // thalassophobia
 			case 33:  // run for your life
 			case 78:  // space
 			case 151: // dollhouse
@@ -373,6 +376,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			// natural regeneration
 			switch (level) {
 			case 0:   // lobby
+			case 7:   // thalassophobia
 			case 9:   // suburbs
 			case 10:  // field of wheat
 			case 11:  // concrete jungle
@@ -387,6 +391,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			// F3 debug info
 			switch (level) {
 			case 0:   // lobby
+			case 7:   // thalassophobia
 			case 9:   // suburbs
 			case 10:  // field of wheat
 			case 11:  // concrete jungle
