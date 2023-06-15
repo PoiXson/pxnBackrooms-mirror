@@ -22,9 +22,8 @@ permissions:
         default: op
         description: Gives access to all backrooms commands
         children:
-            backrooms.reload: true
-            backrooms.generate: true
-            backrooms.clear: true
+            backrooms.tp: true
+            backrooms.tp.others: true
     backrooms.tp:
         default: op
         description: Teleport to the backrooms
