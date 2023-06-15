@@ -305,16 +305,16 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			// fixed spawn
 			final int y;
 			switch (level) {
-			case 0:   y = Level_000.Y_000; break;
-//			case 9:   y = Level_009.LEVEL_Y; break;
-//			case 10:  y = Level_010.LEVEL_Y; break;
-//			case 11:  y = Level_011.LEVEL_Y; break;
-//			case 33:  y = Level_033.LEVEL_Y; break;
-			case 78:  y = 200;               break;
-//			case 151: y = Level_151.LEVEL_Y; break;
-			case 771: y = Level_771.LEVEL_Y; break;
-//			case 866: y = Level_866.LEVEL_Y; break;
+			case 0:   y = Level_000.Y_000;   break; // lobby
 //			case 7:   y = Level_007.LEVEL_Y; break; // thalassophobia
+//			case 9:   y = Level_009.LEVEL_Y; break; // suburbs
+//			case 10:  y = Level_010.LEVEL_Y; break; // field of wheat
+//			case 11:  y = Level_011.LEVEL_Y; break; // concrete jungle
+//			case 33:  y = Level_033.LEVEL_Y; break; // run for your life
+			case 78:  y = 200;               break; // space
+//			case 151: y = Level_151.LEVEL_Y; break; // dollhouse
+			case 771: y = Level_771.LEVEL_Y; break; // crossroads
+//			case 866: y = Level_866.LEVEL_Y; break; // dirtfield
 			default:  y = 0;                 break;
 			}
 			mvworld.setSpawnLocation(world.getBlockAt(0, y, 0).getLocation());
