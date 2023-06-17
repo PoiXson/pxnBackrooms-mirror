@@ -90,11 +90,13 @@ public class Pop_309 implements BackroomsPop {
 									for (int iy=0; iy<5; iy++) {
 										region.setType(xx, sy+iy, zz, Material.IRON_BARS);
 										final Fence fence = (Fence) region.getBlockData(xx, sy+iy, zz);
-										fence.setFace(BlockFace.NORTH, true);
-										fence.setFace(BlockFace.SOUTH, true);
-										fence.setFace(BlockFace.EAST,  true);
-										fence.setFace(BlockFace.WEST,  true);
-										region.setBlockData(xx, sy+iy, zz, fence);
+										synchronized (fence) {
+											fence.setFace(BlockFace.NORTH, true);
+											fence.setFace(BlockFace.SOUTH, true);
+											fence.setFace(BlockFace.EAST,  true);
+											fence.setFace(BlockFace.WEST,  true);
+											region.setBlockData(xx, sy+iy, zz, fence);
+										}
 									}
 									region.setType(xx, sy+5, zz, Material.CUT_COPPER_SLAB);
 								}
