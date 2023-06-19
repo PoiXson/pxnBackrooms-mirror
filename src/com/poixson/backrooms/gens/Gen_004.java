@@ -1,3 +1,4 @@
+/*
 package com.poixson.backrooms.gens;
 
 import java.util.LinkedList;
@@ -44,3 +45,4 @@ public class Gen_004 extends BackroomsGen {
 
 
 }
+*/
