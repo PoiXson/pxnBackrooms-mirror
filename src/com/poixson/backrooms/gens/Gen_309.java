@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -27,9 +29,6 @@ public class Gen_309 extends BackroomsGen {
 	public static final int PATH_START_X  = 14;
 	public static final int PATH_START_Z  = 32;
 
-	public static final Material PATH_TREE_TRUNK  = Material.BIRCH_LOG;
-	public static final Material PATH_TREE_LEAVES = Material.BIRCH_LEAVES;
-
 	// noise
 	public final FastNoiseLiteD noisePath;
 	public final FastNoiseLiteD noisePathGround;
@@ -39,6 +38,10 @@ public class Gen_309 extends BackroomsGen {
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
+
+	// blocks
+	public final AtomicReference<String> block_tree_trunk  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_tree_leaves = new AtomicReference<String>(null);
 
 
 
@@ -144,6 +147,24 @@ public class Gen_309 extends BackroomsGen {
 			return Double.MAX_VALUE;
 		return Math.sqrt( Math.pow((double)x, 2.0) + Math.pow((double)z, 2.0) )
 			+ (this.noisePath.getNoise(x*5, z*5) * strength);
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(309);
+		this.block_tree_trunk .set(cfg.getString("TreeTrunk" ));
+		this.block_tree_leaves.set(cfg.getString("TreeLeaves"));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level309.Blocks.TreeTrunk",  "minecraft:BIRCH_LOG"   );
+		cfg.addDefault("Level309.Blocks.TreeLeaves", "minecraft:BIRCH_LEAVES");
 	}
 
 

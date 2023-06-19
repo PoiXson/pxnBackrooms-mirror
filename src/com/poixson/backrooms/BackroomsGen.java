@@ -41,8 +41,6 @@ public abstract class BackroomsGen {
 		return noise;
 	}
 
-
-
 	public void setSeed(final int seed) {
 		for (final FastNoiseLiteD noise : this.noises) {
 			noise.setSeed(seed);
@@ -53,6 +51,10 @@ public abstract class BackroomsGen {
 
 	public abstract void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ);
+
+
+
+	protected abstract void loadConfig();
 
 
 

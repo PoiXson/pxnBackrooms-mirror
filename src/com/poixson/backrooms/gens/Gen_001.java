@@ -6,8 +6,11 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -32,15 +35,16 @@ public class Gen_001 extends BackroomsGen {
 	public static final double THRESH_MOIST = 0.4;
 	public static final double THRESH_WELL  = 0.9;
 
-	public static final Material BASEMENT_WALL      = Material.MUD_BRICKS;
-	public static final Material BASEMENT_SUBFLOOR  = Material.DIRT;
-	public static final Material BASEMENT_FLOOR_DRY = Material.BROWN_CONCRETE_POWDER;
-	public static final Material BASEMENT_FLOOR_WET = Material.BROWN_CONCRETE;
-
 	// noise
 	public final FastNoiseLiteD noiseBasementWalls;
 	public final FastNoiseLiteD noiseMoist;
 	public final FastNoiseLiteD noiseWell;
+
+	// blocks
+	public final AtomicReference<String> block_wall     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_floordry = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_floorwet = new AtomicReference<String>(null);
 
 
 
@@ -113,6 +117,14 @@ public class Gen_001 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_001) return;
+		final Material block_wall     = Material.matchMaterial(this.block_wall    .get());
+		final Material block_subfloor = Material.matchMaterial(this.block_subfloor.get());
+		final Material block_floordry = Material.matchMaterial(this.block_floordry.get());
+		final Material block_floorwet = Material.matchMaterial(this.block_floorwet.get());
+		if (block_wall     == null) throw new RuntimeException("Invalid block type for level 1 Wall"    );
+		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 1 SubFloor");
+		if (block_floordry == null) throw new RuntimeException("Invalid block type for level 1 FloorDry");
+		if (block_floorwet == null) throw new RuntimeException("Invalid block type for level 1 FloorWet");
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
 		final int y  = this.level_y + SUBFLOOR + 1;
@@ -125,19 +137,19 @@ public class Gen_001 extends BackroomsGen {
 				// basement floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(ix, this.level_y+yy+1, iz, BASEMENT_SUBFLOOR);
+					chunk.setBlock(ix, this.level_y+yy+1, iz, block_subfloor);
 				dao = basementData.get(new Iab(ix, iz));
 				if (dao == null) continue;
 				// wall
 				if (dao.isWall) {
 					for (int yy=0; yy<h; yy++) {
 						if (yy > 6) chunk.setBlock(ix, y+yy, iz, Material.BEDROCK);
-						else        chunk.setBlock(ix, y+yy, iz, BASEMENT_WALL);
+						else        chunk.setBlock(ix, y+yy, iz, block_wall);
 					}
 				// room
 				} else {
-					if (dao.isWet) chunk.setBlock(ix, y, iz, BASEMENT_FLOOR_WET);
-					else           chunk.setBlock(ix, y, iz, BASEMENT_FLOOR_DRY);
+					if (dao.isWet) chunk.setBlock(ix, y, iz, block_floorwet);
+					else           chunk.setBlock(ix, y, iz, block_floordry);
 					// basement lights
 					final int modX10 = Math.abs(xx) % 10;
 					final int modZ10 = Math.abs(zz) % 10;
@@ -159,6 +171,28 @@ public class Gen_001 extends BackroomsGen {
 				} // end wall/room
 			} // end ix
 		} // end iz
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(1);
+		this.block_wall    .set(cfg.getString("Wall"    ));
+		this.block_subfloor.set(cfg.getString("SubFloor"));
+		this.block_floordry.set(cfg.getString("FloorDry"));
+		this.block_floorwet.set(cfg.getString("FloorWet"));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level1.Blocks.Wall",     "minecraft:mud_bricks"           );
+		cfg.addDefault("Level1.Blocks.SubFloor", "minecraft:dirt"                 );
+		cfg.addDefault("Level1.Blocks.FloorDry", "minecraft:brown_concrete_powder");
+		cfg.addDefault("Level1.Blocks.FloorWet", "minecraft:brown_concrete"       );
 	}
 
 

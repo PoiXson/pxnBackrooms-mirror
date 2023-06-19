@@ -23,8 +23,6 @@ public class Pop_005 implements BackroomsPop {
 
 	public static final int ROOM_SIZE = 7;
 
-	public static final Material HOTEL_WALL = Gen_005.HOTEL_WALL;
-
 	protected final Level_000 level0;
 	protected final Gen_005   gen;
 
@@ -57,6 +55,8 @@ public class Pop_005 implements BackroomsPop {
 	// returns x z w d
 	public Iabcd findRoomWalls(final int x, final int y, final int z,
 			final LimitedRegion region) {
+		final Material block_hall_wall = Material.matchMaterial(this.gen.block_hall_wall.get());
+		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
 		// is wall
 		if (!Material.AIR.equals(region.getType(x, y, z)))
 			return null;
@@ -79,7 +79,7 @@ public class Pop_005 implements BackroomsPop {
 			&& region.isInRegion(x, y, z-i)) {
 				type = region.getType(x, y, z-i);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (HOTEL_WALL.equals(type))
+				if (block_hall_wall.equals(type))
 					foundN = (z - i) + 1;
 				else
 				if (!Material.AIR.equals(type)) return null;
@@ -89,7 +89,7 @@ public class Pop_005 implements BackroomsPop {
 			&& region.isInRegion(x, y, z+i)) {
 				type = region.getType(x, y, z+i);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (HOTEL_WALL.equals(type))
+				if (block_hall_wall.equals(type))
 					foundS = (z + i) - 1;
 				else
 				if (!Material.AIR.equals(type)) return null;
@@ -99,7 +99,7 @@ public class Pop_005 implements BackroomsPop {
 			&& region.isInRegion(x+i, y, z)) {
 				type = region.getType(x+i, y, z);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (HOTEL_WALL.equals(type))
+				if (block_hall_wall.equals(type))
 					foundE = (x + i) - 1;
 				else
 				if (!Material.AIR.equals(type)) return null;
@@ -109,7 +109,7 @@ public class Pop_005 implements BackroomsPop {
 			&& region.isInRegion(x-i, y, z)) {
 				type = region.getType(x-i, y, z);
 				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (HOTEL_WALL.equals(type))
+				if (block_hall_wall.equals(type))
 					foundW = (x - i) + 1;
 				else
 				if (!Material.AIR.equals(type)) return null;

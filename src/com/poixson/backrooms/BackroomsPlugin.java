@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -24,6 +25,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
+import com.poixson.backrooms.gens.Gen_000;
+import com.poixson.backrooms.gens.Gen_001;
+import com.poixson.backrooms.gens.Gen_005;
+import com.poixson.backrooms.gens.Gen_006;
+import com.poixson.backrooms.gens.Gen_019;
+import com.poixson.backrooms.gens.Gen_023;
+import com.poixson.backrooms.gens.Gen_037;
+import com.poixson.backrooms.gens.Gen_309;
+import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskHourly;
@@ -247,6 +257,27 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected void configDefaults(final FileConfiguration cfg) {
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
+		Gen_000.ConfigDefaults(cfg); // lobby
+		Gen_001.ConfigDefaults(cfg); // basement
+//		Gen_002.ConfigDefaults(cfg); // pipe dreams
+//		Gen_004.ConfigDefaults(cfg); // abandoned office
+		Gen_005.ConfigDefaults(cfg); // hotel
+		Gen_006.ConfigDefaults(cfg); // lights out
+//		Gen_007.ConfigDefaults(cfg); // thalassophobia
+//		Gen_009.ConfigDefaults(cfg); // suburbs
+//		Gen_010.ConfigDefaults(cfg); // field of wheat
+//		Gen_011.ConfigDefaults(cfg); // concrete jungle
+		Gen_019.ConfigDefaults(cfg); // attic
+		Gen_023.ConfigDefaults(cfg); // overgrowth
+//		Gen_033.ConfigDefaults(cfg); // run for your life
+		Gen_037.ConfigDefaults(cfg); // poolrooms
+//		Gen_040.ConfigDefaults(cfg); // arcade
+//		Gen_078.ConfigDefaults(cfg); // space
+//		Gen_151.ConfigDefaults(cfg); // dollhouse
+//		Gen_308.ConfigDefaults(cfg); // ikea
+		Gen_309.ConfigDefaults(cfg); // radio station
+		Gen_771.ConfigDefaults(cfg); // crossroads
+//		Gen_866.ConfigDefaults(cfg); // dirtfield
 	}
 
 
@@ -259,6 +290,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public int getSpawnDistance() {
 		return this.config.get().getInt("Spawn Distance");
+	}
+	public ConfigurationSection getLevelBlocks(final int level) {
+		return this.config.get()
+			.getConfigurationSection(
+				String.format("Level%d.Blocks", Integer.valueOf(level)));
 	}
 
 

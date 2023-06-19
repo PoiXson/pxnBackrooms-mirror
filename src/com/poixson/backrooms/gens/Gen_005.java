@@ -8,12 +8,15 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Slab;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -33,13 +36,17 @@ public class Gen_005 extends BackroomsGen {
 
 	public static final double THRESH_ROOM_HALL    = 0.65;
 
-	public static final Material HOTEL_FLOOR = Material.BLACK_GLAZED_TERRACOTTA;
-	public static final Material HOTEL_WALL  = Material.STRIPPED_SPRUCE_WOOD;
-
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
 	public final FastNoiseLiteD noiseHotelRooms;
 	public final FastNoiseLiteD noiseHotelStairs;
+
+	// blocks
+	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_wall    = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_carpet  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_ceiling = new AtomicReference<String>(null);
 
 
 
@@ -181,6 +188,16 @@ public class Gen_005 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_005) return;
+		final Material block_subfloor     = Material.matchMaterial(this.block_subfloor    .get());
+		final Material block_subceiling   = Material.matchMaterial(this.block_subceiling  .get());
+		final Material block_hall_wall    = Material.matchMaterial(this.block_hall_wall   .get());
+		final Material block_hall_carpet  = Material.matchMaterial(this.block_hall_carpet .get());
+		final Material block_hall_ceiling = Material.matchMaterial(this.block_hall_ceiling.get());
+		if (block_subfloor     == null) throw new RuntimeException("Invalid block type for level 5 SubFloor"   );
+		if (block_subceiling   == null) throw new RuntimeException("Invalid block type for level 5 SubCeiling" );
+		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 HallWall"   );
+		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 HallCarpet" );
+		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 HallCeiling");
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
@@ -195,16 +212,16 @@ public class Gen_005 extends BackroomsGen {
 				// hotel floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(ix, this.level_y+yy+1, iz, Material.SPRUCE_PLANKS);
+					chunk.setBlock(ix, this.level_y+yy+1, iz,block_subfloor);
 				dao = hotelData.get(new Iab(ix, iz));
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
 					for (int iy=0; iy<h; iy++)
-						chunk.setBlock(ix, y+iy, iz, HOTEL_WALL);
+						chunk.setBlock(ix, y+iy, iz, block_hall_wall);
 					break;
 				case HALL: {
-					chunk.setBlock(ix, y, iz, HOTEL_FLOOR);
+					chunk.setBlock(ix, y, iz, block_hall_carpet);
 					final Directional tile = (Directional) chunk.getBlockData(ix, y, iz);
 					if (iz % 2 == 0) {
 						if (ix % 2 == 0) tile.setFacing(BlockFace.NORTH);
@@ -232,9 +249,9 @@ public class Gen_005 extends BackroomsGen {
 							||  NodeType.WALL.equals(hotelData.get(new Iab(ix, iz+1)).type) // south
 							||  NodeType.WALL.equals(hotelData.get(new Iab(ix+1, iz)).type) // east
 							||  NodeType.WALL.equals(hotelData.get(new Iab(ix-1, iz)).type))// west
-								chunk.setBlock(ix, cy, iz, Material.SMOOTH_STONE);
+								chunk.setBlock(ix, cy, iz, block_subceiling);
 							else {
-								chunk.setBlock(ix, cy, iz, Material.SMOOTH_STONE_SLAB);
+								chunk.setBlock(ix, cy, iz, block_hall_ceiling);
 								final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
 								slab.setType(Slab.Type.TOP);
 								chunk.setBlock(ix, cy, iz, slab);
@@ -248,10 +265,34 @@ public class Gen_005 extends BackroomsGen {
 				}
 				if (ENABLE_TOP_005) {
 					for (int i=0; i<SUBCEILING; i++)
-						chunk.setBlock(ix, cy+i+1, iz, Material.STONE);
+						chunk.setBlock(ix, cy+i+1, iz, block_subceiling);
 				}
 			} // end ix
 		} // end iz
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
+		this.block_subfloor    .set(cfg.getString("SubFloor"   ));
+		this.block_subceiling  .set(cfg.getString("SubCeiling" ));
+		this.block_hall_wall   .set(cfg.getString("HallWall"   ));
+		this.block_hall_carpet .set(cfg.getString("HallCarpet" ));
+		this.block_hall_ceiling.set(cfg.getString("HallCeiling"));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level5.Blocks.SubFloor",    "minecraft:oak_planks"             );
+		cfg.addDefault("Level5.Blocks.SubCeiling",  "minecraft:smooth_stone"           );
+		cfg.addDefault("Level5.Blocks.HallWall",    "minecraft:stripped_spruce_wood"   );
+		cfg.addDefault("Level5.Blocks.HallCarpet",  "minecraft:black_glazed_terracotta");
+		cfg.addDefault("Level5.Blocks.HallCeiling", "minecraft:smooth_stone_slab"      );
 	}
 
 

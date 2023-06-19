@@ -12,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
-import com.poixson.backrooms.gens.Gen_005;
-import com.poixson.backrooms.gens.Gen_019;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
@@ -51,6 +49,8 @@ public class HotelRoomStairs implements HotelRoom {
 
 	protected void buildHotelRoomStairs(final Iabcd area, final int y, final BlockFace direction,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+		final Material block_hall_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
+		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
@@ -67,8 +67,8 @@ public class HotelRoomStairs implements HotelRoom {
 		plot.type('.', Material.AIR);
 		plot.type('#', Material.BEDROCK);
 		plot.type('=', Material.DARK_OAK_PLANKS);
-		plot.type('$', Gen_005.HOTEL_WALL, "up");
-		plot.type('&', Gen_005.HOTEL_WALL, FaceToAxString(Rotate(direction, 0.25)));
+		plot.type('$', block_hall_wall, "up");
+		plot.type('&', block_hall_wall, FaceToAxString(Rotate(direction, 0.25)));
 		plot.type('d', Material.SPRUCE_DOOR, "top",    "right", "closed", FaceToAxString(direction));
 		plot.type('D', Material.SPRUCE_DOOR, "bottom", "right", "closed", FaceToAxString(direction));
 		plot.type('_', Material.DARK_OAK_PRESSURE_PLATE);
@@ -172,6 +172,8 @@ public class HotelRoomStairs implements HotelRoom {
 		}
 		// find attic walls
 		{
+			final Material block_attic_wall = Material.matchMaterial(HotelRoomStairs.this.level0.gen_019.block_wall.get());
+			if (block_attic_wall == null) throw new RuntimeException("Invalid block type for level 19 Wall");
 			final Iab ab = FaceToIxz(direction);
 			final int xx = (room_area.a + room_area.c) - (8 * ab.a);
 			final int zz = (room_area.b + room_area.d) - (8 * ab.b);
@@ -183,7 +185,7 @@ public class HotelRoomStairs implements HotelRoom {
 				for (int iz=0; iz<room_area.d; iz++) {
 					for (int ix=0; ix<room_area.c; ix++) {
 						type = region.getType(xx-ix, yy+1, zz-iz);
-						if (Gen_019.ATTIC_WALLS.equals(type)) return false;
+						if (block_attic_wall.equals(type)) return false;
 					}
 				}
 			}

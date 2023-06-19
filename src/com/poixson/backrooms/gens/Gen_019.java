@@ -4,8 +4,11 @@ import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_019;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -22,11 +25,13 @@ import com.poixson.utils.FastNoiseLiteD;
 // 19 | Attic
 public class Gen_019 extends BackroomsGen {
 
-	public static final Material ATTIC_FLOOR = Material.SPRUCE_PLANKS;
-	public static final Material ATTIC_WALLS = Material.SPRUCE_PLANKS;
-
 	// noise
 	public final FastNoiseLiteD noiseLamps;
+
+	// blocks
+	public final AtomicReference<String> block_wall  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_floor = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_beam  = new AtomicReference<String>(null);
 
 
 
@@ -45,6 +50,12 @@ public class Gen_019 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_019) return;
+		final Material block_wall  = Material.matchMaterial(this.block_wall .get());
+		final Material block_floor = Material.matchMaterial(this.block_floor.get());
+		final Material block_beam  = Material.matchMaterial(this.block_beam .get());
+		if (block_wall  == null) throw new RuntimeException("Invalid block type for level 19 Wall" );
+		if (block_floor == null) throw new RuntimeException("Invalid block type for level 19 Floor");
+		if (block_beam  == null) throw new RuntimeException("Invalid block type for level 19 Beam" );
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao;
 		double valueLamp;
@@ -61,7 +72,7 @@ public class Gen_019 extends BackroomsGen {
 				modZ7 = (zz < 0 ? 1-zz : zz) % 7;
 				// beam
 				if (modX7 == 0 || modZ7 == 0)
-					chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, Material.SPRUCE_WOOD);
+					chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, block_beam);
 				// lantern
 				if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6) {
 					valueLamp = this.noiseLamps.getNoise(xx, zz);
@@ -71,14 +82,34 @@ public class Gen_019 extends BackroomsGen {
 				// attic floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int iy=0; iy<Level_000.SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, ATTIC_FLOOR);
+					chunk.setBlock(ix, this.level_y+iy+1, iz, block_floor);
 				// wall
 				if (dao.isWall) {
 					for (int iy=0; iy<this.level_h+1; iy++)
-						chunk.setBlock(ix, y+iy, iz, (iy>6 ? Material.BEDROCK : ATTIC_WALLS));
+						chunk.setBlock(ix, y+iy, iz, (iy>6 ? Material.BEDROCK : block_wall));
 				}
 			} // end ix
 		} // end iz
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(19);
+		this.block_wall .set(cfg.getString("Wall" ));
+		this.block_floor.set(cfg.getString("Floor"));
+		this.block_beam .set(cfg.getString("Beam" ));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level19.Blocks.Wall",  "minecraft:spruce_planks");
+		cfg.addDefault("Level19.Blocks.Floor", "minecraft:spruce_planks");
+		cfg.addDefault("Level19.Blocks.Beam",  "minecraft:spruce_wood"  );
 	}
 
 

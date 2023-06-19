@@ -7,8 +7,11 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -32,12 +35,6 @@ public class Gen_037 extends BackroomsGen {
 
 	public static final int WATER_DEPTH = 3;
 
-	public static final Material POOL_WALL_A      = Material.PRISMARINE_BRICKS;
-	public static final Material POOL_WALL_B      = Material.PRISMARINE;
-	public static final Material POOLS_CEILING    = Material.GLOWSTONE;
-	public static final Material POOLS_SUBFLOOR   = Material.DARK_PRISMARINE;
-	public static final Material POOLS_SUBCEILING = Material.DARK_PRISMARINE;
-
 	public static final double THRESH_ROOM   = 0.2;
 	public static final double THRESH_PORTAL = 0.5;
 
@@ -46,6 +43,13 @@ public class Gen_037 extends BackroomsGen {
 	public final FastNoiseLiteD noiseTunnels;
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
+
+	// blocks
+	public final AtomicReference<String> block_wall_a     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_wall_b     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_ceiling    = new AtomicReference<String>(null);
 
 
 
@@ -139,6 +143,16 @@ public class Gen_037 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_037) return;
+		final Material block_wall_a     = Material.matchMaterial(this.block_wall_a    .get());
+		final Material block_wall_b     = Material.matchMaterial(this.block_wall_b    .get());
+		final Material block_subfloor   = Material.matchMaterial(this.block_subfloor  .get());
+		final Material block_subceiling = Material.matchMaterial(this.block_subceiling.get());
+		final Material block_ceiling    = Material.matchMaterial(this.block_ceiling   .get());
+		if (block_wall_a     == null) throw new RuntimeException("Invalid block type for level 37 Wall A"    );
+		if (block_wall_b     == null) throw new RuntimeException("Invalid block type for level 37 Wall B"    );
+		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
+		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
+		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
 		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		final int y  = this.level_y + SUBFLOOR + 1;
@@ -149,11 +163,11 @@ public class Gen_037 extends BackroomsGen {
 				// subfloor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int iy=0; iy<SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, POOLS_SUBFLOOR);
+					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
 				// subceiling
 				if (ENABLE_TOP_037) {
 					for (int iy=0; iy<SUBCEILING; iy++)
-						chunk.setBlock(ix, cy+iy+1, iz, POOLS_SUBCEILING);
+						chunk.setBlock(ix, cy+iy+1, iz, block_subceiling);
 				}
 			}
 		}
@@ -169,10 +183,10 @@ public class Gen_037 extends BackroomsGen {
 					.xyz(rx*8, y, rz*8)
 					.whd(8, h, 8)
 					.build();
-				plot.type('#', POOL_WALL_A);
-				plot.type('@', POOL_WALL_B);
+				plot.type('#', block_wall_a);
+				plot.type('@', block_wall_b);
 				plot.type('w', Material.WATER, "0");
-				plot.type('g', POOLS_CEILING);
+				plot.type('g', block_ceiling);
 				dao = poolData.get(new Iab(rx, rz));
 				solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
 				solid_s  = poolData.get(new Iab(rx,   rz+1)).isSolid();
@@ -425,6 +439,30 @@ public class Gen_037 extends BackroomsGen {
 				plot.run();
 			} // end room x
 		} // end room z
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(37);
+		this.block_wall_a    .set(cfg.getString("WallA"     ));
+		this.block_wall_b    .set(cfg.getString("WallB"     ));
+		this.block_subfloor  .set(cfg.getString("SubFloor"  ));
+		this.block_subceiling.set(cfg.getString("SubCeiling"));
+		this.block_ceiling   .set(cfg.getString("Ceiling"   ));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level37.Blocks.WallA",      "minecraft:prismarine_bricks");
+		cfg.addDefault("Level37.Blocks.WallB",      "minecraft:prismarine"       );
+		cfg.addDefault("Level37.Blocks.SubFloor",   "minecraft:dark_prismarine"  );
+		cfg.addDefault("Level37.Blocks.SubCeiling", "minecraft:dark_prismarine"  );
+		cfg.addDefault("Level37.Blocks.Ceiling",    "minecraft:glowstone"        );
 	}
 
 

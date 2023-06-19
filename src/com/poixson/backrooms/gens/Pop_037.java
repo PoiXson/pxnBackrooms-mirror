@@ -21,9 +21,6 @@ public class Pop_037 implements BackroomsPop {
 
 	public static final double THRESH_TUNNEL = 0.95;
 
-	public static final Material POOL_WALL_A = Gen_037.POOL_WALL_A;
-	public static final Material POOL_WALL_B = Gen_037.POOL_WALL_B;
-
 	protected final Gen_037 gen;
 
 	protected final Iab[] starting_points;
@@ -118,6 +115,10 @@ public class Pop_037 implements BackroomsPop {
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		if (!ENABLE_GEN_037) return;
+		final Material block_wall_a = Material.matchMaterial(this.gen.block_wall_a.get());
+		final Material block_wall_b = Material.matchMaterial(this.gen.block_wall_b.get());
+		if (block_wall_a == null) throw new RuntimeException("Invalid block type for level 37 WallA");
+		if (block_wall_b == null) throw new RuntimeException("Invalid block type for level 37 WallB");
 		// trace tunnels
 		final LinkedList<TunnelTracer> tunnelTracers = new LinkedList<TunnelTracer>();
 		{
@@ -178,29 +179,29 @@ public class Pop_037 implements BackroomsPop {
 					}
 					if (region.isInRegion(xx, 0, zz)) {
 						if (distance < 2) {
-							if (POOL_WALL_B.equals(region.getType(xx, yy, zz)))
-								region.setType(xx, yy, zz, POOL_WALL_A);
+							if (block_wall_b.equals(region.getType(xx, yy, zz)))
+								region.setType(xx, yy, zz, block_wall_a);
 							for (int iy=1; iy<5; iy++) {
-								if (POOL_WALL_B.equals(region.getType(xx, yy+iy, zz)))
+								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
 									region.setType(xx, yy+iy, zz, Material.AIR);
 							}
-							if (POOL_WALL_B.equals(region.getType(xx, yy+5, zz)))
-								region.setType(xx, yy+5, zz, POOL_WALL_A);
+							if (block_wall_b.equals(region.getType(xx, yy+5, zz)))
+								region.setType(xx, yy+5, zz, block_wall_a);
 						} else
 						if (distance == 2) {
-							if (POOL_WALL_B.equals(region.getType(xx, yy, zz)))
-								region.setType(xx, yy, zz, POOL_WALL_A);
+							if (block_wall_b.equals(region.getType(xx, yy, zz)))
+								region.setType(xx, yy, zz, block_wall_a);
 							for (int iy=1; iy<4; iy++) {
-								if (POOL_WALL_B.equals(region.getType(xx, yy+iy, zz)))
+								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
 									region.setType(xx, yy+iy, zz, Material.AIR);
 							}
-							if (POOL_WALL_B.equals(region.getType(xx, yy+4, zz)))
-								region.setType(xx, yy+4, zz, POOL_WALL_A);
+							if (block_wall_b.equals(region.getType(xx, yy+4, zz)))
+								region.setType(xx, yy+4, zz, block_wall_a);
 						} else
 						if (distance == 3) {
 							for (int iy=0; iy<4; iy++) {
-								if (POOL_WALL_B.equals(region.getType(xx, yy+iy, zz)))
-									region.setType(xx, yy+iy, zz, POOL_WALL_A);
+								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
+									region.setType(xx, yy+iy, zz, block_wall_a);
 							}
 						}
 					}

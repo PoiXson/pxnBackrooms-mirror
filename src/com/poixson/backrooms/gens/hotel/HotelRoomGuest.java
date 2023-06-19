@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
-import com.poixson.backrooms.gens.Gen_005;
 import com.poixson.backrooms.gens.hotel.HotelRoomSpecs.RoomTheme;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -37,6 +36,8 @@ public class HotelRoomGuest implements HotelRoom {
 	@Override
 	public void build(final Iabcd area, final int y, final BlockFace direction,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+		final Material block_hotel_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
+		if (block_hotel_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
 		// room specs
 		final HotelRoomSpecs specs =
 			HotelRoomSpecs.SpecsFromValue(
@@ -60,8 +61,8 @@ public class HotelRoomGuest implements HotelRoom {
 		plot.type('#', specs.walls);
 		plot.type(',', specs.carpet);
 		plot.type('.', Material.AIR);
-		plot.type('$', Gen_005.HOTEL_WALL, "up");
-		plot.type('&', Gen_005.HOTEL_WALL, FaceToAxString(Rotate(direction, 0.25)));
+		plot.type('$', block_hotel_wall, "up");
+		plot.type('&', block_hotel_wall, FaceToAxString(Rotate(direction, 0.25)));
 		plot.type('d', specs.door, "top",    "right", "closed", FaceToAxString(direction));
 		plot.type('D', specs.door, "bottom", "right", "closed", FaceToAxString(direction));
 		plot.type('_', specs.door_plate);

@@ -37,5 +37,18 @@ public class Gen_009 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+	}
+
+
+
 }
 */

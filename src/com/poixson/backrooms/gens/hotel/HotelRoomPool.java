@@ -12,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
-import com.poixson.backrooms.gens.Gen_005;
-import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
@@ -59,6 +57,12 @@ public class HotelRoomPool implements HotelRoom {
 	@Override
 	public void build(final Iabcd area, final int y, final BlockFace direction,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+		final Material block_hotel_wall  = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
+		final Material block_pool_wall_a = Material.matchMaterial(this.level0.gen_037.block_wall_a.get());
+		final Material block_pool_wall_b = Material.matchMaterial(this.level0.gen_037.block_wall_b.get());
+		if (block_hotel_wall  == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
+		if (block_pool_wall_a == null) throw new RuntimeException("Invalid block type for level 37 WallA");
+		if (block_pool_wall_b == null) throw new RuntimeException("Invalid block type for level 37 WallB");
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
@@ -73,15 +77,15 @@ public class HotelRoomPool implements HotelRoom {
 			.xyz(x, yy, z)
 			.whd(w, th, d)
 			.build();
-		plot.type('#', Gen_037.POOL_WALL_A);
-		plot.type('@', Gen_037.POOL_WALL_B);
+		plot.type('#', block_pool_wall_a);
+		plot.type('@', block_pool_wall_b);
 		plot.type('.', Material.AIR);
 		plot.type(',', Material.WATER, "0");
 		plot.type('g', Material.GLOWSTONE);
 		plot.type('X', Material.BEDROCK);
 		plot.type('-', Material.PRISMARINE_BRICK_SLAB, "top", "logged");
-		plot.type('$', Gen_005.HOTEL_WALL, "up");
-		plot.type('&', Gen_005.HOTEL_WALL, FaceToAxString(Rotate(direction, 0.25)));
+		plot.type('$', block_hotel_wall, "up");
+		plot.type('&', block_hotel_wall, FaceToAxString(Rotate(direction, 0.25)));
 		plot.type('d', Material.ACACIA_DOOR, "top",    "right", "closed", FaceToAxString(direction));
 		plot.type('D', Material.ACACIA_DOOR, "bottom", "right", "closed", FaceToAxString(direction));
 		plot.type('_', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);

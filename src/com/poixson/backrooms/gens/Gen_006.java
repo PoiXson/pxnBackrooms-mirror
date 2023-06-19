@@ -5,11 +5,14 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.FaceAttachable.AttachedFace;
 import org.bukkit.block.data.type.Switch;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -26,7 +29,11 @@ import com.poixson.utils.FastNoiseLiteD;
 // 6 | Lights Out
 public class Gen_006 extends BackroomsGen {
 
+	// noise
 	public final FastNoiseLiteD noiseLightSwitch;
+
+	// blocks
+	public final AtomicReference<String> block_wall = new AtomicReference<String>(null);
 
 
 
@@ -45,6 +52,8 @@ public class Gen_006 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_006) return;
+		final Material block_wall  = Material.matchMaterial(this.block_wall.get());
+		if (block_wall == null) throw new RuntimeException("Invalid block type for level 6 Wall");
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao, daoN, daoS, daoE, daoW;
 		for (int iz=0; iz<16; iz++) {
@@ -57,7 +66,7 @@ public class Gen_006 extends BackroomsGen {
 				if (dao.isWall) {
 					// lobby walls
 					for (int iy=0; iy<this.level_h; iy++)
-						chunk.setBlock(ix, this.level_y+iy+1, iz, Material.GLOWSTONE);
+						chunk.setBlock(ix, this.level_y+iy+1, iz, block_wall);
 					// light switch
 					if (ix > 0 && ix < 15
 					&&  iz > 0 && iz < 15) {
@@ -106,6 +115,22 @@ public class Gen_006 extends BackroomsGen {
 				chunk.setBlock(ix, y, iz, lever);
 			}
 		}
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
+		this.block_wall.set(cfg.getString("Wall"));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level5.Blocks.Wall", "minecraft:glowstone");
 	}
 
 

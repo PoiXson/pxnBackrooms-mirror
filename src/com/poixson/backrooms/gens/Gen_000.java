@@ -8,6 +8,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +17,8 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Barrel;
 import org.bukkit.block.data.type.Slab;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -48,13 +51,15 @@ public class Gen_000 extends BackroomsGen {
 
 	public static final int WALL_SEARCH_DIST = 6;
 
-	public static final Material LOBBY_WALL     = Material.YELLOW_TERRACOTTA;
-	public static final Material LOBBY_SUBFLOOR = Material.OAK_PLANKS;
-	public static final Material LOBBY_CARPET   = Material.LIGHT_GRAY_WOOL;
-
 	// noise
 	public final FastNoiseLiteD noiseLobbyWalls;
 	public final FastNoiseLiteD noiseLoot;
+
+	// blocks
+	public final AtomicReference<String> block_wall     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_carpet   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_ceiling  = new AtomicReference<String>(null);
 
 
 
@@ -204,6 +209,14 @@ public class Gen_000 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_000) return;
+		final Material block_wall     = Material.matchMaterial(this.block_wall    .get());
+		final Material block_subfloor = Material.matchMaterial(this.block_subfloor.get());
+		final Material block_carpet   = Material.matchMaterial(this.block_carpet  .get());
+		final Material block_ceiling  = Material.matchMaterial(this.block_ceiling .get());
+		if (block_wall     == null) throw new RuntimeException("Invalid block type for level 0 Wall"    );
+		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 0 SubFloor");
+		if (block_carpet   == null) throw new RuntimeException("Invalid block type for level 0 Carpet"  );
+		if (block_ceiling  == null) throw new RuntimeException("Invalid block type for level 0 Ceiling" );
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
@@ -219,7 +232,7 @@ public class Gen_000 extends BackroomsGen {
 				// lobby floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int iy=0; iy<SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, LOBBY_SUBFLOOR);
+					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
 				dao = lobbyData.get(new Iab(ix, iz));
 				if (dao == null) continue;
 				// wall
@@ -227,11 +240,11 @@ public class Gen_000 extends BackroomsGen {
 					// lobby walls
 					final int h = this.level_h + 3;
 					for (int iy=0; iy<h; iy++)
-						chunk.setBlock(ix, y+iy, iz, LOBBY_WALL);
+						chunk.setBlock(ix, y+iy, iz, block_wall);
 				// room
 				} else {
 					// floor
-					chunk.setBlock(ix, y, iz, LOBBY_CARPET);
+					chunk.setBlock(ix, y, iz, block_carpet);
 					if (ENABLE_TOP_000) {
 						modX7 = (xx < 0 ? 1-xx : xx) % 7;
 						modZ7 = (zz < 0 ? 0-zz : zz) % 7;
@@ -245,7 +258,7 @@ public class Gen_000 extends BackroomsGen {
 							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
 						} else {
 							// ceiling
-							chunk.setBlock(ix, cy, iz, Material.SMOOTH_STONE_SLAB);
+							chunk.setBlock(ix, cy, iz, block_ceiling);
 							final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
 							slab.setType(Slab.Type.TOP);
 							chunk.setBlock(ix, cy,   iz, slab);
@@ -411,6 +424,28 @@ public class Gen_000 extends BackroomsGen {
 			}
 		}
 
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
+		this.block_wall    .set(cfg.getString("Wall"    ));
+		this.block_subfloor.set(cfg.getString("SubFloor"));
+		this.block_carpet  .set(cfg.getString("Carpet"  ));
+		this.block_ceiling .set(cfg.getString("Ceiling" ));
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Level0.Blocks.Wall",     "minecraft:yellow_terracotta");
+		cfg.addDefault("Level0.Blocks.SubFloor", "minecraft:oak_planks"       );
+		cfg.addDefault("Level0.Blocks.Carpet",   "minecraft:light_gray_wool"  );
+		cfg.addDefault("Level0.Blocks.Ceiling",  "minecraft:smooth_stone_slab");
 	}
 
 

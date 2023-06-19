@@ -14,9 +14,6 @@ public class Pop_309_Trees extends TreePopulator {
 	public static final int PATH_WIDTH    = Gen_309.PATH_WIDTH;
 	public static final int PATH_CLEARING = Gen_309.PATH_CLEARING;
 
-	public static final Material PATH_TREE_TRUNK  = Gen_309.PATH_TREE_TRUNK;
-	public static final Material PATH_TREE_LEAVES = Gen_309.PATH_TREE_LEAVES;
-
 	protected final Gen_309 gen;
 
 
@@ -25,8 +22,8 @@ public class Pop_309_Trees extends TreePopulator {
 		super(
 			gen.getTreeNoise(),
 			gen.level_y + SUBFLOOR + 1,
-			PATH_TREE_TRUNK,
-			PATH_TREE_LEAVES
+			Material.matchMaterial(gen.block_tree_trunk.get()),
+			Material.matchMaterial(gen.block_tree_leaves.get())
 		);
 		this.gen = gen;
 	}

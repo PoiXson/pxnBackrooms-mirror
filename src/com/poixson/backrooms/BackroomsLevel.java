@@ -113,6 +113,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	protected <T extends BackroomsGen> T register(final T gen) {
 		this.gens.add(gen);
+		gen.loadConfig();
 		return gen;
 	}
 	protected <T extends BackroomsPop> T register(final T pop) {

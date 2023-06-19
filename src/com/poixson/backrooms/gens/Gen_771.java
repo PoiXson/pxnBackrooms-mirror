@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Barrel;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -532,6 +533,21 @@ public class Gen_771 extends BackroomsGen {
 			}
 		}
 
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// configs
+
+
+
+	@Override
+	protected void loadConfig() {
+//TODO
+	}
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+//TODO
 	}
 
 
