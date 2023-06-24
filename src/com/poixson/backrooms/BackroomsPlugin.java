@@ -270,9 +270,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 		Gen_019.ConfigDefaults(cfg); // attic
 		Gen_023.ConfigDefaults(cfg); // overgrowth
 //		Gen_033.ConfigDefaults(cfg); // run for your life
+//		Gen_036.ConfigDefaults(cfg); // airport
 		Gen_037.ConfigDefaults(cfg); // poolrooms
 //		Gen_040.ConfigDefaults(cfg); // arcade
 //		Gen_078.ConfigDefaults(cfg); // space
+//		Gen_094.ConfigDefaults(cfg); // motion
 //		Gen_151.ConfigDefaults(cfg); // dollhouse
 //		Gen_308.ConfigDefaults(cfg); // ikea
 		Gen_309.ConfigDefaults(cfg); // radio station

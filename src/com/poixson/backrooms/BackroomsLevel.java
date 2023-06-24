@@ -312,7 +312,9 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 //			case 10:  y = Level_010.LEVEL_Y; break; // field of wheat
 //			case 11:  y = Level_011.LEVEL_Y; break; // concrete jungle
 //			case 33:  y = Level_033.LEVEL_Y; break; // run for your life
+//			case 36:  y = Level_036.LEVEL_Y; break; // airport
 			case 78:  y = 200;               break; // space
+//			case 94:  y = Level_094.LEVEL_Y; break; // motion
 //			case 151: y = Level_151.LEVEL_Y; break; // dollhouse
 			case 771: y = Level_771.LEVEL_Y; break; // crossroads
 //			case 866: y = Level_866.LEVEL_Y; break; // dirtfield
