@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -24,6 +25,10 @@ import com.poixson.utils.FastNoiseLiteD;
 
 // 19 | Attic
 public class Gen_019 extends BackroomsGen {
+
+	public static final String DEFAULT_BLOCK_WALL  = "minecraft:spruce_planks";
+	public static final String DEFAULT_BLOCK_FLOOR = "minecraft:spruce_planks";
+	public static final String DEFAULT_BLOCK_BEAM  = "minecraft:spruce_wood";
 
 	// noise
 	public final FastNoiseLiteD noiseLamps;
@@ -50,9 +55,9 @@ public class Gen_019 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_019) return;
-		final Material block_wall  = Material.matchMaterial(this.block_wall .get());
-		final Material block_floor = Material.matchMaterial(this.block_floor.get());
-		final Material block_beam  = Material.matchMaterial(this.block_beam .get());
+		final BlockData block_wall  = StringToBlockData(this.block_wall,  DEFAULT_BLOCK_WALL );
+		final BlockData block_floor = StringToBlockData(this.block_floor, DEFAULT_BLOCK_FLOOR);
+		final BlockData block_beam  = StringToBlockData(this.block_beam,  DEFAULT_BLOCK_BEAM );
 		if (block_wall  == null) throw new RuntimeException("Invalid block type for level 19 Wall" );
 		if (block_floor == null) throw new RuntimeException("Invalid block type for level 19 Floor");
 		if (block_beam  == null) throw new RuntimeException("Invalid block type for level 19 Beam" );
@@ -85,8 +90,10 @@ public class Gen_019 extends BackroomsGen {
 					chunk.setBlock(ix, this.level_y+iy+1, iz, block_floor);
 				// wall
 				if (dao.isWall) {
-					for (int iy=0; iy<this.level_h+1; iy++)
-						chunk.setBlock(ix, y+iy, iz, (iy>6 ? Material.BEDROCK : block_wall));
+					for (int iy=0; iy<this.level_h+1; iy++) {
+						if (iy > 6) chunk.setBlock(ix, y+iy, iz, Material.BEDROCK);
+						else        chunk.setBlock(ix, y+iy, iz, block_wall      );
+					}
 				}
 			} // end ix
 		} // end iz
@@ -101,15 +108,16 @@ public class Gen_019 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
+		// block types
 		final ConfigurationSection cfg = this.plugin.getLevelBlocks(19);
 		this.block_wall .set(cfg.getString("Wall" ));
 		this.block_floor.set(cfg.getString("Floor"));
 		this.block_beam .set(cfg.getString("Beam" ));
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-		cfg.addDefault("Level19.Blocks.Wall",  "minecraft:spruce_planks");
-		cfg.addDefault("Level19.Blocks.Floor", "minecraft:spruce_planks");
-		cfg.addDefault("Level19.Blocks.Beam",  "minecraft:spruce_wood"  );
+		cfg.addDefault("Level19.Blocks.Wall",  DEFAULT_BLOCK_WALL );
+		cfg.addDefault("Level19.Blocks.Floor", DEFAULT_BLOCK_FLOOR);
+		cfg.addDefault("Level19.Blocks.Beam",  DEFAULT_BLOCK_BEAM );
 	}
 
 

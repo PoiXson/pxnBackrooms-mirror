@@ -293,6 +293,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int getSpawnDistance() {
 		return this.config.get().getInt("Spawn Distance");
 	}
+
+	public ConfigurationSection getLevelParams(final int level) {
+		return this.config.get()
+			.getConfigurationSection(
+				String.format("Level%d.Params", Integer.valueOf(level)));
+	}
 	public ConfigurationSection getLevelBlocks(final int level) {
 		return this.config.get()
 			.getConfigurationSection(

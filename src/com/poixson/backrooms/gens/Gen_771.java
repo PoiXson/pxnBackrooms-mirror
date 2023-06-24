@@ -3,7 +3,6 @@ package com.poixson.backrooms.gens;
 import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
 import static com.poixson.commonmc.utils.LocationUtils.FaceToIxz;
-import static com.poixson.commonmc.utils.LocationUtils.Rotate;
 import static com.poixson.commonmc.utils.LocationUtils.ValueToFaceQuarter;
 
 import java.util.LinkedList;
@@ -13,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Barrel;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
@@ -26,6 +26,7 @@ import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
@@ -34,18 +35,21 @@ import com.poixson.utils.StringUtils;
 // 771 | Crossroads
 public class Gen_771 extends BackroomsGen {
 
-	public static final double THRESH_LIGHT  = 0.42; // lanterns
-	public static final double THRESH_LADDER = 0.81; // ladder shaft
-	public static final double THRESH_LOOT   = 0.7;  // loot chest
-	public static final double THRESH_VOID   = 0.85; // void shaft
-	public static final double THRESH_LOOT_A = 0.65; // loot type
-	public static final double THRESH_LOOT_B = 0.75; // loot type
+	public static final double DEFAULT_THRESH_LIGHT  = 0.42; // lanterns
+	public static final double DEFAULT_THRESH_LADDER = 0.81; // ladder shaft
+	public static final double DEFAULT_THRESH_VOID   = 0.85; // void shaft
+	public static final double DEFAULT_THRESH_LOOT   = 0.7;  // loot chest
 	public static final int PILLAR_B_OFFSET = 10;
 
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
 	public final FastNoiseLiteD noiseSpecial;
 	public final FastNoiseLiteD noiseLoot;
+
+	public final AtomicDouble thresh_light  = new AtomicDouble(DEFAULT_THRESH_LIGHT);
+	public final AtomicDouble thresh_ladder = new AtomicDouble(DEFAULT_THRESH_LADDER);
+	public final AtomicDouble thresh_void   = new AtomicDouble(DEFAULT_THRESH_VOID);
+	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT);
 
 	public enum PillarType {
 		PILLAR_NORM,
@@ -118,16 +122,19 @@ public class Gen_771 extends BackroomsGen {
 			.y(this.level_y + this.level_h + 2)
 			.whd(16, 14, 16)
 			.build();
-		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS              );
-		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "top"   );
-		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "bottom");
-		plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, Character.toString( Rotate(axis.charAt(2), 0.5))       );
-		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, Character.toString(        axis.charAt(2)      ), "top");
-		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL          );
-		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE            );
-		plot.type('!', Material.LIGHTNING_ROD                           );
-		plot.type('8', Material.CHAIN                                   );
-		plot.type('G', Material.SHROOMLIGHT                             );
+		plot.type('#', "minecraft:polished_blackstone_bricks"                 );
+		plot.type('-', "minecraft:polished_blackstone_brick_slab[type=top]"   );
+		plot.type('_', "minecraft:polished_blackstone_brick_slab[type=bottom]");
+//TODO
+plot.type('L', "minecraft:polished_blackstone_brick_stairs");
+plot.type('^', "minecraft:polished_blackstone_brick_stairs");
+//		plot.type('L', "minecraft:polished_blackstone_brick_stairs", Character.toString( Rotate(axis.charAt(2), 0.5))       );
+//		plot.type('^', "minecraft:polished_blackstone_brick_stairs", Character.toString(        axis.charAt(2)      ), "top");
+		plot.type('|', "minecraft:polished_blackstone_brick_wall"             );
+		plot.type('@', "minecraft:chiseled_polished_blackstone"               );
+		plot.type('!', Material.LIGHTNING_ROD                                 );
+		plot.type('8', Material.CHAIN                                         );
+		plot.type('G', Material.SHROOMLIGHT                                   );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[13][ 0].append("!");
 		// big arch
@@ -166,10 +173,12 @@ public class Gen_771 extends BackroomsGen {
 		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE   );
 		plot.type('X', Material.GILDED_BLACKSTONE              );
 		plot.type('*', Material.BLACKSTONE                     );
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
-		plot.type('.', Material.LIGHT, "15"                    );
-		plot.type(',', Material.LIGHT,  "9"                    );
+plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+plot.type('-', Material.POLISHED_BLACKSTONE_SLAB);
+//		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+//		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
+		plot.type('.', "minecraft:light[level=15]");
+		plot.type(',', "minecraft:light[level=9]" );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
 		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
@@ -232,6 +241,7 @@ public class Gen_771 extends BackroomsGen {
 	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
+		final double thresh_light = this.thresh_light.get();
 		final BlockPlotter plot =
 			(new PlotterFactory())
 			.placer(chunk)
@@ -242,9 +252,11 @@ public class Gen_771 extends BackroomsGen {
 			.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+//TODO
+plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+//		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('i', Material.LANTERN);
-		plot.type('L', Material.LIGHT, "15");
+		plot.type('L', "minecraft:light[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
@@ -254,7 +266,7 @@ public class Gen_771 extends BackroomsGen {
 			matrix[1][i].append("   +");
 			matrix[0][i].append("*##" );
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
-			if (value_light > THRESH_LIGHT) {
+			if (value_light > thresh_light) {
 				matrix[2][i].append("   i");
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
@@ -264,6 +276,7 @@ public class Gen_771 extends BackroomsGen {
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
+		final double thresh_light = this.thresh_light.get();
 		final BlockPlotter plot =
 				(new PlotterFactory())
 				.placer(chunk)
@@ -274,9 +287,11 @@ public class Gen_771 extends BackroomsGen {
 				.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+//TODO
+plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+//		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('i', Material.SOUL_LANTERN);
-		plot.type('L', Material.LIGHT, "15");
+		plot.type('L', "minecraft:light[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
@@ -286,7 +301,7 @@ public class Gen_771 extends BackroomsGen {
 			matrix[1][i].append("   +");
 			matrix[0][i].append("*##" );
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
-			if (value_light > THRESH_LIGHT) {
+			if (value_light > thresh_light) {
 				matrix[2][i].append("   i");
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
@@ -304,6 +319,9 @@ public class Gen_771 extends BackroomsGen {
 	protected void generatePillars(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
+		final double thresh_ladder = this.thresh_ladder.get();
+		final double thresh_void   = this.thresh_void.get();
+		final double thresh_loot   = this.thresh_loot.get();
 		// round to nearest chunk group and convert to block location
 		final int px = Math.floorDiv(chunkX+1, 4) * 64;
 		final int pz = Math.floorDiv(chunkZ+1, 4) * 64;
@@ -314,13 +332,13 @@ public class Gen_771 extends BackroomsGen {
 		&&  Math.abs(chunkZ) < 30) {
 			pillar_type = PillarType.PILLAR_NORM;
 		} else
-		if (valB > THRESH_LADDER) {
-			if (valC > THRESH_LOOT) {
-			if (valC > THRESH_VOID) pillar_type = PillarType.PILLAR_VOID;   // void shaft
+		if (valB > thresh_ladder) {
+			if (valC > thresh_loot) {
+			if (valC > thresh_void) pillar_type = PillarType.PILLAR_VOID;   // void shaft
 			else                    pillar_type = PillarType.PILLAR_DROP;   // drop shaft
 			} else                  pillar_type = PillarType.PILLAR_LADDER; // ladder shaft
 		} else {
-			if (valC < THRESH_LOOT) pillar_type = PillarType.PILLAR_NORM;   // normal pillar
+			if (valC < thresh_loot) pillar_type = PillarType.PILLAR_NORM;   // normal pillar
 			else                                                            // loot chest
 			if (((int)Math.floor(valC*10000.0)) % 2 == 0) pillar_type = PillarType.PILLAR_LOOT_UPPER;
 			else                                          pillar_type = PillarType.PILLAR_LOOT_LOWER;
@@ -361,20 +379,34 @@ public class Gen_771 extends BackroomsGen {
 				.build();
 		plot.type('#', Material.DEEPSLATE_BRICKS                  );
 		plot.type('w', Material.DARK_OAK_PLANKS                   );
-		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top",    direction.getOppositeFace().toString().toLowerCase());
-		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.toString().toLowerCase());
-		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.getOppositeFace().toString().toLowerCase());
-		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom", side.getOppositeFace().toString().toLowerCase());
-		plot.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
-		plot.type('/', Material.SPRUCE_TRAPDOOR,  "top", side.toString().toLowerCase());
-		plot.type('~', Material.CRIMSON_TRAPDOOR, "top", side.getOppositeFace().toString().toLowerCase());
-		plot.type('d', Material.SPRUCE_DOOR,      "top", direction.toString().toLowerCase());
-		plot.type('D', Material.SPRUCE_DOOR,   "bottom", direction.toString().toLowerCase());
+//TODO
+plot.type('%', Material.DEEPSLATE_BRICK_STAIRS);
+plot.type('<', Material.DEEPSLATE_BRICK_STAIRS);
+plot.type('$', Material.DEEPSLATE_BRICK_STAIRS);
+plot.type('&', Material.DEEPSLATE_BRICK_STAIRS);
+plot.type('H', Material.LADDER);
+plot.type('/', Material.SPRUCE_TRAPDOOR);
+plot.type('~', Material.CRIMSON_TRAPDOOR);
+plot.type('d', Material.SPRUCE_DOOR);
+plot.type('D', Material.SPRUCE_DOOR);
+//		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top",    direction.getOppositeFace().toString().toLowerCase());
+//		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.toString().toLowerCase());
+//		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.getOppositeFace().toString().toLowerCase());
+//		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom", side.getOppositeFace().toString().toLowerCase());
+//		plot.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
+//		plot.type('/', Material.SPRUCE_TRAPDOOR,  "top", side.toString().toLowerCase());
+//		plot.type('~', Material.CRIMSON_TRAPDOOR, "top", side.getOppositeFace().toString().toLowerCase());
+//		plot.type('d', Material.SPRUCE_DOOR,      "top", direction.toString().toLowerCase());
+//		plot.type('D', Material.SPRUCE_DOOR,   "bottom", direction.toString().toLowerCase());
 		plot.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
 		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE           );
-		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface"   );
-		plot.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
-		plot.type(',', Material.LIGHT,  "15"                      );
+//TODO
+plot.type('+', Material.DEEPSLATE_TILE_WALL);
+plot.type('S', Material.DARK_OAK_WALL_SIGN);
+plot.type(',', "minecraft:light[level=15]");
+//		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface"   );
+//		plot.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
+//		plot.type(',', Material.LIGHT,  "15"                      );
 		plot.type('W', Material.WATER                             );
 		plot.type('.', Material.AIR                               );
 		int h = this.level_h;
@@ -517,6 +549,7 @@ public class Gen_771 extends BackroomsGen {
 
 		@Override
 		public void fill(final Inventory chest) {
+			final double thresh_loot = Gen_771.this.thresh_loot.get();
 //TODO
 			final ItemStack item = new ItemStack(Material.BREAD);
 			final Location loc = chest.getLocation();
@@ -528,7 +561,7 @@ public class Gen_771 extends BackroomsGen {
 				x = xx + (i % 9);
 				y = zz + Math.floorDiv(i, 9);
 				value = Gen_771.this.noiseLoot.getNoise(x, y);
-				if (value > THRESH_LOOT)
+				if (value > thresh_loot)
 					chest.setItem(i, item);
 			}
 		}
@@ -544,10 +577,24 @@ public class Gen_771 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
+		// noise params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(771);
+			this.thresh_light .set(cfg.getDouble("Thresh-Light" ));
+			this.thresh_ladder.set(cfg.getDouble("Thresh-Ladder"));
+			this.thresh_void  .set(cfg.getDouble("Thresh-Void"  ));
+			this.thresh_loot  .set(cfg.getDouble("Thresh-Loot"  ));
+		}
+		// block types
+		{
 //TODO
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-//TODO
+		cfg.addDefault("Level771.Params.Thresh-Light",  DEFAULT_THRESH_LIGHT );
+		cfg.addDefault("Level771.Params.Thresh-Ladder", DEFAULT_THRESH_LADDER);
+		cfg.addDefault("Level771.Params.Thresh-Void",   DEFAULT_THRESH_VOID  );
+		cfg.addDefault("Level771.Params.Thresh-Loot",   DEFAULT_THRESH_LOOT  );
 	}
 
 

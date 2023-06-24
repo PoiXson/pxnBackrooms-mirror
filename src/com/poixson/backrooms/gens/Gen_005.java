@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Lightable;
-import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -24,6 +24,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -34,12 +35,20 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 5 | Hotel
 public class Gen_005 extends BackroomsGen {
 
-	public static final double THRESH_ROOM_HALL    = 0.65;
+	public static final double DEFAULT_THRESH_ROOM_HALL = 0.65;
+
+	public static final String DEFAULT_BLOCK_SUBFLOOR     = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_SUBCEILING   = "minecraft:smooth_stone";
+	public static final String DEFAULT_BLOCK_HALL_WALL    = "minecraft:stripped_spruce_wood";
+	public static final String DEFAULT_BLOCK_HALL_CARPET  = "minecraft:black_glazed_terracotta";
+	public static final String DEFAULT_BLOCK_HALL_CEILING = "minecraft:smooth_stone_slab[type=top]";
 
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
 	public final FastNoiseLiteD noiseHotelRooms;
 	public final FastNoiseLiteD noiseHotelStairs;
+
+	public final AtomicDouble thresh_room_hall = new AtomicDouble(DEFAULT_THRESH_ROOM_HALL);
 
 	// blocks
 	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
@@ -87,7 +96,8 @@ public class Gen_005 extends BackroomsGen {
 
 		public HotelData(final double value) {
 			this.value = value;
-			this.type = (value>THRESH_ROOM_HALL ? NodeType.HALL : NodeType.ROOM);
+			final double thresh_room_hall = Gen_005.this.thresh_room_hall.get();
+			this.type = (value>thresh_room_hall ? NodeType.HALL : NodeType.ROOM);
 		}
 
 	}
@@ -188,11 +198,11 @@ public class Gen_005 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_005) return;
-		final Material block_subfloor     = Material.matchMaterial(this.block_subfloor    .get());
-		final Material block_subceiling   = Material.matchMaterial(this.block_subceiling  .get());
-		final Material block_hall_wall    = Material.matchMaterial(this.block_hall_wall   .get());
-		final Material block_hall_carpet  = Material.matchMaterial(this.block_hall_carpet .get());
-		final Material block_hall_ceiling = Material.matchMaterial(this.block_hall_ceiling.get());
+		final BlockData block_subfloor     = StringToBlockData(this.block_subfloor,     DEFAULT_BLOCK_SUBFLOOR    );
+		final BlockData block_subceiling   = StringToBlockData(this.block_subceiling,   DEFAULT_BLOCK_SUBCEILING  );
+		final BlockData block_hall_wall    = StringToBlockData(this.block_hall_wall,    DEFAULT_BLOCK_HALL_WALL   );
+		final BlockData block_hall_carpet  = StringToBlockData(this.block_hall_carpet,  DEFAULT_BLOCK_HALL_CARPET );
+		final BlockData block_hall_ceiling = StringToBlockData(this.block_hall_ceiling, DEFAULT_BLOCK_HALL_CEILING);
 		if (block_subfloor     == null) throw new RuntimeException("Invalid block type for level 5 SubFloor"   );
 		if (block_subceiling   == null) throw new RuntimeException("Invalid block type for level 5 SubCeiling" );
 		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 HallWall"   );
@@ -252,9 +262,9 @@ public class Gen_005 extends BackroomsGen {
 								chunk.setBlock(ix, cy, iz, block_subceiling);
 							else {
 								chunk.setBlock(ix, cy, iz, block_hall_ceiling);
-								final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
-								slab.setType(Slab.Type.TOP);
-								chunk.setBlock(ix, cy, iz, slab);
+//								final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
+//								slab.setType(Slab.Type.TOP);
+//								chunk.setBlock(ix, cy, iz, slab);
 							}
 						}
 					}
@@ -280,19 +290,28 @@ public class Gen_005 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
-		this.block_subfloor    .set(cfg.getString("SubFloor"   ));
-		this.block_subceiling  .set(cfg.getString("SubCeiling" ));
-		this.block_hall_wall   .set(cfg.getString("HallWall"   ));
-		this.block_hall_carpet .set(cfg.getString("HallCarpet" ));
-		this.block_hall_ceiling.set(cfg.getString("HallCeiling"));
+		// noise params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(5);
+			this.thresh_room_hall.set(cfg.getDouble("Thresh-Room-Or-Hall"));
+		}
+		// block types
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
+			this.block_subfloor    .set(cfg.getString("SubFloor"   ));
+			this.block_subceiling  .set(cfg.getString("SubCeiling" ));
+			this.block_hall_wall   .set(cfg.getString("HallWall"   ));
+			this.block_hall_carpet .set(cfg.getString("HallCarpet" ));
+			this.block_hall_ceiling.set(cfg.getString("HallCeiling"));
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-		cfg.addDefault("Level5.Blocks.SubFloor",    "minecraft:oak_planks"             );
-		cfg.addDefault("Level5.Blocks.SubCeiling",  "minecraft:smooth_stone"           );
-		cfg.addDefault("Level5.Blocks.HallWall",    "minecraft:stripped_spruce_wood"   );
-		cfg.addDefault("Level5.Blocks.HallCarpet",  "minecraft:black_glazed_terracotta");
-		cfg.addDefault("Level5.Blocks.HallCeiling", "minecraft:smooth_stone_slab"      );
+		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL);
+		cfg.addDefault("Level5.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+		cfg.addDefault("Level5.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
+		cfg.addDefault("Level5.Blocks.HallWall",    DEFAULT_BLOCK_HALL_WALL   );
+		cfg.addDefault("Level5.Blocks.HallCarpet",  DEFAULT_BLOCK_HALL_CARPET );
+		cfg.addDefault("Level5.Blocks.HallCeiling", DEFAULT_BLOCK_HALL_CEILING);
 	}
 
 

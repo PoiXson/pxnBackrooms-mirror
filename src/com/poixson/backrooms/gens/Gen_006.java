@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.FaceAttachable.AttachedFace;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,6 +29,8 @@ import com.poixson.utils.FastNoiseLiteD;
 
 // 6 | Lights Out
 public class Gen_006 extends BackroomsGen {
+
+	public static final String DEFAULT_BLOCK_WALL = "minecraft:glowstone";
 
 	// noise
 	public final FastNoiseLiteD noiseLightSwitch;
@@ -52,7 +55,7 @@ public class Gen_006 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_006) return;
-		final Material block_wall  = Material.matchMaterial(this.block_wall.get());
+		final BlockData block_wall = StringToBlockData(this.block_wall, DEFAULT_BLOCK_WALL);
 		if (block_wall == null) throw new RuntimeException("Invalid block type for level 6 Wall");
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
 		LobbyData dao, daoN, daoS, daoE, daoW;
@@ -126,11 +129,12 @@ public class Gen_006 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
+		// block types
+		final ConfigurationSection cfg = this.plugin.getLevelBlocks(6);
 		this.block_wall.set(cfg.getString("Wall"));
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-		cfg.addDefault("Level5.Blocks.Wall", "minecraft:glowstone");
+		cfg.addDefault("Level6.Blocks.Wall", DEFAULT_BLOCK_WALL);
 	}
 
 

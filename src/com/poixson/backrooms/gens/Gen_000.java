@@ -16,7 +16,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Barrel;
-import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -33,6 +32,7 @@ import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabc;
 import com.poixson.utils.FastNoiseLiteD;
@@ -45,21 +45,32 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 0 | Lobby
 public class Gen_000 extends BackroomsGen {
 
-	public static final double THRESH_WALL_L = 0.38;
-	public static final double THRESH_WALL_H = 0.5;
-	public static final double THRESH_LOOT   = 0.65;
+	public static final double DEFAULT_THRESH_WALL_L = 0.38;
+	public static final double DEFAULT_THRESH_WALL_H = 0.5;
+	public static final double DEFAULT_THRESH_LOOT   = 0.65;
 
 	public static final int WALL_SEARCH_DIST = 6;
+
+	public static final String DEFAULT_BLOCK_WALL       = "minecraft:yellow_terracotta";
+	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_SUBCEILING = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_CARPET     = "minecraft:light_gray_wool";
+	public static final String DEFAULT_BLOCK_CEILING    = "minecraft:smooth_stone_slab[type=top]";
 
 	// noise
 	public final FastNoiseLiteD noiseLobbyWalls;
 	public final FastNoiseLiteD noiseLoot;
 
+	public final AtomicDouble thresh_wall_L = new AtomicDouble(DEFAULT_THRESH_WALL_L);
+	public final AtomicDouble thresh_wall_H = new AtomicDouble(DEFAULT_THRESH_WALL_H);
+	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT  );
+
 	// blocks
-	public final AtomicReference<String> block_wall     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_carpet   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_carpet     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_ceiling    = new AtomicReference<String>(null);
 
 
 
@@ -99,8 +110,8 @@ public class Gen_000 extends BackroomsGen {
 		public LobbyData(final double valueWall) {
 			this.valueWall = valueWall;
 			this.isWall = (
-				valueWall > THRESH_WALL_L &&
-				valueWall < THRESH_WALL_H
+				valueWall > Gen_000.this.thresh_wall_L.get() &&
+				valueWall < Gen_000.this.thresh_wall_H.get()
 			);
 		}
 
@@ -209,14 +220,18 @@ public class Gen_000 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_000) return;
-		final Material block_wall     = Material.matchMaterial(this.block_wall    .get());
-		final Material block_subfloor = Material.matchMaterial(this.block_subfloor.get());
-		final Material block_carpet   = Material.matchMaterial(this.block_carpet  .get());
-		final Material block_ceiling  = Material.matchMaterial(this.block_ceiling .get());
-		if (block_wall     == null) throw new RuntimeException("Invalid block type for level 0 Wall"    );
-		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 0 SubFloor");
-		if (block_carpet   == null) throw new RuntimeException("Invalid block type for level 0 Carpet"  );
-		if (block_ceiling  == null) throw new RuntimeException("Invalid block type for level 0 Ceiling" );
+		final BlockData block_wall       = StringToBlockData(this.block_wall,       DEFAULT_BLOCK_WALL      );
+		final BlockData block_subfloor   = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
+		final BlockData block_subceiling = StringToBlockData(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
+		final BlockData block_carpet     = StringToBlockData(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
+		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
+		final BlockData block_overgrowth_wall = StringToBlockData(((Level_000)this.backlevel).gen_023.block_wall, Gen_023.DEFAULT_BLOCK_WALL);
+		if (block_wall       == null) throw new RuntimeException("Invalid block type for level 0 Wall"      );
+		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"  );
+		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling");
+		if (block_carpet     == null) throw new RuntimeException("Invalid block type for level 0 Carpet"    );
+		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"   );
+		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall");
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
@@ -258,11 +273,8 @@ public class Gen_000 extends BackroomsGen {
 							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
 						} else {
 							// ceiling
-							chunk.setBlock(ix, cy, iz, block_ceiling);
-							final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
-							slab.setType(Slab.Type.TOP);
-							chunk.setBlock(ix, cy,   iz, slab);
-							chunk.setBlock(ix, cy+1, iz, Material.STONE);
+							chunk.setBlock(ix, cy,   iz, block_ceiling   );
+							chunk.setBlock(ix, cy+1, iz, block_subceiling);
 						}
 					}
 					// special
@@ -310,11 +322,11 @@ public class Gen_000 extends BackroomsGen {
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
 								final BlockPlotter plot = factory.build();
-								plot.type('.', Material.AIR              );
-								plot.type('=', Material.YELLOW_TERRACOTTA);
-								plot.type('x', Material.BEDROCK          );
-								plot.type('g', Material.GLOWSTONE        );
-								plot.type('m', Material.MOSS_BLOCK       );
+								plot.type('.', Material.AIR         );
+								plot.type('=', block_wall           );
+								plot.type('x', Material.BEDROCK     );
+								plot.type('g', Material.GLOWSTONE   );
+								plot.type('m', block_overgrowth_wall);
 								final StringBuilder[][] matrix = plot.getMatrix3D();
 								// bottom
 								matrix[0][0].append("xxxxx");
@@ -385,7 +397,7 @@ public class Gen_000 extends BackroomsGen {
 				// subceiling
 				if (ENABLE_TOP_000) {
 					for (int i=1; i<SUBCEILING; i++)
-						chunk.setBlock(ix, cy+i+1, iz, Material.STONE);
+						chunk.setBlock(ix, cy+i+1, iz, block_subceiling);
 				}
 			} // end ix
 		} // end iz
@@ -419,7 +431,7 @@ public class Gen_000 extends BackroomsGen {
 				x = xx + (i % 9);
 				y = zz + Math.floorDiv(i, 9);
 				value = Gen_000.this.noiseLoot.getNoise(x, y);
-				if (value > THRESH_LOOT)
+				if (value > Gen_000.this.thresh_loot.get())
 					chest.setItem(i, item);
 			}
 		}
@@ -435,17 +447,32 @@ public class Gen_000 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
-		this.block_wall    .set(cfg.getString("Wall"    ));
-		this.block_subfloor.set(cfg.getString("SubFloor"));
-		this.block_carpet  .set(cfg.getString("Carpet"  ));
-		this.block_ceiling .set(cfg.getString("Ceiling" ));
+		// noise params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(0);
+			this.thresh_wall_L.set(cfg.getDouble("Thresh-Wall-L"));
+			this.thresh_wall_H.set(cfg.getDouble("Thresh-Wall-H"));
+			this.thresh_loot  .set(cfg.getDouble("Thresh-Loot"  ));
+		}
+		// block types
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
+			this.block_wall      .set(cfg.getString("Wall"      ));
+			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
+			this.block_subceiling.set(cfg.getString("SubCeiling"));
+			this.block_carpet    .set(cfg.getString("Carpet"    ));
+			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-		cfg.addDefault("Level0.Blocks.Wall",     "minecraft:yellow_terracotta");
-		cfg.addDefault("Level0.Blocks.SubFloor", "minecraft:oak_planks"       );
-		cfg.addDefault("Level0.Blocks.Carpet",   "minecraft:light_gray_wool"  );
-		cfg.addDefault("Level0.Blocks.Ceiling",  "minecraft:smooth_stone_slab");
+		cfg.addDefault("Level0.Params.Thresh-Wall-L", DEFAULT_THRESH_WALL_L);
+		cfg.addDefault("Level0.Params.Thresh-Wall-H", DEFAULT_THRESH_WALL_H);
+		cfg.addDefault("Level0.Params.Thresh-Loot",   DEFAULT_THRESH_LOOT  );
+		cfg.addDefault("Level0.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
+		cfg.addDefault("Level0.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+		cfg.addDefault("Level0.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+		cfg.addDefault("Level0.Blocks.Carpet",     DEFAULT_BLOCK_CARPET    );
+		cfg.addDefault("Level0.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
 	}
 
 

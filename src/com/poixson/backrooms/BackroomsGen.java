@@ -2,11 +2,15 @@ package com.poixson.backrooms;
 
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicReference;
 
+import org.bukkit.Bukkit;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
+import com.poixson.utils.Utils;
 
 
 public abstract class BackroomsGen {
@@ -55,6 +59,18 @@ public abstract class BackroomsGen {
 
 
 	protected abstract void loadConfig();
+
+
+
+	public static BlockData StringToBlockData(final AtomicReference<String> atomic, final String def) {
+		final String blockStr = atomic.get();
+		if (Utils.notEmpty(blockStr))
+			return StringToBlockData(blockStr);
+		return StringToBlockData(def);
+	}
+	public static BlockData StringToBlockData(final String blockStr) {
+		return Bukkit.createBlockData(blockStr);
+	}
 
 
 

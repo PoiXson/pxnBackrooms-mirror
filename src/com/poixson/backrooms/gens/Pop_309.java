@@ -2,7 +2,6 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_X;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_Z;
-import static com.poixson.backrooms.gens.Gen_309.PATH_WIDTH;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
 import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
@@ -135,7 +134,7 @@ public class Pop_309 implements BackroomsPop {
 		script.setVariable("region",         region        );
 		script.setVariable("surface_y",      y             );
 		script.setVariable("enable_ceiling", ENABLE_TOP_309);
-		script.setVariable("path_width",     PATH_WIDTH    );
+		script.setVariable("path_width",     this.gen.path_width.get());
 		script.setVariable("path_start_x",   PATH_START_X  );
 		script.setVariable("path_start_z",   PATH_START_Z  );
 		script.run();

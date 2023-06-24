@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -22,6 +23,7 @@ import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 import com.poixson.commonmc.tools.plotter.PlotterFactory;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
@@ -33,16 +35,25 @@ import com.poixson.utils.StringUtils;
 // 37 | Poolrooms
 public class Gen_037 extends BackroomsGen {
 
+	public static final double DEFAULT_THRESH_ROOM   = 0.2;
+	public static final double DEFAULT_THRESH_PORTAL = 0.5;
+
 	public static final int WATER_DEPTH = 3;
 
-	public static final double THRESH_ROOM   = 0.2;
-	public static final double THRESH_PORTAL = 0.5;
+	public static final String DEFAULT_BLOCK_WALL_A     = "minecraft:prismarine_bricks";
+	public static final String DEFAULT_BLOCK_WALL_B     = "minecraft:prismarine";
+	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:dark_prismarine";
+	public static final String DEFAULT_BLOCK_SUBCEILING = "minecraft:dark_prismarine";
+	public static final String DEFAULT_BLOCK_CEILING    = "minecraft:glowstone";
 
 	// noise
 	public final FastNoiseLiteD noisePoolRooms;
 	public final FastNoiseLiteD noiseTunnels;
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
+
+	public final AtomicDouble thresh_room   = new AtomicDouble(DEFAULT_THRESH_ROOM  );
+	public final AtomicDouble thresh_portal = new AtomicDouble(DEFAULT_THRESH_PORTAL);
 
 	// blocks
 	public final AtomicReference<String> block_wall_a     = new AtomicReference<String>(null);
@@ -99,9 +110,9 @@ public class Gen_037 extends BackroomsGen {
 			this.valueRoom        = Gen_037.this.noisePoolRooms.getNoise(x, z);
 			this.valuePortalHotel = Gen_037.this.noisePortalHotel.getNoise(x, z);
 			this.valuePortalLobby = Gen_037.this.noisePortalLobby.getNoise(x, z);
-			if (this.valueRoom < THRESH_ROOM) {
+			if (this.valueRoom < Gen_037.this.thresh_room.get()) {
 				this.type = RoomType.SOLID;
-				this.possiblePortalHotel = (this.valuePortalHotel > THRESH_PORTAL);
+				this.possiblePortalHotel = (this.valuePortalHotel > Gen_037.this.thresh_portal.get());
 				this.possiblePortalLobby = false;
 			} else {
 				this.type = RoomType.OPEN;
@@ -143,11 +154,11 @@ public class Gen_037 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_037) return;
-		final Material block_wall_a     = Material.matchMaterial(this.block_wall_a    .get());
-		final Material block_wall_b     = Material.matchMaterial(this.block_wall_b    .get());
-		final Material block_subfloor   = Material.matchMaterial(this.block_subfloor  .get());
-		final Material block_subceiling = Material.matchMaterial(this.block_subceiling.get());
-		final Material block_ceiling    = Material.matchMaterial(this.block_ceiling   .get());
+		final BlockData block_wall_a     = StringToBlockData(this.block_wall_a,     DEFAULT_BLOCK_WALL_A    );
+		final BlockData block_wall_b     = StringToBlockData(this.block_wall_b,     DEFAULT_BLOCK_WALL_B    );
+		final BlockData block_subfloor   = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
+		final BlockData block_subceiling = StringToBlockData(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
+		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
 		if (block_wall_a     == null) throw new RuntimeException("Invalid block type for level 37 Wall A"    );
 		if (block_wall_b     == null) throw new RuntimeException("Invalid block type for level 37 Wall B"    );
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
@@ -185,7 +196,7 @@ public class Gen_037 extends BackroomsGen {
 					.build();
 				plot.type('#', block_wall_a);
 				plot.type('@', block_wall_b);
-				plot.type('w', Material.WATER, "0");
+				plot.type('w', "minecraft:water[level=0]");
 				plot.type('g', block_ceiling);
 				dao = poolData.get(new Iab(rx, rz));
 				solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
@@ -385,7 +396,7 @@ public class Gen_037 extends BackroomsGen {
 							pp.type('#', Material.BEDROCK  );
 							pp.type('g', Material.GLOWSTONE);
 							pp.type('.', Material.AIR      );
-							pp.type(',', Material.WATER, "8");
+							pp.type(',', "minecraft:water[level=8]");
 							final StringBuilder[][] mtx = pp.getMatrix3D();
 							// floor
 							mtx[0][0].append(" #### "); mtx[1][0].append(" #### ");
@@ -450,19 +461,30 @@ public class Gen_037 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		final ConfigurationSection cfg = this.plugin.getLevelBlocks(37);
-		this.block_wall_a    .set(cfg.getString("WallA"     ));
-		this.block_wall_b    .set(cfg.getString("WallB"     ));
-		this.block_subfloor  .set(cfg.getString("SubFloor"  ));
-		this.block_subceiling.set(cfg.getString("SubCeiling"));
-		this.block_ceiling   .set(cfg.getString("Ceiling"   ));
+		// noise params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(37);
+			this.thresh_room  .set(cfg.getDouble("Thresh-Room"  ));
+			this.thresh_portal.set(cfg.getDouble("Thresh-Portal"));
+		}
+		// block types
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(37);
+			this.block_wall_a    .set(cfg.getString("WallA"     ));
+			this.block_wall_b    .set(cfg.getString("WallB"     ));
+			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
+			this.block_subceiling.set(cfg.getString("SubCeiling"));
+			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-		cfg.addDefault("Level37.Blocks.WallA",      "minecraft:prismarine_bricks");
-		cfg.addDefault("Level37.Blocks.WallB",      "minecraft:prismarine"       );
-		cfg.addDefault("Level37.Blocks.SubFloor",   "minecraft:dark_prismarine"  );
-		cfg.addDefault("Level37.Blocks.SubCeiling", "minecraft:dark_prismarine"  );
-		cfg.addDefault("Level37.Blocks.Ceiling",    "minecraft:glowstone"        );
+		cfg.addDefault("Level37.Params.Thresh-Room",   DEFAULT_THRESH_ROOM  );
+		cfg.addDefault("Level37.Params.Thresh-Portal", DEFAULT_THRESH_PORTAL);
+		cfg.addDefault("Level37.Blocks.WallA",      DEFAULT_BLOCK_WALL_A    );
+		cfg.addDefault("Level37.Blocks.WallB",      DEFAULT_BLOCK_WALL_B    );
+		cfg.addDefault("Level37.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+		cfg.addDefault("Level37.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+		cfg.addDefault("Level37.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
 	}
 
 

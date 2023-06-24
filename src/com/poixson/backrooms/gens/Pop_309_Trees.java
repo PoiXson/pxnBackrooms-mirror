@@ -11,10 +11,9 @@ import com.poixson.commonmc.tools.TreePopulator;
 
 public class Pop_309_Trees extends TreePopulator {
 
-	public static final int PATH_WIDTH    = Gen_309.PATH_WIDTH;
-	public static final int PATH_CLEARING = Gen_309.PATH_CLEARING;
-
 	protected final Gen_309 gen;
+
+	protected final int path_clearing;
 
 
 
@@ -26,6 +25,7 @@ public class Pop_309_Trees extends TreePopulator {
 			Material.matchMaterial(gen.block_tree_leaves.get())
 		);
 		this.gen = gen;
+		this.path_clearing = gen.path_clearing.get();
 	}
 
 
@@ -36,7 +36,7 @@ public class Pop_309_Trees extends TreePopulator {
 		if (!ENABLE_TOP_309)     return false;
 		if (!super.isTree(x, z)) return false;
 		if (this.gen.getCenterClearingDistance(x, z, 8.0) < 80.0) return false;
-		if (this.gen.pathTrace.isPath(x, z, PATH_CLEARING))       return false;
+		if (this.gen.pathTrace.isPath(x, z, this.path_clearing))  return false;
 		return true;
 	}
 

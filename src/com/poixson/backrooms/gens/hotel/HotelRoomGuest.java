@@ -1,8 +1,5 @@
 package com.poixson.backrooms.gens.hotel;
 
-import static com.poixson.commonmc.utils.LocationUtils.FaceToAxString;
-import static com.poixson.commonmc.utils.LocationUtils.Rotate;
-
 import java.util.LinkedList;
 
 import org.bukkit.Material;
@@ -61,10 +58,15 @@ public class HotelRoomGuest implements HotelRoom {
 		plot.type('#', specs.walls);
 		plot.type(',', specs.carpet);
 		plot.type('.', Material.AIR);
-		plot.type('$', block_hotel_wall, "up");
-		plot.type('&', block_hotel_wall, FaceToAxString(Rotate(direction, 0.25)));
-		plot.type('d', specs.door, "top",    "right", "closed", FaceToAxString(direction));
-		plot.type('D', specs.door, "bottom", "right", "closed", FaceToAxString(direction));
+//TODO
+plot.type('$', block_hotel_wall);
+plot.type('&', block_hotel_wall);
+plot.type('d', specs.door);
+plot.type('D', specs.door);
+//		plot.type('$', block_hotel_wall, "up");
+//		plot.type('&', block_hotel_wall, FaceToAxString(Rotate(direction, 0.25)));
+//		plot.type('d', specs.door, "top",    "right", "closed", FaceToAxString(direction));
+//		plot.type('D', specs.door, "bottom", "right", "closed", FaceToAxString(direction));
 		plot.type('_', specs.door_plate);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		for (int iy=0; iy<h; iy++) {
