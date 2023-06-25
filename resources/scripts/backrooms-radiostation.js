@@ -31,8 +31,8 @@ function radio_lot_fence() {
 		.build();
 	plot.type('=', Material.COPPER_BLOCK);
 	plot.type('_', Material.CUT_COPPER_SLAB);
-	plot.type('x', Material.IRON_BARS, "north", "south");
-	plot.type('X', Material.IRON_BARS, "east",  "west" );
+	plot.type('x', "minecraft:iron_bars[north=true,south=true]");
+	plot.type('X', "minecraft:iron_bars[east=true,west=true]"  );
 	plot.type('I', Material.MOSSY_STONE_BRICK_WALL);
 	let matrix = plot.getMatrix3D();
 	// north fence
@@ -132,8 +132,8 @@ function radio_building_back(x, z, w, h, d) {
 	plot.type('=', Material.POLISHED_ANDESITE     ); // wall stripe
 	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
 	if (enable_ceiling) {
-		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
-		plot.type('-', Material.SMOOTH_STONE_SLAB, "top"); // ceiling
+		plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
+		plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
 	} else {
 		plot.type('~', Material.AIR); // roof
 		plot.type('-', Material.AIR); // ceiling
@@ -172,8 +172,8 @@ function radio_building_front(x, z, w, h, d) {
 	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
 	plot.type('.', Material.AIR                   ); // inside wall
 	if (enable_ceiling) {
-		plot.type('~', Material.STONE_SLAB,     "bottom"); // roof
-		plot.type('-', Material.SMOOTH_STONE_SLAB, "top"); // ceiling
+		plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
+		plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
 	} else {
 		plot.type('~', Material.AIR); // roof
 		plot.type('-', Material.AIR); // ceiling
