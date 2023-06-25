@@ -26,11 +26,13 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 // 309 | Radio Station
 public class Gen_309 extends BackroomsGen {
 
+	// default params
 	public static final int DEFAULT_PATH_WIDTH    = 3;
 	public static final int DEFAULT_PATH_CLEARING = 10;
 	public static final int PATH_START_X  = 14;
 	public static final int PATH_START_Z  = 32;
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT       = "minecraft:dirt";
 	public static final String DEFAULT_BLOCK_PATH       = "minecraft:dirt_path";
 	public static final String DEFAULT_BLOCK_GRASS      = "minecraft:grass_block";
@@ -43,6 +45,7 @@ public class Gen_309 extends BackroomsGen {
 	public final FastNoiseLiteD noisePathGround;
 	public final FastNoiseLiteD noiseTrees;
 
+	// params
 	public final AtomicInteger path_width    = new AtomicInteger(DEFAULT_PATH_WIDTH   );
 	public final AtomicInteger path_clearing = new AtomicInteger(DEFAULT_PATH_CLEARING);
 

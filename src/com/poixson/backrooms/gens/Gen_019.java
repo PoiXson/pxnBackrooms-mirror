@@ -26,6 +26,7 @@ import com.poixson.utils.FastNoiseLiteD;
 // 19 | Attic
 public class Gen_019 extends BackroomsGen {
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_WALL  = "minecraft:spruce_planks";
 	public static final String DEFAULT_BLOCK_FLOOR = "minecraft:spruce_planks";
 	public static final String DEFAULT_BLOCK_BEAM  = "minecraft:spruce_wood";

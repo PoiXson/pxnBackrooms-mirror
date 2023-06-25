@@ -24,6 +24,12 @@ public class Level_007 extends BackroomsLevel {
 
 	public Level_007(final BackroomsPlugin plugin) {
 		super(plugin, 007);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add(151, "thalas", "Thalassophobia", LEVEL_Y+LEVEL_H+SUBFLOOR+1);
+		}
+		// generators
 		this.gen = this.register(new Gen_007(this, LEVEL_Y, LEVEL_H));
 	}
 

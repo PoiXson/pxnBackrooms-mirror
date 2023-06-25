@@ -31,12 +31,14 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 1 | Basement
 public class Gen_001 extends BackroomsGen {
 
+	// default params
 	public static final double DEFAULT_THRESH_WALL  = 0.9;
 	public static final double DEFAULT_THRESH_MOIST = 0.4;
 	public static final double DEFAULT_THRESH_WELL  = 0.9;
 
 	public static final int LAMP_Y = 6;
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_WALL      = "minecraft:mud_bricks";
 	public static final String DEFAULT_BLOCK_SUBFLOOR  = "minecraft:dirt";
 	public static final String DEFAULT_BLOCK_FLOOR_DRY = "minecraft:brown_concrete_powder";
@@ -47,6 +49,7 @@ public class Gen_001 extends BackroomsGen {
 	public final FastNoiseLiteD noiseMoist;
 	public final FastNoiseLiteD noiseWell;
 
+	// params
 	public final AtomicDouble thresh_wall  = new AtomicDouble(DEFAULT_THRESH_WALL );
 	public final AtomicDouble thresh_moist = new AtomicDouble(DEFAULT_THRESH_MOIST);
 	public final AtomicDouble thresh_well  = new AtomicDouble(DEFAULT_THRESH_WELL );
@@ -125,6 +128,9 @@ public class Gen_001 extends BackroomsGen {
 			}
 		}
 	}
+
+
+
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
@@ -139,8 +145,8 @@ public class Gen_001 extends BackroomsGen {
 		if (block_floor_wet == null) throw new RuntimeException("Invalid block type for level 1 FloorWet");
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
-		final int y  = this.level_y + SUBFLOOR + 1;
-		final int h  = this.level_h + 1;
+		final int y = this.level_y + SUBFLOOR + 1;
+		final int h = this.level_h + 1;
 		int xx, zz;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;

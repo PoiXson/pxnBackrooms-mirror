@@ -45,12 +45,14 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 0 | Lobby
 public class Gen_000 extends BackroomsGen {
 
+	// default params
 	public static final double DEFAULT_THRESH_WALL_L = 0.38;
 	public static final double DEFAULT_THRESH_WALL_H = 0.5;
 	public static final double DEFAULT_THRESH_LOOT   = 0.65;
 
 	public static final int WALL_SEARCH_DIST = 6;
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_WALL       = "minecraft:yellow_terracotta";
 	public static final String DEFAULT_BLOCK_WALL_BASE  = "minecraft:orange_terracotta";
 	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:oak_planks";
@@ -62,6 +64,7 @@ public class Gen_000 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLobbyWalls;
 	public final FastNoiseLiteD noiseLoot;
 
+	// params
 	public final AtomicDouble thresh_wall_L = new AtomicDouble(DEFAULT_THRESH_WALL_L);
 	public final AtomicDouble thresh_wall_H = new AtomicDouble(DEFAULT_THRESH_WALL_H);
 	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT  );

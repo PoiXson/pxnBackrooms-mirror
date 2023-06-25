@@ -35,21 +35,31 @@ import com.poixson.utils.StringUtils;
 // 771 | Crossroads
 public class Gen_771 extends BackroomsGen {
 
+	// default params
 	public static final double DEFAULT_THRESH_LIGHT  = 0.42; // lanterns
 	public static final double DEFAULT_THRESH_LADDER = 0.81; // ladder shaft
 	public static final double DEFAULT_THRESH_VOID   = 0.85; // void shaft
 	public static final double DEFAULT_THRESH_LOOT   = 0.7;  // loot chest
 	public static final int PILLAR_B_OFFSET = 10;
 
+	// default blocks
+//TODO
+
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
 	public final FastNoiseLiteD noiseSpecial;
 	public final FastNoiseLiteD noiseLoot;
 
+	// params
 	public final AtomicDouble thresh_light  = new AtomicDouble(DEFAULT_THRESH_LIGHT);
 	public final AtomicDouble thresh_ladder = new AtomicDouble(DEFAULT_THRESH_LADDER);
 	public final AtomicDouble thresh_void   = new AtomicDouble(DEFAULT_THRESH_VOID);
 	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT);
+
+	// blocks
+//TODO
+
+
 
 	public enum PillarType {
 		PILLAR_NORM,

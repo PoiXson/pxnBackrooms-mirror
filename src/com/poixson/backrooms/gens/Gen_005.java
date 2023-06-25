@@ -35,8 +35,10 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 // 5 | Hotel
 public class Gen_005 extends BackroomsGen {
 
+	// default params
 	public static final double DEFAULT_THRESH_ROOM_HALL = 0.65;
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR     = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_SUBCEILING   = "minecraft:smooth_stone";
 	public static final String DEFAULT_BLOCK_HALL_WALL    = "minecraft:stripped_spruce_wood";
@@ -48,6 +50,7 @@ public class Gen_005 extends BackroomsGen {
 	public final FastNoiseLiteD noiseHotelRooms;
 	public final FastNoiseLiteD noiseHotelStairs;
 
+	// params
 	public final AtomicDouble thresh_room_hall = new AtomicDouble(DEFAULT_THRESH_ROOM_HALL);
 
 	// blocks
@@ -194,6 +197,9 @@ public class Gen_005 extends BackroomsGen {
 			} // end for x
 		} // end for z
 	}
+
+
+
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {

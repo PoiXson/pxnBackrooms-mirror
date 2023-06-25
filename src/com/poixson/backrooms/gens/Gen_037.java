@@ -35,11 +35,13 @@ import com.poixson.utils.StringUtils;
 // 37 | Poolrooms
 public class Gen_037 extends BackroomsGen {
 
+	// default params
 	public static final double DEFAULT_THRESH_ROOM   = 0.2;
 	public static final double DEFAULT_THRESH_PORTAL = 0.5;
 
 	public static final int WATER_DEPTH = 3;
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_WALL_A     = "minecraft:prismarine_bricks";
 	public static final String DEFAULT_BLOCK_WALL_B     = "minecraft:prismarine";
 	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:dark_prismarine";
@@ -52,6 +54,7 @@ public class Gen_037 extends BackroomsGen {
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
 
+	// params
 	public final AtomicDouble thresh_room   = new AtomicDouble(DEFAULT_THRESH_ROOM  );
 	public final AtomicDouble thresh_portal = new AtomicDouble(DEFAULT_THRESH_PORTAL);
 
@@ -138,12 +141,12 @@ public class Gen_037 extends BackroomsGen {
 			final int chunkX, final int chunkZ) {
 		PoolData dao;
 		int xx, zz;
-		for (int rz=-1; rz<3; rz++) {
-			zz = (chunkZ * 16) + (rz * 8) + 4;
-			for (int rx=-1; rx<3; rx++) {
-				xx = (chunkX * 16) + (rx * 8) + 4;
+		for (int iz=-1; iz<3; iz++) {
+			zz = (chunkZ * 16) + (iz * 8) + 4;
+			for (int ix=-1; ix<3; ix++) {
+				xx = (chunkX * 16) + (ix * 8) + 4;
 				dao = new PoolData(xx, zz);
-				data.put(new Iab(rx, rz), dao);
+				data.put(new Iab(ix, iz), dao);
 			}
 		}
 	}

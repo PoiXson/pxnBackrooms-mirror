@@ -28,6 +28,7 @@ import com.poixson.tools.dao.Iab;
 // 23 | Overgrowth
 public class Gen_023 extends BackroomsGen {
 
+	// default blocks
 	public static final String DEFAULT_BLOCK_WALL       = "minecraft:moss_block";
 	public static final String DEFAULT_BLOCK_FLOOR      = "minecraft:mossy_cobblestone";
 	public static final String DEFAULT_BLOCK_CEILING    = "minecraft:smooth_stone_slab[type=top]";
