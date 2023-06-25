@@ -117,7 +117,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		new Level_151(this); // dollhouse
 		new Level_771(this); // crossroads
 //		new Level_866(this); // dirtfield
-		this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
+		if (this.enableDynmapConfigGen())
+			this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
 		// create worlds (after server starts)
 		(new BukkitRunnable() {
 			@Override
