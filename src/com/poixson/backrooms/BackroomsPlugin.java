@@ -32,6 +32,7 @@ import com.poixson.backrooms.gens.Gen_006;
 import com.poixson.backrooms.gens.Gen_019;
 import com.poixson.backrooms.gens.Gen_023;
 import com.poixson.backrooms.gens.Gen_037;
+import com.poixson.backrooms.gens.Gen_094;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
@@ -39,6 +40,7 @@ import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskHourly;
 import com.poixson.backrooms.tasks.TeleportManager;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.DelayedChestFiller;
 import com.poixson.commonmc.tools.plugin.xJavaPlugin;
@@ -111,6 +113,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		new Level_011(this); // concrete jungle, abandoned office, arcade, ikea
 //		new Level_033(this); // run for your life
 //		new Level_078(this); // space
+		new Level_094(this); // motion
 //		new Level_151(this); // dollhouse
 		new Level_771(this); // crossroads
 //		new Level_866(this); // dirtfield
@@ -274,7 +277,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		Gen_037.ConfigDefaults(cfg); // poolrooms
 //		Gen_040.ConfigDefaults(cfg); // arcade
 //		Gen_078.ConfigDefaults(cfg); // space
-//		Gen_094.ConfigDefaults(cfg); // motion
+		Gen_094.ConfigDefaults(cfg); // motion
 //		Gen_151.ConfigDefaults(cfg); // dollhouse
 //		Gen_308.ConfigDefaults(cfg); // ikea
 		Gen_309.ConfigDefaults(cfg); // radio station

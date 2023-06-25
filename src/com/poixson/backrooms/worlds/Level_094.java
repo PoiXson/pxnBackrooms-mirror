@@ -1,11 +1,16 @@
-/*
 package com.poixson.backrooms.worlds;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.backrooms.gens.Gen_094;
+import com.poixson.backrooms.gens.Gen_094.HillsData;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.tools.dao.Iab;
 
 
 // 94 | Motion
@@ -13,11 +18,10 @@ public class Level_094 extends BackroomsLevel {
 
 	public static final boolean ENABLE_GEN_094 = true;
 
+	public static final int LEVEL_Y = 0;
+
 	// generators
 	public final Gen_094 gen;
-
-	// listeners
-	protected final Listener_094 listener_094;
 
 
 
@@ -37,12 +41,10 @@ public class Level_094 extends BackroomsLevel {
 	@Override
 	public void register() {
 		super.register();
-		this.listener_094.register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
-		this.listener_094.unregister();
 	}
 
 
@@ -62,13 +64,23 @@ public class Level_094 extends BackroomsLevel {
 
 
 
+	public class PregenLevel94 implements PreGenData {
+		public final HashMap<Iab, HillsData> hills = new HashMap<Iab, HillsData>();
+		public PregenLevel94() {}
+	}
+
+
+
 	@Override
 	protected void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+		// pre-generate
+		final PregenLevel94 pregen = new PregenLevel94();
+		this.gen.pregenerate(pregen.hills, chunkX, chunkZ);
+		// generate
+		this.gen.generate(pregen, chunk, plots, chunkX, chunkZ);
 	}
 
 
 
 }
-*/
