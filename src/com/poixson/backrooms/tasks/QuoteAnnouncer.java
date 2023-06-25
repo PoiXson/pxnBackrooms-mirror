@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -16,6 +17,8 @@ import com.poixson.utils.Utils;
 
 
 public class QuoteAnnouncer {
+
+	public static final ChatColor DEFAULT_QUOTE_COLOR = ChatColor.BLACK;
 
 	protected final BackroomsPlugin plugin;
 
@@ -49,7 +52,7 @@ public class QuoteAnnouncer {
 	public void announce() {
 		final Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 		if (players.size() > 0) {
-			final String quote = this.getQuote();
+			final String quote = DEFAULT_QUOTE_COLOR + this.getQuote() + ChatColor.RESET;
 			for (final Player player : players) {
 				final int level = this.plugin.getPlayerLevel(player);
 				if (level >= 0)
@@ -58,7 +61,7 @@ public class QuoteAnnouncer {
 		}
 	}
 	public void announce(final Player player) {
-		final String quote = this.getQuote();
+		final String quote = DEFAULT_QUOTE_COLOR + this.getQuote() + ChatColor.RESET;
 		this.announce(quote, player);
 	}
 	public void announce(final String quote, final Player player) {
