@@ -200,7 +200,7 @@ public class Gen_001 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		// noise params
+		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(1);
 			this.thresh_wall .set(cfg.getDouble("Thresh-Wall" ));
@@ -217,9 +217,11 @@ public class Gen_001 extends BackroomsGen {
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
 		cfg.addDefault("Level1.Params.Thresh-Wall",  DEFAULT_THRESH_WALL );
 		cfg.addDefault("Level1.Params.Thresh-Moist", DEFAULT_THRESH_MOIST);
 		cfg.addDefault("Level1.Params.Thresh-Well",  DEFAULT_THRESH_WELL );
+		// block types
 		cfg.addDefault("Level1.Blocks.Wall",     DEFAULT_BLOCK_WALL     );
 		cfg.addDefault("Level1.Blocks.SubFloor", DEFAULT_BLOCK_SUBFLOOR );
 		cfg.addDefault("Level1.Blocks.FloorDry", DEFAULT_BLOCK_FLOOR_DRY);

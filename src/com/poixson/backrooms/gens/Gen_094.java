@@ -326,7 +326,7 @@ public class Gen_094 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		// noise params
+		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(94);
 			this.valley_depth.set(cfg.getDouble("ValleyDepth"));
@@ -353,6 +353,7 @@ public class Gen_094 extends BackroomsGen {
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
 		cfg.addDefault("Level94.Params.ValleyDepth", DEFAULT_VALLEY_DEPTH);
 		cfg.addDefault("Level94.Params.ValleyGain",  DEFAULT_VALLEY_GAIN );
 		cfg.addDefault("Level94.Params.HillsGain",   DEFAULT_HILLS_GAIN  );
@@ -360,6 +361,7 @@ public class Gen_094 extends BackroomsGen {
 		cfg.addDefault("Level94.Params.WaterDepth",  DEFAULT_WATER_DEPTH );
 		cfg.addDefault("Level94.Params.HouseWidth",  DEFAULT_HOUSE_WIDTH );
 		cfg.addDefault("Level94.Params.HouseHeight", DEFAULT_HOUSE_HEIGHT);
+		// block types
 		cfg.addDefault("Level94.Blocks.Dirt",            DEFAULT_BLOCK_DIRT             );
 		cfg.addDefault("Level94.Blocks.GrassBlock",      DEFAULT_BLOCK_GRASS_BLOCK      );
 		cfg.addDefault("Level94.Blocks.GrassSlab",       DEFAULT_BLOCK_GRASS_SLAB       );

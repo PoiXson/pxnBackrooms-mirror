@@ -587,7 +587,7 @@ plot.type(',', "minecraft:light[level=15]");
 
 	@Override
 	protected void loadConfig() {
-		// noise params
+		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(771);
 			this.thresh_light .set(cfg.getDouble("Thresh-Light" ));
@@ -601,10 +601,13 @@ plot.type(',', "minecraft:light[level=15]");
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
 		cfg.addDefault("Level771.Params.Thresh-Light",  DEFAULT_THRESH_LIGHT );
 		cfg.addDefault("Level771.Params.Thresh-Ladder", DEFAULT_THRESH_LADDER);
 		cfg.addDefault("Level771.Params.Thresh-Void",   DEFAULT_THRESH_VOID  );
 		cfg.addDefault("Level771.Params.Thresh-Loot",   DEFAULT_THRESH_LOOT  );
+		// block types
+//TODO
 	}
 
 

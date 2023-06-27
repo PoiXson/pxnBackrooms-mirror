@@ -106,21 +106,22 @@ public class TeleportManager {
 	}
 	protected int findDestinationLevel(final int level_from) {
 		final HashMap<Integer, Integer> weights = this.weights.get(Integer.valueOf(level_from));
-		if (weights == null)   throw new RuntimeException("Unknown backrooms level: " + Integer.toString(level_from));
+		if (weights == null)   throw new RuntimeException("Unknown backrooms level: "            + Integer.toString(level_from));
 		if (weights.isEmpty()) throw new RuntimeException("Backrooms level has no weights set: " + Integer.toString(level_from));
 		int total = 0;
-		for (final Integer i : weights.values()) {
+		for (final Integer i : weights.values())
 			total += i.intValue();
-		}
-		if (total < 1)
-			return 0;
+		// no levels set
+		if (total < 1) return 0;
 		Entry<Integer, Integer> entry;
+		// single level
 		if (total == 1) {
 			final Iterator<Entry<Integer, Integer>> it = weights.entrySet().iterator();
 			entry = it.next();
 			if (entry.getValue().intValue() == 1)
 				return entry.getKey().intValue();
 		}
+		// pick a random level
 		final int rnd = RandomUtils.GetNewRandom(0, total, this.rndLast);
 		this.rndLast = rnd;
 		int level, weight;

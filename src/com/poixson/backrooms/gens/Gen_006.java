@@ -134,6 +134,7 @@ public class Gen_006 extends BackroomsGen {
 		this.block_wall.set(cfg.getString("Wall"));
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// block types
 		cfg.addDefault("Level6.Blocks.Wall", DEFAULT_BLOCK_WALL);
 	}
 

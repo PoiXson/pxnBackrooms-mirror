@@ -296,7 +296,7 @@ public class Gen_005 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		// noise params
+		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(5);
 			this.thresh_room_hall.set(cfg.getDouble("Thresh-Room-Or-Hall"));
@@ -312,7 +312,9 @@ public class Gen_005 extends BackroomsGen {
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
 		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL);
+		// block types
 		cfg.addDefault("Level5.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfg.addDefault("Level5.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
 		cfg.addDefault("Level5.Blocks.HallWall",    DEFAULT_BLOCK_HALL_WALL   );

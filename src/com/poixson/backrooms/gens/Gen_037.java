@@ -464,7 +464,7 @@ public class Gen_037 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		// noise params
+		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(37);
 			this.thresh_room  .set(cfg.getDouble("Thresh-Room"  ));
@@ -481,8 +481,10 @@ public class Gen_037 extends BackroomsGen {
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
 		cfg.addDefault("Level37.Params.Thresh-Room",   DEFAULT_THRESH_ROOM  );
 		cfg.addDefault("Level37.Params.Thresh-Portal", DEFAULT_THRESH_PORTAL);
+		// block types
 		cfg.addDefault("Level37.Blocks.WallA",      DEFAULT_BLOCK_WALL_A    );
 		cfg.addDefault("Level37.Blocks.WallB",      DEFAULT_BLOCK_WALL_B    );
 		cfg.addDefault("Level37.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );

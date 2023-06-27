@@ -150,6 +150,7 @@ public class Gen_023 extends BackroomsGen {
 		this.block_carpet    .set(cfg.getString("Carpet"    ));
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// block types
 		cfg.addDefault("Level23.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
 		cfg.addDefault("Level23.Blocks.Floor",      DEFAULT_BLOCK_FLOOR     );
 		cfg.addDefault("Level23.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );

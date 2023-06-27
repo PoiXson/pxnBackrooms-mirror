@@ -186,7 +186,7 @@ public class Gen_309 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-		// noise params
+		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(309);
 			this.path_width   .set(cfg.getInt("Path-Width"   ));
@@ -200,8 +200,10 @@ public class Gen_309 extends BackroomsGen {
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
 		cfg.addDefault("Level309.Params.Path-Width",    DEFAULT_PATH_WIDTH   );
 		cfg.addDefault("Level309.Params.Path-Clearing", DEFAULT_PATH_CLEARING);
+		// block types
 		cfg.addDefault("Level309.Blocks.Dirt",       DEFAULT_BLOCK_DIRT      );
 		cfg.addDefault("Level309.Blocks.Path",       DEFAULT_BLOCK_PATH      );
 		cfg.addDefault("Level309.Blocks.Grass",      DEFAULT_BLOCK_GRASS     );

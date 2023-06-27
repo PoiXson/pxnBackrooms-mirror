@@ -116,6 +116,7 @@ public class Gen_019 extends BackroomsGen {
 		this.block_beam .set(cfg.getString("Beam" ));
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// block types
 		cfg.addDefault("Level19.Blocks.Wall",  DEFAULT_BLOCK_WALL );
 		cfg.addDefault("Level19.Blocks.Floor", DEFAULT_BLOCK_FLOOR);
 		cfg.addDefault("Level19.Blocks.Beam",  DEFAULT_BLOCK_BEAM );
