@@ -58,8 +58,7 @@ public class Gen_019 extends BackroomsGen {
 
 
 	@Override
-	public void setSeed(final int seed) {
-		super.setSeed(seed);
+	public void initNoise() {
 		// lanterns
 		this.noiseLamps.setFrequency(this.noise_lamps_freq.get());
 	}

@@ -50,6 +50,7 @@ public abstract class BackroomsGen {
 			noise.setSeed(seed);
 		}
 	}
+	public void initNoise() {}
 
 
 

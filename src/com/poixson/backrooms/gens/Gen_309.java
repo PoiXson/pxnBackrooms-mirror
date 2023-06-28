@@ -91,8 +91,7 @@ public class Gen_309 extends BackroomsGen {
 
 
 	@Override
-	public void setSeed(final int seed) {
-		super.setSeed(seed);
+	public void initNoise() {
 		// path
 		this.noisePath.setFrequency(this.noise_path_freq.get());
 		// path ground

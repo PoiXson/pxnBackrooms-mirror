@@ -61,7 +61,7 @@ public class Gen_006 extends BackroomsGen {
 
 
 	@Override
-	public void setSeed(final int seed) {
+	public void initNoise() {
 		// light switch
 		this.noiseLightSwitch.setFrequency(     this.noise_switch_freq  .get());
 		this.noiseLightSwitch.setFractalOctaves(this.noise_switch_octave.get());

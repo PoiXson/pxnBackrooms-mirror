@@ -91,8 +91,7 @@ public class Gen_001 extends BackroomsGen {
 
 
 	@Override
-	public void setSeed(final int seed) {
-		super.setSeed(seed);
+	public void initNoise() {
 		// basement wall noise
 		this.noiseBasementWalls.setFrequency(              this.noise_wall_freq    .get());
 		this.noiseBasementWalls.setFractalOctaves(         this.noise_wall_octave  .get());

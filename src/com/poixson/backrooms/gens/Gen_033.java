@@ -71,8 +71,7 @@ public class Gen_033 extends BackroomsGen {
 
 
 	@Override
-	public void setSeed(final int seed) {
-		super.setSeed(seed);
+	public void initNoise() {
 		// pool rooms
 		this.noiseFloor.setFrequency(     this.noise_floor_freq  .get());
 		this.noiseFloor.setFractalOctaves(this.noise_floor_octave.get());
