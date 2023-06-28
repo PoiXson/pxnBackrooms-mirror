@@ -37,8 +37,8 @@ public class Gen_309 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_PATH       = "minecraft:dirt_path";
 	public static final String DEFAULT_BLOCK_GRASS      = "minecraft:grass_block";
 	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:stone";
-	public static final String DEFAULT_BLOCK_TREETRUNK  = "minecraft:birch_log";
-	public static final String DEFAULT_BLOCK_TREELEAVES = "minecraft:birch_leaves";
+	public static final String DEFAULT_BLOCK_TREE_TRUNK  = "minecraft:birch_log";
+	public static final String DEFAULT_BLOCK_TREE_LEAVES = "minecraft:birch_leaves";
 
 	// noise
 	public final FastNoiseLiteD noisePath;
@@ -195,8 +195,8 @@ public class Gen_309 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(309);
-			this.block_tree_trunk .set(cfg.getString("TreeTrunk" ));
-			this.block_tree_leaves.set(cfg.getString("TreeLeaves"));
+			this.block_tree_trunk .set(cfg.getString("Tree-Trunk" ));
+			this.block_tree_leaves.set(cfg.getString("Tree-Leaves"));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -208,8 +208,8 @@ public class Gen_309 extends BackroomsGen {
 		cfg.addDefault("Level309.Blocks.Path",       DEFAULT_BLOCK_PATH      );
 		cfg.addDefault("Level309.Blocks.Grass",      DEFAULT_BLOCK_GRASS     );
 		cfg.addDefault("Level309.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-		cfg.addDefault("Level309.Blocks.TreeTrunk",  DEFAULT_BLOCK_TREETRUNK );
-		cfg.addDefault("Level309.Blocks.TreeLeaves", DEFAULT_BLOCK_TREELEAVES);
+		cfg.addDefault("Level309.Blocks.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
+		cfg.addDefault("Level309.Blocks.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
 	}
 
 

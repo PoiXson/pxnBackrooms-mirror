@@ -211,9 +211,9 @@ public class Gen_005 extends BackroomsGen {
 		final BlockData block_hall_ceiling = StringToBlockData(this.block_hall_ceiling, DEFAULT_BLOCK_HALL_CEILING);
 		if (block_subfloor     == null) throw new RuntimeException("Invalid block type for level 5 SubFloor"   );
 		if (block_subceiling   == null) throw new RuntimeException("Invalid block type for level 5 SubCeiling" );
-		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 HallWall"   );
-		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 HallCarpet" );
-		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 HallCeiling");
+		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall"   );
+		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet" );
+		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 Hall-Ceiling");
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
@@ -306,9 +306,9 @@ public class Gen_005 extends BackroomsGen {
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
 			this.block_subfloor    .set(cfg.getString("SubFloor"   ));
 			this.block_subceiling  .set(cfg.getString("SubCeiling" ));
-			this.block_hall_wall   .set(cfg.getString("HallWall"   ));
-			this.block_hall_carpet .set(cfg.getString("HallCarpet" ));
-			this.block_hall_ceiling.set(cfg.getString("HallCeiling"));
+			this.block_hall_wall   .set(cfg.getString("Hall-Wall"   ));
+			this.block_hall_carpet .set(cfg.getString("Hall-Carpet" ));
+			this.block_hall_ceiling.set(cfg.getString("Hall-Ceiling"));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -317,9 +317,9 @@ public class Gen_005 extends BackroomsGen {
 		// block types
 		cfg.addDefault("Level5.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfg.addDefault("Level5.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
-		cfg.addDefault("Level5.Blocks.HallWall",    DEFAULT_BLOCK_HALL_WALL   );
-		cfg.addDefault("Level5.Blocks.HallCarpet",  DEFAULT_BLOCK_HALL_CARPET );
-		cfg.addDefault("Level5.Blocks.HallCeiling", DEFAULT_BLOCK_HALL_CEILING);
+		cfg.addDefault("Level5.Blocks.Hall-Wall",    DEFAULT_BLOCK_HALL_WALL   );
+		cfg.addDefault("Level5.Blocks.Hall-Carpet",  DEFAULT_BLOCK_HALL_CARPET );
+		cfg.addDefault("Level5.Blocks.Hall-Ceiling", DEFAULT_BLOCK_HALL_CEILING);
 	}
 
 

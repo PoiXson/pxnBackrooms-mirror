@@ -233,7 +233,7 @@ public class Gen_000 extends BackroomsGen {
 		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
 		final BlockData block_overgrowth_wall = StringToBlockData(((Level_000)this.backlevel).gen_023.block_wall, Gen_023.DEFAULT_BLOCK_WALL);
 		if (block_wall       == null) throw new RuntimeException("Invalid block type for level 0 Wall"      );
-		if (block_wall_base  == null) throw new RuntimeException("Invalid block type for level 0 WallBase"  );
+		if (block_wall_base  == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base" );
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"  );
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling");
 		if (block_carpet     == null) throw new RuntimeException("Invalid block type for level 0 Carpet"    );
@@ -467,7 +467,7 @@ public class Gen_000 extends BackroomsGen {
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
 			this.block_wall      .set(cfg.getString("Wall"      ));
-			this.block_wall_base .set(cfg.getString("WallBase"  ));
+			this.block_wall_base .set(cfg.getString("Wall-Base" ));
 			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
 			this.block_subceiling.set(cfg.getString("SubCeiling"));
 			this.block_carpet    .set(cfg.getString("Carpet"    ));
@@ -481,7 +481,7 @@ public class Gen_000 extends BackroomsGen {
 		cfg.addDefault("Level0.Params.Thresh-Loot",   DEFAULT_THRESH_LOOT  );
 		// block types
 		cfg.addDefault("Level0.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
-		cfg.addDefault("Level0.Blocks.WallBase",   DEFAULT_BLOCK_WALL_BASE );
+		cfg.addDefault("Level0.Blocks.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
 		cfg.addDefault("Level0.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
 		cfg.addDefault("Level0.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
 		cfg.addDefault("Level0.Blocks.Carpet",     DEFAULT_BLOCK_CARPET    );

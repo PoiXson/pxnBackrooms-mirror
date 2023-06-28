@@ -141,8 +141,8 @@ public class Gen_001 extends BackroomsGen {
 		final BlockData block_floor_wet = StringToBlockData(this.block_floor_wet, DEFAULT_BLOCK_FLOOR_WET);
 		if (block_wall      == null) throw new RuntimeException("Invalid block type for level 1 Wall"    );
 		if (block_subfloor  == null) throw new RuntimeException("Invalid block type for level 1 SubFloor");
-		if (block_floor_dry == null) throw new RuntimeException("Invalid block type for level 1 FloorDry");
-		if (block_floor_wet == null) throw new RuntimeException("Invalid block type for level 1 FloorWet");
+		if (block_floor_dry == null) throw new RuntimeException("Invalid block type for level 1 Floor-Dry");
+		if (block_floor_wet == null) throw new RuntimeException("Invalid block type for level 1 Floor-Wet");
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		BasementData dao;
 		final int y = this.level_y + SUBFLOOR + 1;
@@ -212,8 +212,8 @@ public class Gen_001 extends BackroomsGen {
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(1);
 			this.block_wall     .set(cfg.getString("Wall"    ));
 			this.block_subfloor .set(cfg.getString("SubFloor"));
-			this.block_floor_dry.set(cfg.getString("FloorDry"));
-			this.block_floor_wet.set(cfg.getString("FloorWet"));
+			this.block_floor_dry.set(cfg.getString("Floor-Dry"));
+			this.block_floor_wet.set(cfg.getString("Floor-Wet"));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -224,8 +224,8 @@ public class Gen_001 extends BackroomsGen {
 		// block types
 		cfg.addDefault("Level1.Blocks.Wall",     DEFAULT_BLOCK_WALL     );
 		cfg.addDefault("Level1.Blocks.SubFloor", DEFAULT_BLOCK_SUBFLOOR );
-		cfg.addDefault("Level1.Blocks.FloorDry", DEFAULT_BLOCK_FLOOR_DRY);
-		cfg.addDefault("Level1.Blocks.FloorWet", DEFAULT_BLOCK_FLOOR_WET);
+		cfg.addDefault("Level1.Blocks.Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
+		cfg.addDefault("Level1.Blocks.Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
 	}
 
 
