@@ -28,8 +28,8 @@ public class Gen_033 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_FLOOR_FREQ   = 0.1;
 	public static final int    DEFAULT_NOISE_FLOOR_OCTAVE = 2;
 	public static final double DEFAULT_NOISE_FLOOR_GAIN   = 2.0;
-	public static final double DEFAULT_THRESH_FLOOR  = -0.4;
-	public static final double DEFAULT_THRESH_HAZARD =  0.7;
+	public static final double DEFAULT_THRESH_FLOOR       =-0.4;
+	public static final double DEFAULT_THRESH_HAZARD      = 0.7;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL       = "minecraft:blackstone";

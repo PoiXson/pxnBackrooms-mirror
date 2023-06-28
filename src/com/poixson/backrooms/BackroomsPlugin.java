@@ -137,9 +137,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 			}
 		}).runTask(this);
 		// register levels
-		for (final BackroomsLevel level : this.backlevels.values()) {
+		for (final BackroomsLevel level : this.backlevels.values())
 			level.register();
-		}
 		// commands listener
 		{
 			final Commands listener = new Commands(this);

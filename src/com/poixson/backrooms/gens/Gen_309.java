@@ -49,7 +49,7 @@ public class Gen_309 extends BackroomsGen {
 
 	// noise
 	public final FastNoiseLiteD noisePath;
-	public final FastNoiseLiteD noisePathGround;
+	public final FastNoiseLiteD noiseGround;
 	public final FastNoiseLiteD noiseTrees;
 
 	// params
@@ -81,9 +81,9 @@ public class Gen_309 extends BackroomsGen {
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// noise
-		this.noisePath       = this.register(new FastNoiseLiteD());
-		this.noisePathGround = this.register(new FastNoiseLiteD());
-		this.noiseTrees      = this.register(new FastNoiseLiteD());
+		this.noisePath   = this.register(new FastNoiseLiteD());
+		this.noiseGround = this.register(new FastNoiseLiteD());
+		this.noiseTrees  = this.register(new FastNoiseLiteD());
 		// path locations
 		this.pathTrace = new PathTracer(this.noisePath, PATH_START_X, PATH_START_Z, this.getPathCacheMap());
 	}
@@ -95,11 +95,11 @@ public class Gen_309 extends BackroomsGen {
 		// path
 		this.noisePath.setFrequency(this.noise_path_freq.get());
 		// path ground
-		this.noisePathGround.setFrequency(        this.noise_ground_freq  .get());
-		this.noisePathGround.setFractalOctaves(   this.noise_ground_octave.get());
-		this.noisePathGround.setFractalGain(      this.noise_ground_gain  .get());
-		this.noisePathGround.setFractalLacunarity(this.noise_ground_lacun .get());
-		this.noisePathGround.setFractalType(FractalType.Ridged);
+		this.noiseGround.setFrequency(        this.noise_ground_freq  .get());
+		this.noiseGround.setFractalOctaves(   this.noise_ground_octave.get());
+		this.noiseGround.setFractalGain(      this.noise_ground_gain  .get());
+		this.noiseGround.setFractalLacunarity(this.noise_ground_lacun .get());
+		this.noiseGround.setFractalType(FractalType.Ridged);
 		// tree noise
 		this.noiseTrees.setFrequency(this.noise_trees_freq.get());
 	}
@@ -143,7 +143,7 @@ public class Gen_309 extends BackroomsGen {
 					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
 				final double ground;
 				{
-					final double g = this.noisePathGround.getNoise(xx, zz);
+					final double g = this.noiseGround.getNoise(xx, zz);
 					ground = 1.0f + (g < 0.0f ? g * 0.6f : g);
 				}
 				// dirt

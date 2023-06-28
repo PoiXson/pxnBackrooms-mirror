@@ -46,9 +46,8 @@ public abstract class BackroomsGen {
 	}
 
 	public void setSeed(final int seed) {
-		for (final FastNoiseLiteD noise : this.noises) {
+		for (final FastNoiseLiteD noise : this.noises)
 			noise.setSeed(seed);
-		}
 	}
 	public void initNoise() {}
 
