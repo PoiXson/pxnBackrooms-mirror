@@ -35,13 +35,18 @@ import com.poixson.utils.StringUtils;
 public class Gen_094 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_VALLEY_DEPTH =  0.33;
-	public static final double DEFAULT_VALLEY_GAIN  =  0.3;
-	public static final double DEFAULT_HILLS_GAIN   = 12.0;
-	public static final double DEFAULT_ROSE_CHANCE  =  0.01;
-	public static final int    DEFAULT_WATER_DEPTH  =  3;
-	public static final int    DEFAULT_HOUSE_WIDTH  =  8;
-	public static final int    DEFAULT_HOUSE_HEIGHT =  5;
+	public static final double DEFAULT_NOISE_HILLS_FREQ     = 0.015;
+	public static final int    DEFAULT_NOISE_HILLS_OCTAVE   = 2;
+	public static final double DEFAULT_NOISE_HILLS_STRENGTH = 1.8;
+	public static final double DEFAULT_NOISE_HILLS_LACUN    = 0.8;
+	public static final double DEFAULT_NOISE_HOUSE_FREQ     = 0.07;
+	public static final double DEFAULT_VALLEY_DEPTH         = 0.33;
+	public static final double DEFAULT_VALLEY_GAIN          = 0.3;
+	public static final double DEFAULT_HILLS_GAIN           = 12.0;
+	public static final double DEFAULT_ROSE_CHANCE          = 0.01;
+	public static final int    DEFAULT_WATER_DEPTH          = 3;
+	public static final int    DEFAULT_HOUSE_WIDTH          = 8;
+	public static final int    DEFAULT_HOUSE_HEIGHT         = 5;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT              = "minecraft:dirt";
@@ -60,13 +65,18 @@ public class Gen_094 extends BackroomsGen {
 	public final FastNoiseLiteD noiseHouse;
 
 	// params
-	public final AtomicDouble valley_depth  = new AtomicDouble(DEFAULT_VALLEY_DEPTH);
-	public final AtomicDouble valley_gain   = new AtomicDouble(DEFAULT_VALLEY_GAIN );
-	public final AtomicDouble hills_gain    = new AtomicDouble(DEFAULT_HILLS_GAIN  );
-	public final AtomicDouble rose_chance   = new AtomicDouble(DEFAULT_ROSE_CHANCE );
-	public final AtomicInteger water_depth  = new AtomicInteger(DEFAULT_WATER_DEPTH );
-	public final AtomicInteger house_width  = new AtomicInteger(DEFAULT_HOUSE_WIDTH );
-	public final AtomicInteger house_height = new AtomicInteger(DEFAULT_HOUSE_HEIGHT);
+	public final AtomicDouble  noise_hills_freq     = new AtomicDouble( DEFAULT_NOISE_HILLS_FREQ    );
+	public final AtomicInteger noise_hills_octave   = new AtomicInteger(DEFAULT_NOISE_HILLS_OCTAVE  );
+	public final AtomicDouble  noise_hills_strength = new AtomicDouble( DEFAULT_NOISE_HILLS_STRENGTH);
+	public final AtomicDouble  noise_hills_lacun    = new AtomicDouble( DEFAULT_NOISE_HILLS_LACUN   );
+	public final AtomicDouble  noise_house_freq     = new AtomicDouble( DEFAULT_NOISE_HOUSE_FREQ    );
+	public final AtomicDouble  valley_depth         = new AtomicDouble( DEFAULT_VALLEY_DEPTH        );
+	public final AtomicDouble  valley_gain          = new AtomicDouble( DEFAULT_VALLEY_GAIN         );
+	public final AtomicDouble  hills_gain           = new AtomicDouble( DEFAULT_HILLS_GAIN          );
+	public final AtomicDouble  rose_chance          = new AtomicDouble( DEFAULT_ROSE_CHANCE         );
+	public final AtomicInteger water_depth          = new AtomicInteger(DEFAULT_WATER_DEPTH         );
+	public final AtomicInteger house_width          = new AtomicInteger(DEFAULT_HOUSE_WIDTH         );
+	public final AtomicInteger house_height         = new AtomicInteger(DEFAULT_HOUSE_HEIGHT        );
 
 	// blocks
 	public final AtomicReference<String> block_dirt              = new AtomicReference<String>(null);
@@ -85,17 +95,25 @@ public class Gen_094 extends BackroomsGen {
 	public Gen_094(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// hills noise
+		// noise
 		this.noiseHills = this.register(new FastNoiseLiteD());
-		this.noiseHills.setFrequency(0.015);
-		this.noiseHills.setFractalOctaves(2);
+		this.noiseHouse = this.register(new FastNoiseLiteD());
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// hills noise
+		this.noiseHills.setFrequency(              this.noise_hills_freq    .get());
+		this.noiseHills.setFractalOctaves(         this.noise_hills_octave  .get());
+		this.noiseHills.setFractalPingPongStrength(this.noise_hills_strength.get());
+		this.noiseHills.setFractalLacunarity(      this.noise_hills_lacun   .get());
 		this.noiseHills.setNoiseType(NoiseType.Cellular);
 		this.noiseHills.setFractalType(FractalType.PingPong);
-		this.noiseHills.setFractalPingPongStrength(1.8);
-		this.noiseHills.setFractalLacunarity(0.8);
 		// house noise
-		this.noiseHouse = this.register(new FastNoiseLiteD());
-		this.noiseHouse.setFrequency(0.07);
+		this.noiseHouse.setFrequency(this.noise_house_freq.get());
 	}
 
 
@@ -329,13 +347,18 @@ public class Gen_094 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(94);
-			this.valley_depth.set(cfg.getDouble("Valley-Depth"));
-			this.valley_gain .set(cfg.getDouble("Valley-Gain" ));
-			this.hills_gain  .set(cfg.getDouble("Hills-Gain"  ));
-			this.rose_chance .set(cfg.getDouble("Rose-Chance" ));
-			this.water_depth .set(cfg.getInt(   "Water-Depth" ));
-			this.house_width .set(cfg.getInt(   "House-Width" ));
-			this.house_height.set(cfg.getInt(   "House-Height"));
+			this.noise_hills_freq    .set(cfg.getDouble("Noise-Hills-Freq"    ));
+			this.noise_hills_octave  .set(cfg.getInt(   "Noise-Hills-Octave"  ));
+			this.noise_hills_strength.set(cfg.getDouble("Noise-Hills-Strength"));
+			this.noise_hills_lacun   .set(cfg.getDouble("Noise-Hills-Lacun"   ));
+			this.noise_house_freq    .set(cfg.getDouble("Noise-House-Freq"    ));
+			this.valley_depth        .set(cfg.getDouble("Valley-Depth"        ));
+			this.valley_gain         .set(cfg.getDouble("Valley-Gain"         ));
+			this.hills_gain          .set(cfg.getDouble("Hills-Gain"          ));
+			this.rose_chance         .set(cfg.getDouble("Rose-Chance"         ));
+			this.water_depth         .set(cfg.getInt(   "Water-Depth"         ));
+			this.house_width         .set(cfg.getInt(   "House-Width"         ));
+			this.house_height        .set(cfg.getInt(   "House-Height"        ));
 		}
 		// block types
 		{
@@ -354,13 +377,18 @@ public class Gen_094 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level94.Params.Valley-Depth", DEFAULT_VALLEY_DEPTH);
-		cfg.addDefault("Level94.Params.Valley-Gain",  DEFAULT_VALLEY_GAIN );
-		cfg.addDefault("Level94.Params.Hills-Gain",   DEFAULT_HILLS_GAIN  );
-		cfg.addDefault("Level94.Params.Rose-Chance",  DEFAULT_ROSE_CHANCE );
-		cfg.addDefault("Level94.Params.Water-Depth",  DEFAULT_WATER_DEPTH );
-		cfg.addDefault("Level94.Params.House-Width",  DEFAULT_HOUSE_WIDTH );
-		cfg.addDefault("Level94.Params.House-Height", DEFAULT_HOUSE_HEIGHT);
+		cfg.addDefault("Level94.Params.Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
+		cfg.addDefault("Level94.Params.Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
+		cfg.addDefault("Level94.Params.Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
+		cfg.addDefault("Level94.Params.Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
+		cfg.addDefault("Level94.Params.Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
+		cfg.addDefault("Level94.Params.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
+		cfg.addDefault("Level94.Params.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
+		cfg.addDefault("Level94.Params.Hills-Gain",           DEFAULT_HILLS_GAIN          );
+		cfg.addDefault("Level94.Params.Rose-Chance",          DEFAULT_ROSE_CHANCE         );
+		cfg.addDefault("Level94.Params.Water-Depth",          DEFAULT_WATER_DEPTH         );
+		cfg.addDefault("Level94.Params.House-Width",          DEFAULT_HOUSE_WIDTH         );
+		cfg.addDefault("Level94.Params.House-Height",         DEFAULT_HOUSE_HEIGHT        );
 		// block types
 		cfg.addDefault("Level94.Blocks.Dirt",              DEFAULT_BLOCK_DIRT             );
 		cfg.addDefault("Level94.Blocks.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );

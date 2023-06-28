@@ -19,6 +19,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.commonmc.tools.PathTracer;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 
@@ -27,10 +28,16 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 public class Gen_309 extends BackroomsGen {
 
 	// default params
-	public static final int DEFAULT_PATH_WIDTH    = 3;
-	public static final int DEFAULT_PATH_CLEARING = 10;
-	public static final int PATH_START_X  = 14;
-	public static final int PATH_START_Z  = 32;
+	public static final double DEFAULT_NOISE_PATH_FREQ     = 0.01;
+	public static final double DEFAULT_NOISE_GROUND_FREQ   = 0.002;
+	public static final int    DEFAULT_NOISE_GROUND_OCTAVE = 3;
+	public static final double DEFAULT_NOISE_GROUND_GAIN   = 0.5;
+	public static final double DEFAULT_NOISE_GROUND_LACUN  = 2.0;
+	public static final double DEFAULT_NOISE_TREES_FREQ    = 0.2;
+	public static final int    DEFAULT_PATH_WIDTH          = 3;
+	public static final int    DEFAULT_PATH_CLEARING       = 10;
+	public static final int PATH_START_X = 14;
+	public static final int PATH_START_Z = 32;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
@@ -46,8 +53,14 @@ public class Gen_309 extends BackroomsGen {
 	public final FastNoiseLiteD noiseTrees;
 
 	// params
-	public final AtomicInteger path_width    = new AtomicInteger(DEFAULT_PATH_WIDTH   );
-	public final AtomicInteger path_clearing = new AtomicInteger(DEFAULT_PATH_CLEARING);
+	public final AtomicDouble  noise_path_freq     = new AtomicDouble( DEFAULT_NOISE_PATH_FREQ    );
+	public final AtomicDouble  noise_ground_freq   = new AtomicDouble( DEFAULT_NOISE_GROUND_FREQ  );
+	public final AtomicInteger noise_ground_octave = new AtomicInteger(DEFAULT_NOISE_GROUND_OCTAVE);
+	public final AtomicDouble  noise_ground_gain   = new AtomicDouble( DEFAULT_NOISE_GROUND_GAIN  );
+	public final AtomicDouble  noise_ground_lacun  = new AtomicDouble( DEFAULT_NOISE_GROUND_LACUN );
+	public final AtomicDouble  noise_trees_freq    = new AtomicDouble( DEFAULT_NOISE_TREES_FREQ   );
+	public final AtomicInteger path_width    = new AtomicInteger( DEFAULT_PATH_WIDTH   );
+	public final AtomicInteger path_clearing = new AtomicInteger( DEFAULT_PATH_CLEARING);
 
 	// path locations
 	protected final PathTracer pathTrace;
@@ -67,21 +80,29 @@ public class Gen_309 extends BackroomsGen {
 	public Gen_309(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// path
-		this.noisePath = this.register(new FastNoiseLiteD());
-		this.noisePath.setFrequency(0.01f);
-		// path ground
+		// noise
+		this.noisePath       = this.register(new FastNoiseLiteD());
 		this.noisePathGround = this.register(new FastNoiseLiteD());
-		this.noisePathGround.setFrequency(0.002f);
-		this.noisePathGround.setFractalType(FractalType.Ridged);
-		this.noisePathGround.setFractalOctaves(3);
-		this.noisePathGround.setFractalGain(0.5f);
-		this.noisePathGround.setFractalLacunarity(2.0f);
-		// tree noise
-		this.noiseTrees = this.register(new FastNoiseLiteD());
-		this.noiseTrees.setFrequency(0.2f);
+		this.noiseTrees      = this.register(new FastNoiseLiteD());
 		// path locations
 		this.pathTrace = new PathTracer(this.noisePath, PATH_START_X, PATH_START_Z, this.getPathCacheMap());
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// path
+		this.noisePath.setFrequency(this.noise_path_freq.get());
+		// path ground
+		this.noisePathGround.setFrequency(        this.noise_ground_freq  .get());
+		this.noisePathGround.setFractalOctaves(   this.noise_ground_octave.get());
+		this.noisePathGround.setFractalGain(      this.noise_ground_gain  .get());
+		this.noisePathGround.setFractalLacunarity(this.noise_ground_lacun .get());
+		this.noisePathGround.setFractalType(FractalType.Ridged);
+		// tree noise
+		this.noiseTrees.setFrequency(this.noise_trees_freq.get());
 	}
 
 
@@ -189,8 +210,14 @@ public class Gen_309 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(309);
-			this.path_width   .set(cfg.getInt("Path-Width"   ));
-			this.path_clearing.set(cfg.getInt("Path-Clearing"));
+			this.noise_path_freq    .set(cfg.getInt("Noise-Path-Freq"    ));
+			this.noise_ground_freq  .set(cfg.getInt("Noise-Ground-Freq"  ));
+			this.noise_ground_octave.set(cfg.getInt("Noise-Ground-Octave"));
+			this.noise_ground_gain  .set(cfg.getInt("Noise-Ground-Gain"  ));
+			this.noise_ground_lacun .set(cfg.getInt("Noise-Ground-Lacun" ));
+			this.noise_trees_freq   .set(cfg.getInt("Noise-Trees-Freq"   ));
+			this.path_width         .set(cfg.getInt("Path-Width"         ));
+			this.path_clearing      .set(cfg.getInt("Path-Clearing"      ));
 		}
 		// block types
 		{
@@ -201,8 +228,14 @@ public class Gen_309 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level309.Params.Path-Width",    DEFAULT_PATH_WIDTH   );
-		cfg.addDefault("Level309.Params.Path-Clearing", DEFAULT_PATH_CLEARING);
+		cfg.addDefault("Level309.Params.Noise-Path-Freq",     DEFAULT_NOISE_PATH_FREQ    );
+		cfg.addDefault("Level309.Params.Noise-Ground-Freq",   DEFAULT_NOISE_GROUND_FREQ  );
+		cfg.addDefault("Level309.Params.Noise-Ground-Octave", DEFAULT_NOISE_GROUND_OCTAVE);
+		cfg.addDefault("Level309.Params.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
+		cfg.addDefault("Level309.Params.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
+		cfg.addDefault("Level309.Params.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
+		cfg.addDefault("Level309.Params.Path-Width",          DEFAULT_PATH_WIDTH         );
+		cfg.addDefault("Level309.Params.Path-Clearing",       DEFAULT_PATH_CLEARING      );
 		// block types
 		cfg.addDefault("Level309.Blocks.Dirt",        DEFAULT_BLOCK_DIRT       );
 		cfg.addDefault("Level309.Blocks.Path",        DEFAULT_BLOCK_PATH       );

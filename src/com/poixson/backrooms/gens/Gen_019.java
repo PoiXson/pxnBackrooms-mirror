@@ -19,12 +19,16 @@ import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 
 
 // 19 | Attic
 public class Gen_019 extends BackroomsGen {
+
+	// default params
+	public static final double DEFAULT_NOISE_LAMPS_FREQ = 0.045;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL  = "minecraft:spruce_planks";
@@ -33,6 +37,9 @@ public class Gen_019 extends BackroomsGen {
 
 	// noise
 	public final FastNoiseLiteD noiseLamps;
+
+	// params
+	public final AtomicDouble noise_lamps_freq = new AtomicDouble(DEFAULT_NOISE_LAMPS_FREQ);
 
 	// blocks
 	public final AtomicReference<String> block_wall  = new AtomicReference<String>(null);
@@ -44,10 +51,17 @@ public class Gen_019 extends BackroomsGen {
 	public Gen_019(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// lanterns
+		// noise
 		this.noiseLamps = this.register(new FastNoiseLiteD());
-		this.noiseLamps.setFrequency(0.045);
-		this.noiseLamps.setFractalOctaves(1);
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// lanterns
+		this.noiseLamps.setFrequency(this.noise_lamps_freq.get());
 	}
 
 
@@ -109,13 +123,22 @@ public class Gen_019 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
+		// params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(19);
+			this.noise_lamps_freq.set(cfg.getDouble("Noise-Lamps-Freq"));
+		}
 		// block types
-		final ConfigurationSection cfg = this.plugin.getLevelBlocks(19);
-		this.block_wall .set(cfg.getString("Wall" ));
-		this.block_floor.set(cfg.getString("Floor"));
-		this.block_beam .set(cfg.getString("Beam" ));
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(19);
+			this.block_wall .set(cfg.getString("Wall" ));
+			this.block_floor.set(cfg.getString("Floor"));
+			this.block_beam .set(cfg.getString("Beam" ));
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
+		cfg.addDefault("Level19.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
 		// block types
 		cfg.addDefault("Level19.Blocks.Wall",  DEFAULT_BLOCK_WALL );
 		cfg.addDefault("Level19.Blocks.Floor", DEFAULT_BLOCK_FLOOR);

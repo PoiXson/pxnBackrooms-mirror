@@ -8,6 +8,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -36,7 +37,12 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_005 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_THRESH_ROOM_HALL = 0.65;
+	public static final double DEFAULT_NOISE_WALL_FREQ   = 0.02;
+	public static final double DEFAULT_NOISE_WALL_JITTER = 0.3;
+	public static final double DEFAULT_NOISE_ROOM_FREQ   = 0.01;
+	public static final int    DEFAULT_NOISE_ROOM_OCTAVE = 2;
+	public static final double DEFAULT_NOISE_ROOM_GAIN   = 0.6;
+	public static final double DEFAULT_THRESH_ROOM_HALL  = 0.65;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR     = "minecraft:oak_planks";
@@ -51,7 +57,12 @@ public class Gen_005 extends BackroomsGen {
 	public final FastNoiseLiteD noiseHotelStairs;
 
 	// params
-	public final AtomicDouble thresh_room_hall = new AtomicDouble(DEFAULT_THRESH_ROOM_HALL);
+	public final AtomicDouble  noise_wall_freq   = new AtomicDouble( DEFAULT_NOISE_WALL_FREQ  );
+	public final AtomicDouble  noise_wall_jitter = new AtomicDouble( DEFAULT_NOISE_WALL_JITTER);
+	public final AtomicDouble  noise_room_freq   = new AtomicDouble( DEFAULT_NOISE_ROOM_FREQ  );
+	public final AtomicInteger noise_room_octave = new AtomicInteger(DEFAULT_NOISE_ROOM_OCTAVE);
+	public final AtomicDouble  noise_room_gain   = new AtomicDouble( DEFAULT_NOISE_ROOM_GAIN  );
+	public final AtomicDouble  thresh_room_hall  = new AtomicDouble( DEFAULT_THRESH_ROOM_HALL );
 
 	// blocks
 	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
@@ -65,21 +76,29 @@ public class Gen_005 extends BackroomsGen {
 	public Gen_005(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// hotel walls
+		// noise
 		this.noiseHotelWalls = this.register(new FastNoiseLiteD());
-		this.noiseHotelWalls.setFrequency(0.02);
-		this.noiseHotelWalls.setCellularJitter(0.3);
+		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
+		this.noiseHotelStairs = this.register(new FastNoiseLiteD());
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// hotel walls
+		this.noiseHotelWalls.setFrequency(     this.noise_wall_freq  .get());
+		this.noiseHotelWalls.setCellularJitter(this.noise_wall_jitter.get());
 		this.noiseHotelWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseHotelWalls.setFractalType(FractalType.PingPong);
 		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		// hotel rooms
-		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
-		this.noiseHotelRooms.setFrequency(0.01);
-		this.noiseHotelRooms.setFractalOctaves(2);
+		this.noiseHotelRooms.setFrequency(     this.noise_room_freq  .get());
+		this.noiseHotelRooms.setFractalOctaves(this.noise_room_octave.get());
+		this.noiseHotelRooms.setFractalGain(   this.noise_room_gain  .get());
 		this.noiseHotelRooms.setFractalType(FractalType.FBm);
-		this.noiseHotelRooms.setFractalGain(0.6);
 		// hotel stairs to attic
-		this.noiseHotelStairs = this.register(new FastNoiseLiteD());
 		this.noiseHotelStairs.setFrequency(0.03);
 	}
 
@@ -299,7 +318,12 @@ public class Gen_005 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(5);
-			this.thresh_room_hall.set(cfg.getDouble("Thresh-Room-Or-Hall"));
+			this.noise_wall_freq  .set(cfg.getDouble("Noise-Wall-Freq"    ));
+			this.noise_wall_jitter.set(cfg.getDouble("Noise-Wall-Jitter"  ));
+			this.noise_room_freq  .set(cfg.getDouble("Noise-Room-Freq"    ));
+			this.noise_room_octave.set(cfg.getInt(   "Noise-Room-Octave"  ));
+			this.noise_room_gain  .set(cfg.getDouble("Noise-Room-Gain"    ));
+			this.thresh_room_hall .set(cfg.getDouble("Thresh-Room-Or-Hall"));
 		}
 		// block types
 		{
@@ -313,7 +337,12 @@ public class Gen_005 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL);
+		cfg.addDefault("Level5.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
+		cfg.addDefault("Level5.Params.Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
+		cfg.addDefault("Level5.Params.Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );
+		cfg.addDefault("Level5.Params.Noise-Room-Octave",   DEFAULT_NOISE_ROOM_OCTAVE);
+		cfg.addDefault("Level5.Params.Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
+		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
 		// block types
 		cfg.addDefault("Level5.Blocks.SubFloor",     DEFAULT_BLOCK_SUBFLOOR   );
 		cfg.addDefault("Level5.Blocks.SubCeiling",   DEFAULT_BLOCK_SUBCEILING );

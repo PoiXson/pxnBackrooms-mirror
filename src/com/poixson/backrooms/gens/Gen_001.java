@@ -6,6 +6,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -32,6 +33,14 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_001 extends BackroomsGen {
 
 	// default params
+	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.033;
+	public static final int    DEFAULT_NOISE_WALL_OCTAVE   = 2;
+	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.03;
+	public static final double DEFAULT_NOISE_WALL_STRENGTH = 1.2;
+	public static final double DEFAULT_NOISE_MOIST_FREQ    = 0.015;
+	public static final int    DEFAULT_NOISE_MOIST_OCTAVE  = 2;
+	public static final double DEFAULT_NOISE_MOIST_GAIN    = 2.0;
+	public static final double DEFAULT_NOISE_WELL_FREQ     = 0.0028;
 	public static final double DEFAULT_THRESH_WALL  = 0.9;
 	public static final double DEFAULT_THRESH_MOIST = 0.4;
 	public static final double DEFAULT_THRESH_WELL  = 0.9;
@@ -50,9 +59,17 @@ public class Gen_001 extends BackroomsGen {
 	public final FastNoiseLiteD noiseWell;
 
 	// params
-	public final AtomicDouble thresh_wall  = new AtomicDouble(DEFAULT_THRESH_WALL );
-	public final AtomicDouble thresh_moist = new AtomicDouble(DEFAULT_THRESH_MOIST);
-	public final AtomicDouble thresh_well  = new AtomicDouble(DEFAULT_THRESH_WELL );
+	public final AtomicDouble  noise_wall_freq     = new AtomicDouble( DEFAULT_NOISE_WALL_FREQ    );
+	public final AtomicInteger noise_wall_octave   = new AtomicInteger(DEFAULT_NOISE_WALL_OCTAVE  );
+	public final AtomicDouble  noise_wall_gain     = new AtomicDouble( DEFAULT_NOISE_WALL_GAIN    );
+	public final AtomicDouble  noise_wall_strength = new AtomicDouble( DEFAULT_NOISE_WALL_STRENGTH);
+	public final AtomicDouble  noise_moist_freq    = new AtomicDouble( DEFAULT_NOISE_MOIST_FREQ   );
+	public final AtomicInteger noise_moist_octave  = new AtomicInteger(DEFAULT_NOISE_MOIST_OCTAVE );
+	public final AtomicDouble  noise_moist_gain    = new AtomicDouble( DEFAULT_NOISE_MOIST_GAIN   );
+	public final AtomicDouble  noise_well_freq     = new AtomicDouble( DEFAULT_NOISE_WELL_FREQ    );
+	public final AtomicDouble  thresh_wall         = new AtomicDouble( DEFAULT_THRESH_WALL        );
+	public final AtomicDouble  thresh_moist        = new AtomicDouble( DEFAULT_THRESH_MOIST       );
+	public final AtomicDouble  thresh_well         = new AtomicDouble( DEFAULT_THRESH_WELL        );
 
 	// blocks
 	public final AtomicReference<String> block_wall      = new AtomicReference<String>(null);
@@ -65,24 +82,32 @@ public class Gen_001 extends BackroomsGen {
 	public Gen_001(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// basement wall noise
+		// noise
 		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
-		this.noiseBasementWalls.setFrequency(0.033);
-		this.noiseBasementWalls.setFractalOctaves(2);
-		this.noiseBasementWalls.setFractalGain(0.03);
-		this.noiseBasementWalls.setFractalPingPongStrength(1.2);
+		this.noiseMoist         = this.register(new FastNoiseLiteD());
+		this.noiseWell          = this.register(new FastNoiseLiteD());
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// basement wall noise
+		this.noiseBasementWalls.setFrequency(              this.noise_wall_freq    .get());
+		this.noiseBasementWalls.setFractalOctaves(         this.noise_wall_octave  .get());
+		this.noiseBasementWalls.setFractalGain(            this.noise_wall_gain    .get());
+		this.noiseBasementWalls.setFractalPingPongStrength(this.noise_wall_strength.get());
 		this.noiseBasementWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseBasementWalls.setFractalType(FractalType.PingPong);
 		this.noiseBasementWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseBasementWalls.setCellularReturnType(CellularReturnType.Distance);
 		// moist noise
-		this.noiseMoist = this.register(new FastNoiseLiteD());
-		this.noiseMoist.setFrequency(0.015);
-		this.noiseMoist.setFractalOctaves(2);
-		this.noiseMoist.setFractalGain(2.0);
+		this.noiseMoist.setFrequency(     this.noise_moist_freq  .get());
+		this.noiseMoist.setFractalOctaves(this.noise_moist_octave.get());
+		this.noiseMoist.setFractalGain(   this.noise_moist_gain  .get());
 		// well noise
-		this.noiseWell = this.register(new FastNoiseLiteD());
-		this.noiseWell.setFrequency(0.0028);
+		this.noiseWell.setFrequency(this.noise_well_freq.get());
 	}
 
 
@@ -203,9 +228,17 @@ public class Gen_001 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(1);
-			this.thresh_wall .set(cfg.getDouble("Thresh-Wall" ));
-			this.thresh_moist.set(cfg.getDouble("Thresh-Moist"));
-			this.thresh_well .set(cfg.getDouble("Thresh-Well" ));
+			this.noise_wall_freq    .set(cfg.getDouble("Noise-Wall-Freq"    ));
+			this.noise_wall_octave  .set(cfg.getInt(   "Noise-Wall-Octave"  ));
+			this.noise_wall_gain    .set(cfg.getDouble("Noise-Wall-Gain"    ));
+			this.noise_wall_strength.set(cfg.getDouble("Noise-Wall-Strength"));
+			this.noise_moist_freq   .set(cfg.getDouble("Noise-Moist-Freq"   ));
+			this.noise_moist_octave .set(cfg.getInt(   "Noise-Moist-Octave" ));
+			this.noise_moist_gain   .set(cfg.getDouble("Noise-Moist-Gain"   ));
+			this.noise_well_freq    .set(cfg.getDouble("Noise-Well-Freq"    ));
+			this.thresh_wall        .set(cfg.getDouble("Thresh-Wall"        ));
+			this.thresh_moist       .set(cfg.getDouble("Thresh-Moist"       ));
+			this.thresh_well        .set(cfg.getDouble("Thresh-Well"        ));
 		}
 		// block types
 		{
@@ -218,9 +251,17 @@ public class Gen_001 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level1.Params.Thresh-Wall",  DEFAULT_THRESH_WALL );
-		cfg.addDefault("Level1.Params.Thresh-Moist", DEFAULT_THRESH_MOIST);
-		cfg.addDefault("Level1.Params.Thresh-Well",  DEFAULT_THRESH_WELL );
+		cfg.addDefault("Level1.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+		cfg.addDefault("Level1.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+		cfg.addDefault("Level1.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+		cfg.addDefault("Level1.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+		cfg.addDefault("Level1.Params.Noise-Moist-Freq",    DEFAULT_NOISE_MOIST_FREQ   );
+		cfg.addDefault("Level1.Params.Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
+		cfg.addDefault("Level1.Params.Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
+		cfg.addDefault("Level1.Params.Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
+		cfg.addDefault("Level1.Params.Thresh-Wall",         DEFAULT_THRESH_WALL        );
+		cfg.addDefault("Level1.Params.Thresh-Moist",        DEFAULT_THRESH_MOIST       );
+		cfg.addDefault("Level1.Params.Thresh-Well",         DEFAULT_THRESH_WELL        );
 		// block types
 		cfg.addDefault("Level1.Blocks.Wall",      DEFAULT_BLOCK_WALL     );
 		cfg.addDefault("Level1.Blocks.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );

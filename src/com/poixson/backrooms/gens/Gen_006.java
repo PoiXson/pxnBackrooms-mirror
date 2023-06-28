@@ -5,6 +5,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -23,6 +24,7 @@ import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;
 
@@ -30,10 +32,19 @@ import com.poixson.utils.FastNoiseLiteD;
 // 6 | Lights Out
 public class Gen_006 extends BackroomsGen {
 
+	// default params
+	public static final double DEFAULT_NOISE_SWITCH_FREQ   = 0.008;
+	public static final int    DEFAULT_NOISE_SWITCH_OCTAVE = 2;
+
+	// default blocks
 	public static final String DEFAULT_BLOCK_WALL = "minecraft:glowstone";
 
 	// noise
 	public final FastNoiseLiteD noiseLightSwitch;
+
+	// params
+	public final AtomicDouble  noise_switch_freq   = new AtomicDouble( DEFAULT_NOISE_SWITCH_FREQ  );
+	public final AtomicInteger noise_switch_octave = new AtomicInteger(DEFAULT_NOISE_SWITCH_OCTAVE);
 
 	// blocks
 	public final AtomicReference<String> block_wall = new AtomicReference<String>(null);
@@ -43,10 +54,17 @@ public class Gen_006 extends BackroomsGen {
 	public Gen_006(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// light switch
+		// noise
 		this.noiseLightSwitch = this.register(new FastNoiseLiteD());
-		this.noiseLightSwitch.setFrequency(0.008);
-		this.noiseLightSwitch.setFractalOctaves(2);
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		// light switch
+		this.noiseLightSwitch.setFrequency(     this.noise_switch_freq  .get());
+		this.noiseLightSwitch.setFractalOctaves(this.noise_switch_octave.get());
 	}
 
 
@@ -129,11 +147,22 @@ public class Gen_006 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
+		// params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(6);
+			this.noise_switch_freq  .set(cfg.getDouble("Noise-Switch-Freq"  ));
+			this.noise_switch_octave.set(cfg.getInt(   "Noise-Switch-Octave"));
+		}
 		// block types
-		final ConfigurationSection cfg = this.plugin.getLevelBlocks(6);
-		this.block_wall.set(cfg.getString("Wall"));
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(6);
+			this.block_wall.set(cfg.getString("Wall"));
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
+		cfg.addDefault("Level6.Params.Noise-Switch-Freq",   DEFAULT_NOISE_SWITCH_FREQ  );
+		cfg.addDefault("Level6.Params.Noise-Switch-Octave", DEFAULT_NOISE_SWITCH_OCTAVE);
 		// block types
 		cfg.addDefault("Level6.Blocks.Wall", DEFAULT_BLOCK_WALL);
 	}

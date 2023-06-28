@@ -4,6 +4,7 @@ import static com.poixson.backrooms.worlds.Level_033.ENABLE_GEN_033;
 import static com.poixson.backrooms.worlds.Level_033.ENABLE_TOP_033;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -24,6 +25,9 @@ import com.poixson.utils.FastNoiseLiteD;
 public class Gen_033 extends BackroomsGen {
 
 	// default params
+	public static final double DEFAULT_NOISE_FLOOR_FREQ   = 0.1;
+	public static final int    DEFAULT_NOISE_FLOOR_OCTAVE = 2;
+	public static final double DEFAULT_NOISE_FLOOR_GAIN   = 2.0;
 	public static final double DEFAULT_THRESH_FLOOR  = -0.4;
 	public static final double DEFAULT_THRESH_HAZARD =  0.7;
 
@@ -40,6 +44,9 @@ public class Gen_033 extends BackroomsGen {
 	public final FastNoiseLiteD noiseFloor;
 
 	// params
+	public final AtomicDouble  noise_floor_freq   = new AtomicDouble( DEFAULT_NOISE_FLOOR_FREQ  );
+	public final AtomicInteger noise_floor_octave = new AtomicInteger(DEFAULT_NOISE_FLOOR_OCTAVE);
+	public final AtomicDouble  noise_floor_gain   = new AtomicDouble( DEFAULT_NOISE_FLOOR_GAIN  );
 	public final AtomicDouble thresh_floor  = new AtomicDouble(DEFAULT_THRESH_FLOOR );
 	public final AtomicDouble thresh_hazard = new AtomicDouble(DEFAULT_THRESH_HAZARD);
 
@@ -57,12 +64,20 @@ public class Gen_033 extends BackroomsGen {
 	public Gen_033(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// pool rooms
+		// noise
 		this.noiseFloor = this.register(new FastNoiseLiteD());
-		this.noiseFloor.setFrequency(0.1);
-		this.noiseFloor.setFractalOctaves(2);
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// pool rooms
+		this.noiseFloor.setFrequency(     this.noise_floor_freq  .get());
+		this.noiseFloor.setFractalOctaves(this.noise_floor_octave.get());
+		this.noiseFloor.setFractalGain(   this.noise_floor_gain  .get());
 		this.noiseFloor.setFractalType(FastNoiseLiteD.FractalType.FBm);
-		this.noiseFloor.setFractalGain(2.0);
 	}
 
 
@@ -153,8 +168,11 @@ public class Gen_033 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(33);
-			this.thresh_floor .set(cfg.getDouble("Thresh-Floor" ));
-			this.thresh_hazard.set(cfg.getDouble("Thresh-Hazard"));
+			this.noise_floor_freq  .set(cfg.getDouble("Noise-Floor-Freq"  ));
+			this.noise_floor_octave.set(cfg.getInt(   "Noise-Floor-Octave"));
+			this.noise_floor_gain  .set(cfg.getDouble("Noise-Floor-Gain"  ));
+			this.thresh_floor      .set(cfg.getDouble("Thresh-Floor"      ));
+			this.thresh_hazard     .set(cfg.getDouble("Thresh-Hazard"     ));
 		}
 		// block types
 		{
@@ -170,8 +188,11 @@ public class Gen_033 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level33.Params.Thresh-Floor",  DEFAULT_THRESH_FLOOR );
-		cfg.addDefault("Level33.Params.Thresh-Hazard", DEFAULT_THRESH_HAZARD);
+		cfg.addDefault("Level33.Params.Noise-Freq",    DEFAULT_NOISE_FLOOR_FREQ  );
+		cfg.addDefault("Level33.Params.Noise-Octave",  DEFAULT_NOISE_FLOOR_OCTAVE);
+		cfg.addDefault("Level33.Params.Noise-Gain",    DEFAULT_NOISE_FLOOR_GAIN  );
+		cfg.addDefault("Level33.Params.Thresh-Floor",  DEFAULT_THRESH_FLOOR      );
+		cfg.addDefault("Level33.Params.Thresh-Hazard", DEFAULT_THRESH_HAZARD     );
 		// block types
 		cfg.addDefault("Level33.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
 		cfg.addDefault("Level33.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );

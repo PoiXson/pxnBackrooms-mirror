@@ -36,10 +36,13 @@ import com.poixson.utils.StringUtils;
 public class Gen_771 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_THRESH_LIGHT  = 0.42; // lanterns
-	public static final double DEFAULT_THRESH_LADDER = 0.81; // ladder shaft
-	public static final double DEFAULT_THRESH_VOID   = 0.85; // void shaft
-	public static final double DEFAULT_THRESH_LOOT   = 0.7;  // loot chest
+	public static final double DEFAULT_NOISE_LAMPS_FREQ = 0.3;
+	public static final double DEFAULT_NOISE_EXITS_FREQ = 0.5;
+	public static final double DEFAULT_NOISE_LOOT_FREQ  = 0.1;
+	public static final double DEFAULT_THRESH_LAMPS     = 0.42; // lanterns
+	public static final double DEFAULT_THRESH_LADDER    = 0.81; // ladder shaft
+	public static final double DEFAULT_THRESH_VOID      = 0.85; // void shaft
+	public static final double DEFAULT_THRESH_LOOT      = 0.7;  // loot chest
 	public static final int PILLAR_B_OFFSET = 10;
 
 	// default blocks
@@ -51,10 +54,13 @@ public class Gen_771 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLoot;
 
 	// params
-	public final AtomicDouble thresh_light  = new AtomicDouble(DEFAULT_THRESH_LIGHT);
-	public final AtomicDouble thresh_ladder = new AtomicDouble(DEFAULT_THRESH_LADDER);
-	public final AtomicDouble thresh_void   = new AtomicDouble(DEFAULT_THRESH_VOID);
-	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT);
+	public final AtomicDouble noise_lamps_freq = new AtomicDouble(DEFAULT_NOISE_LAMPS_FREQ);
+	public final AtomicDouble noise_exits_freq = new AtomicDouble(DEFAULT_NOISE_EXITS_FREQ);
+	public final AtomicDouble noise_loot_freq  = new AtomicDouble(DEFAULT_NOISE_LOOT_FREQ );
+	public final AtomicDouble thresh_lamps     = new AtomicDouble(DEFAULT_THRESH_LAMPS    );
+	public final AtomicDouble thresh_ladder    = new AtomicDouble(DEFAULT_THRESH_LADDER   );
+	public final AtomicDouble thresh_void      = new AtomicDouble(DEFAULT_THRESH_VOID     );
+	public final AtomicDouble thresh_loot      = new AtomicDouble(DEFAULT_THRESH_LOOT     );
 
 	// blocks
 //TODO
@@ -75,15 +81,23 @@ public class Gen_771 extends BackroomsGen {
 	public Gen_771(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// road lanterns
+		// noise
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
-		this.noiseRoadLights.setFrequency(0.3);
-		// special exits
 		this.noiseSpecial = this.register(new FastNoiseLiteD());
-		this.noiseSpecial.setFrequency(0.5);
-		// chest loot
 		this.noiseLoot = this.register(new FastNoiseLiteD());
-		this.noiseLoot.setFrequency(0.1);
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// road lanterns
+		this.noiseRoadLights.setFrequency(this.noise_lamps_freq.get());
+		// special exits
+		this.noiseSpecial.setFrequency(this.noise_exits_freq.get());
+		// chest loot
+		this.noiseLoot.setFrequency(this.noise_loot_freq.get());
 	}
 
 
@@ -251,7 +265,7 @@ plot.type('-', Material.POLISHED_BLACKSTONE_SLAB);
 	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final double thresh_light = this.thresh_light.get();
+		final double thresh_lamps = this.thresh_lamps.get();
 		final BlockPlotter plot =
 			(new PlotterFactory())
 			.placer(chunk)
@@ -276,7 +290,7 @@ plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 			matrix[1][i].append("   +");
 			matrix[0][i].append("*##" );
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
-			if (value_light > thresh_light) {
+			if (value_light > thresh_lamps) {
 				matrix[2][i].append("   i");
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
@@ -286,7 +300,7 @@ plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final double thresh_light = this.thresh_light.get();
+		final double thresh_light = this.thresh_lamps.get();
 		final BlockPlotter plot =
 				(new PlotterFactory())
 				.placer(chunk)
@@ -590,10 +604,13 @@ plot.type(',', "minecraft:light[level=15]");
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(771);
-			this.thresh_light .set(cfg.getDouble("Thresh-Light" ));
-			this.thresh_ladder.set(cfg.getDouble("Thresh-Ladder"));
-			this.thresh_void  .set(cfg.getDouble("Thresh-Void"  ));
-			this.thresh_loot  .set(cfg.getDouble("Thresh-Loot"  ));
+			this.noise_lamps_freq.set(cfg.getDouble("Noise-Lamps-Freq"));
+			this.noise_exits_freq.set(cfg.getDouble("Noise-Exits-Freq"));
+			this.noise_loot_freq .set(cfg.getDouble("Noise-Loot-Freq"));
+			this.thresh_lamps    .set(cfg.getDouble("Thresh-Lamps"   ));
+			this.thresh_ladder   .set(cfg.getDouble("Thresh-Ladder"  ));
+			this.thresh_void     .set(cfg.getDouble("Thresh-Void"    ));
+			this.thresh_loot     .set(cfg.getDouble("Thresh-Loot"    ));
 		}
 		// block types
 		{
@@ -602,10 +619,13 @@ plot.type(',', "minecraft:light[level=15]");
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level771.Params.Thresh-Light",  DEFAULT_THRESH_LIGHT );
-		cfg.addDefault("Level771.Params.Thresh-Ladder", DEFAULT_THRESH_LADDER);
-		cfg.addDefault("Level771.Params.Thresh-Void",   DEFAULT_THRESH_VOID  );
-		cfg.addDefault("Level771.Params.Thresh-Loot",   DEFAULT_THRESH_LOOT  );
+		cfg.addDefault("Level771.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
+		cfg.addDefault("Level771.Params.Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
+		cfg.addDefault("Level771.Params.Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );
+		cfg.addDefault("Level771.Params.Thresh-Lamps",     DEFAULT_THRESH_LAMPS    );
+		cfg.addDefault("Level771.Params.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
+		cfg.addDefault("Level771.Params.Thresh-Void",      DEFAULT_THRESH_VOID     );
+		cfg.addDefault("Level771.Params.Thresh-Loot",      DEFAULT_THRESH_LOOT     );
 		// block types
 //TODO
 	}

@@ -8,6 +8,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Location;
@@ -46,7 +47,13 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_000 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_THRESH_WALL_L = 0.38;
+	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.022;
+	public static final int    DEFAULT_NOISE_WALL_OCTAVE   = 2;
+	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.1;
+	public static final double DEFAULT_NOISE_WALL_LACUN    = 0.4;
+	public static final double DEFAULT_NOISE_WALL_STRENGTH = 2.28;
+	public static final double DEFAULT_NOISE_LOOT_FREQ     = 0.1;
+	public static final double DEFAULT_THRESH_WALL_L       = 0.38;
 	public static final double DEFAULT_THRESH_WALL_H = 0.5;
 	public static final double DEFAULT_THRESH_LOOT   = 0.65;
 
@@ -65,9 +72,15 @@ public class Gen_000 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLoot;
 
 	// params
-	public final AtomicDouble thresh_wall_L = new AtomicDouble(DEFAULT_THRESH_WALL_L);
-	public final AtomicDouble thresh_wall_H = new AtomicDouble(DEFAULT_THRESH_WALL_H);
-	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT  );
+	public final AtomicDouble  noise_wall_freq     = new AtomicDouble( DEFAULT_NOISE_WALL_FREQ    );
+	public final AtomicInteger noise_wall_octave   = new AtomicInteger(DEFAULT_NOISE_WALL_OCTAVE  );
+	public final AtomicDouble  noise_wall_gain     = new AtomicDouble( DEFAULT_NOISE_WALL_GAIN    );
+	public final AtomicDouble  noise_wall_lacun    = new AtomicDouble( DEFAULT_NOISE_WALL_LACUN   );
+	public final AtomicDouble  noise_wall_strength = new AtomicDouble( DEFAULT_NOISE_WALL_STRENGTH);
+	public final AtomicDouble  noise_loot_freq     = new AtomicDouble( DEFAULT_NOISE_LOOT_FREQ    );
+	public final AtomicDouble  thresh_wall_L       = new AtomicDouble( DEFAULT_THRESH_WALL_L      );
+	public final AtomicDouble  thresh_wall_H       = new AtomicDouble( DEFAULT_THRESH_WALL_H      );
+	public final AtomicDouble  thresh_loot         = new AtomicDouble( DEFAULT_THRESH_LOOT        );
 
 	// blocks
 	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
@@ -82,20 +95,28 @@ public class Gen_000 extends BackroomsGen {
 	public Gen_000(final BackroomsLevel backlevel,
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
-		// lobby walls
+		// noise
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
-		this.noiseLobbyWalls.setFrequency(0.022);
-		this.noiseLobbyWalls.setFractalOctaves(2);
-		this.noiseLobbyWalls.setFractalGain(0.1);
-		this.noiseLobbyWalls.setFractalLacunarity(0.4);
+		this.noiseLoot       = this.register(new FastNoiseLiteD());
+	}
+
+
+
+	@Override
+	public void setSeed(final int seed) {
+		super.setSeed(seed);
+		// lobby walls
+		this.noiseLobbyWalls.setFrequency(              this.noise_wall_freq    .get());
+		this.noiseLobbyWalls.setFractalOctaves(         this.noise_wall_octave  .get());
+		this.noiseLobbyWalls.setFractalGain(            this.noise_wall_gain    .get());
+		this.noiseLobbyWalls.setFractalLacunarity(      this.noise_wall_lacun   .get());
+		this.noiseLobbyWalls.setFractalPingPongStrength(this.noise_wall_strength.get());
 		this.noiseLobbyWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseLobbyWalls.setFractalType(FractalType.PingPong);
-		this.noiseLobbyWalls.setFractalPingPongStrength(2.28);
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
 		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
 		// chest loot
-		this.noiseLoot = this.register(new FastNoiseLiteD());
-		this.noiseLoot.setFrequency(0.1);
+		this.noiseLoot.setFrequency(this.noise_loot_freq.get());
 	}
 
 
@@ -459,9 +480,15 @@ public class Gen_000 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(0);
-			this.thresh_wall_L.set(cfg.getDouble("Thresh-Wall-L"));
-			this.thresh_wall_H.set(cfg.getDouble("Thresh-Wall-H"));
-			this.thresh_loot  .set(cfg.getDouble("Thresh-Loot"  ));
+			this.noise_wall_freq    .set(cfg.getDouble("Noise-Wall-Freq"    ));
+			this.noise_wall_octave  .set(cfg.getInt(   "Noise-Wall-Octave"  ));
+			this.noise_wall_gain    .set(cfg.getDouble("Noise-Wall-Gain"    ));
+			this.noise_wall_lacun   .set(cfg.getDouble("Noise-Wall-Lacun"   ));
+			this.noise_wall_strength.set(cfg.getDouble("Noise-Wall-Strength"));
+			this.noise_loot_freq    .set(cfg.getDouble("Noise-Loot-Freq"    ));
+			this.thresh_wall_L      .set(cfg.getDouble("Thresh-Wall-L"      ));
+			this.thresh_wall_H      .set(cfg.getDouble("Thresh-Wall-H"      ));
+			this.thresh_loot        .set(cfg.getDouble("Thresh-Loot"        ));
 		}
 		// block types
 		{
@@ -476,9 +503,15 @@ public class Gen_000 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level0.Params.Thresh-Wall-L", DEFAULT_THRESH_WALL_L);
-		cfg.addDefault("Level0.Params.Thresh-Wall-H", DEFAULT_THRESH_WALL_H);
-		cfg.addDefault("Level0.Params.Thresh-Loot",   DEFAULT_THRESH_LOOT  );
+		cfg.addDefault("Level0.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+		cfg.addDefault("Level0.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+		cfg.addDefault("Level0.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+		cfg.addDefault("Level0.Params.Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
+		cfg.addDefault("Level0.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+		cfg.addDefault("Level0.Params.Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
+		cfg.addDefault("Level0.Params.Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
+		cfg.addDefault("Level0.Params.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
+		cfg.addDefault("Level0.Params.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
 		// block types
 		cfg.addDefault("Level0.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
 		cfg.addDefault("Level0.Blocks.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
