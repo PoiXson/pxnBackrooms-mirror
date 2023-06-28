@@ -187,11 +187,11 @@ public class Gen_033 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level33.Params.Noise-Freq",    DEFAULT_NOISE_FLOOR_FREQ  );
-		cfg.addDefault("Level33.Params.Noise-Octave",  DEFAULT_NOISE_FLOOR_OCTAVE);
-		cfg.addDefault("Level33.Params.Noise-Gain",    DEFAULT_NOISE_FLOOR_GAIN  );
-		cfg.addDefault("Level33.Params.Thresh-Floor",  DEFAULT_THRESH_FLOOR      );
-		cfg.addDefault("Level33.Params.Thresh-Hazard", DEFAULT_THRESH_HAZARD     );
+		cfg.addDefault("Level33.Params.Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
+		cfg.addDefault("Level33.Params.Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
+		cfg.addDefault("Level33.Params.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
+		cfg.addDefault("Level33.Params.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
+		cfg.addDefault("Level33.Params.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
 		// block types
 		cfg.addDefault("Level33.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
 		cfg.addDefault("Level33.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );

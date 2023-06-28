@@ -209,14 +209,14 @@ public class Gen_309 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(309);
-			this.noise_path_freq    .set(cfg.getInt("Noise-Path-Freq"    ));
-			this.noise_ground_freq  .set(cfg.getInt("Noise-Ground-Freq"  ));
-			this.noise_ground_octave.set(cfg.getInt("Noise-Ground-Octave"));
-			this.noise_ground_gain  .set(cfg.getInt("Noise-Ground-Gain"  ));
-			this.noise_ground_lacun .set(cfg.getInt("Noise-Ground-Lacun" ));
-			this.noise_trees_freq   .set(cfg.getInt("Noise-Trees-Freq"   ));
-			this.path_width         .set(cfg.getInt("Path-Width"         ));
-			this.path_clearing      .set(cfg.getInt("Path-Clearing"      ));
+			this.noise_path_freq    .set(cfg.getDouble("Noise-Path-Freq"    ));
+			this.noise_ground_freq  .set(cfg.getDouble("Noise-Ground-Freq"  ));
+			this.noise_ground_octave.set(cfg.getInt(   "Noise-Ground-Octave"));
+			this.noise_ground_gain  .set(cfg.getDouble("Noise-Ground-Gain"  ));
+			this.noise_ground_lacun .set(cfg.getDouble("Noise-Ground-Lacun" ));
+			this.noise_trees_freq   .set(cfg.getDouble("Noise-Trees-Freq"   ));
+			this.path_width         .set(cfg.getInt(   "Path-Width"         ));
+			this.path_clearing      .set(cfg.getInt(   "Path-Clearing"      ));
 		}
 		// block types
 		{
