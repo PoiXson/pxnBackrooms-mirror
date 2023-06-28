@@ -179,10 +179,10 @@ plot.type('^', "minecraft:polished_blackstone_brick_stairs");
 			.y((this.level_y + this.level_h) - 3)
 			.whd(16, 5, 16)
 			.build();
-		plot.type('#', Material.POLISHED_BLACKSTONE            );
-		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE   );
-		plot.type('X', Material.GILDED_BLACKSTONE              );
-		plot.type('*', Material.BLACKSTONE                     );
+		plot.type('#', Material.POLISHED_BLACKSTONE         );
+		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
+		plot.type('X', Material.GILDED_BLACKSTONE           );
+		plot.type('*', Material.BLACKSTONE                  );
 plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 plot.type('-', Material.POLISHED_BLACKSTONE_SLAB);
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");

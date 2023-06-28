@@ -192,12 +192,12 @@ public class Gen_094 extends BackroomsGen {
 		final BlockData block_house_roofB      = StringToBlockData(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
 		final BlockData block_house_roof_solid = StringToBlockData(this.block_house_roof_solid,  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
 		final BlockData block_house_window = StringToBlockData(this.block_house_window, DEFAULT_BLOCK_HOUSE_WINDOW);
-		if (block_dirt             == null) throw new RuntimeException("Invalid block type for level 94 Dirt"           );
-		if (block_grass            == null) throw new RuntimeException("Invalid block type for level 94 Grass"          );
-		if (block_fern             == null) throw new RuntimeException("Invalid block type for level 94 Fern"           );
-		if (block_rose             == null) throw new RuntimeException("Invalid block type for level 94 Rose"           );
+		if (block_dirt             == null) throw new RuntimeException("Invalid block type for level 94 Dirt"             );
 		if (block_grass_block      == null) throw new RuntimeException("Invalid block type for level 94 Grass-Block"       );
 		if (block_grass_slab       == null) throw new RuntimeException("Invalid block type for level 94 Grass-Slab"        );
+		if (block_grass            == null) throw new RuntimeException("Invalid block type for level 94 Grass"            );
+		if (block_fern             == null) throw new RuntimeException("Invalid block type for level 94 Fern"             );
+		if (block_rose             == null) throw new RuntimeException("Invalid block type for level 94 Rose"             );
 		if (block_house_wall       == null) throw new RuntimeException("Invalid block type for level 94 House-Wall"       );
 		if (block_house_roofA      == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Stairs");
 		if (block_house_roofB      == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Stairs");
@@ -340,12 +340,12 @@ public class Gen_094 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(94);
-			this.block_dirt             .set(cfg.getString("Dirt"           ));
-			this.block_grass            .set(cfg.getString("Grass"          ));
-			this.block_fern             .set(cfg.getString("Fern"           ));
-			this.block_rose             .set(cfg.getString("Rose"           ));
+			this.block_dirt             .set(cfg.getString("Dirt"             ));
 			this.block_grass_block      .set(cfg.getString("Grass-Block"      ));
 			this.block_grass_slab       .set(cfg.getString("Grass-Slab"       ));
+			this.block_grass            .set(cfg.getString("Grass"            ));
+			this.block_fern             .set(cfg.getString("Fern"             ));
+			this.block_rose             .set(cfg.getString("Rose"             ));
 			this.block_house_wall       .set(cfg.getString("House-Wall"       ));
 			this.block_house_roof_stairs.set(cfg.getString("House-Roof-Stairs"));
 			this.block_house_roof_solid .set(cfg.getString("House-Roof-Solid" ));
@@ -362,12 +362,12 @@ public class Gen_094 extends BackroomsGen {
 		cfg.addDefault("Level94.Params.House-Width",  DEFAULT_HOUSE_WIDTH );
 		cfg.addDefault("Level94.Params.House-Height", DEFAULT_HOUSE_HEIGHT);
 		// block types
-		cfg.addDefault("Level94.Blocks.Dirt",            DEFAULT_BLOCK_DIRT             );
-		cfg.addDefault("Level94.Blocks.Grass",           DEFAULT_BLOCK_GRASS            );
-		cfg.addDefault("Level94.Blocks.Fern",            DEFAULT_BLOCK_FERN             );
-		cfg.addDefault("Level94.Blocks.Rose",            DEFAULT_BLOCK_ROSE             );
+		cfg.addDefault("Level94.Blocks.Dirt",              DEFAULT_BLOCK_DIRT             );
 		cfg.addDefault("Level94.Blocks.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
 		cfg.addDefault("Level94.Blocks.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
+		cfg.addDefault("Level94.Blocks.Grass",             DEFAULT_BLOCK_GRASS            );
+		cfg.addDefault("Level94.Blocks.Fern",              DEFAULT_BLOCK_FERN             );
+		cfg.addDefault("Level94.Blocks.Rose",              DEFAULT_BLOCK_ROSE             );
 		cfg.addDefault("Level94.Blocks.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
 		cfg.addDefault("Level94.Blocks.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
 		cfg.addDefault("Level94.Blocks.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );

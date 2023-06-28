@@ -139,8 +139,8 @@ public class Gen_001 extends BackroomsGen {
 		final BlockData block_subfloor  = StringToBlockData(this.block_subfloor,  DEFAULT_BLOCK_SUBFLOOR );
 		final BlockData block_floor_dry = StringToBlockData(this.block_floor_dry, DEFAULT_BLOCK_FLOOR_DRY);
 		final BlockData block_floor_wet = StringToBlockData(this.block_floor_wet, DEFAULT_BLOCK_FLOOR_WET);
-		if (block_wall      == null) throw new RuntimeException("Invalid block type for level 1 Wall"    );
-		if (block_subfloor  == null) throw new RuntimeException("Invalid block type for level 1 SubFloor");
+		if (block_wall      == null) throw new RuntimeException("Invalid block type for level 1 Wall"     );
+		if (block_subfloor  == null) throw new RuntimeException("Invalid block type for level 1 SubFloor" );
 		if (block_floor_dry == null) throw new RuntimeException("Invalid block type for level 1 Floor-Dry");
 		if (block_floor_wet == null) throw new RuntimeException("Invalid block type for level 1 Floor-Wet");
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
@@ -210,8 +210,8 @@ public class Gen_001 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(1);
-			this.block_wall     .set(cfg.getString("Wall"    ));
-			this.block_subfloor .set(cfg.getString("SubFloor"));
+			this.block_wall     .set(cfg.getString("Wall"     ));
+			this.block_subfloor .set(cfg.getString("SubFloor" ));
 			this.block_floor_dry.set(cfg.getString("Floor-Dry"));
 			this.block_floor_wet.set(cfg.getString("Floor-Wet"));
 		}
@@ -222,8 +222,8 @@ public class Gen_001 extends BackroomsGen {
 		cfg.addDefault("Level1.Params.Thresh-Moist", DEFAULT_THRESH_MOIST);
 		cfg.addDefault("Level1.Params.Thresh-Well",  DEFAULT_THRESH_WELL );
 		// block types
-		cfg.addDefault("Level1.Blocks.Wall",     DEFAULT_BLOCK_WALL     );
-		cfg.addDefault("Level1.Blocks.SubFloor", DEFAULT_BLOCK_SUBFLOOR );
+		cfg.addDefault("Level1.Blocks.Wall",      DEFAULT_BLOCK_WALL     );
+		cfg.addDefault("Level1.Blocks.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
 		cfg.addDefault("Level1.Blocks.Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
 		cfg.addDefault("Level1.Blocks.Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
 	}

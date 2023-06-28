@@ -33,10 +33,10 @@ public class Gen_309 extends BackroomsGen {
 	public static final int PATH_START_Z  = 32;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_DIRT       = "minecraft:dirt";
-	public static final String DEFAULT_BLOCK_PATH       = "minecraft:dirt_path";
-	public static final String DEFAULT_BLOCK_GRASS      = "minecraft:grass_block";
-	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:stone";
+	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
+	public static final String DEFAULT_BLOCK_PATH        = "minecraft:dirt_path";
+	public static final String DEFAULT_BLOCK_GRASS       = "minecraft:grass_block";
+	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:stone";
 	public static final String DEFAULT_BLOCK_TREE_TRUNK  = "minecraft:birch_log";
 	public static final String DEFAULT_BLOCK_TREE_LEAVES = "minecraft:birch_leaves";
 
@@ -204,10 +204,10 @@ public class Gen_309 extends BackroomsGen {
 		cfg.addDefault("Level309.Params.Path-Width",    DEFAULT_PATH_WIDTH   );
 		cfg.addDefault("Level309.Params.Path-Clearing", DEFAULT_PATH_CLEARING);
 		// block types
-		cfg.addDefault("Level309.Blocks.Dirt",       DEFAULT_BLOCK_DIRT      );
-		cfg.addDefault("Level309.Blocks.Path",       DEFAULT_BLOCK_PATH      );
-		cfg.addDefault("Level309.Blocks.Grass",      DEFAULT_BLOCK_GRASS     );
-		cfg.addDefault("Level309.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+		cfg.addDefault("Level309.Blocks.Dirt",        DEFAULT_BLOCK_DIRT       );
+		cfg.addDefault("Level309.Blocks.Path",        DEFAULT_BLOCK_PATH       );
+		cfg.addDefault("Level309.Blocks.Grass",       DEFAULT_BLOCK_GRASS      );
+		cfg.addDefault("Level309.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfg.addDefault("Level309.Blocks.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
 		cfg.addDefault("Level309.Blocks.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
 	}
