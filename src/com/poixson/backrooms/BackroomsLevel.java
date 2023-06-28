@@ -31,6 +31,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
@@ -312,7 +313,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 //			case 9:   y = Level_009.LEVEL_Y; break; // suburbs
 //			case 10:  y = Level_010.LEVEL_Y; break; // field of wheat
 //			case 11:  y = Level_011.LEVEL_Y; break; // concrete jungle
-//			case 33:  y = Level_033.LEVEL_Y; break; // run for your life
+			case 33:  y = Level_033.LEVEL_Y; break; // run for your life
 //			case 36:  y = Level_036.LEVEL_Y; break; // airport
 			case 78:  y = 200;               break; // space
 			case 94:  y = Level_094.LEVEL_Y; break; // motion

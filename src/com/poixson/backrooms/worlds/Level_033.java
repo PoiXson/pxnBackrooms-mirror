@@ -1,10 +1,12 @@
-/*
 package com.poixson.backrooms.worlds;
 
 import java.util.LinkedList;
 
+import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.backrooms.gens.Gen_033;
+import com.poixson.backrooms.listeners.Listener_033;
 import com.poixson.commonmc.tools.plotter.BlockPlotter;
 
 
@@ -14,11 +16,14 @@ public class Level_033 extends BackroomsLevel {
 	public static final boolean ENABLE_GEN_033 = true;
 	public static final boolean ENABLE_TOP_033 = true;
 
-	public static final int LEVEL_Y = 0;
+	public static final int LEVEL_Y = 50;
 	public static final int LEVEL_H = 8;
 
 	// generators
 	public final Gen_033 gen;
+
+	// listeners
+	protected final Listener_033 listener_033;
 
 
 
@@ -31,6 +36,21 @@ public class Level_033 extends BackroomsLevel {
 		}
 		// generators
 		this.gen = this.register(new Gen_033(this, LEVEL_Y, LEVEL_H));
+		// listeners
+		this.listener_033 = new Listener_033(plugin);
+	}
+
+
+
+	@Override
+	public void register() {
+		super.register();
+		this.listener_033.register();
+	}
+	@Override
+	public void unregister() {
+		super.unregister();
+		this.listener_033.unregister();
 	}
 
 
@@ -59,4 +79,3 @@ public class Level_033 extends BackroomsLevel {
 
 
 }
-*/
