@@ -41,6 +41,7 @@ import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
+import com.poixson.utils.RandomUtils;
 
 
 // 0 | Lobby
@@ -60,12 +61,13 @@ public class Gen_000 extends BackroomsGen {
 	public static final int WALL_SEARCH_DIST = 6;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_WALL       = "minecraft:yellow_terracotta";
-	public static final String DEFAULT_BLOCK_WALL_BASE  = "minecraft:orange_terracotta";
-	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_SUBCEILING = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_CARPET     = "minecraft:light_gray_wool";
-	public static final String DEFAULT_BLOCK_CEILING    = "minecraft:smooth_stone_slab[type=top]";
+	public static final String DEFAULT_BLOCK_WALL        = "minecraft:yellow_terracotta";
+	public static final String DEFAULT_BLOCK_WALL_BASE   = "minecraft:orange_terracotta";
+	public static final String DEFAULT_BLOCK_WALL_OUTLET = "minecraft:pink_terracotta";
+	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_SUBCEILING  = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_CARPET      = "minecraft:light_gray_wool";
+	public static final String DEFAULT_BLOCK_CEILING     = "minecraft:smooth_stone_slab[type=top]";
 
 	// noise
 	public final FastNoiseLiteD noiseLobbyWalls;
@@ -83,12 +85,13 @@ public class Gen_000 extends BackroomsGen {
 	public final AtomicDouble  thresh_loot         = new AtomicDouble( DEFAULT_THRESH_LOOT        );
 
 	// blocks
-	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_wall_base  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_carpet     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling    = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_wall        = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_wall_base   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_wall_outlet = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor    = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_carpet      = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_ceiling     = new AtomicReference<String>(null);
 
 
 
@@ -245,19 +248,21 @@ public class Gen_000 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_000) return;
-		final BlockData block_wall       = StringToBlockData(this.block_wall,       DEFAULT_BLOCK_WALL      );
-		final BlockData block_wall_base  = StringToBlockData(this.block_wall_base,  DEFAULT_BLOCK_WALL_BASE );
-		final BlockData block_subfloor   = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
-		final BlockData block_subceiling = StringToBlockData(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
-		final BlockData block_carpet     = StringToBlockData(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
-		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
+		final BlockData block_wall        = StringToBlockData(this.block_wall,        DEFAULT_BLOCK_WALL       );
+		final BlockData block_wall_base   = StringToBlockData(this.block_wall_base,   DEFAULT_BLOCK_WALL_BASE  );
+		final BlockData block_wall_outlet = StringToBlockData(this.block_wall_outlet, DEFAULT_BLOCK_WALL_OUTLET);
+		final BlockData block_subfloor    = StringToBlockData(this.block_subfloor,    DEFAULT_BLOCK_SUBFLOOR   );
+		final BlockData block_subceiling  = StringToBlockData(this.block_subceiling,  DEFAULT_BLOCK_SUBCEILING );
+		final BlockData block_carpet      = StringToBlockData(this.block_carpet,      DEFAULT_BLOCK_CARPET     );
+		final BlockData block_ceiling     = StringToBlockData(this.block_ceiling,     DEFAULT_BLOCK_CEILING    );
 		final BlockData block_overgrowth_wall = StringToBlockData(((Level_000)this.backlevel).gen_023.block_wall, Gen_023.DEFAULT_BLOCK_WALL);
-		if (block_wall       == null) throw new RuntimeException("Invalid block type for level 0 Wall"      );
-		if (block_wall_base  == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base" );
-		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"  );
-		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling");
-		if (block_carpet     == null) throw new RuntimeException("Invalid block type for level 0 Carpet"    );
-		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"   );
+		if (block_wall        == null) throw new RuntimeException("Invalid block type for level 0 Wall"       );
+		if (block_wall_base   == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base"  );
+		if (block_wall_outlet == null) throw new RuntimeException("Invalid block type for level 0 Wall-Outlet");
+		if (block_subfloor    == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"   );
+		if (block_subceiling  == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling" );
+		if (block_carpet      == null) throw new RuntimeException("Invalid block type for level 0 Carpet"     );
+		if (block_ceiling     == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"    );
 		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall");
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
@@ -267,6 +272,8 @@ public class Gen_000 extends BackroomsGen {
 		final int cy = this.level_h + y + 1;
 		int xx, zz;
 		int modX7, modZ7;
+		int outlet_rnd;
+		int outlet_last = 0;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
@@ -281,8 +288,11 @@ public class Gen_000 extends BackroomsGen {
 				if (dao.isWall) {
 					// lobby walls
 					final int h = this.level_h + 3;
-					chunk.setBlock(ix, y,   iz, block_subfloor );
-					chunk.setBlock(ix, y+1, iz, block_wall_base);
+					chunk.setBlock(ix, y, iz, block_subfloor);
+					outlet_rnd = RandomUtils.GetNewRandom(0, 100, outlet_last);
+					outlet_last = outlet_rnd;
+					if (outlet_rnd == 11) chunk.setBlock(ix, y+1, iz, block_wall_outlet);
+					else                  chunk.setBlock(ix, y+1, iz, block_wall_base  );
 					for (int iy=2; iy<h; iy++)
 						chunk.setBlock(ix, y+iy, iz, block_wall);
 				// room
@@ -492,12 +502,13 @@ public class Gen_000 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
-			this.block_wall      .set(cfg.getString("Wall"      ));
-			this.block_wall_base .set(cfg.getString("Wall-Base" ));
-			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
-			this.block_subceiling.set(cfg.getString("SubCeiling"));
-			this.block_carpet    .set(cfg.getString("Carpet"    ));
-			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
+			this.block_wall       .set(cfg.getString("Wall"       ));
+			this.block_wall_base  .set(cfg.getString("Wall-Base"  ));
+			this.block_wall_outlet.set(cfg.getString("Wall-Outlet"));
+			this.block_subfloor   .set(cfg.getString("SubFloor"   ));
+			this.block_subceiling .set(cfg.getString("SubCeiling" ));
+			this.block_carpet     .set(cfg.getString("Carpet"     ));
+			this.block_ceiling    .set(cfg.getString("Ceiling"    ));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -512,12 +523,13 @@ public class Gen_000 extends BackroomsGen {
 		cfg.addDefault("Level0.Params.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
 		cfg.addDefault("Level0.Params.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
 		// block types
-		cfg.addDefault("Level0.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
-		cfg.addDefault("Level0.Blocks.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
-		cfg.addDefault("Level0.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-		cfg.addDefault("Level0.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
-		cfg.addDefault("Level0.Blocks.Carpet",     DEFAULT_BLOCK_CARPET    );
-		cfg.addDefault("Level0.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+		cfg.addDefault("Level0.Blocks.Wall",        DEFAULT_BLOCK_WALL       );
+		cfg.addDefault("Level0.Blocks.Wall-Base",   DEFAULT_BLOCK_WALL_BASE  );
+		cfg.addDefault("Level0.Blocks.Wall-Outlet", DEFAULT_BLOCK_WALL_OUTLET);
+		cfg.addDefault("Level0.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+		cfg.addDefault("Level0.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
+		cfg.addDefault("Level0.Blocks.Carpet",      DEFAULT_BLOCK_CARPET     );
+		cfg.addDefault("Level0.Blocks.Ceiling",     DEFAULT_BLOCK_CEILING    );
 	}
 
 
