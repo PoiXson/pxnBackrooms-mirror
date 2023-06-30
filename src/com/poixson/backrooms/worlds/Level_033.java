@@ -73,7 +73,7 @@ public class Level_033 extends BackroomsLevel {
 
 	@Override
 	public int getY(final int level) {
-		return LEVEL_Y;
+		return LEVEL_Y + 1;
 	}
 	@Override
 	public int getMaxY(final int level) {
