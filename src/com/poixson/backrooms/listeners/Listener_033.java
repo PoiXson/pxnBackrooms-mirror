@@ -1,10 +1,13 @@
 package com.poixson.backrooms.listeners;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.commonmc.events.OutsideOfWorldEvent;
 import com.poixson.commonmc.tools.plugin.xListener;
 
 
@@ -19,11 +22,45 @@ public class Listener_033 extends xListener<BackroomsPlugin> {
 
 
 
+	// -------------------------------------------------------------------------------
+	// disable explosion damage
+
+
+
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
-	public void onEntityExplode(final EntityExplodeEvent event) {
-		final int level = this.plugin.getLevelFromWorld(event.getEntity().getWorld());
-		if (level == 33)
-			event.setYield(0.0f);
+	public void onEntityDamaged(final EntityDamageByEntityEvent event) {
+		final Entity entity = event.getEntity();
+		if (entity instanceof Player) {
+			switch (event.getCause()) {
+			case BLOCK_EXPLOSION:
+			case ENTITY_EXPLOSION:
+				event.setCancelled(true);
+				break;
+			default: break;
+			}
+		}
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// void/sky teleport
+
+
+
+	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
+		final int level = this.plugin.getLevelFromWorld(event.getTo().getWorld());
+		if (level == 33) {
+			if (event.getOutsideDistance() > 0) {
+				final Player player = event.getPlayer();
+				switch (event.getOutsideWhere()) {
+				case VOID: this.plugin.noclip(player, 33); break;
+				case SKY:  break;
+				default: throw new RuntimeException("Unknown OutsideOfWorld event type");
+				}
+			}
+		}
 	}
 
 
