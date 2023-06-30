@@ -272,6 +272,7 @@ public class Gen_000 extends BackroomsGen {
 		final int cy = this.level_h + y + 1;
 		int xx, zz;
 		int modX7, modZ7;
+		int outlets = 0;
 		int outlet_rnd;
 		int outlet_last = 0;
 		for (int iz=0; iz<16; iz++) {
@@ -289,10 +290,10 @@ public class Gen_000 extends BackroomsGen {
 					// lobby walls
 					final int h = this.level_h + 3;
 					chunk.setBlock(ix, y, iz, block_subfloor);
-					outlet_rnd = RandomUtils.GetNewRandom(0, 100, outlet_last);
+					outlet_rnd = RandomUtils.GetNewRandom(0, 100+(int)Math.pow(10.0, outlets), outlet_last);
 					outlet_last = outlet_rnd;
-					if (outlet_rnd == 11) chunk.setBlock(ix, y+1, iz, block_wall_outlet);
-					else                  chunk.setBlock(ix, y+1, iz, block_wall_base  );
+					if (outlet_rnd == 11) { chunk.setBlock(ix, y+1, iz, block_wall_outlet); outlets++; }
+					else                    chunk.setBlock(ix, y+1, iz, block_wall_base  );
 					for (int iy=2; iy<h; iy++)
 						chunk.setBlock(ix, y+iy, iz, block_wall);
 				// room
