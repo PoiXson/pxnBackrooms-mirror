@@ -277,8 +277,10 @@ public class Gen_000 extends BackroomsGen {
 		int outlet_last = 0;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
+			modZ7 = (zz < 0 ? 0-zz : zz) % 7;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
+				modX7 = (xx < 0 ? 1-xx : xx) % 7;
 				// lobby floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int iy=0; iy<SUBFLOOR; iy++)
@@ -301,8 +303,6 @@ public class Gen_000 extends BackroomsGen {
 					// floor
 					chunk.setBlock(ix, y, iz, block_carpet);
 					if (ENABLE_TOP_000) {
-						modX7 = (xx < 0 ? 1-xx : xx) % 7;
-						modZ7 = (zz < 0 ? 0-zz : zz) % 7;
 						if (modZ7 == 0 && modX7 < 2
 						&& dao.wall_dist > 2) {
 							// ceiling lights

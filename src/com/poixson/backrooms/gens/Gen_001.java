@@ -171,11 +171,14 @@ public class Gen_001 extends BackroomsGen {
 		BasementData dao;
 		final int y = this.level_y + SUBFLOOR + 1;
 		final int h = this.level_h + 1;
+		int modX10, modZ10;
 		int xx, zz;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
+			modZ10 = (zz < 0 ? 0-zz : zz) % 10;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
+				modX10 = (xx < 0 ? 0-xx : xx) % 10;
 				// basement floor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				for (int yy=0; yy<SUBFLOOR; yy++)
@@ -193,8 +196,6 @@ public class Gen_001 extends BackroomsGen {
 					if (dao.isWet) chunk.setBlock(ix, y, iz, block_floor_wet);
 					else           chunk.setBlock(ix, y, iz, block_floor_dry);
 					// basement lights
-					final int modX10 = Math.abs(xx) % 10;
-					final int modZ10 = Math.abs(zz) % 10;
 					if (modZ10 == 0) {
 						if (modX10 < 3 || modX10 > 7) {
 							chunk.setBlock(ix, y+LAMP_Y, iz, Material.REDSTONE_LAMP);
