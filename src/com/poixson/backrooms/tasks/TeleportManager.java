@@ -155,7 +155,8 @@ public class TeleportManager {
 				return null;
 			}
 			final Location spawn = backlevel.getNewSpawnArea(level);
-			this.cachedSpawns.put(Integer.valueOf(level), spawn);
+			if (backlevel.canCacheSpawn())
+				this.cachedSpawns.put(Integer.valueOf(level), spawn);
 			return spawn;
 		}
 	}

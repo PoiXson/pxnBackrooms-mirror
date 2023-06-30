@@ -176,6 +176,10 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
+	public boolean canCacheSpawn() {
+		return true;
+	}
+
 	public int getLevelFromY(final int y) {
 		return this.getMainLevel();
 	}
