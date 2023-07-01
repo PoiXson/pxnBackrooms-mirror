@@ -31,6 +31,7 @@ public class Gen_033 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_FLOOR_GAIN   = 2.0;
 	public static final double DEFAULT_THRESH_FLOOR       =-0.4;
 	public static final double DEFAULT_THRESH_HAZARD      = 0.7;
+	public static final int    DEFAULT_DANGER_CHUNKS      = 3;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL       = "minecraft:blackstone";
@@ -48,8 +49,9 @@ public class Gen_033 extends BackroomsGen {
 	public final AtomicDouble  noise_floor_freq   = new AtomicDouble( DEFAULT_NOISE_FLOOR_FREQ  );
 	public final AtomicInteger noise_floor_octave = new AtomicInteger(DEFAULT_NOISE_FLOOR_OCTAVE);
 	public final AtomicDouble  noise_floor_gain   = new AtomicDouble( DEFAULT_NOISE_FLOOR_GAIN  );
-	public final AtomicDouble thresh_floor  = new AtomicDouble(DEFAULT_THRESH_FLOOR );
-	public final AtomicDouble thresh_hazard = new AtomicDouble(DEFAULT_THRESH_HAZARD);
+	public final AtomicDouble thresh_floor        = new AtomicDouble(DEFAULT_THRESH_FLOOR       );
+	public final AtomicDouble thresh_hazard       = new AtomicDouble(DEFAULT_THRESH_HAZARD      );
+	public final AtomicInteger danger_chunks      = new AtomicInteger(DEFAULT_DANGER_CHUNKS     );
 
 	// blocks
 	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
@@ -102,6 +104,7 @@ public class Gen_033 extends BackroomsGen {
 		if (block_hazard     == null) throw new RuntimeException("Invalid block type for level 33 Hazard"    );
 		final double thresh_floor  = this.thresh_floor .get();
 		final double thresh_hazard = this.thresh_hazard.get();
+		final int danger_chunks    = this.danger_chunks.get() + 1;
 		double valueFloor;
 		int xx, zz;
 		boolean safe;
@@ -129,7 +132,7 @@ public class Gen_033 extends BackroomsGen {
 					break;
 				default: {
 					valueFloor = 0.0 - this.noiseFloor.getNoise(xx, zz*2);
-					safe = (chunkZ % 5 == 0);
+					safe = (chunkZ % danger_chunks == 0);
 					// ceiling
 					if (ENABLE_TOP_033)
 						chunk.setBlock(ix, this.level_y+this.level_h-1, iz, block_ceiling);
@@ -173,6 +176,7 @@ public class Gen_033 extends BackroomsGen {
 			this.noise_floor_gain  .set(cfg.getDouble("Noise-Floor-Gain"  ));
 			this.thresh_floor      .set(cfg.getDouble("Thresh-Floor"      ));
 			this.thresh_hazard     .set(cfg.getDouble("Thresh-Hazard"     ));
+			this.danger_chunks     .set(cfg.getInt(   "Danger-Chunks"     ));
 		}
 		// block types
 		{
@@ -193,6 +197,7 @@ public class Gen_033 extends BackroomsGen {
 		cfg.addDefault("Level33.Params.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
 		cfg.addDefault("Level33.Params.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
 		cfg.addDefault("Level33.Params.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
+		cfg.addDefault("Level33.Params.Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
 		// block types
 		cfg.addDefault("Level33.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
 		cfg.addDefault("Level33.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
