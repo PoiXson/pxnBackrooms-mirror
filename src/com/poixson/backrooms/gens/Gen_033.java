@@ -137,20 +137,23 @@ public class Gen_033 extends BackroomsGen {
 					if (ENABLE_TOP_033)
 						chunk.setBlock(ix, this.level_y+this.level_h-1, iz, block_ceiling);
 					// floor
-					if (valueFloor > thresh_floor) {
-						if (safe) {
+					if (safe) {
+						if (chunkZ == 0
+						||  valueFloor > thresh_floor) {
 							chunk.setBlock(ix, this.level_y,   iz, block_floor_safe);
 							chunk.setBlock(ix, this.level_y-1, iz, block_floor_safe);
-						} else {
+						}
+					} else {
+						if (valueFloor > thresh_floor) {
 							chunk.setBlock(ix, this.level_y+1, iz, block_plate );
 							chunk.setBlock(ix, this.level_y,   iz, block_floor );
 							chunk.setBlock(ix, this.level_y-1, iz, Material.TNT);
+							chunk.setBlock(ix, this.level_y-2, iz, block_subfloor);
 							if (valueFloor > thresh_hazard) {
 								chunk.setBlock(ix, this.level_y+2, iz, block_hazard);
 								chunk.setBlock(ix, this.level_y+1, iz, block_hazard);
 							}
 						}
-						chunk.setBlock(ix, this.level_y-2, iz, block_subfloor);
 					}
 					break;
 				}
