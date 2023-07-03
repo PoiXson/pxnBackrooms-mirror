@@ -17,9 +17,10 @@ Don't look behind
 Don't look inside
 Don't open the box
 Don't open the door
+Hush
 Oops
 Beg
-Why?
+Why
 Why does everything look the same
 Outpost removed
 Outpost destroyed
@@ -38,10 +39,12 @@ I've been here for days
 It feels like I'm going in circles
 You're not supposed to be here
 You shouldn't have come here
+We've been waiting for you
 It goes on forever
 It never ends
 This place never ends
 I don't remember coming this way before
+Continue this way
 You're not alone in here
 The buzzing never stops
 What is that buzzing?
@@ -98,6 +101,7 @@ No one escapes alive
 You will plead to escape
 Sometimes dead is better
 Even the dead tell stories
+Dead people are here
 Sacrifice them
 Be afraid
 Fear may save you
