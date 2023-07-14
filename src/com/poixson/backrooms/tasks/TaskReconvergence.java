@@ -15,9 +15,9 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 	protected final BackroomsPlugin plugin;
 
 	protected final long updateTicks = (new xTime("1m")).ticks(50L);
-	protected final long updatePeriod = xTime.ParseToLong("1h");
+	protected final long updatePeriod = xTime.ParseToLong("3h");
 	protected final long updateGrace  = xTime.ParseToLong("3m");
-	protected final long maxGrace     = xTime.ParseToLong("10m");
+	protected final long maxGrace     = xTime.ParseToLong("30m");
 
 	protected long lastUpdated = 0L;
 	protected long lastUsed    = 0L;
