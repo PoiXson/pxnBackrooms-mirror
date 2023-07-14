@@ -48,14 +48,16 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 
 	@Override
 	public void run() {
-		if (Bukkit.getOnlinePlayers().size() > 0) {
+		if (this.lastUsed <= 0) return;
+		if (Bukkit.getOnlinePlayers().size() == 0) return;
+		{
 			final long time = GetMS();
 			final long sinceUpdated = time - this.lastUpdated;
 			// update period
 			if (sinceUpdated >= this.updatePeriod) {
-				final long sinceReset = time - this.lastUsed;
+				final long sinceLastUsed = time - this.lastUsed;
 				// within grace period
-				if (sinceReset <= this.updateGrace) {
+				if (sinceLastUsed <= this.updateGrace) {
 					if (sinceUpdated <= this.updatePeriod+this.maxGrace)
 						return;
 				}
