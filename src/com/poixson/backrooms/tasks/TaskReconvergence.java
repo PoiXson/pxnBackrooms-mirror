@@ -10,7 +10,7 @@ import com.poixson.tools.xTime;
 import com.poixson.tools.abstractions.xStartStop;
 
 
-public class TaskHourly extends BukkitRunnable implements xStartStop {
+public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 
 	protected final BackroomsPlugin plugin;
 
@@ -24,7 +24,7 @@ public class TaskHourly extends BukkitRunnable implements xStartStop {
 
 
 
-	public TaskHourly(final BackroomsPlugin plugin) {
+	public TaskReconvergence(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
 	}
 

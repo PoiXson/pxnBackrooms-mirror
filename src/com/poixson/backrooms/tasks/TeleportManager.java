@@ -75,7 +75,7 @@ public class TeleportManager {
 
 
 	public void markUsed() {
-		this.plugin.getHourlyTask()
+		this.plugin.getReconvergenceTask()
 			.markUsed();
 	}
 

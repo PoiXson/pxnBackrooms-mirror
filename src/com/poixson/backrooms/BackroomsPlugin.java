@@ -38,7 +38,7 @@ import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
-import com.poixson.backrooms.tasks.TaskHourly;
+import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.tasks.TeleportManager;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_033;
@@ -63,8 +63,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
 	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
 
-	// hourly task
-	protected final AtomicReference<TaskHourly> hourlyTask = new AtomicReference<TaskHourly>(null);
+	// reconvergence task
+	protected final AtomicReference<TaskReconvergence> taskReconvergence = new AtomicReference<TaskReconvergence>(null);
 
 	// quotes
 	protected final AtomicReference<QuoteAnnouncer> quoteAnnouncer = new AtomicReference<QuoteAnnouncer>(null);
@@ -151,10 +151,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.tpManager.set(TeleportManager.Load(this));
 		// load quotes
 		this.quoteAnnouncer.set(QuoteAnnouncer.Load(this));
-		// hourly task
+		// reconvergence task
 		{
-			final TaskHourly task = new TaskHourly(this);
-			final TaskHourly previous = this.hourlyTask.getAndSet(task);
+			final TaskReconvergence task = new TaskReconvergence(this);
+			final TaskReconvergence previous = this.taskReconvergence.getAndSet(task);
 			if (previous != null)
 				previous.stop();
 			task.start();
@@ -172,9 +172,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	public void onDisable() {
 		super.onDisable();
-		// hourly task
+		// reconvergence task
 		{
-			final TaskHourly task = this.hourlyTask.getAndSet(null);
+			final TaskReconvergence task = this.taskReconvergence.getAndSet(null);
 			if (task != null)
 				task.stop();
 		}
@@ -316,8 +316,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public TaskHourly getHourlyTask() {
-		return this.hourlyTask.get();
+	public TaskReconvergence getReconvergenceTask() {
+		return this.taskReconvergence.get();
 	}
 	public TeleportManager getTeleportManager() {
 		return this.tpManager.get();
