@@ -130,14 +130,19 @@ public class Pop_309 implements BackroomsPop {
 				"scripts", // resource path
 				"backrooms-radiostation.js"
 			);
-		final CraftScript script = new CraftScript(loader, false);
-		script.setVariable("region",         region        );
-		script.setVariable("surface_y",      y             );
-		script.setVariable("enable_ceiling", ENABLE_TOP_309);
-		script.setVariable("path_width",     this.gen.path_width.get());
-		script.setVariable("path_start_x",   PATH_START_X  );
-		script.setVariable("path_start_z",   PATH_START_Z  );
-		script.run();
+		CraftScript script = null;
+		try {
+			script = new CraftScript(loader, false);
+			script.setVariable("region",         region        );
+			script.setVariable("surface_y",      y             );
+			script.setVariable("enable_ceiling", ENABLE_TOP_309);
+			script.setVariable("path_width",     this.gen.path_width.get());
+			script.setVariable("path_start_x",   PATH_START_X  );
+			script.setVariable("path_start_z",   PATH_START_Z  );
+			script.run();
+		} finally {
+			script.close();
+		}
 	}
 
 
