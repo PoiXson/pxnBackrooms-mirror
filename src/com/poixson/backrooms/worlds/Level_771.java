@@ -68,11 +68,11 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public void register() {
 		super.register();
-		this.portal_ladder    .start(plugin); // upper/lower ladder
-		this.portal_drop      .start(plugin); // shaft to lower bridge
-		this.portal_void      .start(plugin); // shaft to void
-		this.loot_chests_upper.start(plugin); // loot upper
-		this.loot_chests_lower.start(plugin); // loot lower
+		this.portal_ladder    .start(this.plugin); // upper/lower ladder
+		this.portal_drop      .start(this.plugin); // shaft to lower bridge
+		this.portal_void      .start(this.plugin); // shaft to void
+		this.loot_chests_upper.start(this.plugin); // loot upper
+		this.loot_chests_lower.start(this.plugin); // loot lower
 		this.listener_771.register();
 	}
 	@Override

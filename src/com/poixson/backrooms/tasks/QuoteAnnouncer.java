@@ -71,7 +71,7 @@ public class QuoteAnnouncer {
 
 
 	public String getQuote() {
-		final int count = quotes.length;
+		final int count = this.quotes.length;
 		final int rnd = RandomUtils.GetNewRandom(0, count, this.lastRnd);
 		this.lastRnd = rnd;
 		return this.quotes[rnd];
