@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 

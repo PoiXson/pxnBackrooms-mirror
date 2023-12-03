@@ -6,7 +6,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 
 import org.bukkit.Material;
 
-import com.poixson.commonmc.tools.TreePopulator;
+import com.poixson.pluginlib.tools.TreePopulator;
 
 
 public class Pop_309_Trees extends TreePopulator {

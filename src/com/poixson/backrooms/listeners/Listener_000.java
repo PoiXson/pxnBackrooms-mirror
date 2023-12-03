@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.commonmc.events.OutsideOfWorldEvent;
-import com.poixson.commonmc.tools.plugin.xListener;
+import com.poixson.pluginlib.events.OutsideOfWorldEvent;
+import com.poixson.pluginlib.tools.plugin.xListener;
 
 
 //   1 | Basement

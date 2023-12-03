@@ -1,7 +1,7 @@
 package com.poixson.backrooms;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -34,7 +34,7 @@ import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 import com.poixson.utils.RandomUtils;
 
 

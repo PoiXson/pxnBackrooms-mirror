@@ -4,7 +4,7 @@ import static com.poixson.backrooms.gens.Gen_309.PATH_START_X;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_Z;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
-import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.LinkedList;
 
@@ -16,10 +16,11 @@ import org.bukkit.generator.LimitedRegion;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
-import com.poixson.commonmc.tools.scripts.CraftScript;
-import com.poixson.commonmc.tools.scripts.loader.ScriptLoader;
-import com.poixson.commonmc.tools.scripts.loader.ScriptLoader_File;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.scripts.CraftScript;
+import com.poixson.pluginlib.tools.scripts.loader.ScriptLoader;
+import com.poixson.pluginlib.tools.scripts.loader.ScriptLoader_File;
+import com.poixson.pluginlib.tools.scripting.engine.CraftScript;
 
 
 // 309 | Radio Station

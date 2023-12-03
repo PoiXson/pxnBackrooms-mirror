@@ -17,8 +17,8 @@ import org.bukkit.event.EventPriority;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.gens.Gen_001;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.commonmc.events.PlayerMoveNormalEvent;
-import com.poixson.commonmc.tools.plugin.xListener;
+import com.poixson.pluginlib.events.PlayerMoveNormalEvent;
+import com.poixson.pluginlib.tools.plugin.xListener;
 
 
 // level 1 - basement

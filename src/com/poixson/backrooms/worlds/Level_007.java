@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.gens.Gen_007;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 
 
 // 7 | Thalassophobia

@@ -2,7 +2,7 @@ package com.poixson.backrooms.gens.hotel;
 
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-import static com.poixson.commonmc.utils.LocationUtils.FaceToIxz;
+import static com.poixson.pluginlib.utils.LocationUtils.FaceToIxz;
 
 import java.util.LinkedList;
 
@@ -11,8 +11,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
-import com.poixson.commonmc.tools.plotter.PlotterFactory;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.PlotterFactory;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.utils.FastNoiseLiteD;

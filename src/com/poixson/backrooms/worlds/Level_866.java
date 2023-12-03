@@ -7,7 +7,7 @@ import org.bukkit.Material;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 
 
 // 866 | Dirtfield

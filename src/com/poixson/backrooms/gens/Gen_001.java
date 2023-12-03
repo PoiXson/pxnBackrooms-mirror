@@ -2,7 +2,7 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_001;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-import static com.poixson.commonmc.utils.BlockUtils.StringToBlockData;
+import static com.poixson.pluginlib.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,7 +20,7 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.FastNoiseLiteD;

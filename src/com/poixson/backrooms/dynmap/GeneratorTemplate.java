@@ -1,7 +1,7 @@
 package com.poixson.backrooms.dynmap;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-import static com.poixson.commonmc.tools.plugin.xJavaPlugin.LOG;
+import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
 
 import java.io.File;
 import java.io.FileWriter;

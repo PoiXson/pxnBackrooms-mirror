@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.commonmc.tools.plugin.xListener;
+import com.poixson.pluginlib.tools.plugin.xListener;
 import com.poixson.tools.xTime;
 import com.poixson.utils.RandomUtils;
 import com.poixson.utils.Utils;

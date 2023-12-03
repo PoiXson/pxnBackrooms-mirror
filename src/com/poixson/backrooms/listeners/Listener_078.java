@@ -14,8 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.commonmc.events.PlayerMoveNormalEvent;
-import com.poixson.commonmc.tools.plugin.xListener;
+import com.poixson.pluginlib.events.PlayerMoveNormalEvent;
+import com.poixson.pluginlib.tools.plugin.xListener;
 
 
 // 78 | Space

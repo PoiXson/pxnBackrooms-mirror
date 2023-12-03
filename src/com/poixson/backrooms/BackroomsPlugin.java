@@ -44,8 +44,8 @@ import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
-import com.poixson.commonmc.tools.DelayedChestFiller;
-import com.poixson.commonmc.tools.plugin.xJavaPlugin;
+import com.poixson.pluginlib.tools.DelayedChestFiller;
+import com.poixson.pluginlib.tools.plugin.xJavaPlugin;
 
 
 public class BackroomsPlugin extends xJavaPlugin {

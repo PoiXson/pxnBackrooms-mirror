@@ -30,8 +30,8 @@ import com.poixson.backrooms.listeners.Listener_000;
 import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.backrooms.listeners.Listener_023;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
-import com.poixson.commonmc.tools.worldstore.LocationStoreManager;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.worldstore.LocationStoreManager;
 import com.poixson.tools.dao.Iab;
 import com.poixson.utils.RandomUtils;
 

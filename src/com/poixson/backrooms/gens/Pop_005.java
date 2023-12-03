@@ -14,7 +14,7 @@ import com.poixson.backrooms.gens.hotel.HotelRoomGuest;
 import com.poixson.backrooms.gens.hotel.HotelRoomPool;
 import com.poixson.backrooms.gens.hotel.HotelRoomStairs;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.commonmc.tools.plotter.BlockPlotter;
+import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 import com.poixson.tools.dao.Iabcd;
 
 
