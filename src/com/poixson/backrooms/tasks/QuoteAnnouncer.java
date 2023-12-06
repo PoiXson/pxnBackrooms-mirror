@@ -1,5 +1,6 @@
 package com.poixson.backrooms.tasks;
 
+import static com.poixson.utils.Utils.IsEmpty;
 import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.InputStream;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.utils.FileUtils;
 import com.poixson.utils.RandomUtils;
-import com.poixson.utils.Utils;
 
 
 public class QuoteAnnouncer {
@@ -41,7 +41,7 @@ public class QuoteAnnouncer {
 		SafeClose(input);
 		final String[] array = data.split("\n");
 		for (final String line : array) {
-			if (Utils.notEmpty(line))
+			if (!IsEmpty(line))
 				quotes.add(line.trim());
 		}
 		return new QuoteAnnouncer(plugin, quotes.toArray(new String[0]));

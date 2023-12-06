@@ -2,13 +2,12 @@ package com.poixson.backrooms.dynmap;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
+import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.poixson.utils.Utils;
 
 
 public class GeneratorPerspective {
@@ -60,7 +59,7 @@ public class GeneratorPerspective {
 		try {
 			FileWriter writer = new FileWriter(file);
 			writer.write(this.toString());
-			Utils.SafeClose(writer);
+			SafeClose(writer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,7 @@
 package com.poixson.backrooms.listeners;
 
+import static com.poixson.utils.Utils.GetMS;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,7 +20,6 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.pluginlib.tools.plugin.xListener;
 import com.poixson.tools.xTime;
 import com.poixson.utils.RandomUtils;
-import com.poixson.utils.Utils;
 
 
 public class PlayerDamageListener extends xListener<BackroomsPlugin> {
@@ -35,11 +36,11 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 		public int count = 1;
 
 		public PlayerDamageDAO() {
-			this.last = Utils.GetMS();
+			this.last = GetMS();
 		}
 
 		public int increment() {
-			this.last = Utils.GetMS();
+			this.last = GetMS();
 			return ++this.count;
 		}
 
@@ -85,7 +86,7 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 				this.lastPlayerDamage.remove(player.getUniqueId());
 				// cleanup
 				if (this.lastPlayerDamage.size() % 5 == 0) {
-					final long time = Utils.GetMS();
+					final long time = GetMS();
 					final ArrayList<UUID> remove = new ArrayList<UUID>();
 					final Iterator<Entry<UUID, PlayerDamageDAO>> it = this.lastPlayerDamage.entrySet().iterator();
 					while (it.hasNext()) {
@@ -107,7 +108,7 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 		{
 			final PlayerDamageDAO dao = this.lastPlayerDamage.get(uuid);
 			if (dao != null) {
-				if (dao.last + DAMAGE_TIMEOUT >= Utils.GetMS())
+				if (dao.last + DAMAGE_TIMEOUT >= GetMS())
 					return dao.increment();
 			}
 		}
