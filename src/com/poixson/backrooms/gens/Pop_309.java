@@ -16,11 +16,11 @@ import org.bukkit.generator.LimitedRegion;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.scripting.xScript;
+import com.poixson.scripting.xScriptInstance;
+import com.poixson.scripting.loader.xScriptLoader;
+import com.poixson.scripting.loader.xScriptLoader_File;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.pluginlib.tools.scripts.CraftScript;
-import com.poixson.pluginlib.tools.scripts.loader.ScriptLoader;
-import com.poixson.pluginlib.tools.scripts.loader.ScriptLoader_File;
-import com.poixson.pluginlib.tools.scripting.engine.CraftScript;
 
 
 // 309 | Radio Station
@@ -124,25 +124,27 @@ public class Pop_309 implements BackroomsPop {
 			return;
 		}
 		// radio station script
-		final ScriptLoader loader =
-			new ScriptLoader_File(
-				this.plugin,
-				"scripts", // local path
-				"scripts", // resource path
-				"backrooms-radiostation.js"
-			);
-		CraftScript script = null;
+		xScript script = null;
 		try {
-			script = new CraftScript(loader, false);
-			script.setVariable("region",         region        );
-			script.setVariable("surface_y",      y             );
-			script.setVariable("enable_ceiling", ENABLE_TOP_309);
-			script.setVariable("path_width",     this.gen.path_width.get());
-			script.setVariable("path_start_x",   PATH_START_X  );
-			script.setVariable("path_start_z",   PATH_START_Z  );
-			script.run();
+			final xScriptLoader loader =
+				new xScriptLoader_File(
+					this.plugin.getClass(),
+					"scripts", // local path
+					"scripts", // resource path
+					"backrooms-radiostation.js"
+				);
+			script = new xScriptInstance(loader, false);
+			script
+				.setVariable("region",         region        )
+				.setVariable("surface_y",      y             )
+				.setVariable("enable_ceiling", ENABLE_TOP_309)
+				.setVariable("path_width",     this.gen.path_width.get())
+				.setVariable("path_start_x",   PATH_START_X  )
+				.setVariable("path_start_z",   PATH_START_Z  );
+			script.start();
 		} finally {
-			script.close();
+			if (script != null)
+				script.stop();
 		}
 	}
 

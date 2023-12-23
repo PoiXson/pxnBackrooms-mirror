@@ -1,7 +1,7 @@
 
 importClass(Packages.org.bukkit.Material);
 
-importClass(Packages.com.poixson.pluginlib.tools.plotter.PlotterFactory);
+importClass(Packages.com.poixson.tools.plotter.PlotterFactory);
 importClass(Packages.com.poixson.utils.StringUtils);
 
 
