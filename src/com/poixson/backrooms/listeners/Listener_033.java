@@ -7,8 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.pluginlib.events.OutsideOfWorldEvent;
-import com.poixson.pluginlib.tools.plugin.xListener;
+import com.poixson.tools.events.xListener;
 
 
 // 33 | Run For Your Life!

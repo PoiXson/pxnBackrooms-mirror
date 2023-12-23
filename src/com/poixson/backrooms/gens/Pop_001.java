@@ -10,8 +10,8 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
-import com.poixson.pluginlib.tools.plotter.PlotterFactory;
+import com.poixson.tools.plotter.BlockPlotter;
+import com.poixson.tools.plotter.PlotterFactory;
 
 
 public class Pop_001 implements BackroomsPop {

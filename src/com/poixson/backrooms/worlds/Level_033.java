@@ -11,8 +11,8 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_033;
 import com.poixson.backrooms.listeners.Listener_033;
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
-import com.poixson.pluginlib.tools.worldstore.VarStore;
+import com.poixson.tools.plotter.BlockPlotter;
+import com.poixson.tools.worldstore.VarStore;
 
 
 // 33 | Run For Your Life!

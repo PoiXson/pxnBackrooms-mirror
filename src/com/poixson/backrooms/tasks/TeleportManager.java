@@ -1,7 +1,6 @@
 package com.poixson.backrooms.tasks;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
 import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.InputStream;
@@ -9,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import org.bukkit.Location;
 
@@ -84,7 +84,7 @@ public class TeleportManager {
 		this.cachedSpawns.clear();
 		this.cachedToLevel.clear();
 		if (count > 0)
-			LOG.info(LOG_PREFIX + "Rolling the teleport dice..");
+			this.log().info(LOG_PREFIX + "Rolling the teleport dice..");
 	}
 
 
@@ -134,7 +134,7 @@ public class TeleportManager {
 			if (total <= rnd)
 				return level;
 		}
-		LOG.warning(LOG_PREFIX + "Failed to find random level");
+		this.log().warning(LOG_PREFIX + "Failed to find random level");
 		return 0;
 	}
 
@@ -151,7 +151,7 @@ public class TeleportManager {
 		{
 			final BackroomsLevel backlevel = this.plugin.getBackroomsLevel(level);
 			if (backlevel == null) {
-				LOG.warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
+				this.log().warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
 				return null;
 			}
 			final Location spawn = backlevel.getNewSpawnArea(level);
@@ -168,10 +168,16 @@ public class TeleportManager {
 	public Location getSpawnLocation(final Location spawn, final int level) {
 		final BackroomsLevel backlevel = this.plugin.getBackroomsLevel(level);
 		if (backlevel == null) {
-			LOG.warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
+			this.log().warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
 			return null;
 		}
 		return backlevel.getSpawnNear(spawn);
+	}
+
+
+
+	public Logger log() {
+		return this.plugin.getLogger();
 	}
 
 

@@ -2,7 +2,7 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-import static com.poixson.pluginlib.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,9 +18,9 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.pluginlib.tools.PathTracer;
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
+import com.poixson.tools.PathTracer;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 

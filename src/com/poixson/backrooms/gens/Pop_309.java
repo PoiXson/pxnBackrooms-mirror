@@ -16,7 +16,7 @@ import org.bukkit.generator.LimitedRegion;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
+import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.pluginlib.tools.scripts.CraftScript;
 import com.poixson.pluginlib.tools.scripts.loader.ScriptLoader;
 import com.poixson.pluginlib.tools.scripts.loader.ScriptLoader_File;

@@ -5,7 +5,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
+import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 

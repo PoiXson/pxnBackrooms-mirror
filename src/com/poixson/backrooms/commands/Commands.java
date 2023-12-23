@@ -1,7 +1,7 @@
 package com.poixson.backrooms.commands;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.pluginlib.tools.commands.pxnCommandsHandler;
+import com.poixson.tools.commands.pxnCommandsHandler;
 
 
 public class Commands extends pxnCommandsHandler<BackroomsPlugin> {

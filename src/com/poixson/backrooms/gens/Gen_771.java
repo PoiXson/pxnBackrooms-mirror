@@ -1,9 +1,9 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
-import static com.poixson.pluginlib.utils.LocationUtils.FaceToAxString;
-import static com.poixson.pluginlib.utils.LocationUtils.FaceToIxz;
-import static com.poixson.pluginlib.utils.LocationUtils.ValueToFaceQuarter;
+import static com.poixson.utils.LocationUtils.FaceToAxString;
+import static com.poixson.utils.LocationUtils.FaceToIxz;
+import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
 
 import java.util.LinkedList;
 
@@ -23,11 +23,11 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_771;
-import com.poixson.pluginlib.tools.DelayedChestFiller;
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
-import com.poixson.pluginlib.tools.plotter.PlotterFactory;
+import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
+import com.poixson.tools.plotter.BlockPlotter;
+import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 

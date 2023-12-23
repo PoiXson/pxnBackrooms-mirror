@@ -13,8 +13,8 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.pluginlib.tools.DelayedLever;
-import com.poixson.pluginlib.tools.plugin.xListener;
+import com.poixson.tools.DelayedLever;
+import com.poixson.tools.events.xListener;
 
 
 // 6 | lobby/lights-out teleport

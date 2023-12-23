@@ -18,7 +18,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.gens.Gen_001;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.pluginlib.events.PlayerMoveNormalEvent;
-import com.poixson.pluginlib.tools.plugin.xListener;
+import com.poixson.tools.events.xListener;
 
 
 // level 1 - basement

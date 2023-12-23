@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.pluginlib.tools.commands.pxnCommand;
+import com.poixson.tools.commands.pxnCommand;
 import com.poixson.utils.NumberUtils;
 
 

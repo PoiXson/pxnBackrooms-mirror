@@ -1,7 +1,6 @@
 package com.poixson.backrooms.worlds;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.LinkedList;
 
@@ -13,8 +12,8 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
-import com.poixson.pluginlib.tools.worldstore.LocationStoreManager;
+import com.poixson.tools.plotter.BlockPlotter;
+import com.poixson.tools.worldstore.LocationStoreManager;
 import com.poixson.utils.RandomUtils;
 
 
@@ -123,7 +122,7 @@ public class Level_771 extends BackroomsLevel {
 				}
 			}
 		}
-		LOG.warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
+		this.log().warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
 		return spawn;
 	}
 

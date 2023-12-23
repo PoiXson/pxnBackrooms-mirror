@@ -44,8 +44,8 @@ import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
-import com.poixson.pluginlib.tools.DelayedChestFiller;
-import com.poixson.pluginlib.tools.plugin.xJavaPlugin;
+import com.poixson.tools.DelayedChestFiller;
+import com.poixson.tools.xJavaPlugin;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
@@ -94,13 +94,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 		{
 			final String pack = Bukkit.getResourcePack();
 			if (pack == null || pack.isEmpty()) {
-				LOG.warning(String.format(
+				this.log().warning(String.format(
 					"%sResource pack not set; You can use this one: %s",
 					LOG_PREFIX,
 					DEFAULT_RESOURCE_PACK.replace("{VERSION}", this.getPluginVersion())
 				));
 			} else {
-				LOG.info(String.format(
+				this.log().info(String.format(
 					"%sUsing resource pack: %s",
 					LOG_PREFIX,
 					Bukkit.getResourcePack()
@@ -432,15 +432,15 @@ public class BackroomsPlugin extends xJavaPlugin {
 		final TeleportManager manager = this.tpManager.get();
 		Location loc = manager.getSpawnLocation(level_to);
 		if (loc == null) {
-			LOG.warning(LOG_PREFIX + "Failed to find spawn for level: " + Integer.toString(level_to));
+			this.log().warning(LOG_PREFIX + "Failed to find spawn for level: " + Integer.toString(level_to));
 			final World world = this.getWorldFromLevel(level_to);
 			if (world == null) {
-				LOG.warning(LOG_PREFIX + "Unknown backrooms world for level: " + Integer.toString(level_to));
+				this.log().warning(LOG_PREFIX + "Unknown backrooms world for level: " + Integer.toString(level_to));
 				return;
 			}
 			loc = world.getSpawnLocation();
 		}
-		LOG.info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level_to));
+		this.log().info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level_to));
 		player.teleport(loc);
 		player.setNoDamageTicks(10);
 		player.setFallDistance(0.0f);
@@ -454,7 +454,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int noclip(final int level_from) {
 		final TeleportManager manager = this.tpManager.get();
 		if (manager == null) {
-			LOG.warning(LOG_PREFIX+"teleport chance weights not loaded");
+			this.log().warning(LOG_PREFIX+"teleport chance weights not loaded");
 			return 0;
 		}
 		return manager.getDestinationLevel(level_from);
@@ -511,7 +511,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 		if (!worldName.startsWith("level"))
 			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
-		LOG.info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
+		this.log().info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
 		final int level = this.getLevelFromWorld(worldName);
 		return this.getBackroomsLevel(level);
 	}
