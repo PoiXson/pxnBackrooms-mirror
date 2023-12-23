@@ -45,7 +45,7 @@ public class Level_771 extends BackroomsLevel {
 		super(plugin, 771);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
-			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 771);
 			gen_tpl.add(771, "crossroads", "Crossroads");
 			gen_tpl.commit();
 		}

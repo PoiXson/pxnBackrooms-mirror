@@ -135,7 +135,7 @@ public class Level_000 extends BackroomsLevel {
 			gen_tpl.add(  6, "lightsout", "Lights Out", Y_006+H_006           );
 			gen_tpl.add( 37, "poolrooms", "Poolrooms",  Y_037+H_037         +1);
 			gen_tpl.add( 05, "hotel",     "Hotel",      Y_005+H_005+SUBFLOOR+1);
-			gen_tpl.add( 19, "attic",     "Attic",      Y_019+H_019+SUBFLOOR+1);
+			gen_tpl.add( 19, "attic",     "Attic",      Y_019      +SUBFLOOR+1);
 			gen_tpl.add(309, "radio",     "Radio Station"                     );
 			gen_tpl.commit();
 		}

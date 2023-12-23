@@ -29,7 +29,7 @@ public class Level_094 extends BackroomsLevel {
 		super(plugin, 94);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
-			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 94);
 			gen_tpl.add(94, "motion", "Motion");
 			gen_tpl.commit();
 		}

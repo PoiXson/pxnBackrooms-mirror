@@ -39,7 +39,7 @@ public class Level_033 extends BackroomsLevel {
 		super(plugin, 33);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
-			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 33);
 			gen_tpl.add(33, "run", "Run For Your Life", LEVEL_Y+LEVEL_H+1);
 		}
 		// generators
