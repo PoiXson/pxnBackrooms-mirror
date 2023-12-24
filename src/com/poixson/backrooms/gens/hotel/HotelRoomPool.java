@@ -3,6 +3,9 @@ package com.poixson.backrooms.gens.hotel;
 import static com.poixson.backrooms.gens.Gen_037.WATER_DEPTH;
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
+import static com.poixson.utils.LocationUtils.FaceToAxisString;
+import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
+import static com.poixson.utils.LocationUtils.Rotate;
 
 import java.util.LinkedList;
 
@@ -81,17 +84,11 @@ public class HotelRoomPool implements HotelRoom {
 		plot.type(',', "minecraft:water[level=0]");
 		plot.type('g', Material.GLOWSTONE        );
 		plot.type('X', Material.BEDROCK          );
-//TODO
-plot.type('-', Material.PRISMARINE_BRICK_SLAB);
-plot.type('$', block_hotel_wall);
-plot.type('&', block_hotel_wall);
-plot.type('d', Material.ACACIA_DOOR);
-plot.type('D', Material.ACACIA_DOOR);
-//		plot.type('-', Material.PRISMARINE_BRICK_SLAB, "top", "logged");
-//		plot.type('$', block_hotel_wall, "up");
-//		plot.type('&', block_hotel_wall, FaceToAxString(Rotate(direction, 0.25)));
-//		plot.type('d', Material.ACACIA_DOOR, "top",    "right", "closed", FaceToAxString(direction));
-//		plot.type('D', Material.ACACIA_DOOR, "bottom", "right", "closed", FaceToAxString(direction));
+		plot.type('-', Material.PRISMARINE_BRICK_SLAB, "[type=top,waterlogged=true]");
+		plot.type('$', block_hotel_wall, "[axis=y]");
+		plot.type('&', block_hotel_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
+		plot.type('d', Material.ACACIA_DOOR, "[half=upper,hinge=right,facing="+FaceToAxisString(facing)+"]");
+		plot.type('D', Material.ACACIA_DOOR, "[half=lower,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		final int hy = Level_000.H_037 + SUBCEILING + SUBFLOOR + 3;

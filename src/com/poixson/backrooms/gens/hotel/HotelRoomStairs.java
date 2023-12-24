@@ -2,7 +2,10 @@ package com.poixson.backrooms.gens.hotel;
 
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
+import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
+import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
+import static com.poixson.utils.LocationUtils.Rotate;
 
 import java.util.LinkedList;
 
@@ -65,19 +68,12 @@ public class HotelRoomStairs implements HotelRoom {
 		plot.type('.', Material.AIR);
 		plot.type('#', Material.BEDROCK);
 		plot.type('=', Material.DARK_OAK_PLANKS);
-//TODO
-plot.type('$', block_hall_wall);
-plot.type('&', block_hall_wall);
-plot.type('d', Material.SPRUCE_DOOR);
-plot.type('D', Material.SPRUCE_DOOR);
-plot.type('_', Material.DARK_OAK_PRESSURE_PLATE);
-plot.type('L', Material.DARK_OAK_STAIRS);
-//		plot.type('$', block_hall_wall, "up");
-//		plot.type('&', block_hall_wall, FaceToAxString(Rotate(direction, 0.25)));
-//		plot.type('d', Material.SPRUCE_DOOR, "top",    "right", "closed", FaceToAxString(direction));
-//		plot.type('D', Material.SPRUCE_DOOR, "bottom", "right", "closed", FaceToAxString(direction));
-//		plot.type('_', Material.DARK_OAK_PRESSURE_PLATE);
-//		plot.type('L', Material.DARK_OAK_STAIRS, FaceToAxString(direction.getOppositeFace()));
+		plot.type('$', block_hall_wall, "[axis=y]");
+		plot.type('&', block_hall_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
+		plot.type('d', Material.SPRUCE_DOOR, "[half=upper,hinge=right,facing="+FaceToAxisString(facing)+"]");
+		plot.type('D', Material.SPRUCE_DOOR, "[half=lower,hinge=right,facing="+FaceToAxisString(facing)+"]");
+		plot.type('_', Material.DARK_OAK_PRESSURE_PLATE);
+		plot.type('L', Material.DARK_OAK_STAIRS, "[half=bottom,facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		final int door_x = Math.floorDiv(w, 2) - 2;
 		char fill;
@@ -141,9 +137,7 @@ plot.type('L', Material.DARK_OAK_STAIRS);
 			.build();
 		plot.type('.', Material.AIR);
 		plot.type('#', Material.BEDROCK);
-//TODO
-plot.type('L', Material.DARK_OAK_STAIRS);
-//		plot.type('L', Material.DARK_OAK_STAIRS, FaceToAxString(direction.getOppositeFace()));
+		plot.type('L', Material.DARK_OAK_STAIRS, "[half=bottom,facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		final int door_x = Math.floorDiv(w, 2) - 2;
 		char fill;

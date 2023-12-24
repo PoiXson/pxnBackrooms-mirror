@@ -1,7 +1,9 @@
 package com.poixson.backrooms.gens;
 
+import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
 import static com.poixson.utils.LocationUtils.FaceToAxString;
+import static com.poixson.utils.LocationUtils.AxToFace;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
 import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
 
@@ -145,19 +147,17 @@ public class Gen_771 extends BackroomsGen {
 			.y(this.level_y + this.level_h + 2)
 			.whd(16, 14, 16)
 			.build();
-		plot.type('#', "minecraft:polished_blackstone_bricks"                 );
-		plot.type('-', "minecraft:polished_blackstone_brick_slab[type=top]"   );
-		plot.type('_', "minecraft:polished_blackstone_brick_slab[type=bottom]");
-//TODO
-plot.type('L', "minecraft:polished_blackstone_brick_stairs");
-plot.type('^', "minecraft:polished_blackstone_brick_stairs");
-//		plot.type('L', "minecraft:polished_blackstone_brick_stairs", Character.toString( Rotate(axis.charAt(2), 0.5))       );
-//		plot.type('^', "minecraft:polished_blackstone_brick_stairs", Character.toString(        axis.charAt(2)      ), "top");
 		plot.type('|', "minecraft:polished_blackstone_brick_wall"             );
 		plot.type('@', "minecraft:chiseled_polished_blackstone"               );
 		plot.type('!', Material.LIGHTNING_ROD                                 );
 		plot.type('8', Material.CHAIN                                         );
 		plot.type('G', Material.SHROOMLIGHT                                   );
+		final BlockFace facing = AxToFace(axis.charAt(2));
+		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                     );
+		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=top]"   );
+		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=bottom]");
+		plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
+		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing)+",half=top]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[13][ 0].append("!");
 		// big arch
@@ -196,10 +196,10 @@ plot.type('^', "minecraft:polished_blackstone_brick_stairs");
 		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
 		plot.type('X', Material.GILDED_BLACKSTONE           );
 		plot.type('*', Material.BLACKSTONE                  );
-plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
-plot.type('-', Material.POLISHED_BLACKSTONE_SLAB);
+//TODO
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-//		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "top");
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "[type=top]");
 		plot.type('.', "minecraft:light[level=15]");
 		plot.type(',', "minecraft:light[level=9]" );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
@@ -276,8 +276,8 @@ plot.type('-', Material.POLISHED_BLACKSTONE_SLAB);
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 //TODO
-plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('i', Material.LANTERN);
 		plot.type('L', "minecraft:light[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
@@ -311,8 +311,8 @@ plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
 //TODO
-plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('i', Material.SOUL_LANTERN);
 		plot.type('L', "minecraft:light[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
@@ -402,36 +402,24 @@ plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 				.build();
 		plot.type('#', Material.DEEPSLATE_BRICKS                  );
 		plot.type('w', Material.DARK_OAK_PLANKS                   );
-//TODO
-plot.type('%', Material.DEEPSLATE_BRICK_STAIRS);
-plot.type('<', Material.DEEPSLATE_BRICK_STAIRS);
-plot.type('$', Material.DEEPSLATE_BRICK_STAIRS);
-plot.type('&', Material.DEEPSLATE_BRICK_STAIRS);
-plot.type('H', Material.LADDER);
-plot.type('/', Material.SPRUCE_TRAPDOOR);
-plot.type('~', Material.CRIMSON_TRAPDOOR);
-plot.type('d', Material.SPRUCE_DOOR);
-plot.type('D', Material.SPRUCE_DOOR);
-//		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "top",    direction.getOppositeFace().toString().toLowerCase());
-//		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.toString().toLowerCase());
-//		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "top",    side.getOppositeFace().toString().toLowerCase());
-//		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "bottom", side.getOppositeFace().toString().toLowerCase());
-//		plot.type('H', Material.LADDER, side.getOppositeFace().toString().toLowerCase());
-//		plot.type('/', Material.SPRUCE_TRAPDOOR,  "top", side.toString().toLowerCase());
-//		plot.type('~', Material.CRIMSON_TRAPDOOR, "top", side.getOppositeFace().toString().toLowerCase());
-//		plot.type('d', Material.SPRUCE_DOOR,      "top", direction.toString().toLowerCase());
-//		plot.type('D', Material.SPRUCE_DOOR,   "bottom", direction.toString().toLowerCase());
+		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(facing.getOppositeFace())+"]");
+		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(side                  )+"]");
+		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(side.getOppositeFace())+"]");
+		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "[half=bottom,facing="+FaceToAxisString(side.getOppositeFace())+"]");
+		plot.type('H', Material.LADDER, "[facing="+FaceToAxisString(side.getOppositeFace())+"]");
+		plot.type('/', Material.SPRUCE_TRAPDOOR,  "[half=top,facing="+FaceToAxisString(side)+"]");
+		plot.type('~', Material.CRIMSON_TRAPDOOR, "[half=top,facing="+FaceToAxisString(side.getOppositeFace())+"]");
+		plot.type('d', Material.SPRUCE_DOOR,      "[half=upper,facing="+FaceToAxisString(facing)+"]");
+		plot.type('D', Material.SPRUCE_DOOR,      "[half=lower,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
 		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE           );
 //TODO
 plot.type('+', Material.DEEPSLATE_TILE_WALL);
-plot.type('S', Material.DARK_OAK_WALL_SIGN);
-plot.type(',', "minecraft:light[level=15]");
 //		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface"   );
-//		plot.type('S', Material.DARK_OAK_WALL_SIGN, direction.getOppositeFace().toString().toLowerCase());
-//		plot.type(',', Material.LIGHT,  "15"                      );
 		plot.type('W', Material.WATER                             );
 		plot.type('.', Material.AIR                               );
+		plot.type('S', Material.DARK_OAK_WALL_SIGN, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
+		plot.type(',', Material.LIGHT, "[level=15]");
 		int h = this.level_h;
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		switch (type) {
