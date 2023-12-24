@@ -35,7 +35,7 @@ public class HotelRoomGuest implements HotelRoom {
 
 
 	@Override
-	public void build(final Iabcd area, final int y, final BlockFace direction,
+	public void build(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final Material block_hotel_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
 		if (block_hotel_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
@@ -55,7 +55,7 @@ public class HotelRoomGuest implements HotelRoom {
 			(new PlotterFactory())
 			.placer(region)
 			.axis("use")
-			.rotate(direction.getOppositeFace())
+			.rotate(facing.getOppositeFace())
 			.xyz(x, y, z)
 			.whd(w, h, d)
 			.build();

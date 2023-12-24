@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.events.OutsideOfWorldEvent;
 import com.poixson.tools.events.xListener;
 
 

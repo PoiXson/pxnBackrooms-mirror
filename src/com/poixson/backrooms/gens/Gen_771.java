@@ -147,17 +147,17 @@ public class Gen_771 extends BackroomsGen {
 			.y(this.level_y + this.level_h + 2)
 			.whd(16, 14, 16)
 			.build();
-		plot.type('|', "minecraft:polished_blackstone_brick_wall"             );
-		plot.type('@', "minecraft:chiseled_polished_blackstone"               );
-		plot.type('!', Material.LIGHTNING_ROD                                 );
-		plot.type('8', Material.CHAIN                                         );
-		plot.type('G', Material.SHROOMLIGHT                                   );
 		final BlockFace facing = AxToFace(axis.charAt(2));
 		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                     );
 		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=top]"   );
 		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=bottom]");
 		plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing)+",half=top]");
+		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE  );
+		plot.type('!', Material.LIGHTNING_ROD                 );
+		plot.type('8', Material.CHAIN                         );
+		plot.type('G', Material.SHROOMLIGHT                   );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[13][ 0].append("!");
 		// big arch
@@ -200,8 +200,8 @@ public class Gen_771 extends BackroomsGen {
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "[type=top]");
-		plot.type('.', "minecraft:light[level=15]");
-		plot.type(',', "minecraft:light[level=9]" );
+		plot.type('.', Material.LIGHT, "[level=15]");
+		plot.type(',', Material.LIGHT, "[level=9]" );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
 		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
@@ -279,7 +279,7 @@ public class Gen_771 extends BackroomsGen {
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('i', Material.LANTERN);
-		plot.type('L', "minecraft:light[level=15]");
+		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
@@ -314,7 +314,7 @@ public class Gen_771 extends BackroomsGen {
 //		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('i', Material.SOUL_LANTERN);
-		plot.type('L', "minecraft:light[level=15]");
+		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
@@ -340,7 +340,7 @@ public class Gen_771 extends BackroomsGen {
 
 
 	protected void generatePillars(final ChunkData chunk,
-			final BlockFace direction, final BlockFace side,
+			final BlockFace facing, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final double thresh_ladder = this.thresh_ladder.get();
 		final double thresh_void   = this.thresh_void.get();
@@ -366,42 +366,41 @@ public class Gen_771 extends BackroomsGen {
 			if (((int)Math.floor(valC*10000.0)) % 2 == 0) pillar_type = PillarType.PILLAR_LOOT_UPPER;
 			else                                          pillar_type = PillarType.PILLAR_LOOT_LOWER;
 		}
-		final BlockFace mirrored = direction.getOppositeFace();
 		final int mod_pillar;
-		switch (direction) {
+		switch (facing) {
 		case NORTH: case SOUTH: mod_pillar = Math.abs(chunkZ) % 4; break;
 		case EAST:  case WEST:  mod_pillar = Math.abs(chunkX) % 4; break;
-		default: throw new RuntimeException("Unknown direction: " + direction.toString());
+		default: throw new RuntimeException("Unknown direction: " + facing.toString());
 		}
-		switch (direction) {
+		switch (facing) {
 		case NORTH:
-			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, x, 15-z); else
-			if (mod_pillar == 1) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ, x,    z); break;
+			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, facing.getOppositeFace(), side, chunkX, chunkZ, x, 15-z); else
+			if (mod_pillar == 1) this.generatePillar(pillar_type, chunk, facing,                   side, chunkX, chunkZ, x,    z); break;
 		case SOUTH:
-			if (mod_pillar == 3) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, x, 15-z); else
-			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ, x,    z); break;
+			if (mod_pillar == 3) this.generatePillar(pillar_type, chunk, facing.getOppositeFace(), side, chunkX, chunkZ, x, 15-z); else
+			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, facing,                   side, chunkX, chunkZ, x,    z); break;
 		case EAST:
-			if (mod_pillar == 3) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, 15-x, z); else
-			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ,    x, z); break;
+			if (mod_pillar == 3) this.generatePillar(pillar_type, chunk, facing.getOppositeFace(), side, chunkX, chunkZ, 15-x, z); else
+			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, facing,                   side, chunkX, chunkZ,    x, z); break;
 		case WEST:
-			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, mirrored,  side, chunkX, chunkZ, 15-x, z); else
-			if (mod_pillar == 1) this.generatePillar(pillar_type, chunk, direction, side, chunkX, chunkZ,    x, z); break;
-		default: throw new RuntimeException("Unknown direction: " + direction.toString());
+			if (mod_pillar == 0) this.generatePillar(pillar_type, chunk, facing.getOppositeFace(), side, chunkX, chunkZ, 15-x, z); else
+			if (mod_pillar == 1) this.generatePillar(pillar_type, chunk, facing,                   side, chunkX, chunkZ,    x, z); break;
+		default: throw new RuntimeException("Unknown direction: " + facing.toString());
 		}
 	}
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
-			final BlockFace direction, final BlockFace side,
+			final BlockFace facing, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final BlockPlotter plot =
 				(new PlotterFactory())
 				.placer(chunk)
-				.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+				.axis("u"+FaceToAxString(facing)+FaceToAxString(side))
 				.xz(x, z)
 				.y(this.level_y)
 				.whd(2, this.level_h+2, 5)
 				.build();
-		plot.type('#', Material.DEEPSLATE_BRICKS                  );
-		plot.type('w', Material.DARK_OAK_PLANKS                   );
+		plot.type('#', Material.DEEPSLATE_BRICKS);
+		plot.type('w', Material.DARK_OAK_PLANKS);
 		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(facing.getOppositeFace())+"]");
 		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(side                  )+"]");
 		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(side.getOppositeFace())+"]");
@@ -412,14 +411,14 @@ public class Gen_771 extends BackroomsGen {
 		plot.type('d', Material.SPRUCE_DOOR,      "[half=upper,facing="+FaceToAxisString(facing)+"]");
 		plot.type('D', Material.SPRUCE_DOOR,      "[half=lower,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
-		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE           );
+		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE);
 //TODO
-plot.type('+', Material.DEEPSLATE_TILE_WALL);
-//		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface"   );
-		plot.type('W', Material.WATER                             );
-		plot.type('.', Material.AIR                               );
+//		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface");
+		plot.type('+', Material.DEEPSLATE_TILE_WALL);
 		plot.type('S', Material.DARK_OAK_WALL_SIGN, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		plot.type(',', Material.LIGHT, "[level=15]");
+		plot.type('W', Material.WATER);
+		plot.type('.', Material.AIR);
 		int h = this.level_h;
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		switch (type) {
@@ -429,7 +428,7 @@ plot.type('+', Material.DEEPSLATE_TILE_WALL);
 		// normal pillar
 		case PILLAR_NORM: {
 			// top of pillar
-			matrix[  h][0].append("   %");
+			matrix[  h][0].append("   $");
 			matrix[--h][0].append("###"); matrix[h][1].append("##");
 			matrix[--h][0].append("###"); matrix[h][1].append("##");
 			matrix[--h][0].append("###"); matrix[h][1].append("#%");

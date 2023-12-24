@@ -56,7 +56,7 @@ public class HotelRoomPool implements HotelRoom {
 
 
 	@Override
-	public void build(final Iabcd area, final int y, final BlockFace direction,
+	public void build(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final Material block_hotel_wall  = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
 		final Material block_pool_wall_a = Material.matchMaterial(this.level0.gen_037.block_wall_a.get());
@@ -74,16 +74,16 @@ public class HotelRoomPool implements HotelRoom {
 			(new PlotterFactory())
 			.placer(region)
 			.axis("use")
-			.rotate(direction.getOppositeFace())
+			.rotate(facing.getOppositeFace())
 			.xyz(x, yy, z)
 			.whd(w, th, d)
 			.build();
 		plot.type('#', block_pool_wall_a);
 		plot.type('@', block_pool_wall_b);
-		plot.type('.', Material.AIR              );
-		plot.type(',', "minecraft:water[level=0]");
-		plot.type('g', Material.GLOWSTONE        );
-		plot.type('X', Material.BEDROCK          );
+		plot.type('.', Material.AIR               );
+		plot.type(',', Material.WATER, "[level=0]");
+		plot.type('g', Material.GLOWSTONE         );
+		plot.type('X', Material.BEDROCK           );
 		plot.type('-', Material.PRISMARINE_BRICK_SLAB, "[type=top,waterlogged=true]");
 		plot.type('$', block_hotel_wall, "[axis=y]");
 		plot.type('&', block_hotel_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");

@@ -113,13 +113,6 @@ public class Gen_023 extends BackroomsGen {
 						} else {
 							// ceiling
 							chunk.setBlock(ix, cy, iz, block_ceiling);
-//TODO
-//							final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
-//							// random concurrent modification exception
-//							synchronized (slab) {
-//								slab.setType(Slab.Type.TOP);
-//								chunk.setBlock(ix, cy, iz, slab);
-//							}
 						}
 					}
 				}

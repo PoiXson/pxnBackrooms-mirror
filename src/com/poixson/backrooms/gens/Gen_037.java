@@ -129,6 +129,8 @@ public class Gen_037 extends BackroomsGen {
 		SOLID,
 	};
 
+
+
 	public class PoolData implements PreGenData {
 
 		public final double valueRoom, valuePortalHotel, valuePortalLobby;
@@ -226,7 +228,7 @@ public class Gen_037 extends BackroomsGen {
 					.build();
 				plot.type('#', block_wall_a);
 				plot.type('@', block_wall_b);
-				plot.type('w', "minecraft:water[level=0]");
+				plot.type('w', Material.WATER, "[level=0]");
 				plot.type('g', block_ceiling);
 				dao = poolData.get(new Iab(rx, rz));
 				solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
@@ -426,7 +428,7 @@ public class Gen_037 extends BackroomsGen {
 							pp.type('#', Material.BEDROCK  );
 							pp.type('g', Material.GLOWSTONE);
 							pp.type('.', Material.AIR      );
-							pp.type(',', "minecraft:water[level=8]");
+							pp.type(',', Material.WATER, "[level=8]");
 							final StringBuilder[][] mtx = pp.getMatrix3D();
 							// floor
 							mtx[0][0].append(" #### "); mtx[1][0].append(" #### ");

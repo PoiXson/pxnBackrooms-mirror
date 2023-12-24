@@ -4,9 +4,9 @@ import static com.poixson.backrooms.gens.Gen_309.PATH_START_X;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_Z;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
-import static com.poixson.pluginlib.tools.plugin.xJavaPlugin.LOG;
 
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -120,7 +120,7 @@ public class Pop_309 implements BackroomsPop {
 			}
 		}
 		if (y == Integer.MIN_VALUE) {
-			LOG.warning("Failed to generate level 309 building; unknown y point.");
+			this.log().warning("Failed to generate level 309 building; unknown y point.");
 			return;
 		}
 		// radio station script
@@ -146,6 +146,12 @@ public class Pop_309 implements BackroomsPop {
 			if (script != null)
 				script.stop();
 		}
+	}
+
+
+
+	public Logger log() {
+		return this.plugin.getLogger();
 	}
 
 

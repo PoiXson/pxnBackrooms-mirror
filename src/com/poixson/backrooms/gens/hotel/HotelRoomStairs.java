@@ -48,7 +48,7 @@ public class HotelRoomStairs implements HotelRoom {
 
 
 
-	protected void buildHotelRoomStairs(final Iabcd area, final int y, final BlockFace direction,
+	protected void buildHotelRoomStairs(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final Material block_hall_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
 		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
@@ -61,7 +61,7 @@ public class HotelRoomStairs implements HotelRoom {
 			(new PlotterFactory())
 			.placer(region)
 			.axis("use")
-			.rotate(direction.getOppositeFace())
+			.rotate(facing.getOppositeFace())
 			.xyz(x, y, z)
 			.whd(w, h, d)
 			.build();
@@ -118,11 +118,11 @@ public class HotelRoomStairs implements HotelRoom {
 
 
 
-	protected void buildAtticStairs(final Iabcd area, final int y, final BlockFace direction,
+	protected void buildAtticStairs(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final int offset = 9;
-		final int x = area.a + (BlockFace.EAST.equals( direction) ? -5 : 0);
-		final int z = area.b + (BlockFace.SOUTH.equals(direction) ? -5 : 0);
+		final int x = area.a + (BlockFace.EAST.equals( facing) ? -5 : 0);
+		final int z = area.b + (BlockFace.SOUTH.equals(facing) ? -5 : 0);
 		final int w = area.c;
 		final int d = (area.d + offset) - 4;
 		final int yy = Level_000.Y_019 - 1;
@@ -131,7 +131,7 @@ public class HotelRoomStairs implements HotelRoom {
 			(new PlotterFactory())
 			.placer(region)
 			.axis("use")
-			.rotate(direction.getOppositeFace())
+			.rotate(facing.getOppositeFace())
 			.xyz(x, yy, z)
 			.whd(w, h, d)
 			.build();

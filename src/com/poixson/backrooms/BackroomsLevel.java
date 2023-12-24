@@ -3,11 +3,12 @@ package com.poixson.backrooms;
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.tools.xJavaPlugin.Log;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -90,7 +91,9 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		return Arrays.asList(this.popman);
+		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
+		list.add(this.popman);
+		return list;
 	}
 
 
@@ -240,7 +243,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 				}
 			}
 		}
-		LOG.warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
+		this.log().warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
 		return spawn;
 	}
 
@@ -263,7 +266,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
 		final String name = "level" + Integer.toString(level);
 		if (!manager.isMVWorld(name, false)) {
-			LOG.warning(LOG_PREFIX + "Creating backrooms level: " + Integer.toString(level));
+			Log().warning(LOG_PREFIX + "Creating backrooms level: " + Integer.toString(level));
 			final Environment env;
 			switch (level) {
 			case 78: env = Environment.THE_END; break;
@@ -311,6 +314,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			default:  mvworld.setGameMode(GameMode.SURVIVAL ); break;
 			}
 			// fixed spawn
+//TODO fixed spawn should probably be 0x 0z
 			final int y;
 			switch (level) {
 			case 0:   y = Level_000.Y_000;   break; // lobby
@@ -430,6 +434,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final MultiverseCore mvcore = (MultiverseCore) pm.getPlugin("Multiverse-Core");
 		if (mvcore == null) throw new RuntimeException("Plugin not found: Multiverse-Core");
 		return mvcore;
+	}
+
+
+
+	public Logger log() {
+		return this.plugin.getLogger();
 	}
 
 
