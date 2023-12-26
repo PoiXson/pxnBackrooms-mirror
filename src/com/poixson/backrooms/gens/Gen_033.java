@@ -29,7 +29,7 @@ public class Gen_033 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_FLOOR_FREQ   = 0.1;
 	public static final int    DEFAULT_NOISE_FLOOR_OCTAVE = 2;
 	public static final double DEFAULT_NOISE_FLOOR_GAIN   = 2.0;
-	public static final double DEFAULT_THRESH_FLOOR       =-0.4;
+	public static final double DEFAULT_THRESH_FLOOR       =-0.2;
 	public static final double DEFAULT_THRESH_HAZARD      = 0.7;
 	public static final int    DEFAULT_DANGER_CHUNKS      = 3;
 
@@ -148,7 +148,9 @@ public class Gen_033 extends BackroomsGen {
 						if (valueFloor > thresh_floor) {
 							chunk.setBlock(ix, this.level_y+1, iz, block_plate );
 							chunk.setBlock(ix, this.level_y,   iz, block_floor );
-							chunk.setBlock(ix, this.level_y-1, iz, Material.TNT);
+							final long mod_tnt = (ix+iz) % 5;
+							if (mod_tnt == 0 || mod_tnt == 2) chunk.setBlock(ix, this.level_y-1, iz, Material.GLOWSTONE);
+							else                              chunk.setBlock(ix, this.level_y-1, iz, Material.TNT);
 							chunk.setBlock(ix, this.level_y-2, iz, block_subfloor);
 							if (valueFloor > thresh_hazard) {
 								chunk.setBlock(ix, this.level_y+2, iz, block_hazard);
