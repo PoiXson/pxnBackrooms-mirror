@@ -105,6 +105,7 @@ public class Gen_094 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// hills noise
 		this.noiseHills.setFrequency(              this.noise_hills_freq    .get());
 		this.noiseHills.setFractalOctaves(         this.noise_hills_octave  .get());

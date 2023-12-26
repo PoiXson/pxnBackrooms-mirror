@@ -93,6 +93,7 @@ public class Gen_771 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// road lanterns
 		this.noiseRoadLights.setFrequency(this.noise_lamps_freq.get());
 		// special exits

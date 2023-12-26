@@ -108,6 +108,7 @@ public class Gen_000 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// lobby walls
 		this.noiseLobbyWalls.setFrequency(              this.noise_wall_freq    .get());
 		this.noiseLobbyWalls.setFractalOctaves(         this.noise_wall_octave  .get());

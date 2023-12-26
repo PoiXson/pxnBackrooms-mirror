@@ -60,6 +60,7 @@ public class Gen_019 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// lanterns
 		this.noiseLamps.setFrequency(this.noise_lamps_freq.get());
 	}

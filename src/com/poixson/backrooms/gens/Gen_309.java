@@ -93,6 +93,7 @@ public class Gen_309 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// path
 		this.noisePath.setFrequency(this.noise_path_freq.get());
 		// path ground

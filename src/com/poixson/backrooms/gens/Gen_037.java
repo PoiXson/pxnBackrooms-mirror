@@ -101,6 +101,7 @@ public class Gen_037 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// pool rooms
 		this.noisePoolRooms.setFrequency(              this.noise_room_freq    .get());
 		this.noisePoolRooms.setFractalOctaves(         this.noise_room_octave  .get());

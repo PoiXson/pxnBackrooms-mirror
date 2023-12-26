@@ -87,6 +87,7 @@ public class Gen_005 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
+		super.initNoise();
 		// hotel walls
 		this.noiseHotelWalls.setFrequency(     this.noise_wall_freq  .get());
 		this.noiseHotelWalls.setCellularJitter(this.noise_wall_jitter.get());
