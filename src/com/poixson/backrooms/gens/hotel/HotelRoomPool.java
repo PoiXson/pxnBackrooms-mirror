@@ -58,12 +58,12 @@ public class HotelRoomPool implements HotelRoom {
 	@Override
 	public void build(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
-		final Material block_hotel_wall  = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
-		final Material block_pool_wall_a = Material.matchMaterial(this.level0.gen_037.block_wall_a.get());
-		final Material block_pool_wall_b = Material.matchMaterial(this.level0.gen_037.block_wall_b.get());
-		if (block_hotel_wall  == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
-		if (block_pool_wall_a == null) throw new RuntimeException("Invalid block type for level 37 WallA");
-		if (block_pool_wall_b == null) throw new RuntimeException("Invalid block type for level 37 WallB");
+		final Material block_hotel_hall_wall  = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
+		final Material block_pool_wall_a      = Material.matchMaterial(this.level0.gen_037.block_wall_a.get());
+		final Material block_pool_wall_b      = Material.matchMaterial(this.level0.gen_037.block_wall_b.get());
+		if (block_hotel_hall_wall  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall");
+		if (block_pool_wall_a      == null) throw new RuntimeException("Invalid block type for level 37 Wall-A");
+		if (block_pool_wall_b      == null) throw new RuntimeException("Invalid block type for level 37 Wall-B");
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
@@ -85,8 +85,8 @@ public class HotelRoomPool implements HotelRoom {
 		plot.type('g', Material.GLOWSTONE         );
 		plot.type('X', Material.BEDROCK           );
 		plot.type('-', Material.PRISMARINE_BRICK_SLAB, "[type=top,waterlogged=true]");
-		plot.type('$', block_hotel_wall, "[axis=y]");
-		plot.type('&', block_hotel_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
+		plot.type('$', block_hotel_hall_wall, "[axis=y]");
+		plot.type('&', block_hotel_hall_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
 		plot.type('d', Material.ACACIA_DOOR, "[half=upper,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('D', Material.ACACIA_DOOR, "[half=lower,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);

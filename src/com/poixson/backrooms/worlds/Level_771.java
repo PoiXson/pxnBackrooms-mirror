@@ -54,12 +54,12 @@ public class Level_771 extends BackroomsLevel {
 		// listeners
 		this.listener_771 = new Listener_771(plugin);
 		// exit locations
-		this.portal_ladder     = new LocationStoreManager("level771", "portal_ladder" ); // upper/lower ladder
-		this.portal_drop       = new LocationStoreManager("level771", "portal_drop"   ); // shaft to lower bridge
-		this.portal_void       = new LocationStoreManager("level771", "portal_void"   ); // shaft to void
+		this.portal_ladder     = new LocationStoreManager(plugin, "level771", "portal_ladder"); // upper/lower ladder
+		this.portal_drop       = new LocationStoreManager(plugin, "level771", "portal_drop"  ); // shaft to lower bridge
+		this.portal_void       = new LocationStoreManager(plugin, "level771", "portal_void"  ); // shaft to void
 		// loot
-		this.loot_chests_upper = new LocationStoreManager("level771", "loot_upper"    );
-		this.loot_chests_lower = new LocationStoreManager("level771", "loot_lower"    );
+		this.loot_chests_upper = new LocationStoreManager(plugin, "level771", "loot_upper"   ); // upper path loot chests
+		this.loot_chests_lower = new LocationStoreManager(plugin, "level771", "loot_lower"   ); // lower path loot chests
 	}
 
 
@@ -67,22 +67,22 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public void register() {
 		super.register();
-		this.portal_ladder    .start(this.plugin); // upper/lower ladder
-		this.portal_drop      .start(this.plugin); // shaft to lower bridge
-		this.portal_void      .start(this.plugin); // shaft to void
-		this.loot_chests_upper.start(this.plugin); // loot upper
-		this.loot_chests_lower.start(this.plugin); // loot lower
+		this.portal_ladder    .start();
+		this.portal_drop      .start();
+		this.portal_void      .start();
+		this.loot_chests_upper.start();
+		this.loot_chests_lower.start();
 		this.listener_771.register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
 		this.listener_771.unregister();
-		this.portal_ladder    .saveAll();
-		this.portal_drop      .saveAll();
-		this.portal_void      .saveAll();
-		this.loot_chests_upper.saveAll();
-		this.loot_chests_lower.saveAll();
+		this.portal_ladder    .stop();
+		this.portal_drop      .stop();
+		this.portal_void      .stop();
+		this.loot_chests_upper.stop();
+		this.loot_chests_lower.stop();
 	}
 
 

@@ -49,12 +49,12 @@ public class Gen_005 extends BackroomsGen {
 	public static final double DEFAULT_THRESH_ROOM_HALL  = 0.65;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_SUBFLOOR     = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_SUBCEILING   = "minecraft:smooth_stone";
-	public static final String DEFAULT_BLOCK_HALL_WALL    = "minecraft:stripped_spruce_wood";
-	public static final String DEFAULT_BLOCK_HALL_CARPET  = "minecraft:black_glazed_terracotta";
-	public static final String DEFAULT_BLOCK_HALL_CEILING = "minecraft:smooth_stone_slab[type=top]";
+	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_SUBCEILING       = "minecraft:smooth_stone";
+	public static final String DEFAULT_BLOCK_HALL_WALL        = "minecraft:stripped_spruce_wood";
+	public static final String DEFAULT_BLOCK_HALL_CARPET      = "minecraft:black_glazed_terracotta";
 	public static final String DEFAULT_BLOCK_HALL_CARPET_ROTS = "news";
+	public static final String DEFAULT_BLOCK_HALL_CEILING     = "minecraft:smooth_stone_slab[type=top]";
 
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
@@ -70,12 +70,12 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicDouble  thresh_room_hall  = new AtomicDouble( DEFAULT_THRESH_ROOM_HALL );
 
 	// blocks
-	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_wall    = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_carpet  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_ceiling = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_wall        = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_carpet      = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_carpet_rots = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_ceiling     = new AtomicReference<String>(null);
 
 
 
@@ -146,7 +146,7 @@ public class Gen_005 extends BackroomsGen {
 				data.put(new Iab(ix, iz), dao);
 			}
 		}
-		HotelData daoN, daoS, daoE, daoW;
+		HotelData daoN,  daoS,  daoE,  daoW;
 		HotelData daoNE, daoNW, daoSE, daoSW;
 		// find walls
 		for (int iz=-8; iz<24; iz++) {
@@ -334,12 +334,12 @@ public class Gen_005 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
-			this.block_subfloor    .set(cfg.getString("SubFloor"    ));
-			this.block_subceiling  .set(cfg.getString("SubCeiling"  ));
-			this.block_hall_wall   .set(cfg.getString("Hall-Wall"   ));
-			this.block_hall_carpet .set(cfg.getString("Hall-Carpet" ));
-			this.block_hall_ceiling.set(cfg.getString("Hall-Ceiling"));
+			this.block_subfloor        .set(cfg.getString("SubFloor"             ));
+			this.block_subceiling      .set(cfg.getString("SubCeiling"           ));
+			this.block_hall_wall       .set(cfg.getString("Hall-Wall"            ));
+			this.block_hall_carpet     .set(cfg.getString("Hall-Carpet"          ));
 			this.block_hall_carpet_rots.set(cfg.getString("Hall-Carpet-Rotations"));
+			this.block_hall_ceiling    .set(cfg.getString("Hall-Ceiling"         ));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -351,12 +351,12 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Params.Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
 		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
 		// block types
-		cfg.addDefault("Level5.Blocks.SubFloor",     DEFAULT_BLOCK_SUBFLOOR   );
-		cfg.addDefault("Level5.Blocks.SubCeiling",   DEFAULT_BLOCK_SUBCEILING );
-		cfg.addDefault("Level5.Blocks.Hall-Wall",    DEFAULT_BLOCK_HALL_WALL   );
-		cfg.addDefault("Level5.Blocks.Hall-Carpet",  DEFAULT_BLOCK_HALL_CARPET );
-		cfg.addDefault("Level5.Blocks.Hall-Ceiling", DEFAULT_BLOCK_HALL_CEILING);
+		cfg.addDefault("Level5.Blocks.SubFloor",              DEFAULT_BLOCK_SUBFLOOR        );
+		cfg.addDefault("Level5.Blocks.SubCeiling",            DEFAULT_BLOCK_SUBCEILING      );
+		cfg.addDefault("Level5.Blocks.Hall-Wall",             DEFAULT_BLOCK_HALL_WALL       );
+		cfg.addDefault("Level5.Blocks.Hall-Carpet",           DEFAULT_BLOCK_HALL_CARPET     );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet-Rotations", DEFAULT_BLOCK_HALL_CARPET_ROTS);
+		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING    );
 	}
 
 

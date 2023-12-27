@@ -489,9 +489,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public boolean addVisitedLevel(final Player player) {
-		return this.addVisitedLevel(player.getUniqueId());
-	}
-	public boolean addVisitedLevel(final UUID uuid) {
+		final UUID uuid = player.getUniqueId();
 		final int level = this.getLevel(player);
 		if (level < 0) return false;
 		CopyOnWriteArraySet<Integer> visited = this.visitLevels.get(uuid);

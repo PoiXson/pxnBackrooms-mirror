@@ -37,8 +37,8 @@ public class HotelRoomGuest implements HotelRoom {
 	@Override
 	public void build(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
-		final Material block_hotel_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
-		if (block_hotel_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
+		final Material block_hotel_hall_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
+		if (block_hotel_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall");
 		// room specs
 		final HotelRoomSpecs specs =
 			HotelRoomSpecs.SpecsFromValue(
@@ -62,8 +62,8 @@ public class HotelRoomGuest implements HotelRoom {
 		plot.type('#', specs.walls);
 		plot.type(',', specs.carpet);
 		plot.type('.', Material.AIR);
-		plot.type('$', block_hotel_wall, "[axis=y]");
-		plot.type('&', block_hotel_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
+		plot.type('$', block_hotel_hall_wall, "[axis=y]");
+		plot.type('&', block_hotel_hall_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
 		plot.type('d', specs.door, "[half=upper,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('D', specs.door, "[half=lower,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', specs.door_plate);

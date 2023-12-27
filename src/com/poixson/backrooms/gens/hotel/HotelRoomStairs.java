@@ -51,7 +51,7 @@ public class HotelRoomStairs implements HotelRoom {
 	protected void buildHotelRoomStairs(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final Material block_hall_wall = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
-		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
+		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall");
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;

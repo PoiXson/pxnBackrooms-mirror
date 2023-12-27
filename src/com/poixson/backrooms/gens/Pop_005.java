@@ -56,7 +56,7 @@ public class Pop_005 implements BackroomsPop {
 	public Iabcd findRoomWalls(final int x, final int y, final int z,
 			final LimitedRegion region) {
 		final Material block_hall_wall = Material.matchMaterial(this.gen.block_hall_wall.get());
-		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 HallWall");
+		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall");
 		// is wall
 		if (!Material.AIR.equals(region.getType(x, y, z)))
 			return null;

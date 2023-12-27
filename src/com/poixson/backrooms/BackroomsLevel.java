@@ -60,14 +60,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 
 	public void register() {
-		for (final BackroomsGen gen : this.gens) {
+		for (final BackroomsGen gen : this.gens)
 			gen.register();
-		}
 	}
 	public void unregister() {
-		for (final BackroomsGen gen : this.gens) {
+		for (final BackroomsGen gen : this.gens)
 			gen.unregister();
-		}
 	}
 
 
