@@ -34,7 +34,7 @@ public class Listener_000  extends xListener<BackroomsPlugin> {
 				final Player player = event.getPlayer();
 				switch (event.getOutsideWhere()) {
 				case SKY:  this.plugin.noclip(player, 771); break; // to crossroads
-				case VOID: this.plugin.noclip(player, 309); break; // to radio station
+				case VOID: this.plugin.noclip(player,  94); break; // motion
 				default: throw new RuntimeException("Unknown OutsideOfWorld event type");
 				}
 			}
