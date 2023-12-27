@@ -55,7 +55,7 @@ public class Listener_033 extends xListener<BackroomsPlugin> {
 			if (event.getOutsideDistance() > 0) {
 				final Player player = event.getPlayer();
 				switch (event.getOutsideWhere()) {
-				case VOID: this.plugin.noclip(player, 33); break;
+				case VOID: this.plugin.noclip(player, 6); break;
 				case SKY:  break;
 				default: throw new RuntimeException("Unknown OutsideOfWorld event type");
 				}
