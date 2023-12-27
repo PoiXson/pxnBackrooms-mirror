@@ -5,6 +5,9 @@ import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_005;
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.LocationUtils.ApplyRots2x2;
+import static com.poixson.utils.LocationUtils.RotsToFaces2x2;
+import static com.poixson.utils.Utils.IsEmpty;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -51,6 +54,7 @@ public class Gen_005 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_HALL_WALL    = "minecraft:stripped_spruce_wood";
 	public static final String DEFAULT_BLOCK_HALL_CARPET  = "minecraft:black_glazed_terracotta";
 	public static final String DEFAULT_BLOCK_HALL_CEILING = "minecraft:smooth_stone_slab[type=top]";
+	public static final String DEFAULT_BLOCK_HALL_CARPET_ROTS = "news";
 
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
@@ -71,6 +75,7 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicReference<String> block_hall_wall    = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_carpet  = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_ceiling = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_carpet_rots = new AtomicReference<String>(null);
 
 
 
@@ -234,6 +239,10 @@ public class Gen_005 extends BackroomsGen {
 		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall"   );
 		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet" );
 		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 Hall-Ceiling");
+		final String hall_carpet_rots_str = this.block_hall_carpet_rots.get();
+		if (hall_carpet_rots_str.length() != 4)
+			throw new RuntimeException("Invalid carpet rotations, must be 4 chars: "+hall_carpet_rots_str);
+		final BlockFace[] hall_carpet_rots = RotsToFaces2x2(hall_carpet_rots_str);
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
@@ -258,15 +267,11 @@ public class Gen_005 extends BackroomsGen {
 					break;
 				case HALL: {
 					chunk.setBlock(ix, y, iz, block_hall_carpet);
-					final Directional tile = (Directional) chunk.getBlockData(ix, y, iz);
-					if (iz % 2 == 0) {
-						if (ix % 2 == 0) tile.setFacing(BlockFace.NORTH);
-						else             tile.setFacing(BlockFace.WEST );
-					} else {
-						if (ix % 2 == 0) tile.setFacing(BlockFace.EAST );
-						else             tile.setFacing(BlockFace.SOUTH);
+					if (!IsEmpty(hall_carpet_rots)) {
+						final Directional tile = (Directional) chunk.getBlockData(ix, y, iz);
+						ApplyRots2x2(hall_carpet_rots, tile, ix, iz);
+						chunk.setBlock(ix, y, iz, tile);
 					}
-					chunk.setBlock(ix, y, iz, tile);
 					if (ENABLE_TOP_005) {
 						// ceiling light
 						mod_x = xx % 5;
@@ -334,6 +339,7 @@ public class Gen_005 extends BackroomsGen {
 			this.block_hall_wall   .set(cfg.getString("Hall-Wall"   ));
 			this.block_hall_carpet .set(cfg.getString("Hall-Carpet" ));
 			this.block_hall_ceiling.set(cfg.getString("Hall-Ceiling"));
+			this.block_hall_carpet_rots.set(cfg.getString("Hall-Carpet-Rotations"));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -350,6 +356,7 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Blocks.Hall-Wall",    DEFAULT_BLOCK_HALL_WALL   );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet",  DEFAULT_BLOCK_HALL_CARPET );
 		cfg.addDefault("Level5.Blocks.Hall-Ceiling", DEFAULT_BLOCK_HALL_CEILING);
+		cfg.addDefault("Level5.Blocks.Hall-Carpet-Rotations", DEFAULT_BLOCK_HALL_CARPET_ROTS);
 	}
 
 
