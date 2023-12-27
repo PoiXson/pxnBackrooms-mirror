@@ -30,7 +30,7 @@ public class Listener_023 extends xListener<BackroomsPlugin> {
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerConsume(final PlayerItemConsumeEvent event) {
 		final Player player = event.getPlayer();
-		final int level = this.plugin.getPlayerLevel(player);
+		final int level = this.plugin.getLevel(player);
 		if (level == 0
 		||  level == 23) {
 			final ItemStack stack = event.getItem();

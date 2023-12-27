@@ -41,7 +41,7 @@ itemB.setItemMeta(potion);
 //TODO: teleport relative to exit
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
-		final int level = this.plugin.getLevelFromWorld(event.getTo().getWorld());
+		final int level = this.plugin.getWorldLevel(event.getTo().getWorld());
 		if (level == 771) {
 			if (event.getOutsideDistance() > 20) {
 				final Player player = event.getPlayer();

@@ -59,7 +59,7 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerMoveNormal(final PlayerMoveNormalEvent event) {
 		final Player player = event.getPlayer();
-		final int level = this.plugin.getPlayerLevel(player);
+		final int level = this.plugin.getLevel(player);
 		// basement
 		if (level == 1) {
 			final Location to = event.getTo();

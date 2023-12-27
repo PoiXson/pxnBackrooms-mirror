@@ -60,7 +60,7 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 		final Entity entity = event.getEntity();
 		if (entity instanceof Player) {
 			final Player player = (Player) entity;
-			final int level = this.plugin.getPlayerLevel(player);
+			final int level = this.plugin.getLevel(player);
 			if (level < 0) { if (!player.hasPermission("noclipfront")) return;
 			} else {         if (!player.hasPermission("noclipback" )) return; }
 			{

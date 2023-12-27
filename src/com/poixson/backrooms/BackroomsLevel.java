@@ -249,8 +249,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		final int level = this.plugin.getLevelFromWorld(world);
-		final int y = this.getY(level);
+		final int y = this.getY( this.getMainLevel() );
 		final Location loc = world.getBlockAt(0, y, 0).getLocation();
 		return this.getSpawnNear(loc);
 	}

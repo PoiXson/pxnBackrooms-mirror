@@ -1,5 +1,7 @@
 package com.poixson.backrooms;
 
+import static com.poixson.utils.Utils.IsEmpty;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -348,56 +350,81 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		return levels;
 	}
+
+
+
+	public BackroomsLevel getBackroomsLevel(final int level) {
+		// main level
+		{
+			final BackroomsLevel backlevel = this.backlevels.get(Integer.valueOf(level));
+			if (backlevel != null)
+				return backlevel;
+		}
+		// level in world
+		for (final BackroomsLevel backlevel : this.backlevels.values()) {
+			if (backlevel.containsLevel(level))
+				return backlevel;
+		}
+		return null;
+	}
+
+
+
+	// main level
 	public int getMainLevel(final int level) {
-		if (this.backlevels.containsKey(Integer.valueOf(level)))
-			return level;
-		for (final Entry<Integer, BackroomsLevel> entry : this.backlevels.entrySet()) {
-			if (entry.getValue().containsLevel(level))
-				return entry.getKey().intValue();
-		}
-		return Integer.MIN_VALUE;
+		final BackroomsLevel backlevel = this.getBackroomsLevel(level);
+		return (backlevel == null ? Integer.MIN_VALUE : backlevel.getMainLevel());
 	}
-	public int getPlayerLevel(final UUID uuid) {
-		final Player player = Bukkit.getPlayer(uuid);
-		return (
-			player == null
-			? Integer.MIN_VALUE
-			: this.getPlayerLevel(player)
-		);
+	public BackroomsLevel getMainBackroomsLevel(final String worldName) {
+		final int level = this.getWorldLevel(worldName);
+		if (level < 0) return null;
+		return this.backlevels.get(Integer.valueOf(level));
 	}
-	public int getPlayerLevel(final Player player) {
-		if (player != null) {
-			final int lvl = this.getLevelFromWorld(player.getWorld());
-			if (lvl >= 0) {
-				final BackroomsLevel backlevel = this.getBackroomsLevel(lvl);
-				if (backlevel != null)
-					return backlevel.getLevelFromY(player.getLocation().getBlockY());
-			}
-		}
-		return Integer.MIN_VALUE;
+	public BackroomsLevel getMainBackroomsLevel(final World world) {
+		if (world == null) return null;
+		return this.getMainBackroomsLevel(world.getName());
 	}
-	public int getLevelFromWorld(final World world) {
-		return (
-			world == null
-			? Integer.MIN_VALUE
-			: this.getLevelFromWorld(world.getName())
-		);
+
+
+
+	// level world
+	public int getWorldLevel(final World world) {
+		return (world == null ? null : this.getWorldLevel(world.getName()));
 	}
-	public int getLevelFromWorld(final String worldName) {
-		if (worldName != null && !worldName.isEmpty()) {
-			if (worldName.startsWith("level")) {
-				final int level = Integer.parseInt(worldName.substring(5));
-				if (isValidLevel(level))
-					return level;
-			}
-		}
-		return Integer.MIN_VALUE;
+	public int getWorldLevel(final String worldName) {
+		if (IsEmpty(worldName)) return Integer.MIN_VALUE;
+		final int level = Integer.parseInt(worldName.substring(5));
+		return (this.isValidLevel(level) ? level : Integer.MIN_VALUE);
 	}
 	public World getWorldFromLevel(final int level) {
 		final int lvl = this.getMainLevel(level);
-		if (lvl == Integer.MIN_VALUE)
-			return null;
+		if (lvl < 0) return null;
 		return Bukkit.getWorld("level" + Integer.toString(lvl));
+	}
+
+
+
+	// level from location
+	public int getLevel(final Location loc) {
+		final BackroomsLevel backlevel = this.getBackroomsLevel(loc);
+		if (backlevel == null) return Integer.MIN_VALUE;
+		return backlevel.getLevelFromY(loc.getBlockY());
+	}
+	public BackroomsLevel getBackroomsLevel(final Location loc) {
+		if (loc == null) return null;
+		return this.getBackroomsLevel( this.getWorldLevel(loc.getWorld()) );
+	}
+
+
+
+	// level from player
+	public int getLevel(final Player player) {
+		if (player == null) return Integer.MIN_VALUE;
+		return this.getLevel(player.getLocation());
+	}
+	public BackroomsLevel getBackroomsLevel(final Player player) {
+		if (player == null) return null;
+		return this.getMainBackroomsLevel(player.getLocation().getWorld());
 	}
 
 
@@ -407,8 +434,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			throw new RuntimeException("Invalid backrooms level: " + Integer.toString(level));
 	}
 	public boolean isValidLevel(final int level) {
-		if (this.isValidWorld(level))
-			return true;
+		if (this.isValidWorld(level)) return true;
 		for (final BackroomsLevel backlevel : this.backlevels.values()) {
 			if (backlevel.containsLevel(level))
 				return true;
@@ -419,8 +445,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		return this.backlevels.containsKey(Integer.valueOf(level));
 	}
 	public boolean isValidWorld(final World world) {
-		final int level = this.getLevelFromWorld(world);
-		return this.isValidWorld(level);
+		return this.isValidWorld( this.getWorldLevel(world) );
 	}
 
 
@@ -447,8 +472,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		player.setFallDistance(0.0f);
 	}
 	public int noclip(final Player player) {
-		final int level_from = this.getPlayerLevel(player);
-		final int level_to = this.noclip(level_from);
+		final int level_from = this.getLevel(player);
+		final int level_to   = this.noclip(level_from);
 		this.noclip(player, level_to);
 		return level_to;
 	}
@@ -463,30 +488,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public BackroomsLevel getBackroomsLevel(final int level) {
-		// main level
-		{
-			final BackroomsLevel backlevel = this.backlevels.get(Integer.valueOf(level));
-			if (backlevel != null)
-				return backlevel;
-		}
-		// level in world
-		{
-			for (final BackroomsLevel backlevel : this.backlevels.values()) {
-				if (backlevel.containsLevel(level))
-					return backlevel;
-			}
-		}
-		return null;
-	}
-
-
-
 	public boolean addVisitedLevel(final Player player) {
 		return this.addVisitedLevel(player.getUniqueId());
 	}
 	public boolean addVisitedLevel(final UUID uuid) {
-		final int level = this.getPlayerLevel(uuid);
+		final int level = this.getLevel(player);
 		if (level < 0) return false;
 		CopyOnWriteArraySet<Integer> visited = this.visitLevels.get(uuid);
 		if (visited == null) {
@@ -514,8 +520,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (!worldName.startsWith("level"))
 			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
 		this.log().info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
-		final int level = this.getLevelFromWorld(worldName);
-		return this.getBackroomsLevel(level);
+		return this.getMainBackroomsLevel(worldName);
 	}
 
 

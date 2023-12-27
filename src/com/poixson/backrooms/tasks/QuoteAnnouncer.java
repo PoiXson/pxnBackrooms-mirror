@@ -54,7 +54,7 @@ public class QuoteAnnouncer {
 		if (players.size() > 0) {
 			final String quote = DEFAULT_QUOTE_COLOR + this.getQuote() + ChatColor.RESET;
 			for (final Player player : players) {
-				final int level = this.plugin.getPlayerLevel(player);
+				final int level = this.plugin.getLevel(player);
 				if (level >= 0)
 					this.announce(quote, player);
 			}

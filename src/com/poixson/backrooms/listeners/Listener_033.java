@@ -50,7 +50,7 @@ public class Listener_033 extends xListener<BackroomsPlugin> {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
-		final int level = this.plugin.getLevelFromWorld(event.getTo().getWorld());
+		final int level = this.plugin.getWorldLevel(event.getTo().getWorld());
 		if (level == 33) {
 			if (event.getOutsideDistance() > 0) {
 				final Player player = event.getPlayer();
