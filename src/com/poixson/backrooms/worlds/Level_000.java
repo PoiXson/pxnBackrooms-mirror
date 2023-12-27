@@ -114,6 +114,7 @@ public class Level_000 extends BackroomsLevel {
 	// exit locations
 	public final LocationStoreManager portal_0_to_1;
 	public final LocationStoreManager portal_0_to_6;
+	public final LocationStoreManager portal_0_to_33;
 	public final LocationStoreManager portal_0_to_37;
 	public final LocationStoreManager portal_1_to_771;
 	public final LocationStoreManager portal_5_to_19;
@@ -166,6 +167,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_5_to_19  = new LocationStoreManager("level0", "portal_5_to_19" ); // hotel to attic
 		this.portal_5_to_37  = new LocationStoreManager("level0", "portal_5_to_37" ); // hotel to pools
 		this.cheese_rooms    = new LocationStoreManager("level0", "cheese_rooms"   ); // cheese hotel room
+		this.portal_0_to_33  = new LocationStoreManager(plugin, "level0", "portal_0_to_33" ); // lobby to run for your life
 		// loot
 		this.loot_chests_0   = new LocationStoreManager("level0", "loot_0"         );
 	}
@@ -183,6 +185,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_5_to_37 .start(this.plugin); // hotel to pools
 		this.cheese_rooms   .start(this.plugin); // cheese hotel room
 		this.loot_chests_0  .start(this.plugin); // loot
+		this.portal_0_to_33 .start();
 		this.listener_000.register();
 		this.listener_001.register();
 		this.listener_006.register();
@@ -203,6 +206,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_5_to_37 .saveAll();
 		this.cheese_rooms   .saveAll();
 		this.loot_chests_0  .saveAll();
+		this.portal_0_to_33 .stop();
 	}
 
 

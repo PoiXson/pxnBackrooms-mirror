@@ -9,11 +9,10 @@ import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.FaceAttachable.AttachedFace;
-import org.bukkit.block.data.type.Switch;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -28,24 +27,33 @@ import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
+import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
 // 6 | Lights Out
 public class Gen_006 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_NOISE_SWITCH_FREQ   = 0.008;
-	public static final int    DEFAULT_NOISE_SWITCH_OCTAVE = 2;
+	public static final double DEFAULT_NOISE_BUTTONSWITCH_FREQ   = 0.004;
+	public static final int    DEFAULT_NOISE_BUTTONSWITCH_OCTAVE = 2;
+	public static final double DEFAULT_NOISE_BUTTONSWITCH_GAIN   = 20.0;
+	public static final double DEFAULT_NOISE_BUTTONSWITCH_LAC    = 20.0;
+	public static final double DEFAULT_THRESH_BUTTON             = 0.9;
+	public static final double DEFAULT_THRESH_SWITCH             = 0.95;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL = "minecraft:glowstone";
 
 	// noise
-	public final FastNoiseLiteD noiseLightSwitch;
+	public final FastNoiseLiteD noiseButtonSwitch;
 
 	// params
-	public final AtomicDouble  noise_switch_freq   = new AtomicDouble( DEFAULT_NOISE_SWITCH_FREQ  );
-	public final AtomicInteger noise_switch_octave = new AtomicInteger(DEFAULT_NOISE_SWITCH_OCTAVE);
+	public final AtomicDouble  noise_buttonswitch_freq   = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
+	public final AtomicInteger noise_buttonswitch_octave = new AtomicInteger(DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
+	public final AtomicDouble  noise_buttonswitch_gain   = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
+	public final AtomicDouble  noise_buttonswitch_lac    = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_LAC   );
+	public final AtomicDouble  thresh_button             = new AtomicDouble( DEFAULT_THRESH_BUTTON            );
+	public final AtomicDouble  thresh_switch             = new AtomicDouble( DEFAULT_THRESH_SWITCH            );
 
 	// blocks
 	public final AtomicReference<String> block_wall = new AtomicReference<String>(null);
@@ -56,7 +64,7 @@ public class Gen_006 extends BackroomsGen {
 			final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// noise
-		this.noiseLightSwitch = this.register(new FastNoiseLiteD());
+		this.noiseButtonSwitch = this.register(new FastNoiseLiteD());
 	}
 
 
@@ -65,8 +73,11 @@ public class Gen_006 extends BackroomsGen {
 	public void initNoise() {
 		super.initNoise();
 		// light switch
-		this.noiseLightSwitch.setFrequency(     this.noise_switch_freq  .get());
-		this.noiseLightSwitch.setFractalOctaves(this.noise_switch_octave.get());
+		this.noiseButtonSwitch.setFrequency(        this.noise_buttonswitch_freq  .get());
+		this.noiseButtonSwitch.setFractalType(FractalType.FBm);
+		this.noiseButtonSwitch.setFractalOctaves(   this.noise_buttonswitch_octave.get());
+		this.noiseButtonSwitch.setFractalGain(      this.noise_buttonswitch_gain  .get());
+		this.noiseButtonSwitch.setFractalLacunarity(this.noise_buttonswitch_lac   .get());
 	}
 
 
@@ -109,33 +120,41 @@ public class Gen_006 extends BackroomsGen {
 
 	protected void generateLightSwitch(final BlockFace facing, final ChunkData chunk,
 			final int chunkX, final int chunkZ, final int ix, final int iz) {
+		final double thresh_button = this.thresh_button.get();
+		final double thresh_switch = this.thresh_switch.get();
 		final int xx = (chunkX * 16) + ix;
 		final int zz = (chunkZ * 16) + iz;
-		final double value  = this.noiseLightSwitch.getNoise(xx, zz  );
-		if (value > this.noiseLightSwitch.getNoise(xx, zz-1)
-		&&  value > this.noiseLightSwitch.getNoise(xx, zz+1)
-		&&  value > this.noiseLightSwitch.getNoise(xx+1, zz)
-		&&  value > this.noiseLightSwitch.getNoise(xx-1, zz) ) {
-			((Level_000)this.backlevel).portal_0_to_6.add(xx, zz);
-			// level 0 light switch
-			{
-				final int y = ((Level_000)this.backlevel).gen_000.level_y + SUBFLOOR + 3;
-				chunk.setBlock(ix, y, iz, Material.LEVER);
-				final Switch lever = (Switch) chunk.getBlockData(ix, y, iz);
-				lever.setAttachedFace(AttachedFace.WALL);
-				lever.setFacing(facing);
-				lever.setPowered(false);
-				chunk.setBlock(ix, y, iz, lever);
-			}
-			// level 6 light switch
-			{
-				final int y = this.level_y + 2;
-				chunk.setBlock(ix, y, iz, Material.LEVER);
-				final Switch lever = (Switch) chunk.getBlockData(ix, y, iz);
-				lever.setAttachedFace(AttachedFace.WALL);
-				lever.setFacing(facing);
-				lever.setPowered(true);
-				chunk.setBlock(ix, y, iz, lever);
+		final double value = this.noiseButtonSwitch.getNoise(xx, zz);
+		if (value > thresh_button) {
+			if (value > this.noiseButtonSwitch.getNoise(xx, zz-1)
+			&&  value > this.noiseButtonSwitch.getNoise(xx, zz+1)
+			&&  value > this.noiseButtonSwitch.getNoise(xx+1, zz)
+			&&  value > this.noiseButtonSwitch.getNoise(xx-1, zz) ) {
+				// switch
+				if (value > thresh_switch) {
+					((Level_000)this.backlevel).portal_0_to_6.add(xx, zz);
+					// level 0 light switch
+					{
+						final int y = ((Level_000)this.backlevel).gen_000.level_y + SUBFLOOR + 3;
+						chunk.setBlock(ix, y, iz, Bukkit.createBlockData(Material.LEVER,
+								"[face=wall,facing="+facing.toString().toLowerCase()+",powered=false]"));
+					}
+					// level 6 light switch
+					{
+						final int y = this.level_y + 2;
+						chunk.setBlock(ix, y, iz, Bukkit.createBlockData(Material.LEVER,
+								"[face=wall,facing="+facing.toString().toLowerCase()+",powered=true]"));
+					}
+				// button
+				} else {
+					((Level_000)this.backlevel).portal_0_to_33.add(xx, zz);
+					// level 6 game button
+					{
+						final int y = this.level_y + 2;
+						chunk.setBlock(ix, y, iz, Bukkit.createBlockData(Material.DARK_OAK_BUTTON,
+								"[face=wall,facing="+facing.toString().toLowerCase()+"]"));
+					}
+				}
 			}
 		}
 	}
@@ -152,8 +171,12 @@ public class Gen_006 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelParams(6);
-			this.noise_switch_freq  .set(cfg.getDouble("Noise-Switch-Freq"  ));
-			this.noise_switch_octave.set(cfg.getInt(   "Noise-Switch-Octave"));
+			this.noise_buttonswitch_freq  .set(cfg.getDouble("Noise-ButtonSwitch-Freq"  ));
+			this.noise_buttonswitch_octave.set(cfg.getInt(   "Noise-ButtonSwitch-Octave"));
+			this.noise_buttonswitch_gain  .set(cfg.getDouble("Noise-ButtonSwitch-Gain"  ));
+			this.noise_buttonswitch_lac   .set(cfg.getDouble("Noise-ButtonSwitch-Lac"   ));
+			this.thresh_button            .set(cfg.getDouble("Thresh-Button"            ));
+			this.thresh_switch            .set(cfg.getDouble("Thresh-Switch"            ));
 		}
 		// block types
 		{
@@ -163,8 +186,12 @@ public class Gen_006 extends BackroomsGen {
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
 		// params
-		cfg.addDefault("Level6.Params.Noise-Switch-Freq",   DEFAULT_NOISE_SWITCH_FREQ  );
-		cfg.addDefault("Level6.Params.Noise-Switch-Octave", DEFAULT_NOISE_SWITCH_OCTAVE);
+		cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Freq",   DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
+		cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Octave", DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
+		cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Gain",   DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
+		cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Lac",    DEFAULT_NOISE_BUTTONSWITCH_LAC   );
+		cfg.addDefault("Level6.Params.Thresh-Button",             DEFAULT_THRESH_BUTTON            );
+		cfg.addDefault("Level6.Params.Thresh-Switch",             DEFAULT_THRESH_SWITCH            );
 		// block types
 		cfg.addDefault("Level6.Blocks.Wall", DEFAULT_BLOCK_WALL);
 	}

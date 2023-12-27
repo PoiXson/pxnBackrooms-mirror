@@ -9,7 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.worlds.Level_000;
@@ -32,40 +32,49 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
-	public void onBlockRedstone(final BlockRedstoneEvent event) {
-		final Block block = event.getBlock();
-		final World world = block.getWorld();
-		final int level = this.plugin.getLevelFromWorld(world);
-		if (level == 0) {
-			final int y = block.getY();
+	public void onPlayerInteract(final PlayerInteractEvent event) {
+		final Block block = event.getClickedBlock();
+		final int y = block.getY();
+		if (y == Level_000.Y_000+6
+		||  y == Level_000.Y_006+2) {
+			final Player player = event.getPlayer();
 			final int diff_y = (Level_000.Y_006 - Level_000.Y_000) - 4;
-			final int lvl = this.level0.getLevelFromY(y);
-			switch (lvl) {
-			// lobby
-			case 0:
-				if (y == Level_000.Y_000 + 6
-				&&  Material.LEVER.equals(block.getType())) {
+			final int level = this.plugin.getLevel(block.getLocation());
+			TYPE_SWITCH:
+			switch (block.getType()) {
+			case LEVER: {
+				LEVEL_SWITCH:
+				switch (level) {
+				// lobby
+				case 0: {
 					final Block blk = block.getRelative(BlockFace.UP, diff_y);
 					if (Material.LEVER.equals(blk.getType())) {
 						this.doLeverTP(6, block.getLocation(), diff_y);
 						(new DelayedLever(this.plugin, block.getLocation(), false, 10L))
 							.start();
 					}
+					break LEVEL_SWITCH;
 				}
-				break;
-			// lights out
-			case 6:
-				if (y == Level_000.Y_006 + 2
-				&&  Material.LEVER.equals(block.getType())) {
+				// lights out
+				case 6: {
 					final Block blk = block.getRelative(BlockFace.DOWN, diff_y);
 					if (Material.LEVER.equals(blk.getType())) {
 						this.doLeverTP(0, block.getLocation(), 0-diff_y);
 						(new DelayedLever(this.plugin, block.getLocation(), true, 10L))
 							.start();
 					}
+					break LEVEL_SWITCH;
 				}
-				break;
-			default: break;
+				default: break LEVEL_SWITCH;
+				}
+				break TYPE_SWITCH;
+			}
+			case DARK_OAK_BUTTON: {
+				if (level == 6)
+					this.plugin.noclip(player, 33); // level 33 - run for your life
+				break TYPE_SWITCH;
+			}
+			default: break TYPE_SWITCH;
 			}
 		}
 	}
