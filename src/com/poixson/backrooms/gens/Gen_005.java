@@ -74,8 +74,8 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicReference<String> block_subceiling       = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_wall        = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_carpet      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_carpet_rots = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_ceiling     = new AtomicReference<String>(null);
+	public final AtomicReference<BlockFace[]> block_hall_carpet_rots = new AtomicReference<BlockFace[]>(null);
 
 
 
@@ -239,10 +239,7 @@ public class Gen_005 extends BackroomsGen {
 		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall"   );
 		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet" );
 		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 Hall-Ceiling");
-		final String hall_carpet_rots_str = this.block_hall_carpet_rots.get();
-		if (hall_carpet_rots_str.length() != 4)
-			throw new RuntimeException("Invalid carpet rotations, must be 4 chars: "+hall_carpet_rots_str);
-		final BlockFace[] hall_carpet_rots = RotsToFaces2x2(hall_carpet_rots_str);
+		final BlockFace[] hall_carpet_rots = this.block_hall_carpet_rots.get();
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
@@ -338,8 +335,8 @@ public class Gen_005 extends BackroomsGen {
 			this.block_subceiling      .set(cfg.getString("SubCeiling"           ));
 			this.block_hall_wall       .set(cfg.getString("Hall-Wall"            ));
 			this.block_hall_carpet     .set(cfg.getString("Hall-Carpet"          ));
-			this.block_hall_carpet_rots.set(cfg.getString("Hall-Carpet-Rotations"));
 			this.block_hall_ceiling    .set(cfg.getString("Hall-Ceiling"         ));
+			this.block_hall_carpet_rots.set(RotsToFaces2x2(cfg.getString("Hall-Carpet-Rotations")));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
