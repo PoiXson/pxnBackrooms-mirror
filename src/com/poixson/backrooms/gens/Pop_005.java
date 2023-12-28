@@ -23,8 +23,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 5 | Hotel
 public class Pop_005 implements BackroomsPop {
 
-	public static final int ROOM_SIZE = 7;
-
 	protected final Level_000 level0;
 	protected final Gen_005   gen;
 
@@ -111,13 +109,15 @@ public class Pop_005 implements BackroomsPop {
 	// group of rooms
 	public void buildHotelRooms(final Iabcd area, final int y,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+		final int room_size = this.gen.nominal_room_size.get();
+		if (room_size < 4 || room_size > 20) throw new RuntimeException("Invalid nominal room size: "+Integer.toString(room_size));
 		// room builders
 		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level0, this.gen.noiseHotelRooms);
 		final HotelRoomPool   room_pool   = new HotelRoomPool(  this.level0);
 		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level0);
 		// area = x z w d
-		final int num_rooms_wide = Math.floorDiv(area.c, ROOM_SIZE);
-		final int num_rooms_deep = Math.floorDiv(area.d, ROOM_SIZE);
+		final int num_rooms_wide = Math.floorDiv(area.c, room_size);
+		final int num_rooms_deep = Math.floorDiv(area.d, room_size);
 		if (num_rooms_deep < 1 || num_rooms_wide < 1) return;
 		final int room_width = Math.floorDiv(area.c, num_rooms_wide);
 		final int room_depth = Math.floorDiv(area.d, num_rooms_deep);

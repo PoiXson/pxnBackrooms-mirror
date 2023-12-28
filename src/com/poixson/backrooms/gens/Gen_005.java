@@ -47,6 +47,7 @@ public class Gen_005 extends BackroomsGen {
 	public static final int    DEFAULT_NOISE_ROOM_OCTAVE = 2;
 	public static final double DEFAULT_NOISE_ROOM_GAIN   = 0.6;
 	public static final double DEFAULT_THRESH_ROOM_HALL  = 0.65;
+	public static final int    DEFAULT_NOMINAL_ROOM_SIZE = 8;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:oak_planks";
@@ -69,6 +70,7 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicInteger noise_room_octave = new AtomicInteger(DEFAULT_NOISE_ROOM_OCTAVE);
 	public final AtomicDouble  noise_room_gain   = new AtomicDouble( DEFAULT_NOISE_ROOM_GAIN  );
 	public final AtomicDouble  thresh_room_hall  = new AtomicDouble( DEFAULT_THRESH_ROOM_HALL );
+	public final AtomicInteger nominal_room_size = new AtomicInteger(DEFAULT_NOMINAL_ROOM_SIZE);
 
 	// blocks
 	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
@@ -334,6 +336,7 @@ public class Gen_005 extends BackroomsGen {
 			this.noise_room_octave.set(cfg.getInt(   "Noise-Room-Octave"  ));
 			this.noise_room_gain  .set(cfg.getDouble("Noise-Room-Gain"    ));
 			this.thresh_room_hall .set(cfg.getDouble("Thresh-Room-Or-Hall"));
+			this.nominal_room_size.set(cfg.getInt(   "Nominal-Room-Size"  ));
 		}
 		// block types
 		{
@@ -355,6 +358,7 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Params.Noise-Room-Octave",   DEFAULT_NOISE_ROOM_OCTAVE);
 		cfg.addDefault("Level5.Params.Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
 		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
+		cfg.addDefault("Level5.Params.Nominal-Room-Size",   DEFAULT_NOMINAL_ROOM_SIZE);
 		// block types
 		cfg.addDefault("Level5.Blocks.SubFloor",              DEFAULT_BLOCK_SUBFLOOR        );
 		cfg.addDefault("Level5.Blocks.SubCeiling",            DEFAULT_BLOCK_SUBCEILING      );
