@@ -39,12 +39,11 @@ public class Pop_005 implements BackroomsPop {
 	public void populate(final int chunkX, final int chunkZ,
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		if (!ENABLE_GEN_005) return;
-		final int x = chunkX * 16;
-		final int z = chunkZ * 16;
+		final int x = (chunkX * 16) + 7;
+		final int z = (chunkZ * 16) + 7;
 		final int y = this.gen.level_y + SUBFLOOR + 1;
 		// returns x z w d
-		Iabcd             area = this.findRoomWalls(x,   y, z,   region);
-		if (area == null) area = this.findRoomWalls(x+9, y, z+9, region);
+		final Iabcd area = this.findRoomWalls(x, y, z, region);
 		if (area == null) return;
 //TODO: alternate rooms: front desk, theater
 		this.buildHotelRooms(area, y, region, plots);
@@ -63,12 +62,13 @@ public class Pop_005 implements BackroomsPop {
 		int foundS = Integer.MIN_VALUE;
 		int foundE = Integer.MIN_VALUE;
 		int foundW = Integer.MIN_VALUE;
+		DISTANCE_LOOP:
 		for (int i=2; i<34; i++) {
 			if (foundN != Integer.MIN_VALUE
 			&&  foundS != Integer.MIN_VALUE
 			&&  foundE != Integer.MIN_VALUE
 			&&  foundW != Integer.MIN_VALUE )
-				break;
+				break DISTANCE_LOOP;
 			// north
 			if (foundN == Integer.MIN_VALUE
 			&& region.isInRegion(x, y, z-i)) {
