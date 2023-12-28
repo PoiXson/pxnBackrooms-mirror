@@ -30,11 +30,15 @@ public class HotelRoomGuest implements HotelRoom {
 
 	protected final FastNoiseLiteD noise;
 
+	protected final Material door_guest;
 
 
-	public HotelRoomGuest(final Level_000 level0, final FastNoiseLiteD noise) {
-		this.level0 = level0;
-		this.noise  = noise;
+
+	public HotelRoomGuest(final Level_000 level0, final FastNoiseLiteD noise,
+			final Material door_guest) {
+		this.level0     = level0;
+		this.noise      = noise;
+		this.door_guest = door_guest;
 	}
 
 
@@ -51,7 +55,8 @@ public class HotelRoomGuest implements HotelRoom {
 		// room specs
 		final HotelRoomSpecs specs =
 			HotelRoomSpecs.SpecsFromValue(
-				this.noise.getNoise(area.a, area.b)
+				this.noise.getNoise(area.a, area.b),
+				this.door_guest
 			);
 		if (RoomTheme.CHEESE.equals(specs.theme))
 			this.level0.cheese_rooms.add(area.a, area.b);

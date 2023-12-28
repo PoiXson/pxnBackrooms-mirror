@@ -111,8 +111,10 @@ public class Pop_005 implements BackroomsPop {
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		final int room_size = this.gen.nominal_room_size.get();
 		if (room_size < 4 || room_size > 20) throw new RuntimeException("Invalid nominal room size: "+Integer.toString(room_size));
+		final Material door_guest = Material.matchMaterial(this.gen.door_guest.get());
+		if (door_guest == null) throw new RuntimeException("Invalid block type for level 5 Door-Guest");
 		// room builders
-		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level0, this.gen.noiseHotelRooms);
+		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level0, this.gen.noiseHotelRooms, door_guest);
 		final HotelRoomPool   room_pool   = new HotelRoomPool(  this.level0);
 		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level0);
 		// area = x z w d

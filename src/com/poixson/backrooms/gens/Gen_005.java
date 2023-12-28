@@ -64,6 +64,7 @@ public class Gen_005 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_HALL_CEILING       = "minecraft:smooth_stone_slab[type=top]";
 	public static final String DEFAULT_BLOCK_HALL_CARPET        = "minecraft:black_glazed_terracotta";
 	public static final String DEFAULT_BLOCK_HALL_CARPET_ROTS   = "news";
+	public static final String DEFAULT_DOOR_GUEST               = "minecraft:dark_oak_door";
 
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
@@ -94,6 +95,7 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicReference<String> block_hall_ceiling       = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_carpet        = new AtomicReference<String>(null);
 	public final AtomicReference<BlockFace[]> block_hall_carpet_rots = new AtomicReference<BlockFace[]>(null);
+	public final AtomicReference<String> door_guest               = new AtomicReference<String>(null);
 
 
 
@@ -379,6 +381,7 @@ public class Gen_005 extends BackroomsGen {
 			this.block_hall_ceiling      .set(cfg.getString("Hall-Ceiling"      ));
 			this.block_hall_carpet       .set(cfg.getString("Hall-Carpet"       ));
 			this.block_hall_carpet_rots  .set(RotsToFaces2x2(cfg.getString("Hall-Carpet-Rotations")));
+			this.door_guest              .set(cfg.getString("Door-Guest"        ));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -405,6 +408,7 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING      );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet",           DEFAULT_BLOCK_HALL_CARPET       );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet-Rotations", DEFAULT_BLOCK_HALL_CARPET_ROTS  );
+		cfg.addDefault("Level5.Blocks.Door-Guest",            DEFAULT_DOOR_GUEST              );
 	}
 
 

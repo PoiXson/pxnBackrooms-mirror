@@ -37,7 +37,7 @@ public class HotelRoomSpecs {
 
 
 
-	public static HotelRoomSpecs SpecsFromValue(final double value) {
+	public static HotelRoomSpecs SpecsFromValue(final double value, final Material door_guest) {
 		final int index_carpet = (int)Math.floor((value + 1.0) * 50.0);
 		final int index_walls  = (int)Math.floor((value + 1.0) * 55.0) + 5;
 		final int index_bed    = (int)Math.floor((value + 1.0) * 999.0);
@@ -198,8 +198,15 @@ public class HotelRoomSpecs {
 		}
 		default: throw new RuntimeException("Unknown hotel room theme: "+theme.toString());
 		}
-		return new HotelRoomSpecs(value, theme, carpet, walls, bed,
-				Material.DARK_OAK_DOOR, Material.DARK_OAK_PRESSURE_PLATE);
+		return new HotelRoomSpecs(
+			value,
+			theme,
+			carpet,
+			walls,
+			bed,
+			door_guest,
+			Material.DARK_OAK_PRESSURE_PLATE
+		);
 	}
 
 
