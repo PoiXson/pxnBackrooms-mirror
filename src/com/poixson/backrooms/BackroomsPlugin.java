@@ -392,9 +392,18 @@ public class BackroomsPlugin extends xJavaPlugin {
 		return (world == null ? null : this.getWorldLevel(world.getName()));
 	}
 	public int getWorldLevel(final String worldName) {
-		if (IsEmpty(worldName)) return Integer.MIN_VALUE;
-		final int level = Integer.parseInt(worldName.substring(5));
-		return (this.isValidLevel(level) ? level : Integer.MIN_VALUE);
+		if (!IsEmpty(worldName)) {
+			if (worldName.startsWith("level")) {
+				final String str = worldName.substring(5);
+				if (!IsEmpty(str)) {
+					try {
+						final int level = Integer.parseInt(str);
+						return (this.isValidLevel(level) ? level : Integer.MIN_VALUE);
+					} catch (NumberFormatException ignore) {}
+				}
+			}
+		}
+		return Integer.MIN_VALUE;
 	}
 	public World getWorldFromLevel(final int level) {
 		final int lvl = this.getMainLevel(level);
