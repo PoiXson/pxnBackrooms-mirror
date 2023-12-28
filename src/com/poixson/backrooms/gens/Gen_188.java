@@ -42,12 +42,22 @@ public class Gen_188 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		final Level_000 level0 = (Level_000) this.backlevel;
+		final BlockData block_hotel_wall_top_x    = StringToBlockData(level0.gen_005.block_hall_wall_top_x,    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
+		final BlockData block_hotel_wall_top_z    = StringToBlockData(level0.gen_005.block_hall_wall_top_z,    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
+		final BlockData block_hotel_wall_center   = StringToBlockData(level0.gen_005.block_hall_wall_center,   DEFAULT_BLOCK_HALL_WALL_CENTER  );
+		final BlockData block_hotel_wall_bottom_x = StringToBlockData(level0.gen_005.block_hall_wall_bottom_x, DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
+		final BlockData block_hotel_wall_bottom_z = StringToBlockData(level0.gen_005.block_hall_wall_bottom_z, DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
 		final BlockData block_attic_wall      = StringToBlockData(level0.gen_019.block_wall,      Gen_019.DEFAULT_BLOCK_WALL     );
 		final BlockData block_hotel_wall      = StringToBlockData(level0.gen_005.block_hall_wall, Gen_005.DEFAULT_BLOCK_HALL_WALL);
 		final BlockData block_pool_wall       = StringToBlockData(level0.gen_037.block_wall_a,    Gen_037.DEFAULT_BLOCK_WALL_A   );
 		final BlockData block_lightsout_wall  = StringToBlockData(level0.gen_006.block_wall,      Gen_006.DEFAULT_BLOCK_WALL     );
 		final BlockData block_lobby_wall      = StringToBlockData(level0.gen_000.block_wall,      Gen_000.DEFAULT_BLOCK_WALL     );
 		final BlockData block_overgrowth_wall = StringToBlockData(level0.gen_023.block_wall,      Gen_023.DEFAULT_BLOCK_WALL     );
+		if (block_hotel_wall_top_x    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Top-X"   );
+		if (block_hotel_wall_top_z    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Top-Z"   );
+		if (block_hotel_wall_center   == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Center"  );
+		if (block_hotel_wall_bottom_x == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Bottom-X");
+		if (block_hotel_wall_bottom_z == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Bottom-Z");
 		final BlockData light = Bukkit.createBlockData("light[level=15]");
 		final int y  = Y_188;
 		final int cy =(Y_188 + H_188) - 1;
@@ -115,6 +125,12 @@ public class Gen_188 extends BackroomsGen {
 					chunk.setBlock(ix, y+cy, iz, Material.WHITE_WOOL);
 				}
 				// walls
+				BlockData block_hotel_wall_top    = null;
+				BlockData block_hotel_wall_bottom = null;
+				if (outer > 0) {
+					block_hotel_wall_top    = (xx==-47 || xx==63 ? block_hotel_wall_top_x    : block_hotel_wall_top_z   );
+					block_hotel_wall_bottom = (xx==-47 || xx==63 ? block_hotel_wall_bottom_x : block_hotel_wall_bottom_z);
+				}
 				Y_LOOP:
 				for (int iy=1; iy<h; iy++) {
 					final int yy = y + iy;
@@ -184,10 +200,12 @@ public class Gen_188 extends BackroomsGen {
 							} else {
 								if      (yy > Y_019) chunk.setBlock(ix, yy, iz, block_attic_wall     ); // attic
 								else if (yy > Y_005) chunk.setBlock(ix, yy, iz, block_hotel_wall     ); // hotel
-								else if (yy > Y_037) chunk.setBlock(ix, yy, iz, block_pool_wall      ); // poolrooms
 								else if (yy > Y_006) chunk.setBlock(ix, yy, iz, block_lightsout_wall ); // lights out
 								else if (yy > Y_000) chunk.setBlock(ix, yy, iz, block_lobby_wall     ); // lobby
 								else if (yy > Y_023) chunk.setBlock(ix, yy, iz, block_overgrowth_wall); // overgrowth
+								else if (yy ==Y_005+5) chunk.setBlock(ix, yy, iz, block_hotel_wall_top   ); // hotel top
+								else if (yy > Y_005+1) chunk.setBlock(ix, yy, iz, block_hotel_wall_center); // hotel center
+								else if (yy ==Y_005  ) chunk.setBlock(ix, yy, iz, block_hotel_wall_bottom); // hotel bottom
 								else                           chunk.setBlock(ix, yy, iz, Material.BEDROCK     ); // basement
 							}
 						}

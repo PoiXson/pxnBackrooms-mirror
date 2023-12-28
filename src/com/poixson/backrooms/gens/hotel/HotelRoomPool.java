@@ -1,8 +1,12 @@
 package com.poixson.backrooms.gens.hotel;
 
+import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_SIDE;
+import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_X;
+import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_Z;
 import static com.poixson.backrooms.gens.Gen_037.WATER_DEPTH;
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
+import static com.poixson.utils.BlockUtils.StringToBlockData;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
 import static com.poixson.utils.LocationUtils.Rotate;
@@ -11,6 +15,7 @@ import java.util.LinkedList;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.worlds.Level_000;
@@ -58,12 +63,17 @@ public class HotelRoomPool implements HotelRoom {
 	@Override
 	public void build(final Iabcd area, final int y, final BlockFace facing,
 			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
-		final Material block_hotel_hall_wall  = Material.matchMaterial(this.level0.gen_005.block_hall_wall.get());
+		final boolean axis_x = "x".equals(FaceToPillarAxisString(Rotate(facing, 0.25)));
+		final BlockData block_hotel_door_border_top = (axis_x
+			? StringToBlockData(this.level0.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
+			: StringToBlockData(this.level0.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));
+		final BlockData block_hotel_door_border_side = StringToBlockData(this.level0.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
 		final Material block_pool_wall_a      = Material.matchMaterial(this.level0.gen_037.block_wall_a.get());
 		final Material block_pool_wall_b      = Material.matchMaterial(this.level0.gen_037.block_wall_b.get());
-		if (block_hotel_hall_wall  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall");
 		if (block_pool_wall_a      == null) throw new RuntimeException("Invalid block type for level 37 Wall-A");
 		if (block_pool_wall_b      == null) throw new RuntimeException("Invalid block type for level 37 Wall-B");
+		if (block_hotel_door_border_top  == null) throw new RuntimeException("Invalid block type for level 5 Door-Border-Top" );
+		if (block_hotel_door_border_side == null) throw new RuntimeException("Invalid block type for level 5 Door-Border-Side");
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
@@ -85,8 +95,8 @@ public class HotelRoomPool implements HotelRoom {
 		plot.type('g', Material.GLOWSTONE         );
 		plot.type('X', Material.BEDROCK           );
 		plot.type('-', Material.PRISMARINE_BRICK_SLAB, "[type=top,waterlogged=true]");
-		plot.type('$', block_hotel_hall_wall, "[axis=y]");
-		plot.type('&', block_hotel_hall_wall, "[axis="+FaceToPillarAxisString(Rotate(facing, 0.25))+"]");
+		plot.type('&', block_hotel_door_border_top );
+		plot.type('$', block_hotel_door_border_side);
 		plot.type('d', Material.ACACIA_DOOR, "[half=upper,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('D', Material.ACACIA_DOOR, "[half=lower,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
