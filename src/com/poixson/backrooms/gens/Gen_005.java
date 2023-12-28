@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.Lightable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -50,12 +50,9 @@ public class Gen_005 extends BackroomsGen {
 	public static final int    DEFAULT_NOMINAL_ROOM_SIZE = 8;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_SUBCEILING       = "minecraft:smooth_stone";
-	public static final String DEFAULT_BLOCK_SUBWALL          = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_HALL_CEILING     = "minecraft:smooth_stone_slab[type=top]";
-	public static final String DEFAULT_BLOCK_HALL_CARPET      = "minecraft:black_glazed_terracotta";
-	public static final String DEFAULT_BLOCK_HALL_CARPET_ROTS = "news";
+	public static final String DEFAULT_BLOCK_SUBFLOOR           = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_SUBCEILING         = "minecraft:smooth_stone";
+	public static final String DEFAULT_BLOCK_SUBWALL            = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_HALL_WALL_TOP_X    = "minecraft:stripped_spruce_wood[axis=x]";
 	public static final String DEFAULT_BLOCK_HALL_WALL_TOP_Z    = "minecraft:stripped_spruce_wood[axis=z]";
 	public static final String DEFAULT_BLOCK_HALL_WALL_CENTER   = "minecraft:brown_terracotta";
@@ -64,6 +61,9 @@ public class Gen_005 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_DOOR_BORDER_TOP_X  = "minecraft:stripped_spruce_wood[axis=x]";
 	public static final String DEFAULT_BLOCK_DOOR_BORDER_TOP_Z  = "minecraft:stripped_spruce_wood[axis=z]";
 	public static final String DEFAULT_BLOCK_DOOR_BORDER_SIDE   = "minecraft:stripped_spruce_wood[axis=y]";
+	public static final String DEFAULT_BLOCK_HALL_CEILING       = "minecraft:smooth_stone_slab[type=top]";
+	public static final String DEFAULT_BLOCK_HALL_CARPET        = "minecraft:black_glazed_terracotta";
+	public static final String DEFAULT_BLOCK_HALL_CARPET_ROTS   = "news";
 
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
@@ -80,11 +80,9 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicInteger nominal_room_size = new AtomicInteger(DEFAULT_NOMINAL_ROOM_SIZE);
 
 	// blocks
-	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subwall      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_ceiling = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_carpet  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor           = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subwall            = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_wall_top_x    = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_wall_top_z    = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_wall_center   = new AtomicReference<String>(null);
@@ -93,6 +91,8 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicReference<String> block_door_border_top_x  = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_door_border_top_z  = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_door_border_side   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_ceiling       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_carpet        = new AtomicReference<String>(null);
 	public final AtomicReference<BlockFace[]> block_hall_carpet_rots = new AtomicReference<BlockFace[]>(null);
 
 
@@ -246,25 +246,26 @@ public class Gen_005 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_005) return;
-		final BlockData block_subfloor     = StringToBlockData(this.block_subfloor,     DEFAULT_BLOCK_SUBFLOOR    );
-		final BlockData block_subceiling   = StringToBlockData(this.block_subceiling,   DEFAULT_BLOCK_SUBCEILING  );
-		final BlockData block_subwall      = StringToBlockData(this.block_subwall,      DEFAULT_BLOCK_SUBWALL     );
-		final BlockData block_hall_ceiling = StringToBlockData(this.block_hall_ceiling, DEFAULT_BLOCK_HALL_CEILING);
-		final BlockData block_hall_carpet  = StringToBlockData(this.block_hall_carpet,  DEFAULT_BLOCK_HALL_CARPET );
-		if (block_subfloor     == null) throw new RuntimeException("Invalid block type for level 5 SubFloor"    );
-		if (block_subceiling   == null) throw new RuntimeException("Invalid block type for level 5 SubCeiling"  );
-		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 Hall-Ceiling");
-		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet" );
+		final BlockData block_subfloor           = StringToBlockData(this.block_subfloor,           DEFAULT_BLOCK_SUBFLOOR          );
+		final BlockData block_subceiling         = StringToBlockData(this.block_subceiling,         DEFAULT_BLOCK_SUBCEILING        );
+		final BlockData block_subwall            = StringToBlockData(this.block_subwall,            DEFAULT_BLOCK_SUBWALL           );
 		final BlockData block_hall_wall_top_x    = StringToBlockData(this.block_hall_wall_top_x,    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
 		final BlockData block_hall_wall_top_z    = StringToBlockData(this.block_hall_wall_top_z,    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
 		final BlockData block_hall_wall_center   = StringToBlockData(this.block_hall_wall_center  , DEFAULT_BLOCK_HALL_WALL_CENTER  );
 		final BlockData block_hall_wall_bottom_x = StringToBlockData(this.block_hall_wall_bottom_x, DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
 		final BlockData block_hall_wall_bottom_z = StringToBlockData(this.block_hall_wall_bottom_z, DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
+		final BlockData block_hall_ceiling       = StringToBlockData(this.block_hall_ceiling,       DEFAULT_BLOCK_HALL_CEILING      );
+		final BlockData block_hall_carpet        = StringToBlockData(this.block_hall_carpet,        DEFAULT_BLOCK_HALL_CARPET       );
+		if (block_subfloor           == null) throw new RuntimeException("Invalid block type for level 5 SubFloor"          );
+		if (block_subceiling         == null) throw new RuntimeException("Invalid block type for level 5 SubCeiling"        );
 		if (block_hall_wall_top_x    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Top-X"   );
 		if (block_hall_wall_top_z    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Top-Z"   );
 		if (block_hall_wall_center   == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Center"  );
 		if (block_hall_wall_bottom_x == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Bottom-X");
 		if (block_hall_wall_bottom_z == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Bottom-Z");
+		if (block_hall_ceiling       == null) throw new RuntimeException("Invalid block type for level 5 Hall-Ceiling"      );
+		if (block_hall_carpet        == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet"       );
+		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
 		final BlockFace[] hall_carpet_rots = this.block_hall_carpet_rots.get();
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
@@ -285,6 +286,7 @@ public class Gen_005 extends BackroomsGen {
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
+//TODO
 					chunk.setBlock(ix, y+6, iz, block_hall_wall_top_x);
 					chunk.setBlock(ix, y+5, iz, block_hall_wall_top_x);
 					for (int iy=2; iy<5; iy++)
@@ -306,11 +308,8 @@ public class Gen_005 extends BackroomsGen {
 						if (dao.hall_center && (
 						(mod_x >= 0 && mod_x < 2) ||
 						(mod_z >= 1 && mod_z < 4) )) {
-							chunk.setBlock(ix, cy, iz, Material.REDSTONE_LAMP);
-							final Lightable lamp = (Lightable) chunk.getBlockData(ix, cy, iz);
-							lamp.setLit(true);
-							chunk.setBlock(ix, cy,   iz, lamp);
 							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
+							chunk.setBlock(ix, cy,   iz, lamp);
 						// ceiling
 						} else {
 							if (NodeType.WALL.equals(hotelData.get(new Iab(ix, iz-1)).type) // north
@@ -366,12 +365,9 @@ public class Gen_005 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
-			this.block_subfloor    .set(cfg.getString("SubFloor"    ));
-			this.block_subceiling  .set(cfg.getString("SubCeiling"  ));
-			this.block_subwall     .set(cfg.getString("SubWall"     ));
-			this.block_hall_ceiling.set(cfg.getString("Hall-Ceiling"));
-			this.block_hall_carpet .set(cfg.getString("Hall-Carpet" ));
-			this.block_hall_carpet_rots.set(RotsToFaces2x2(cfg.getString("Hall-Carpet-Rotations")));
+			this.block_subfloor          .set(cfg.getString("SubFloor"          ));
+			this.block_subceiling        .set(cfg.getString("SubCeiling"        ));
+			this.block_subwall           .set(cfg.getString("SubWall"           ));
 			this.block_hall_wall_top_x   .set(cfg.getString("Hall-Wall-Top-X"   ));
 			this.block_hall_wall_top_z   .set(cfg.getString("Hall-Wall-Top-Z"   ));
 			this.block_hall_wall_center  .set(cfg.getString("Hall-Wall-Center"  ));
@@ -380,6 +376,9 @@ public class Gen_005 extends BackroomsGen {
 			this.block_door_border_top_x .set(cfg.getString("Door-Border-Top-X" ));
 			this.block_door_border_top_z .set(cfg.getString("Door-Border-Top-Z" ));
 			this.block_door_border_side  .set(cfg.getString("Door-Border-Side"  ));
+			this.block_hall_ceiling      .set(cfg.getString("Hall-Ceiling"      ));
+			this.block_hall_carpet       .set(cfg.getString("Hall-Carpet"       ));
+			this.block_hall_carpet_rots  .set(RotsToFaces2x2(cfg.getString("Hall-Carpet-Rotations")));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -392,12 +391,9 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
 		cfg.addDefault("Level5.Params.Nominal-Room-Size",   DEFAULT_NOMINAL_ROOM_SIZE);
 		// block types
-		cfg.addDefault("Level5.Blocks.SubFloor",              DEFAULT_BLOCK_SUBFLOOR        );
-		cfg.addDefault("Level5.Blocks.SubCeiling",            DEFAULT_BLOCK_SUBCEILING      );
-		cfg.addDefault("Level5.Blocks.SubWall",               DEFAULT_BLOCK_SUBWALL         );
-		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING    );
-		cfg.addDefault("Level5.Blocks.Hall-Carpet",           DEFAULT_BLOCK_HALL_CARPET     );
-		cfg.addDefault("Level5.Blocks.Hall-Carpet-Rotations", DEFAULT_BLOCK_HALL_CARPET_ROTS);
+		cfg.addDefault("Level5.Blocks.SubFloor",              DEFAULT_BLOCK_SUBFLOOR          );
+		cfg.addDefault("Level5.Blocks.SubCeiling",            DEFAULT_BLOCK_SUBCEILING        );
+		cfg.addDefault("Level5.Blocks.SubWall",               DEFAULT_BLOCK_SUBWALL           );
 		cfg.addDefault("Level5.Blocks.Hall-Wall-Top-X",       DEFAULT_BLOCK_HALL_WALL_TOP_X   );
 		cfg.addDefault("Level5.Blocks.Hall-Wall-Top-Z",       DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
 		cfg.addDefault("Level5.Blocks.Hall-Wall-Center",      DEFAULT_BLOCK_HALL_WALL_CENTER  );
@@ -406,6 +402,9 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Blocks.Door-Border-Top-X",     DEFAULT_BLOCK_DOOR_BORDER_TOP_X );
 		cfg.addDefault("Level5.Blocks.Door-Border-Top-Z",     DEFAULT_BLOCK_DOOR_BORDER_TOP_Z );
 		cfg.addDefault("Level5.Blocks.Door-Border-Side",      DEFAULT_BLOCK_DOOR_BORDER_SIDE  );
+		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING      );
+		cfg.addDefault("Level5.Blocks.Hall-Carpet",           DEFAULT_BLOCK_HALL_CARPET       );
+		cfg.addDefault("Level5.Blocks.Hall-Carpet-Rotations", DEFAULT_BLOCK_HALL_CARPET_ROTS  );
 	}
 
 

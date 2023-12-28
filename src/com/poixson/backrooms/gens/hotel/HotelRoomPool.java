@@ -18,6 +18,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -68,12 +69,12 @@ public class HotelRoomPool implements HotelRoom {
 			? StringToBlockData(this.level0.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
 			: StringToBlockData(this.level0.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));
 		final BlockData block_hotel_door_border_side = StringToBlockData(this.level0.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
-		final Material block_pool_wall_a      = Material.matchMaterial(this.level0.gen_037.block_wall_a.get());
-		final Material block_pool_wall_b      = Material.matchMaterial(this.level0.gen_037.block_wall_b.get());
-		if (block_pool_wall_a      == null) throw new RuntimeException("Invalid block type for level 37 Wall-A");
-		if (block_pool_wall_b      == null) throw new RuntimeException("Invalid block type for level 37 Wall-B");
+		final BlockData block_pool_wall_a            = StringToBlockData(this.level0.gen_037.block_wall_a,           Gen_037.DEFAULT_BLOCK_WALL_A  );
+		final BlockData block_pool_wall_b            = StringToBlockData(this.level0.gen_037.block_wall_b,           Gen_037.DEFAULT_BLOCK_WALL_B  );
 		if (block_hotel_door_border_top  == null) throw new RuntimeException("Invalid block type for level 5 Door-Border-Top" );
 		if (block_hotel_door_border_side == null) throw new RuntimeException("Invalid block type for level 5 Door-Border-Side");
+		if (block_pool_wall_a            == null) throw new RuntimeException("Invalid block type for level 37 Wall-A"         );
+		if (block_pool_wall_b            == null) throw new RuntimeException("Invalid block type for level 37 Wall-B"         );
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
