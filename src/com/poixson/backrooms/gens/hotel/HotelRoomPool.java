@@ -158,7 +158,7 @@ public class HotelRoomPool implements HotelRoom {
 				matrix[iy][0  ].append(StringUtils.Repeat(w, ' '));
 				matrix[iy][d-1].append(StringUtils.Repeat(w, '@'));
 				for (int iz=1; iz<d-1; iz++)
-					matrix[iy][iz].append('@').append(StringUtils.Repeat(w-2, ' ')).append('@');
+					matrix[iy][iz].append('@').append(StringUtils.Repeat(w-2, '.')).append('@');
 			}
 		} // end LOOP_Y
 		// door

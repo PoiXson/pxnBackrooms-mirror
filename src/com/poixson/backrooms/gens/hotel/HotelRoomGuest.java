@@ -72,7 +72,7 @@ public class HotelRoomGuest implements HotelRoom {
 			for (int iz=2; iz<d-1; iz++) {
 				matrix[iy][iz]
 					.append('#')
-					.append(StringUtils.Repeat(w-2, iy==0 ? ',' : ' '))
+					.append(StringUtils.Repeat(w-2, iy==0 ? ',' : '.'))
 					.append('#');
 			}
 			// front wall

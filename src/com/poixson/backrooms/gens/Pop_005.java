@@ -1,7 +1,9 @@
 package com.poixson.backrooms.gens;
 
+import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_SUBWALL;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_005;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
+import static com.poixson.utils.BlockUtils.StringToMaterial;
 
 import java.util.LinkedList;
 
@@ -55,19 +57,14 @@ public class Pop_005 implements BackroomsPop {
 	// returns x z w d
 	public Iabcd findRoomWalls(final int x, final int y, final int z,
 			final LimitedRegion region) {
-		final Material block_hall_wall = Material.matchMaterial(this.gen.block_hall_wall.get());
-		if (block_hall_wall == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall");
-		// is wall
-		if (!Material.AIR.equals(region.getType(x, y, z)))
-			return null;
-		// is hall
-		if (Material.BLACK_GLAZED_TERRACOTTA.equals(region.getType(x, y-1, z)))
-			return null;
+		final Material block_subwall = StringToMaterial(this.gen.block_subwall, DEFAULT_BLOCK_SUBWALL);
+		if (block_subwall == null) throw new RuntimeException("Invalid block type for level 5 Hall-SubWall");
+		// is room area, not hall or wall
+		if (!block_subwall.equals(region.getType(x, y, z))) return null;
 		int foundN = Integer.MIN_VALUE;
 		int foundS = Integer.MIN_VALUE;
 		int foundE = Integer.MIN_VALUE;
 		int foundW = Integer.MIN_VALUE;
-		Material type;
 		for (int i=2; i<34; i++) {
 			if (foundN != Integer.MIN_VALUE
 			&&  foundS != Integer.MIN_VALUE
@@ -77,42 +74,26 @@ public class Pop_005 implements BackroomsPop {
 			// north
 			if (foundN == Integer.MIN_VALUE
 			&& region.isInRegion(x, y, z-i)) {
-				type = region.getType(x, y, z-i);
-				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (block_hall_wall.equals(type))
+				if (!block_subwall.equals(region.getType(x, y, z-i)))
 					foundN = (z - i) + 1;
-				else
-				if (!Material.AIR.equals(type)) return null;
 			}
 			// south
 			if (foundS == Integer.MIN_VALUE
 			&& region.isInRegion(x, y, z+i)) {
-				type = region.getType(x, y, z+i);
-				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (block_hall_wall.equals(type))
+				if (!block_subwall.equals(region.getType(x, y, z+i)))
 					foundS = (z + i) - 1;
-				else
-				if (!Material.AIR.equals(type)) return null;
 			}
 			// east
 			if (foundE == Integer.MIN_VALUE
 			&& region.isInRegion(x+i, y, z)) {
-				type = region.getType(x+i, y, z);
-				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (block_hall_wall.equals(type))
+				if (!block_subwall.equals(region.getType(x+i, y, z)))
 					foundE = (x + i) - 1;
-				else
-				if (!Material.AIR.equals(type)) return null;
 			}
 			// west
 			if (foundW == Integer.MIN_VALUE
 			&& region.isInRegion(x-i, y, z)) {
-				type = region.getType(x-i, y, z);
-				if (Material.BLACK_GLAZED_TERRACOTTA.equals(type)) return null;
-				if (block_hall_wall.equals(type))
+				if (!block_subwall.equals(region.getType(x-i, y, z)))
 					foundW = (x - i) + 1;
-				else
-				if (!Material.AIR.equals(type)) return null;
 			}
 		}
 		// full area is available

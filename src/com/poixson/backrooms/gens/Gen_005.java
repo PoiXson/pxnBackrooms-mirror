@@ -51,6 +51,7 @@ public class Gen_005 extends BackroomsGen {
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_SUBCEILING       = "minecraft:smooth_stone";
+	public static final String DEFAULT_BLOCK_SUBWALL          = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_HALL_WALL        = "minecraft:stripped_spruce_wood";
 	public static final String DEFAULT_BLOCK_HALL_CEILING     = "minecraft:smooth_stone_slab[type=top]";
 	public static final String DEFAULT_BLOCK_HALL_CARPET      = "minecraft:black_glazed_terracotta";
@@ -72,6 +73,7 @@ public class Gen_005 extends BackroomsGen {
 	// blocks
 	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_subceiling   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subwall      = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_wall    = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_ceiling = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_hall_carpet  = new AtomicReference<String>(null);
@@ -231,6 +233,7 @@ public class Gen_005 extends BackroomsGen {
 		if (!ENABLE_GEN_005) return;
 		final BlockData block_subfloor     = StringToBlockData(this.block_subfloor,     DEFAULT_BLOCK_SUBFLOOR    );
 		final BlockData block_subceiling   = StringToBlockData(this.block_subceiling,   DEFAULT_BLOCK_SUBCEILING  );
+		final BlockData block_subwall      = StringToBlockData(this.block_subwall,      DEFAULT_BLOCK_SUBWALL     );
 		final BlockData block_hall_wall    = StringToBlockData(this.block_hall_wall,    DEFAULT_BLOCK_HALL_WALL   );
 		final BlockData block_hall_ceiling = StringToBlockData(this.block_hall_ceiling, DEFAULT_BLOCK_HALL_CEILING);
 		final BlockData block_hall_carpet  = StringToBlockData(this.block_hall_carpet,  DEFAULT_BLOCK_HALL_CARPET );
@@ -298,7 +301,11 @@ public class Gen_005 extends BackroomsGen {
 					}
 					break;
 				}
-				case ROOM: break;
+				case ROOM: {
+					for (int iy=0; iy<h; iy++)
+						chunk.setBlock(ix, y+iy, iz, block_subwall);
+					break;
+				}
 				default: throw new RuntimeException("Unknown hotel type: " + dao.type.toString());
 				}
 				if (ENABLE_TOP_005) {
@@ -333,6 +340,7 @@ public class Gen_005 extends BackroomsGen {
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
 			this.block_subfloor    .set(cfg.getString("SubFloor"    ));
 			this.block_subceiling  .set(cfg.getString("SubCeiling"  ));
+			this.block_subwall     .set(cfg.getString("SubWall"     ));
 			this.block_hall_wall   .set(cfg.getString("Hall-Wall"   ));
 			this.block_hall_ceiling.set(cfg.getString("Hall-Ceiling"));
 			this.block_hall_carpet .set(cfg.getString("Hall-Carpet" ));
@@ -350,6 +358,7 @@ public class Gen_005 extends BackroomsGen {
 		// block types
 		cfg.addDefault("Level5.Blocks.SubFloor",              DEFAULT_BLOCK_SUBFLOOR        );
 		cfg.addDefault("Level5.Blocks.SubCeiling",            DEFAULT_BLOCK_SUBCEILING      );
+		cfg.addDefault("Level5.Blocks.SubWall",               DEFAULT_BLOCK_SUBWALL         );
 		cfg.addDefault("Level5.Blocks.Hall-Wall",             DEFAULT_BLOCK_HALL_WALL       );
 		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING    );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet",           DEFAULT_BLOCK_HALL_CARPET     );

@@ -81,7 +81,7 @@ public class HotelRoomStairs implements HotelRoom {
 			for (int iz=2; iz<d-1; iz++) {
 				if (iy == 0   ) fill = '='; else // floor
 				if (iy == iz-2) fill = 'L'; else // stairs
-				if (iy >  iz-2) fill = ' '; else // air above stairs
+				if (iy >  iz-2) fill = '.'; else // air above stairs
 					fill = '#';                  // fill under stairs
 				matrix[iy][iz]
 					.append(StringUtils.Repeat(door_x+1,   '#'))
