@@ -52,9 +52,9 @@ public class Gen_005 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_SUBCEILING       = "minecraft:smooth_stone";
 	public static final String DEFAULT_BLOCK_HALL_WALL        = "minecraft:stripped_spruce_wood";
+	public static final String DEFAULT_BLOCK_HALL_CEILING     = "minecraft:smooth_stone_slab[type=top]";
 	public static final String DEFAULT_BLOCK_HALL_CARPET      = "minecraft:black_glazed_terracotta";
 	public static final String DEFAULT_BLOCK_HALL_CARPET_ROTS = "news";
-	public static final String DEFAULT_BLOCK_HALL_CEILING     = "minecraft:smooth_stone_slab[type=top]";
 
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
@@ -70,11 +70,11 @@ public class Gen_005 extends BackroomsGen {
 	public final AtomicDouble  thresh_room_hall  = new AtomicDouble( DEFAULT_THRESH_ROOM_HALL );
 
 	// blocks
-	public final AtomicReference<String> block_subfloor         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_wall        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_carpet      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hall_ceiling     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subfloor     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_subceiling   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_wall    = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_ceiling = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_hall_carpet  = new AtomicReference<String>(null);
 	public final AtomicReference<BlockFace[]> block_hall_carpet_rots = new AtomicReference<BlockFace[]>(null);
 
 
@@ -232,13 +232,13 @@ public class Gen_005 extends BackroomsGen {
 		final BlockData block_subfloor     = StringToBlockData(this.block_subfloor,     DEFAULT_BLOCK_SUBFLOOR    );
 		final BlockData block_subceiling   = StringToBlockData(this.block_subceiling,   DEFAULT_BLOCK_SUBCEILING  );
 		final BlockData block_hall_wall    = StringToBlockData(this.block_hall_wall,    DEFAULT_BLOCK_HALL_WALL   );
-		final BlockData block_hall_carpet  = StringToBlockData(this.block_hall_carpet,  DEFAULT_BLOCK_HALL_CARPET );
 		final BlockData block_hall_ceiling = StringToBlockData(this.block_hall_ceiling, DEFAULT_BLOCK_HALL_CEILING);
+		final BlockData block_hall_carpet  = StringToBlockData(this.block_hall_carpet,  DEFAULT_BLOCK_HALL_CARPET );
 		if (block_subfloor     == null) throw new RuntimeException("Invalid block type for level 5 SubFloor"    );
 		if (block_subceiling   == null) throw new RuntimeException("Invalid block type for level 5 SubCeiling"  );
 		if (block_hall_wall    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall"   );
-		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet" );
 		if (block_hall_ceiling == null) throw new RuntimeException("Invalid block type for level 5 Hall-Ceiling");
+		if (block_hall_carpet  == null) throw new RuntimeException("Invalid block type for level 5 Hall-Carpet" );
 		final BlockFace[] hall_carpet_rots = this.block_hall_carpet_rots.get();
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
 		final int y  = this.level_y + SUBFLOOR + 1;
@@ -331,11 +331,11 @@ public class Gen_005 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(5);
-			this.block_subfloor        .set(cfg.getString("SubFloor"             ));
-			this.block_subceiling      .set(cfg.getString("SubCeiling"           ));
-			this.block_hall_wall       .set(cfg.getString("Hall-Wall"            ));
-			this.block_hall_carpet     .set(cfg.getString("Hall-Carpet"          ));
-			this.block_hall_ceiling    .set(cfg.getString("Hall-Ceiling"         ));
+			this.block_subfloor    .set(cfg.getString("SubFloor"    ));
+			this.block_subceiling  .set(cfg.getString("SubCeiling"  ));
+			this.block_hall_wall   .set(cfg.getString("Hall-Wall"   ));
+			this.block_hall_ceiling.set(cfg.getString("Hall-Ceiling"));
+			this.block_hall_carpet .set(cfg.getString("Hall-Carpet" ));
 			this.block_hall_carpet_rots.set(RotsToFaces2x2(cfg.getString("Hall-Carpet-Rotations")));
 		}
 	}
@@ -351,9 +351,9 @@ public class Gen_005 extends BackroomsGen {
 		cfg.addDefault("Level5.Blocks.SubFloor",              DEFAULT_BLOCK_SUBFLOOR        );
 		cfg.addDefault("Level5.Blocks.SubCeiling",            DEFAULT_BLOCK_SUBCEILING      );
 		cfg.addDefault("Level5.Blocks.Hall-Wall",             DEFAULT_BLOCK_HALL_WALL       );
+		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING    );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet",           DEFAULT_BLOCK_HALL_CARPET     );
 		cfg.addDefault("Level5.Blocks.Hall-Carpet-Rotations", DEFAULT_BLOCK_HALL_CARPET_ROTS);
-		cfg.addDefault("Level5.Blocks.Hall-Ceiling",          DEFAULT_BLOCK_HALL_CEILING    );
 	}
 
 
