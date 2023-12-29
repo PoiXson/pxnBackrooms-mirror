@@ -174,16 +174,6 @@ public class Gen_188 extends BackroomsGen {
 							else if (yy > Y_001+4  && yy < Y_001+8 ) isWindow = true; // basement 1
 						}
 					}
-					// light inside wall
-					if (inside == 1) {
-						if (iy > 3 && iy < cy-1)
-							chunk.setBlock(ix, yy, iz, light);
-					} else
-					// inner wall
-					if (inner > 0) {
-						if (isWindow) chunk.setBlock(ix, y+iy, iz, Material.BLACK_STAINED_GLASS);
-						else          chunk.setBlock(ix, y+iy, iz, Material.QUARTZ_BLOCK       );
-					} else
 					// outer walls
 					if (outer > 0) {
 						// between levels
@@ -215,9 +205,19 @@ public class Gen_188 extends BackroomsGen {
 								else if (yy > Y_006  ) chunk.setBlock(ix, yy, iz, block_lightsout_wall   ); // lights out
 								else if (yy > Y_000  ) chunk.setBlock(ix, yy, iz, block_lobby_wall       ); // lobby
 								else if (yy > Y_023  ) chunk.setBlock(ix, yy, iz, block_overgrowth_wall  ); // overgrowth
-								else                           chunk.setBlock(ix, yy, iz, Material.BEDROCK     ); // basement
+								else                   chunk.setBlock(ix, yy, iz, Material.BEDROCK       ); // basement
 							}
 						}
+					} else
+					// inner wall
+					if (inner > 0) {
+						if (isWindow) chunk.setBlock(ix, y+iy, iz, Material.BLACK_STAINED_GLASS);
+						else          chunk.setBlock(ix, y+iy, iz, Material.QUARTZ_BLOCK       );
+					} else
+					// light inside wall
+					if (inside == 1) {
+						if (iy > 3 && iy < cy-1)
+							chunk.setBlock(ix, yy, iz, light);
 					}
 				} // end iy
 			} // end ix
