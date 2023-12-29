@@ -78,14 +78,14 @@ public class Gen_188 extends BackroomsGen {
 				int outer = 0;
 				int inner = 0;
 				int inside = 0;
-				if (xx == -47) outer++; if (xx == 63) outer++;
-				if (zz == -47) outer++; if (zz == 63) outer++;
+				if (xx == -48) outer++; if (xx == 63) outer++;
+				if (zz == -48) outer++; if (zz == 63) outer++;
 				if (outer == 0) {
-					if (xx == -46) inner++; if (xx == 62) inner++;
-					if (zz == -46) inner++; if (zz == 62) inner++;
+					if (xx == -47) inner++; if (xx == 62) inner++;
+					if (zz == -47) inner++; if (zz == 62) inner++;
 					if (inner == 0) {
-						if (xx == -45) inside++; if (xx == 61) inside++;
-						if (zz == -45) inside++; if (zz == 61) inside++;
+						if (xx == -46) inside++; if (xx == 61) inside++;
+						if (zz == -46) inside++; if (zz == 61) inside++;
 					}
 				}
 				// floor
@@ -94,8 +94,8 @@ public class Gen_188 extends BackroomsGen {
 					chunk.setBlock(ix, y+1, iz, Material.DIRT);
 					chunk.setBlock(ix, y+2, iz, Material.DIRT);
 					// border path
-					if (xx ==-45 || xx ==-44 || xx == 61 || xx == 60 || (xx ==-43 && zz ==-43) || (xx ==-43 && zz == 59)
-					||  zz ==-45 || zz ==-44 || zz == 61 || zz == 60 || (xx == 59 && zz == 59) || (xx == 59 && zz ==-43)) {
+					if (xx ==-46 || xx ==-44 || xx == 61 || xx == 60 || (xx ==-43 && zz ==-43) || (xx ==-43 && zz == 59)
+					||  zz ==-46 || zz ==-44 || zz == 61 || zz == 60 || (xx == 59 && zz == 59) || (xx == 59 && zz ==-43)) {
 						chunk.setBlock(ix, y+3, iz, Material.POLISHED_ANDESITE);
 					// grass/path
 					} else {
@@ -137,8 +137,8 @@ public class Gen_188 extends BackroomsGen {
 				BlockData block_hotel_wall_top    = null;
 				BlockData block_hotel_wall_bottom = null;
 				if (outer > 0) {
-					block_hotel_wall_top    = (xx==-47 || xx==63 ? block_hotel_wall_top_x    : block_hotel_wall_top_z   );
-					block_hotel_wall_bottom = (xx==-47 || xx==63 ? block_hotel_wall_bottom_x : block_hotel_wall_bottom_z);
+					block_hotel_wall_top    = (xx==-48 || xx==63 ? block_hotel_wall_top_x    : block_hotel_wall_top_z   );
+					block_hotel_wall_bottom = (xx==-48 || xx==63 ? block_hotel_wall_bottom_x : block_hotel_wall_bottom_z);
 				}
 				Y_LOOP:
 				for (int iy=1; iy<h; iy++) {
@@ -146,8 +146,8 @@ public class Gen_188 extends BackroomsGen {
 					boolean isWindow = false;
 					if (outer == 1 || inner == 1) {
 						final int mod9;
-						if      (xx == -47 || xx == 63 ||  xx == -46 || xx == 62) mod9 = (zz+206) % 9;
-						else if (zz == -47 || zz == 63 ||  zz == -46 || zz == 62) mod9 = (xx+206) % 9;
+						if      (xx == -48 || xx == 63 ||  xx == -47 || xx == 62) mod9 = (zz+206) % 9;
+						else if (zz == -48 || zz == 63 ||  zz == -47 || zz == 62) mod9 = (xx+206) % 9;
 						else break Y_LOOP;
 						if (mod9 < 6) {
 							if      (yy > Y_019+7  && yy < Y_019+11) isWindow = true; // attic 2
