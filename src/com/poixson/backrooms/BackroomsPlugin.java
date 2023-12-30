@@ -39,6 +39,7 @@ import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.gens.Gen_094;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
+import com.poixson.backrooms.listeners.Listener_OutOfWorld;
 import com.poixson.backrooms.listeners.PlayerDamageListener;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskReconvergence;
@@ -79,6 +80,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
 	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
+	protected final AtomicReference<Listener_OutOfWorld>   listenerOutOfWorld   = new AtomicReference<Listener_OutOfWorld>(null);
 
 	// dynmap config generator
 	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
@@ -172,6 +174,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+		// out of world listeners
+		{
+			final Listener_OutOfWorld listener = new Listener_OutOfWorld(this);
+			final Listener_OutOfWorld previous = this.listenerOutOfWorld.getAndSet(listener);
+			if (previous != null)
+				previous.unregister();
+			listener.register();
+		}
 	}
 
 	@Override
@@ -193,6 +203,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// commands listener
 		{
 			final Commands listener = this.commands.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
+		// out of world listeners
+		{
+			final Listener_OutOfWorld listener = this.listenerOutOfWorld.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}

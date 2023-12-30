@@ -40,17 +40,6 @@ public class Level_094 extends BackroomsLevel {
 
 
 	@Override
-	public void register() {
-		super.register();
-	}
-	@Override
-	public void unregister() {
-		super.unregister();
-	}
-
-
-
-	@Override
 	public int getY(final int level) {
 		return 255;
 	}

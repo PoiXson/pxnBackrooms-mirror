@@ -7,7 +7,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.events.OutsideOfWorldEvent;
 import com.poixson.tools.events.xListener;
 
 
@@ -37,28 +36,6 @@ public class Listener_033 extends xListener<BackroomsPlugin> {
 				event.setCancelled(true);
 				break;
 			default: break;
-			}
-		}
-	}
-
-
-
-	// -------------------------------------------------------------------------------
-	// void/sky teleport
-
-
-
-	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
-	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
-		final int level = this.plugin.getWorldLevel(event.getTo().getWorld());
-		if (level == 33) {
-			if (event.getOutsideDistance() > 0) {
-				final Player player = event.getPlayer();
-				switch (event.getOutsideWhere()) {
-				case VOID: this.plugin.noclip(player, 6); break;
-				case SKY:  break;
-				default: throw new RuntimeException("Unknown OutsideOfWorld event type");
-				}
 			}
 		}
 	}
