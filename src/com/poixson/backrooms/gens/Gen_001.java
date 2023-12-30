@@ -44,7 +44,6 @@ public class Gen_001 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_WELL_FREQ     = 0.0028;
 	public static final double DEFAULT_THRESH_WALL  = 0.9;
 	public static final double DEFAULT_THRESH_MOIST = 0.4;
-	public static final double DEFAULT_THRESH_WELL  = 0.9;
 
 	public static final int LAMP_Y = 6;
 
@@ -70,7 +69,6 @@ public class Gen_001 extends BackroomsGen {
 	public final AtomicDouble  noise_well_freq     = new AtomicDouble( DEFAULT_NOISE_WELL_FREQ    );
 	public final AtomicDouble  thresh_wall         = new AtomicDouble( DEFAULT_THRESH_WALL        );
 	public final AtomicDouble  thresh_moist        = new AtomicDouble( DEFAULT_THRESH_MOIST       );
-	public final AtomicDouble  thresh_well         = new AtomicDouble( DEFAULT_THRESH_WELL        );
 
 	// blocks
 	public final AtomicReference<String> block_wall      = new AtomicReference<String>(null);
@@ -239,7 +237,6 @@ public class Gen_001 extends BackroomsGen {
 			this.noise_well_freq    .set(cfg.getDouble("Noise-Well-Freq"    ));
 			this.thresh_wall        .set(cfg.getDouble("Thresh-Wall"        ));
 			this.thresh_moist       .set(cfg.getDouble("Thresh-Moist"       ));
-			this.thresh_well        .set(cfg.getDouble("Thresh-Well"        ));
 		}
 		// block types
 		{
@@ -262,7 +259,6 @@ public class Gen_001 extends BackroomsGen {
 		cfg.addDefault("Level1.Params.Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
 		cfg.addDefault("Level1.Params.Thresh-Wall",         DEFAULT_THRESH_WALL        );
 		cfg.addDefault("Level1.Params.Thresh-Moist",        DEFAULT_THRESH_MOIST       );
-		cfg.addDefault("Level1.Params.Thresh-Well",         DEFAULT_THRESH_WELL        );
 		// block types
 		cfg.addDefault("Level1.Blocks.Wall",      DEFAULT_BLOCK_WALL     );
 		cfg.addDefault("Level1.Blocks.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
