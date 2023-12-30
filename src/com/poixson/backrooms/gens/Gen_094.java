@@ -50,7 +50,7 @@ public class Gen_094 extends BackroomsGen {
 	public static final int    DEFAULT_HOUSE_HEIGHT         = 5;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_DIRT              = "minecraft:dirt";
+	public static final String DEFAULT_BLOCK_DIRT              = "minecraft:moss_block";
 	public static final String DEFAULT_BLOCK_GRASS_BLOCK       = "minecraft:moss_block";
 	public static final String DEFAULT_BLOCK_GRASS_SLAB        = "minecraft:mud_brick_slab";
 	public static final String DEFAULT_BLOCK_GRASS_SHORT       = "minecraft:short_grass";
