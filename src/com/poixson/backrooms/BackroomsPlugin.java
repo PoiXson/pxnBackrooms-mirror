@@ -31,6 +31,7 @@ import com.poixson.backrooms.gens.Gen_000;
 import com.poixson.backrooms.gens.Gen_001;
 import com.poixson.backrooms.gens.Gen_005;
 import com.poixson.backrooms.gens.Gen_006;
+import com.poixson.backrooms.gens.Gen_011;
 import com.poixson.backrooms.gens.Gen_019;
 import com.poixson.backrooms.gens.Gen_023;
 import com.poixson.backrooms.gens.Gen_033;
@@ -43,6 +44,7 @@ import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.tasks.TeleportManager;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.Level_011;
 import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
@@ -114,7 +116,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		new Level_007(this); // thalassophobia
 //		new Level_009(this); // suburbs
 //		new Level_010(this); // field of wheat
-//		new Level_011(this); // concrete jungle, abandoned office, arcade, ikea
+		new Level_011(this); // concrete jungle, arcade, ikea, abandoned office
 		new Level_033(this); // run for your life
 //		new Level_078(this); // space
 		new Level_094(this); // motion
@@ -274,7 +276,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		Gen_007.ConfigDefaults(cfg); // thalassophobia
 //		Gen_009.ConfigDefaults(cfg); // suburbs
 //		Gen_010.ConfigDefaults(cfg); // field of wheat
-//		Gen_011.ConfigDefaults(cfg); // concrete jungle
+		Gen_011.ConfigDefaults(cfg); // concrete jungle
 		Gen_019.ConfigDefaults(cfg); // attic
 		Gen_023.ConfigDefaults(cfg); // overgrowth
 		Gen_033.ConfigDefaults(cfg); // run for your life
