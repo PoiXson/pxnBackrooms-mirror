@@ -250,34 +250,37 @@ public class Gen_094 extends BackroomsGen {
 			for (int ix=0; ix<16; ix++) {
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				dao = hillsData.get(new Iab(ix, iz));
-				// fill dirt
-				depth_dirt = (int) Math.floor(dao.depth - 0.7);
+				depth_dirt = (int) Math.floor(dao.depth);
 				if (depth_dirt < 0) depth_dirt = 0;
-				for (int iy=0; iy<depth_dirt; iy++)
-					chunk.setBlock(ix, y+iy, iz, block_dirt);
 				// water
-				if (depth_dirt < depth_water) {
-					for (int iy=depth_dirt; iy<depth_water; iy++)
+				if (depth_dirt <= depth_water) {
+					for (int iy=-1; iy<depth_water; iy++)
 						chunk.setBlock(ix, y+iy, iz, Material.WATER);
-				} else
-				// surface slab
-				if (dao.depth % 1.0 > 0.7) {
-					chunk.setBlock(ix, y+depth_dirt, iz, block_grass_slab);
-				// surface
+				// land
 				} else {
-					chunk.setBlock(ix, y+depth_dirt, iz, block_grass_block);
-					mod_grass = (int)Math.floor(dao.valueHill * 1000.0) % 3;
-					rnd = GetRandom(0, grass_rose_chance, last_rnd);
-					last_rnd = rnd;
-					if      (rnd == 1)       chunk.setBlock(ix, y+depth_dirt+1, iz, block_rose       );
-					else if (rnd <  5) {     chunk.setBlock(ix, y+depth_dirt+1, iz, block_grass_tall_lower); chunk.setBlock(ix, y+depth_dirt+2, iz, block_grass_tall_upper); }
-					else if (mod_grass == 0) chunk.setBlock(ix, y+depth_dirt+1, iz, block_grass_short);
-					else if (mod_grass == 1) chunk.setBlock(ix, y+depth_dirt+1, iz, block_fern       );
+					// fill dirt
+					for (int iy=2; iy<depth_dirt; iy++)
+						chunk.setBlock(ix, (y+iy)-2, iz, block_dirt);
+					chunk.setBlock(ix, (y+depth_dirt)-2, iz, block_grass_block);
+					// surface slab
+					if (dao.depth % 1.0 > 0.7) {
+						chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_grass_slab);
+					} else {
+						mod_grass = (int) Math.floor(dao.valueHill * 1000.0) % 3;
+						rnd = GetRandom(0, grass_rose_chance, last_rnd);
+						last_rnd = rnd;
+						if      (rnd == 1)       chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_rose            );
+						else if (rnd < 20) {
+							chunk                     .setBlock(ix, (y+depth_dirt)-1, iz, block_grass_tall_lower);
+							chunk                     .setBlock(ix,  y+depth_dirt,    iz, block_grass_tall_upper); }
+						else if (mod_grass == 0) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_grass_short     );
+						else if (mod_grass == 1) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_fern            );
+					}
 				}
 				// house
 				if (dao.isHouse) {
 					house_loc = new Iab(ix, iz);
-					house_y   = dao.house_y;
+					house_y   = dao.house_y - 1;
 					house_dir = dao.house_direction;
 				}
 			}
