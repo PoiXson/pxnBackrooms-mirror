@@ -32,6 +32,7 @@ public class Listener_023 extends xListener<BackroomsPlugin> {
 		final Player player = event.getPlayer();
 		final int level = this.plugin.getLevel(player);
 		if (level == 0
+		||  level == 1
 		||  level == 23) {
 			final ItemStack stack = event.getItem();
 			final Material type = stack.getType();
@@ -42,8 +43,9 @@ public class Listener_023 extends xListener<BackroomsPlugin> {
 				if (result != null) aged = result.booleanValue();
 			}
 			switch (level) {
-			// rotten apple - lobby to overgrowth
-			case 0: {
+			// rotten apple - lobby/basement to overgrowth
+			case 0:
+			case 1: {
 				if (Material.APPLE.equals(type)) {
 					if (aged) {
 						final int delta_y = Level_000.Y_023 - Level_000.Y_000;
