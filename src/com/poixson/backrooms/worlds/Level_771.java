@@ -89,23 +89,26 @@ public class Level_771 extends BackroomsLevel {
 		else                           x = 0;
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
+		return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
 	}
 	@Override
-	public Location getSpawnNear(final Location spawn, final int distance) {
-		final int distanceMin = Math.floorDiv(distance, 3);
+	public Location getSpawnNear(final int level, final Location spawn) {
+		final int max_y = this.getMaxY(level);
+		final int distance_near = DEFAULT_SPAWN_NEAR_DISTANCE;
+		final int distanceMin = Math.floorDiv(distance_near, 3);
 		final float yaw = (float) RandomUtils.GetRandom(0, 360);
 		final World world = spawn.getWorld();
 		final int y = spawn.getBlockY();
+		final int h = max_y - y;
 		// true if north/south roads
 		final boolean axis = (spawn.getBlockX() == 0);
 		int x = 0;
 		int z = 0;
 		Location near, valid;
-		for (int t=0; t<10; t++) {
-			for (int iy=0; iy<10; iy++) {
-				if (axis) z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance);
-				else      x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance);
+		for (int tries=0; tries<20; tries++) {
+			for (int iy=0; iy<h; iy++) {
+				if (axis) z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance_near);
+				else      x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance_near);
 				near = world.getBlockAt(x, y+iy, z).getLocation();
 				valid = this.validateSpawn(near);
 				if (valid != null) {

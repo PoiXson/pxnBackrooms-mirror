@@ -232,7 +232,7 @@ public class Level_000 extends BackroomsLevel {
 			final int x = this.gen_309.getPathX(z);
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
+			return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
 		}
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
@@ -280,6 +280,14 @@ public class Level_000 extends BackroomsLevel {
 		case 188: return Y_309 - 1; // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
+	}
+	@Override
+	public int getSpawnDistanceNear(final int level) {
+		switch (level) {
+		case 188: return 45;
+		default: break;
+		}
+		return DEFAULT_SPAWN_NEAR_DISTANCE;
 	}
 	@Override
 	public boolean containsLevel(final int level) {

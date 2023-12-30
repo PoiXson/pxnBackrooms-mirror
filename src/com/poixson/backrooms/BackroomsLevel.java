@@ -40,7 +40,6 @@ import com.poixson.utils.RandomUtils;
 
 
 public abstract class BackroomsLevel extends ChunkGenerator {
-	public static final int DEFAULT_SPAWN_SEARCH_HEIGHT = 10;
 	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 100;
 
 	protected final BackroomsPlugin plugin;
@@ -186,26 +185,18 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 	public abstract int getY(final int level);
 	public abstract int getMaxY(final int level);
+	public int getSpawnDistanceNear(final int level) {
+		return DEFAULT_SPAWN_NEAR_DISTANCE;
+	}
 
 	public abstract boolean containsLevel(final int level);
 
 	public Location validateSpawn(final Location loc) {
-		return validateSpawn(loc, DEFAULT_SPAWN_SEARCH_HEIGHT);
-	}
-	public Location validateSpawn(final Location loc, final int height) {
-		final World world = loc.getWorld();
-		Block blockA = loc.getBlock();
-		Block blockB;
-		final int x = loc.getBlockX();
-		final int y = loc.getBlockY();
-		final int z = loc.getBlockZ();
-		for (int i=0; i<height; i++) {
-			blockB = world.getBlockAt(x, y+i+1, z);
-			if (blockA.isPassable()
-			&&  blockB.isPassable())
-				return blockA.getLocation();
-			blockA = blockB;
-		}
+		final Block blockA = loc.getBlock();
+		final Block blockB = blockA.getRelative(0, 1, 0);
+		if (blockA.isPassable()
+		&&  blockB.isPassable())
+			return blockA.getLocation();
 		return null;
 	}
 
@@ -216,23 +207,22 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final int z = RandomUtils.GetRandom(0-distance, distance);
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		return this.getSpawnNear(world.getBlockAt(x, y, z).getLocation());
+		return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
 	}
-
-	public Location getSpawnNear(final Location spawn) {
-		return getSpawnNear(spawn, DEFAULT_SPAWN_NEAR_DISTANCE);
-	}
-	public Location getSpawnNear(final Location spawn, final int distance) {
-		final int distanceMin = Math.floorDiv(distance, 3);
+	public Location getSpawnNear(final int level, final Location spawn) {
+		final int max_y         = this.getMaxY(level);
+		final int distance_near = this.getSpawnDistanceNear(level);
+		final int distanceMin = Math.floorDiv(distance_near, 3);
 		final float yaw = (float) RandomUtils.GetRandom(0, 360);
 		final World world = spawn.getWorld();
 		final int y = spawn.getBlockY();
+		final int h = max_y - y;
 		int x, z;
 		Location near, valid;
-		for (int t=0; t<10; t++) {
-			for (int iy=0; iy<10; iy++) {
-				x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance);
-				z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance);
+		for (int tries=0; tries<20; tries++) {
+			for (int iy=0; iy<h; iy++) {
+				x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance_near);
+				z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance_near);
 				near = world.getBlockAt(x, y+iy, z).getLocation();
 				valid = this.validateSpawn(near);
 				if (valid != null) {
@@ -247,9 +237,10 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		final int y = this.getY( this.getMainLevel() );
+		final int level_main = this.getMainLevel();
+		final int y = this.getY(level_main);
 		final Location loc = world.getBlockAt(0, y, 0).getLocation();
-		return this.getSpawnNear(loc);
+		return this.getSpawnNear(level_main, loc);
 	}
 
 

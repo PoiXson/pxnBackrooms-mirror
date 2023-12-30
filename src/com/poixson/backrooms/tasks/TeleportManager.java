@@ -163,15 +163,15 @@ public class TeleportManager {
 
 	public Location getSpawnLocation(final int level) {
 		final Location spawn = this.getSpawnArea(level);
-		return this.getSpawnLocation(spawn, level);
+		return this.getSpawnLocation(level, spawn);
 	}
-	public Location getSpawnLocation(final Location spawn, final int level) {
+	public Location getSpawnLocation(final int level, final Location spawn) {
 		final BackroomsLevel backlevel = this.plugin.getBackroomsLevel(level);
 		if (backlevel == null) {
 			this.log().warning(LOG_PREFIX + "Unknown backrooms level: " + Integer.toString(level));
 			return null;
 		}
-		return backlevel.getSpawnNear(spawn);
+		return backlevel.getSpawnNear(level, spawn);
 	}
 
 

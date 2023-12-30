@@ -116,11 +116,7 @@ public class Level_033 extends BackroomsLevel {
 		return world.getBlockAt(x+7, y, 7).getLocation();
 	}
 	@Override
-	public Location getSpawnNear(final Location spawn) {
-		return spawn;
-	}
-	@Override
-	public Location getSpawnNear(final Location spawn, final int distance) {
+	public Location getSpawnNear(final int level, final Location spawn) {
 		return spawn;
 	}
 
