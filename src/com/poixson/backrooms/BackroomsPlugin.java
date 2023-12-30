@@ -40,7 +40,7 @@ import com.poixson.backrooms.gens.Gen_094;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
-import com.poixson.backrooms.listeners.PlayerDamageListener;
+import com.poixson.backrooms.listeners.Listener_PlayerDamage;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.tasks.TeleportManager;
@@ -79,7 +79,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
-	protected final AtomicReference<PlayerDamageListener> playerDamageListener = new AtomicReference<PlayerDamageListener>(null);
+	protected final AtomicReference<Listener_PlayerDamage> listenerPlayerDamage = new AtomicReference<Listener_PlayerDamage>(null);
 	protected final AtomicReference<Listener_OutOfWorld>   listenerOutOfWorld   = new AtomicReference<Listener_OutOfWorld>(null);
 
 	// dynmap config generator
@@ -166,10 +166,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.stop();
 			task.start();
 		}
-		// player damage listener
+		// player damage listeners
 		{
-			final PlayerDamageListener listener = new PlayerDamageListener(this);
-			final PlayerDamageListener previous = this.playerDamageListener.getAndSet(listener);
+			final Listener_PlayerDamage listener = new Listener_PlayerDamage(this);
+			final Listener_PlayerDamage previous = this.listenerPlayerDamage.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
@@ -212,9 +212,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 			if (listener != null)
 				listener.unregister();
 		}
-		// player damage listener
+		// player damage listeners
 		{
-			final PlayerDamageListener listener = this.playerDamageListener.getAndSet(null);
+			final Listener_PlayerDamage listener = this.listenerPlayerDamage.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
