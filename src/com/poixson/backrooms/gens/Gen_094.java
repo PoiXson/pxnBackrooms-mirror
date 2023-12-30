@@ -2,6 +2,7 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_094.ENABLE_GEN_094;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.RandomUtils.GetRandom;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,7 +29,6 @@ import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
-import com.poixson.utils.RandomUtils;
 import com.poixson.utils.StringUtils;
 
 
@@ -44,7 +44,7 @@ public class Gen_094 extends BackroomsGen {
 	public static final double DEFAULT_VALLEY_DEPTH         = 0.33;
 	public static final double DEFAULT_VALLEY_GAIN          = 0.3;
 	public static final double DEFAULT_HILLS_GAIN           = 12.0;
-	public static final double DEFAULT_ROSE_CHANCE          = 0.01;
+	public static final int    DEFAULT_GRASS_ROSE_CHANCE    = 80;
 	public static final int    DEFAULT_WATER_DEPTH          = 3;
 	public static final int    DEFAULT_HOUSE_WIDTH          = 8;
 	public static final int    DEFAULT_HOUSE_HEIGHT         = 5;
@@ -53,7 +53,9 @@ public class Gen_094 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_DIRT              = "minecraft:dirt";
 	public static final String DEFAULT_BLOCK_GRASS_BLOCK       = "minecraft:moss_block";
 	public static final String DEFAULT_BLOCK_GRASS_SLAB        = "minecraft:mud_brick_slab";
-	public static final String DEFAULT_BLOCK_GRASS             = "minecraft:grass";
+	public static final String DEFAULT_BLOCK_GRASS_SHORT       = "minecraft:short_grass";
+	public static final String DEFAULT_BLOCK_GRASS_TALL_UPPER  = "minecraft:tall_grass[half=upper]";
+	public static final String DEFAULT_BLOCK_GRASS_TALL_LOWER  = "minecraft:tall_grass[half=lower]";
 	public static final String DEFAULT_BLOCK_FERN              = "minecraft:fern";
 	public static final String DEFAULT_BLOCK_ROSE              = "minecraft:wither_rose";
 	public static final String DEFAULT_BLOCK_HOUSE_WALL        = "minecraft:stripped_birch_wood";
@@ -74,7 +76,7 @@ public class Gen_094 extends BackroomsGen {
 	public final AtomicDouble  valley_depth         = new AtomicDouble( DEFAULT_VALLEY_DEPTH        );
 	public final AtomicDouble  valley_gain          = new AtomicDouble( DEFAULT_VALLEY_GAIN         );
 	public final AtomicDouble  hills_gain           = new AtomicDouble( DEFAULT_HILLS_GAIN          );
-	public final AtomicDouble  rose_chance          = new AtomicDouble( DEFAULT_ROSE_CHANCE         );
+	public final AtomicInteger grass_rose_chance    = new AtomicInteger(DEFAULT_GRASS_ROSE_CHANCE   );
 	public final AtomicInteger water_depth          = new AtomicInteger(DEFAULT_WATER_DEPTH         );
 	public final AtomicInteger house_width          = new AtomicInteger(DEFAULT_HOUSE_WIDTH         );
 	public final AtomicInteger house_height         = new AtomicInteger(DEFAULT_HOUSE_HEIGHT        );
@@ -83,7 +85,9 @@ public class Gen_094 extends BackroomsGen {
 	public final AtomicReference<String> block_dirt              = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_grass_block       = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_grass_slab        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass             = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_grass_short       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_grass_tall_upper  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_grass_tall_lower  = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_fern              = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_rose              = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_house_wall        = new AtomicReference<String>(null);
@@ -202,7 +206,9 @@ public class Gen_094 extends BackroomsGen {
 		final BlockData block_dirt             = StringToBlockData(this.block_dirt,              DEFAULT_BLOCK_DIRT             );
 		final BlockData block_grass_block      = StringToBlockData(this.block_grass_block,       DEFAULT_BLOCK_GRASS_BLOCK      );
 		final BlockData block_grass_slab       = StringToBlockData(this.block_grass_slab,        DEFAULT_BLOCK_GRASS_SLAB       );
-		final BlockData block_grass            = StringToBlockData(this.block_grass,             DEFAULT_BLOCK_GRASS            );
+		final BlockData block_grass_short      = StringToBlockData(this.block_grass_short,       DEFAULT_BLOCK_GRASS_SHORT      );
+		final BlockData block_grass_tall_upper = StringToBlockData(this.block_grass_tall_upper,  DEFAULT_BLOCK_GRASS_TALL_UPPER );
+		final BlockData block_grass_tall_lower = StringToBlockData(this.block_grass_tall_lower,  DEFAULT_BLOCK_GRASS_TALL_LOWER );
 		final BlockData block_fern             = StringToBlockData(this.block_fern,              DEFAULT_BLOCK_FERN             );
 		final BlockData block_rose             = StringToBlockData(this.block_rose,              DEFAULT_BLOCK_ROSE             );
 		final BlockData block_house_wall       = StringToBlockData(this.block_house_wall,        DEFAULT_BLOCK_HOUSE_WALL       );
@@ -211,9 +217,11 @@ public class Gen_094 extends BackroomsGen {
 		final BlockData block_house_roof_solid = StringToBlockData(this.block_house_roof_solid,  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
 		final BlockData block_house_window = StringToBlockData(this.block_house_window, DEFAULT_BLOCK_HOUSE_WINDOW);
 		if (block_dirt             == null) throw new RuntimeException("Invalid block type for level 94 Dirt"             );
-		if (block_grass_block      == null) throw new RuntimeException("Invalid block type for level 94 Grass-Block"       );
-		if (block_grass_slab       == null) throw new RuntimeException("Invalid block type for level 94 Grass-Slab"        );
-		if (block_grass            == null) throw new RuntimeException("Invalid block type for level 94 Grass"            );
+		if (block_grass_block      == null) throw new RuntimeException("Invalid block type for level 94 Grass-Block"      );
+		if (block_grass_slab       == null) throw new RuntimeException("Invalid block type for level 94 Grass-Slab"       );
+		if (block_grass_short      == null) throw new RuntimeException("Invalid block type for level 94 Grass-Short"      );
+		if (block_grass_tall_upper == null) throw new RuntimeException("Invalid block type for level 94 Grass-Tall-Top"   );
+		if (block_grass_tall_lower == null) throw new RuntimeException("Invalid block type for level 94 Grass-Tall-Bottom");
 		if (block_fern             == null) throw new RuntimeException("Invalid block type for level 94 Fern"             );
 		if (block_rose             == null) throw new RuntimeException("Invalid block type for level 94 Rose"             );
 		if (block_house_wall       == null) throw new RuntimeException("Invalid block type for level 94 House-Wall"       );
@@ -221,16 +229,15 @@ public class Gen_094 extends BackroomsGen {
 		if (block_house_roofB      == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Stairs");
 		if (block_house_roof_solid == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Solid" );
 		if (block_house_window     == null) throw new RuntimeException("Invalid block type for level 94 House-Window"     );
-		final int    depth_water  = this.water_depth.get();;
-		final double rose_chance  = this.rose_chance.get();
-		final int    house_width  = this.house_width.get();
-		final int    house_height = this.house_height.get();
+		final int depth_water       = this.water_depth.get();;
+		final int grass_rose_chance = this.grass_rose_chance.get();
+		final int house_width       = this.house_width.get();
+		final int house_height      = this.house_height.get();
 		final HashMap<Iab, HillsData> hillsData = ((PregenLevel94)pregen).hills;
 		HillsData dao;
 		final int y = this.level_y + 1;
 		int depth_dirt;
-		int mod_grass;
-		int rnd, chance;
+		int mod_grass, rnd;
 		int last_rnd = 0;
 		Iab house_loc = null;
 		int house_y   = 0;
@@ -256,12 +263,12 @@ public class Gen_094 extends BackroomsGen {
 				} else {
 					chunk.setBlock(ix, y+depth_dirt, iz, block_grass_block);
 					mod_grass = (int)Math.floor(dao.valueHill * 1000.0) % 3;
-					chance = (int) Math.round(1.0 / rose_chance);
-					rnd = RandomUtils.GetNewRandom(0, chance, last_rnd);
-					last_rnd += rnd;
-					if (rnd == 1)            chunk.setBlock(ix, y+depth_dirt+1, iz, block_rose );
-					else if (mod_grass == 0) chunk.setBlock(ix, y+depth_dirt+1, iz, block_grass);
-					else if (mod_grass == 1) chunk.setBlock(ix, y+depth_dirt+1, iz, block_fern );
+					rnd = GetRandom(0, grass_rose_chance, last_rnd);
+					last_rnd = rnd;
+					if      (rnd == 1)       chunk.setBlock(ix, y+depth_dirt+1, iz, block_rose       );
+					else if (rnd <  5) {     chunk.setBlock(ix, y+depth_dirt+1, iz, block_grass_tall_lower); chunk.setBlock(ix, y+depth_dirt+2, iz, block_grass_tall_upper); }
+					else if (mod_grass == 0) chunk.setBlock(ix, y+depth_dirt+1, iz, block_grass_short);
+					else if (mod_grass == 1) chunk.setBlock(ix, y+depth_dirt+1, iz, block_fern       );
 				}
 				// house
 				if (dao.isHouse) {
@@ -355,7 +362,7 @@ public class Gen_094 extends BackroomsGen {
 			this.valley_depth        .set(cfg.getDouble("Valley-Depth"        ));
 			this.valley_gain         .set(cfg.getDouble("Valley-Gain"         ));
 			this.hills_gain          .set(cfg.getDouble("Hills-Gain"          ));
-			this.rose_chance         .set(cfg.getDouble("Rose-Chance"         ));
+			this.grass_rose_chance   .set(cfg.getInt(   "Grass-Rose-Chance"   ));
 			this.water_depth         .set(cfg.getInt(   "Water-Depth"         ));
 			this.house_width         .set(cfg.getInt(   "House-Width"         ));
 			this.house_height        .set(cfg.getInt(   "House-Height"        ));
@@ -366,7 +373,9 @@ public class Gen_094 extends BackroomsGen {
 			this.block_dirt             .set(cfg.getString("Dirt"             ));
 			this.block_grass_block      .set(cfg.getString("Grass-Block"      ));
 			this.block_grass_slab       .set(cfg.getString("Grass-Slab"       ));
-			this.block_grass            .set(cfg.getString("Grass"            ));
+			this.block_grass_short      .set(cfg.getString("Grass-Short"      ));
+			this.block_grass_tall_upper .set(cfg.getString("Grass-Tall-Top"   ));
+			this.block_grass_tall_lower .set(cfg.getString("Grass-Tall-Bottom"));
 			this.block_fern             .set(cfg.getString("Fern"             ));
 			this.block_rose             .set(cfg.getString("Rose"             ));
 			this.block_house_wall       .set(cfg.getString("House-Wall"       ));
@@ -385,7 +394,7 @@ public class Gen_094 extends BackroomsGen {
 		cfg.addDefault("Level94.Params.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
 		cfg.addDefault("Level94.Params.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
 		cfg.addDefault("Level94.Params.Hills-Gain",           DEFAULT_HILLS_GAIN          );
-		cfg.addDefault("Level94.Params.Rose-Chance",          DEFAULT_ROSE_CHANCE         );
+		cfg.addDefault("Level94.Params.Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
 		cfg.addDefault("Level94.Params.Water-Depth",          DEFAULT_WATER_DEPTH         );
 		cfg.addDefault("Level94.Params.House-Width",          DEFAULT_HOUSE_WIDTH         );
 		cfg.addDefault("Level94.Params.House-Height",         DEFAULT_HOUSE_HEIGHT        );
@@ -393,7 +402,9 @@ public class Gen_094 extends BackroomsGen {
 		cfg.addDefault("Level94.Blocks.Dirt",              DEFAULT_BLOCK_DIRT             );
 		cfg.addDefault("Level94.Blocks.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
 		cfg.addDefault("Level94.Blocks.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
-		cfg.addDefault("Level94.Blocks.Grass",             DEFAULT_BLOCK_GRASS            );
+		cfg.addDefault("Level94.Blocks.Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
+		cfg.addDefault("Level94.Blocks.Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
+		cfg.addDefault("Level94.Blocks.Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
 		cfg.addDefault("Level94.Blocks.Fern",              DEFAULT_BLOCK_FERN             );
 		cfg.addDefault("Level94.Blocks.Rose",              DEFAULT_BLOCK_ROSE             );
 		cfg.addDefault("Level94.Blocks.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
