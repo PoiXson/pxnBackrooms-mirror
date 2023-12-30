@@ -28,15 +28,13 @@ public class Listener_000  extends xListener<BackroomsPlugin> {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
-		final int level = this.plugin.getLevel(event.getTo());
-		if (level == 0) {
-			if (event.getOutsideDistance() > 20) {
-				final Player player = event.getPlayer();
-				switch (event.getOutsideWhere()) {
-				case SKY:  this.plugin.noclip(player, 771); break; // to crossroads
-				case VOID: this.plugin.noclip(player,  94); break; // motion
-				default: throw new RuntimeException("Unknown OutsideOfWorld event type");
-				}
+		if (event.getOutsideDistance() > 20) {
+			final Player player = event.getPlayer();
+			final int level = this.plugin.getLevel(event.getTo());
+			switch (level) {
+			case 309: this.plugin.noclip(player, 771); break; // to 771 crossroads
+			case   1: this.plugin.noclip(player,  94); break; // to  94 motion
+			default: break;
 			}
 		}
 	}
