@@ -112,6 +112,7 @@ function radio_antenna(x, y, z, size) {
 					plot.setBlock((   i+inset_level)-1, iy,       inset_level -1, '#'); // x north
 					plot.setBlock(    i+inset_level,    iy, (size-inset_level)+1, '#'); // x south
 					plot.setBlock((size-inset_level)+1, iy, (   i+inset_level)-1, '#'); // z east
+					if (i != fence_width-3)
 					plot.setBlock(      inset_level -1, iy,     i+inset_level,    '#'); // z west
 				}
 			}
@@ -138,6 +139,9 @@ function radio_antenna(x, y, z, size) {
 		plot.setBlock(     inset_level, iy,      inset_level, '#'); // north-west
 		plot.setBlock(size-inset_level, iy, size-inset_level, '#'); // south-east
 		plot.setBlock(     inset_level, iy, size-inset_level, '#'); // south-west
+		// ladder
+		if (iy > 0)
+			plot.setBlock(inset_level, iy+1, (size-inset_level)-1, 'H');
 		iy++;
 		inset_micro++;
 	}
