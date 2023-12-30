@@ -66,53 +66,78 @@ function radio_lot_fence() {
 
 
 function radio_antenna(x, y, z, size) {
-	let block_type = Material.IRON_BLOCK;
+	let plot = (new PlotterFactory())
+		.placer(region)
+		.xyz(x, y, z)
+		.build();
+	plot.type('#', "minecraft:iron_block");
+	plot.type('x', "minecraft:iron_bars[east=true,west=true]"  );
+	plot.type('z', "minecraft:iron_bars[north=true,south=true]");
+	plot.type('N', "minecraft:iron_bars[south=true,west=true]" );
+	plot.type('n', "minecraft:iron_bars[south=true,east=true]" );
+	plot.type('S', "minecraft:iron_bars[north=true,west=true]" );
+	plot.type('s', "minecraft:iron_bars[north=true,east=true]" );
+	plot.type('H', "minecraft:ladder[facing=north]"            );
 	let size_half = Math.floor(size * 0.5);
-	let iy = 0;
+	let iy          = 0;
 	let inset       = 0;
 	let inset_micro = 1;
 	let inset_level = 0;
 	while (true) {
 		if (inset >= size_half) {
-			inset    = inset_level + 1;
+			inset = inset_level + 1;
 			inset_micro = 1;
 			inset_level++;
 			// top of tower
 			if (inset_level > size_half) {
 				for (let i=0; i<5; i++)
-					region.setType(x+size_half, y+iy+i, z+size_half, block_type);
+					plot.setBlock(size_half, iy+i, size_half, '#');
 				break;
 			}
+			// fence corners
+			plot.setBlock((size-inset_level)+2, iy+1,       inset_level -2, 'N'); // north-east
+			plot.setBlock(      inset_level -2, iy+1,       inset_level -2, 'n'); // north-west
+			plot.setBlock((size-inset_level)+2, iy+1, (size-inset_level)+2, 'S'); // south-east
+			plot.setBlock(      inset_level -2, iy+1, (size-inset_level)+2, 's'); // south-west
 			// flat square
-			for (let i=0; i<size_half-inset_level; i++) {
-				region.setType(x+     inset_level+i, y+iy-1, z+     inset_level-1, block_type);
-				region.setType(x+size-inset_level-i, y+iy-1, z+     inset_level-1, block_type);
-				region.setType(x+     inset_level+i, y+iy-1, z+size-inset_level+1, block_type);
-				region.setType(x+size-inset_level-i, y+iy-1, z+size-inset_level+1, block_type);
-				region.setType(x+     inset_level-1, y+iy-1, z+     inset_level+i, block_type);
-				region.setType(x+size-inset_level+1, y+iy-1, z+     inset_level+i, block_type);
-				region.setType(x+     inset_level-1, y+iy-1, z+size-inset_level-i, block_type);
-				region.setType(x+size-inset_level+1, y+iy-1, z+size-inset_level-i, block_type);
+			let fence_width = (size - (inset_level*2)) + 3;
+			for (let i=0; i<fence_width; i++) {
+				// fences
+				plot.setBlock((   i+inset_level)-1, iy+1,       inset_level -2, 'x'); // x north
+				plot.setBlock((   i+inset_level)-1, iy+1, (size-inset_level)+2, 'x'); // x south
+				plot.setBlock((size-inset_level)+2, iy+1,    (i+inset_level)-1, 'z'); // z east
+				plot.setBlock(      inset_level -2, iy+1,    (i+inset_level)-1, 'z'); // z west
+				// beams
+				if (i < fence_width-1) {
+					plot.setBlock((   i+inset_level)-1, iy,       inset_level -1, '#'); // x north
+					plot.setBlock(    i+inset_level,    iy, (size-inset_level)+1, '#'); // x south
+					plot.setBlock((size-inset_level)+1, iy, (   i+inset_level)-1, '#'); // z east
+					plot.setBlock(      inset_level -1, iy,     i+inset_level,    '#'); // z west
+				}
 			}
 			// inside cross
-			let w = (size - inset_level) + 2;
-			for (let i=inset_level-1; i<w; i++) {
-				region.setType(x+        i, y+iy-1, z+size_half, block_type);
-				region.setType(x+size_half, y+iy-1, z+        i, block_type);
+			let w = (size - inset_level) + 1;
+			for (let i=inset_level; i<w; i++) {
+				plot.setBlock(i, iy, size_half, '#');
+				plot.setBlock(size_half, iy, i, '#');
 			}
 		}
 		if (inset_micro >= 3) {
 			inset_micro = 0;
 			inset++;
 		}
-		region.setType(x+     inset,       y+iy, z+     inset,       block_type);
-		region.setType(x+size-inset,       y+iy, z+     inset,       block_type);
-		region.setType(x+     inset,       y+iy, z+size-inset,       block_type);
-		region.setType(x+size-inset,       y+iy, z+size-inset,       block_type);
-		region.setType(x+     inset_level, y+iy, z+     inset_level, block_type);
-		region.setType(x+size-inset_level, y+iy, z+     inset_level, block_type);
-		region.setType(x+     inset_level, y+iy, z+size-inset_level, block_type);
-		region.setType(x+size-inset_level, y+iy, z+size-inset_level, block_type);
+		// braces
+		if (inset_level < size_half-1) {
+			plot.setBlock(       inset, iy,      inset, '#');
+			plot.setBlock((size)-inset, iy,      inset, '#');
+			plot.setBlock(       inset, iy, size-inset, '#');
+			plot.setBlock((size)-inset, iy, size-inset, '#');
+		}
+		// legs
+		plot.setBlock(size-inset_level, iy,      inset_level, '#'); // north-east
+		plot.setBlock(     inset_level, iy,      inset_level, '#'); // north-west
+		plot.setBlock(size-inset_level, iy, size-inset_level, '#'); // south-east
+		plot.setBlock(     inset_level, iy, size-inset_level, '#'); // south-west
 		iy++;
 		inset_micro++;
 	}
