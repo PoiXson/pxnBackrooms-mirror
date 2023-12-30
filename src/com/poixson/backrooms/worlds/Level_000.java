@@ -38,6 +38,7 @@ import com.poixson.utils.RandomUtils;
 
 
 // 309 | Radio Station
+// 188 | The Windows
 //  19 | Attic
 //   5 | Hotel
 //  37 | Poolrooms
@@ -266,6 +267,7 @@ public class Level_000 extends BackroomsLevel {
 		case   5: return Y_005; // hotel
 		case  19: return Y_019; // attic
 		case 309: return Y_309; // radio station
+		case 188: return Y_188; // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
@@ -280,6 +282,7 @@ public class Level_000 extends BackroomsLevel {
 		case   5: return Y_019 - 1; // hotel
 		case  19: return Y_309 - 1; // attic
 		case 309: return 320;       // radio station
+		case 188: return Y_309 - 1; // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
@@ -294,6 +297,7 @@ public class Level_000 extends BackroomsLevel {
 		case   5: // hotel
 		case  19: // attic
 		case 309: // radio station
+		case 188: // the windows
 			return true;
 		default: return false;
 		}
