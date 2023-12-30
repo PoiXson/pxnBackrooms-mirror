@@ -322,6 +322,7 @@ public class Gen_000 extends BackroomsGen {
 					if (dao.boxed > 4) {
 						// loot
 						if (dao.wall_dist == 1) {
+//TODO
 							((Level_000)this.backlevel).loot_chests_0.add(xx, zz);
 							chunk.setBlock(ix, y+1, iz, Material.BARREL);
 							final Barrel barrel = (Barrel) chunk.getBlockData(ix, y+1, iz);

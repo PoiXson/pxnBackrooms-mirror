@@ -288,7 +288,7 @@ public class Gen_005 extends BackroomsGen {
 				if (dao == null) continue;
 				switch (dao.type) {
 				case WALL:
-//TODO
+//TODO: use block_hall_wall_top_z and block_hall_wall_bottom_z
 					chunk.setBlock(ix, y+6, iz, block_hall_wall_top_x);
 					chunk.setBlock(ix, y+5, iz, block_hall_wall_top_x);
 					for (int iy=2; iy<5; iy++)
