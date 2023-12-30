@@ -17,7 +17,7 @@ import com.poixson.tools.DelayedLever;
 import com.poixson.tools.events.xListener;
 
 
-// 6 | lobby/lights-out teleport
+// 6 | Lobby/Lights-Out teleport
 public class Listener_006 extends xListener<BackroomsPlugin> {
 
 	protected final Level_000 level0;

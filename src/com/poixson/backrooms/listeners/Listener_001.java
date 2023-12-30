@@ -21,7 +21,7 @@ import com.poixson.tools.events.PlayerMoveNormalEvent;
 import com.poixson.tools.events.xListener;
 
 
-// level 1 - basement
+// 1 | Basement lights
 public class Listener_001 extends xListener<BackroomsPlugin> {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
