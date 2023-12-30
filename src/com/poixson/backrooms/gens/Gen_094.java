@@ -62,6 +62,7 @@ public class Gen_094 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_HOUSE_ROOF_STAIRS = "minecraft:deepslate_tile_stairs";
 	public static final String DEFAULT_BLOCK_HOUSE_ROOF_SOLID  = "minecraft:deepslate_tiles";
 	public static final String DEFAULT_BLOCK_HOUSE_WINDOW      = "minecraft:black_stained_glass";
+	public static final String DEFAULT_BLOCK_HOUSE_FLOOR       = "minecraft:stripped_spruce_wood";
 
 	// noise
 	public final FastNoiseLiteD noiseHills;
@@ -94,6 +95,7 @@ public class Gen_094 extends BackroomsGen {
 	public final AtomicReference<String> block_house_roof_stairs = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_house_roof_solid  = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_house_window      = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_house_floor       = new AtomicReference<String>(null);
 
 
 
@@ -215,7 +217,8 @@ public class Gen_094 extends BackroomsGen {
 		final BlockData block_house_roofA      = StringToBlockData(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
 		final BlockData block_house_roofB      = StringToBlockData(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
 		final BlockData block_house_roof_solid = StringToBlockData(this.block_house_roof_solid,  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
-		final BlockData block_house_window = StringToBlockData(this.block_house_window, DEFAULT_BLOCK_HOUSE_WINDOW);
+		final BlockData block_house_window     = StringToBlockData(this.block_house_window,      DEFAULT_BLOCK_HOUSE_WINDOW     );
+		final BlockData block_house_floor      = StringToBlockData(this.block_house_floor,       DEFAULT_BLOCK_HOUSE_FLOOR      );
 		if (block_dirt             == null) throw new RuntimeException("Invalid block type for level 94 Dirt"             );
 		if (block_grass_block      == null) throw new RuntimeException("Invalid block type for level 94 Grass-Block"      );
 		if (block_grass_slab       == null) throw new RuntimeException("Invalid block type for level 94 Grass-Slab"       );
@@ -229,6 +232,7 @@ public class Gen_094 extends BackroomsGen {
 		if (block_house_roofB      == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Stairs");
 		if (block_house_roof_solid == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Solid" );
 		if (block_house_window     == null) throw new RuntimeException("Invalid block type for level 94 House-Window"     );
+		if (block_house_floor      == null) throw new RuntimeException("Invalid block type for level 94 House-Floor"      );
 		final int depth_water       = this.water_depth.get();;
 		final int grass_rose_chance = this.grass_rose_chance.get();
 		final int house_width       = this.house_width.get();
@@ -300,15 +304,20 @@ public class Gen_094 extends BackroomsGen {
 			plot.type('>', block_house_roofB     );
 			plot.type('X', block_house_roof_solid);
 			plot.type('w', block_house_window    );
-			plot.type('.', Material.AIR      );
+			plot.type('_', block_house_floor     );
+			plot.type('.', Material.AIR          );
 			plot.rotation = (house_dir ? BlockFace.EAST : BlockFace.SOUTH);
 			final StringBuilder[][] matrix = plot.getMatrix3D();
 			// walls
 			for (int iy=0; iy<house_height; iy++) {
 				matrix[iy][0            ].append("#".repeat(house_width));
 				matrix[iy][house_width-1].append("#".repeat(house_width));
-				for (int iz=1; iz<house_width-1; iz++)
-					matrix[iy][iz].append('#').append(".".repeat(house_width-2)).append('#');
+				for (int iz=1; iz<house_width-1; iz++) {
+					matrix[iy][iz].append('#');
+					if (iy == 0) matrix[iy][iz].append("_".repeat(house_width-2));
+					else         matrix[iy][iz].append(".".repeat(house_width-2));
+					matrix[iy][iz].append('#');
+				}
 			}
 			// roof
 			int yy, fill;
@@ -382,6 +391,7 @@ public class Gen_094 extends BackroomsGen {
 			this.block_house_roof_stairs.set(cfg.getString("House-Roof-Stairs"));
 			this.block_house_roof_solid .set(cfg.getString("House-Roof-Solid" ));
 			this.block_house_window     .set(cfg.getString("House-Window"     ));
+			this.block_house_floor      .set(cfg.getString("House-Floor"      ));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -411,6 +421,7 @@ public class Gen_094 extends BackroomsGen {
 		cfg.addDefault("Level94.Blocks.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
 		cfg.addDefault("Level94.Blocks.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
 		cfg.addDefault("Level94.Blocks.House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
+		cfg.addDefault("Level94.Blocks.House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
 	}
 
 
