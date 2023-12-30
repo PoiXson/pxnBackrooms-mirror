@@ -22,7 +22,7 @@ import com.poixson.tools.events.xListener;
 import com.poixson.utils.RandomUtils;
 
 
-public class PlayerDamageListener extends xListener<BackroomsPlugin> {
+public class Listener_PlayerDamage extends xListener<BackroomsPlugin> {
 
 	public static final long DAMAGE_TIMEOUT = xTime.Parse("5s").ms();
 	public static final double MIN_DAMAGE = 3.0;
@@ -49,7 +49,7 @@ public class PlayerDamageListener extends xListener<BackroomsPlugin> {
 
 
 
-	public PlayerDamageListener(final BackroomsPlugin plugin) {
+	public Listener_PlayerDamage(final BackroomsPlugin plugin) {
 		super(plugin);
 	}
 
