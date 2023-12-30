@@ -224,6 +224,15 @@ public class Level_000 extends BackroomsLevel {
 		case  5: // hotel
 		case 19: // attic
 			return super.getNewSpawnArea(level);
+		// the windows
+		case 188: {
+			final int x = 0;
+			final int z = 0;
+			final int y = this.getY(level);
+			final World world = this.plugin.getWorldFromLevel(level);
+			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+			return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
+		}
 		// radio station
 		case 309: {
 			final int distance = this.plugin.getSpawnDistance();
