@@ -502,7 +502,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		this.log().info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level_to));
 		player.teleport(loc);
-		player.setNoDamageTicks(10);
+		player.setNoDamageTicks(100);
 		player.setFallDistance(0.0f);
 	}
 	public int noclip(final Player player) {
