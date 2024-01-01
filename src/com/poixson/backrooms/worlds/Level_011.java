@@ -19,24 +19,27 @@ import com.poixson.tools.plotter.BlockPlotter;
 //   4 | Abandoned Office
 public class Level_011 extends BackroomsLevel {
 
-	public static final boolean ENABLE_GEN_011 = false;
-	public static final boolean ENABLE_GEN_040 = false;
+	public static final boolean ENABLE_GEN_011 = true;
+	public static final boolean ENABLE_GEN_040 = true;
 	public static final boolean ENABLE_GEN_308 = true;
-	public static final boolean ENABLE_GEN_004 = false;
+	public static final boolean ENABLE_GEN_004 = true;
 
-	public static final boolean ENABLE_TOP_011 = false;
-	public static final boolean ENABLE_TOP_040 = false;
-	public static final boolean ENABLE_TOP_308 = false;
-	public static final boolean ENABLE_TOP_004 = false;
+	public static final boolean ENABLE_TOP_011 = true;
+	public static final boolean ENABLE_TOP_040 = true;
+	public static final boolean ENABLE_TOP_308 = true;
+	public static final boolean ENABLE_TOP_004 = true;
+
+	public static final int SUBFLOOR   = 3;
+	public static final int SUBCEILING = 3;
 
 	// abandoned office
 	public static final int Y_004 = 70;
 	public static final int H_004 =  8;
 	// ikea
-	public static final int Y_308 = Y_004 + H_004 + 1;
-	public static final int H_308 = 30;
+	public static final int Y_308 = Y_004 + H_004 + SUBFLOOR + 3;
+	public static final int H_308 = 9;
 	// concrete jungle
-	public static final int Y_011 = Y_308 + H_308 + 1;
+	public static final int Y_011 = Y_308 + H_308 + SUBFLOOR + 3;
 	// arcade
 	public static final int Y_040 = Y_308;
 	public static final int H_040 = H_308;
@@ -57,10 +60,10 @@ public class Level_011 extends BackroomsLevel {
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(  4, "office", "Abandoned Office", Y_004 +1);
-			gen_tpl.add(308, "ikea",   "Ikea",             Y_308 +1);
-			gen_tpl.add( 40, "arcade", "Arcade",           Y_040 +1);
-			gen_tpl.add( 11, "city",   "Concrete Jungle"           );
+			gen_tpl.add(  4, "office", "Abandoned Office", Y_004+SUBFLOOR+1);
+			gen_tpl.add(308, "ikea",   "Ikea",             Y_308+SUBFLOOR+1);
+			gen_tpl.add( 40, "arcade", "Arcade",           Y_040+SUBFLOOR+1);
+			gen_tpl.add( 11, "city",   "Concrete Jungle"                   );
 			gen_tpl.commit();
 		}
 		// generators
