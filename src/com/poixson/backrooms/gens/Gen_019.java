@@ -81,20 +81,20 @@ public class Gen_019 extends BackroomsGen {
 		double valueLamp;
 		final int y  = this.level_y + Level_000.SUBFLOOR + 1;
 		int xx, zz;
-		int modX7, modZ7;
+		int modX, modZ;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
+			modZ = (zz < 0 ? 1-zz : zz) % 7;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
 				dao = lobbyData.get(new Iab(ix, iz));
 				if (dao == null) continue;
-				modX7 = (xx < 0 ? 1-xx : xx) % 7;
-				modZ7 = (zz < 0 ? 1-zz : zz) % 7;
+				modX = (xx < 0 ? 1-xx : xx) % 7;
 				// beam
-				if (modX7 == 0 || modZ7 == 0)
+				if (modX == 0 || modZ == 0)
 					chunk.setBlock(ix, this.level_y+dao.wall_dist+3, iz, block_beam);
 				// lantern
-				if (modX7 == 0 && modZ7 == 0 && dao.wall_dist == 6) {
+				if (modX == 0 && modZ == 0 && dao.wall_dist == 6) {
 					valueLamp = this.noiseLamps.getNoise(xx, zz);
 					if (valueLamp < 0.0)
 						chunk.setBlock(ix, this.level_y+dao.wall_dist+2, iz, Material.LANTERN);

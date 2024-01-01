@@ -77,10 +77,13 @@ public class Gen_023 extends BackroomsGen {
 		final int y  = this.level_y + SUBFLOOR + 1;
 		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
 		int xx, zz;
+		int modX, modZ;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
+			modZ = (zz < 0 ? 1-zz : zz) % 7;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
+				modX = (xx < 0 ? 1-xx : xx) % 7;
 				dao_lobby = lobbyData.get(new Iab(ix, iz));
 				dao_basement = basementData.get(new Iab(ix, iz));
 				// floor
@@ -102,9 +105,7 @@ public class Gen_023 extends BackroomsGen {
 						chunk.setBlock(ix, this.level_y+SUBFLOOR+2, iz, block_carpet);
 					// ceiling
 					if (ENABLE_TOP_023) {
-						final int modX6 = Math.abs(xx) % 7;
-						final int modZ6 = Math.abs(zz) % 7;
-						if (modZ6 == 0 && modX6 < 2
+						if (modZ == 0 && modX < 2
 						&& dao_lobby.wall_dist > 1) {
 							// ceiling lights
 							chunk.setBlock(ix, cy,   iz, Material.VERDANT_FROGLIGHT);
