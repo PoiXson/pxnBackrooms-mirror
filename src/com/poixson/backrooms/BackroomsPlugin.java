@@ -118,7 +118,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			}
 		}
 		// backrooms levels
-		new Level_000(this); // lobby, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
+		new Level_000(this); // lobby, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
 //		new Level_007(this); // thalassophobia
 //		new Level_009(this); // suburbs
 //		new Level_010(this); // field of wheat

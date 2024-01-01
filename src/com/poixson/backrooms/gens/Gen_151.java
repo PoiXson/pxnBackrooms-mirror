@@ -1,31 +1,15 @@
 /*
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_151.ENABLE_GEN_151;
-import static com.poixson.backrooms.worlds.Level_151.ENABLE_TOP_151;
-import static com.poixson.backrooms.worlds.Level_151.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_151.SUBFLOOR;
-
-import java.util.LinkedList;
-
-import org.bukkit.Material;
-import org.bukkit.generator.ChunkGenerator.ChunkData;
-
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
-import com.poixson.utils.FastNoiseLiteD.FractalType;
-import com.poixson.utils.FastNoiseLiteD.NoiseType;
-
 
 // 151 | Dollhouse
 public class Gen_151 extends BackroomsGen {
 
-	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
-	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
+//	public static final Material HOUSE_FLOOR = Material.SPRUCE_PLANKS;
+//	public static final Material HOUSE_WALLS = Material.SPRUCE_PLANKS;
 
-	// noise
-	public final FastNoiseLiteD noiseHouseWalls;
+//	// noise
+//	public final FastNoiseLiteD noiseHouseWalls;
 
 
 
@@ -33,12 +17,14 @@ public class Gen_151 extends BackroomsGen {
 			final int level_y, final int level_h,
 			final int subfloor, final int subceiling) {
 		super(backlevel, level_y, level_h);
+/ *
 		// attic walls
 		this.noiseHouseWalls = this.register(new FastNoiseLiteD());
 		this.noiseHouseWalls.setFrequency(0.02);
 		this.noiseHouseWalls.setNoiseType(NoiseType.Cellular);
 		this.noiseHouseWalls.setFractalType(FractalType.PingPong);
 		this.noiseHouseWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
+* /
 	}
 
 
@@ -46,6 +32,7 @@ public class Gen_151 extends BackroomsGen {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+/ *
 		if (!ENABLE_GEN_151) return;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
@@ -74,6 +61,7 @@ public class Gen_151 extends BackroomsGen {
 				}
 			} // end ix
 		} // end iz
+* /
 	}
 
 

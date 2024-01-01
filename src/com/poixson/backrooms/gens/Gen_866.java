@@ -1,33 +1,23 @@
 /*
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_866.ENABLE_GEN_866;
-
-import java.util.LinkedList;
-
-import org.bukkit.Material;
-import org.bukkit.generator.ChunkGenerator.ChunkData;
-
-import com.poixson.pluginlib.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
-
 
 // 866 | Dirtfield
 public class Gen_866 extends BackroomsGen {
 
-	// noise
-	public final FastNoiseLiteD noiseField;
+//	// noise
+//	public final FastNoiseLiteD noiseField;
 
-	protected int rndLast = 0;
+//	protected int rndLast = 0;
 
 
 
 	public Gen_866(final BackroomsLevel backlevel, final int level_y, final int level_h) {
 		super(backlevel, level_y, level_h);
 		// field
-		this.noiseField = this.register(new FastNoiseLiteD());
-		this.noiseField.setFrequency(0.006);
-		this.noiseField.setFractalOctaves(1);
+//		this.noiseField = this.register(new FastNoiseLiteD());
+//		this.noiseField.setFrequency(0.006);
+//		this.noiseField.setFractalOctaves(1);
 	}
 
 
@@ -35,6 +25,7 @@ public class Gen_866 extends BackroomsGen {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+/ *
 		if (!ENABLE_GEN_866) return;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
@@ -71,6 +62,7 @@ public class Gen_866 extends BackroomsGen {
 				}
 			} // end ix
 		} // end iz
+* /
 	}
 
 
