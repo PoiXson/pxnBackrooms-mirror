@@ -160,7 +160,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.quoteAnnouncer.set(QuoteAnnouncer.Load(this));
 		// reconvergence task
 		{
-			final TaskReconvergence task = new TaskReconvergence(this);
+			final ConfigurationSection cfg = this.config.get().getConfigurationSection("Reconvergence");
+			final TaskReconvergence task = new TaskReconvergence(this, cfg);
 			final TaskReconvergence previous = this.taskReconvergence.getAndSet(task);
 			if (previous != null)
 				previous.stop();
@@ -281,6 +282,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
+		TaskReconvergence.ConfigDefaults(cfg);
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
 		Gen_000.ConfigDefaults(cfg); // lobby

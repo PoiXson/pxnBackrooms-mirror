@@ -3,6 +3,8 @@ package com.poixson.backrooms.tasks;
 import static com.poixson.utils.Utils.GetMS;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -12,20 +14,43 @@ import com.poixson.tools.abstractions.xStartStop;
 
 public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 
+	public static final String DEFAULT_UPDATE_PERIOD = "3h";
+	public static final String DEFAULT_UPDATE_GRACE  = "3m";
+	public static final String DEFAULT_MAX_GRACE     = "30m";
+
 	protected final BackroomsPlugin plugin;
 
-	protected final long updateTicks = (new xTime("1m")).ticks(50L);
-	protected final long updatePeriod = xTime.ParseToLong("3h");
-	protected final long updateGrace  = xTime.ParseToLong("3m");
-	protected final long maxGrace     = xTime.ParseToLong("30m");
+	protected final long updateTicks = xTime.Parse("1m").ticks(50L);
+	protected final long updatePeriod;
+	protected final long updateGrace;
+	protected final long maxGrace;
 
 	protected long lastUpdated = 0L;
 	protected long lastUsed    = 0L;
 
 
 
-	public TaskReconvergence(final BackroomsPlugin plugin) {
-		this.plugin = plugin;
+	public TaskReconvergence(final BackroomsPlugin plugin, final ConfigurationSection config) {
+		this(plugin,
+			config.getString("Update Period"),
+			config.getString("Update Grace" ),
+			config.getString("Max Grace"    )
+		);
+	}
+	public TaskReconvergence(final BackroomsPlugin plugin,
+			final String updatePeriod, final String updateGrace, final String maxGrace) {
+		this(plugin,
+			xTime.ParseToLong(updatePeriod),
+			xTime.ParseToLong(updateGrace ),
+			xTime.ParseToLong(maxGrace    )
+		);
+	}
+	public TaskReconvergence(final BackroomsPlugin plugin,
+			final long updatePeriod, final long updateGrace, final long maxGrace) {
+		this.plugin       = plugin;
+		this.updatePeriod = updatePeriod;
+		this.updateGrace  = updateGrace;
+		this.maxGrace     = maxGrace;
 	}
 
 
@@ -85,6 +110,14 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 	}
 	public void markUsed(final long time) {
 		this.lastUsed = time;
+	}
+
+
+
+	public static void ConfigDefaults(final FileConfiguration cfg) {
+		cfg.addDefault("Reconvergence.Update Period", DEFAULT_UPDATE_PERIOD);
+		cfg.addDefault("Reconvergence.Update Grace",  DEFAULT_UPDATE_GRACE );
+		cfg.addDefault("Reconvergence.Max Grace",     DEFAULT_MAX_GRACE    );
 	}
 
 
