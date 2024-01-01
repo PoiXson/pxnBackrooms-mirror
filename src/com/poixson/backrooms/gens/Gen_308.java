@@ -104,6 +104,7 @@ public class Gen_308 extends BackroomsGen {
 		if (block_floor       == null) throw new RuntimeException("Invalid block type for level 308 Floor"      );
 		if (block_ceiling     == null) throw new RuntimeException("Invalid block type for level 308 Ceiling"    );
 		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
+		final BlockData block_lamp_lever = Bukkit.createBlockData("minecraft:lever[powered=true,face=floor,facing=north]");
 		final BlockData block_chain  = Bukkit.createBlockData("chain[axis=y]");
 		final BlockData block_bars_n = Bukkit.createBlockData("minecraft:iron_bars[south=true]");
 		final BlockData block_bars_s = Bukkit.createBlockData("minecraft:iron_bars[north=true]");
@@ -164,8 +165,8 @@ public class Gen_308 extends BackroomsGen {
 								else           chunk.setBlock(ix, cy-2, iz, block_bars_s);
 							} else {
 								chunk.setBlock(ix, cy-2, iz, lamp);
-								if (modZ == 2) chunk.setBlock(ix, cy-1, iz, Material.REDSTONE_TORCH);
-								else           chunk.setBlock(ix, cy-1, iz, Material.REDSTONE_WIRE );
+								if (modZ == 2) chunk.setBlock(ix, cy-1, iz, block_lamp_lever      );
+								else           chunk.setBlock(ix, cy-1, iz, Material.REDSTONE_WIRE);
 							}
 						}
 					}
