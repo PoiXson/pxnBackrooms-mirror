@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.type.Barrel;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -265,6 +265,7 @@ public class Gen_000 extends BackroomsGen {
 		if (block_carpet      == null) throw new RuntimeException("Invalid block type for level 0 Carpet"     );
 		if (block_ceiling     == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"    );
 		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall");
+		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
@@ -307,10 +308,7 @@ public class Gen_000 extends BackroomsGen {
 						if (modZ7 == 0 && modX7 < 2
 						&& dao.wall_dist > 2) {
 							// ceiling lights
-							chunk.setBlock(ix, cy, iz, Material.REDSTONE_LAMP);
-							final BlockData block = chunk.getBlockData(ix, cy, iz);
-							((Lightable)block).setLit(true);
-							chunk.setBlock(ix, cy,   iz, block);
+							chunk.setBlock(ix, cy,   iz, lamp                   );
 							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
 						} else {
 							// ceiling
