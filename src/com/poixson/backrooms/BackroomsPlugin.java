@@ -37,6 +37,7 @@ import com.poixson.backrooms.gens.Gen_023;
 import com.poixson.backrooms.gens.Gen_033;
 import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.gens.Gen_094;
+import com.poixson.backrooms.gens.Gen_188;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
@@ -304,6 +305,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		Gen_078.ConfigDefaults(cfg); // space
 		Gen_094.ConfigDefaults(cfg); // motion
 //		Gen_151.ConfigDefaults(cfg); // dollhouse
+		Gen_188.ConfigDefaults(cfg); // the windows
 //		Gen_308.ConfigDefaults(cfg); // ikea
 		Gen_309.ConfigDefaults(cfg); // radio station
 		Gen_771.ConfigDefaults(cfg); // crossroads

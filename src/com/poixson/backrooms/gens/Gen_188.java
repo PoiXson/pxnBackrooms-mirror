@@ -233,8 +233,10 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
+//TODO
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+//TODO
 	}
 
 
