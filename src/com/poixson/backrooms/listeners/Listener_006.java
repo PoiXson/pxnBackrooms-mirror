@@ -70,8 +70,10 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 				break TYPE_SWITCH;
 			}
 			case DARK_OAK_BUTTON: {
-				if (level == 6)
-					this.plugin.noclip(player, 33); // level 33 - run for your life
+				if (level == 6) {
+					if (player.hasPermission("backrooms.level33_button"))
+						this.plugin.noclip(player, 33); // level 33 - run for your life
+				}
 				break TYPE_SWITCH;
 			}
 			default: break TYPE_SWITCH;
