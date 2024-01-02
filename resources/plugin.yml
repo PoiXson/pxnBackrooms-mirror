@@ -24,6 +24,8 @@ permissions:
         children:
             backrooms.tp: true
             backrooms.tp.others: true
+            backrooms.noclipfront: true
+            backrooms.noclipback: true
     backrooms.tp:
         default: op
         description: Teleport to the backrooms
@@ -31,8 +33,8 @@ permissions:
         default: op
         description: Teleport players to the backrooms
     backrooms.noclipfront:
-        default: false
+        default: true
         description: Allow players to noclip from the frontrooms to the backrooms
     backrooms.noclipback:
-        default: false
+        default: true
         description: Allow players to noclip inside the backrooms

@@ -61,8 +61,8 @@ public class Listener_PlayerDamage extends xListener<BackroomsPlugin> {
 		if (entity instanceof Player) {
 			final Player player = (Player) entity;
 			final int level = this.plugin.getLevel(player);
-			if (level < 0) { if (!player.hasPermission("noclipfront")) return;
-			} else {         if (!player.hasPermission("noclipback" )) return; }
+			if (level < 0) { if (!player.hasPermission("backrooms.noclipfront")) return;
+			} else {         if (!player.hasPermission("backrooms.noclipback" )) return; }
 			{
 				final double health = player.getHealth();
 				final DamageCause cause = event.getCause();
