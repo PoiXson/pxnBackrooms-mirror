@@ -251,7 +251,14 @@ public class Level_000 extends BackroomsLevel {
 
 	@Override
 	public int getLevel(final Location loc) {
+		final int x = loc.getBlockX();
 		final int y = loc.getBlockY();
+		final int z = loc.getBlockZ();
+		// the windows
+		if (y < Y_309
+		&&  x >= -46 && x <= 62
+		&&  z >= -46 && z <= 62)
+			return 188;
 		if (y < Y_023) return  1; // basement
 		if (y < Y_000) return 23; // overgrowth
 		if (y < Y_006) return  0; // lobby
