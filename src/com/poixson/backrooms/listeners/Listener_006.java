@@ -89,7 +89,7 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (world.equals(player.getWorld())) {
 				final Location playerLoc = player.getLocation();
-				if (playerLoc.distance(leverLoc) < 8.0) {
+				if (playerLoc.distance(leverLoc) < this.getDistanceTP())
 					if (invisible_players && to_level == 6)
 						player.setInvisible(true);
 					player.teleport( playerLoc.add(0.0, y, 0.0) );
