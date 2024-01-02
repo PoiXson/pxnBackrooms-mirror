@@ -442,7 +442,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int getLevel(final Location loc) {
 		final BackroomsLevel backlevel = this.getBackroomsLevel(loc);
 		if (backlevel == null) return Integer.MIN_VALUE;
-		else                   return backlevel.getLevelFromY(loc.getBlockY());
+		else                   return backlevel.getLevel(loc);
 	}
 	public BackroomsLevel getBackroomsLevel(final Location loc) {
 		if (loc == null) return null;

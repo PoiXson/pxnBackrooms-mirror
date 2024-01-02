@@ -2,6 +2,8 @@ package com.poixson.backrooms.worlds;
 
 import java.util.LinkedList;
 
+import org.bukkit.Location;
+
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
@@ -78,7 +80,8 @@ public class Level_011 extends BackroomsLevel {
 
 
 	@Override
-	public int getLevelFromY(final int y) {
+	public int getLevel(final Location loc) {
+		final int y = loc.getBlockY();
 		if (y < Y_308) return   4; // abandoned office
 		if (y < Y_011) return 308; // ikea
 		return 11;                 // concrete jungle

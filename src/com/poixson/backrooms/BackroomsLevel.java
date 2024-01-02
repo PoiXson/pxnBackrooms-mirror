@@ -180,7 +180,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		return true;
 	}
 
-	public int getLevelFromY(final int y) {
+	public int getLevel(final Location loc) {
 		return this.getMainLevel();
 	}
 	public abstract int getY(final int level);

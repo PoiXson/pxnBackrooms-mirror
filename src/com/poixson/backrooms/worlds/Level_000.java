@@ -250,7 +250,8 @@ public class Level_000 extends BackroomsLevel {
 
 
 	@Override
-	public int getLevelFromY(final int y) {
+	public int getLevel(final Location loc) {
+		final int y = loc.getBlockY();
 		if (y < Y_023) return  1; // basement
 		if (y < Y_000) return 23; // overgrowth
 		if (y < Y_006) return  0; // lobby
