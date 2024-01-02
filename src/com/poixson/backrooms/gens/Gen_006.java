@@ -6,7 +6,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -41,7 +40,6 @@ public class Gen_006 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_BUTTONSWITCH_LAC    = 20.0;
 	public static final double DEFAULT_THRESH_BUTTON             = 0.9;
 	public static final double DEFAULT_THRESH_SWITCH             = 0.95;
-	public static final boolean DEFAULT_INVISIBLE_PLAYERS        = true;
 	public static final double DEFAULT_TP_DISTANCE               = 8.0;
 
 	// default blocks
@@ -57,7 +55,6 @@ public class Gen_006 extends BackroomsGen {
 	public final AtomicDouble  noise_buttonswitch_lac    = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_LAC   );
 	public final AtomicDouble  thresh_button             = new AtomicDouble( DEFAULT_THRESH_BUTTON            );
 	public final AtomicDouble  thresh_switch             = new AtomicDouble( DEFAULT_THRESH_SWITCH            );
-	public final AtomicBoolean invisible_players         = new AtomicBoolean(DEFAULT_INVISIBLE_PLAYERS        );
 	public final AtomicDouble  tp_distance               = new AtomicDouble( DEFAULT_TP_DISTANCE              );
 
 	// blocks
@@ -181,7 +178,6 @@ public class Gen_006 extends BackroomsGen {
 			this.noise_buttonswitch_lac   .set(cfg.getDouble("Noise-ButtonSwitch-Lac"   ));
 			this.thresh_button            .set(cfg.getDouble("Thresh-Button"            ));
 			this.thresh_switch            .set(cfg.getDouble("Thresh-Switch"            ));
-			this.invisible_players        .set(cfg.getBoolean("Invisible-Players"       ));
 			this.tp_distance              .set(cfg.getDouble("TP-Distance"              ));
 		}
 		// block types
@@ -198,7 +194,6 @@ public class Gen_006 extends BackroomsGen {
 		cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Lac",    DEFAULT_NOISE_BUTTONSWITCH_LAC   );
 		cfg.addDefault("Level6.Params.Thresh-Button",             DEFAULT_THRESH_BUTTON            );
 		cfg.addDefault("Level6.Params.Thresh-Switch",             DEFAULT_THRESH_SWITCH            );
-		cfg.addDefault("Level6.Params.Invisible-Players",         DEFAULT_INVISIBLE_PLAYERS        );
 		cfg.addDefault("Level6.Params.TP-Distance",               DEFAULT_TP_DISTANCE              );
 		// block types
 		cfg.addDefault("Level6.Blocks.Wall", DEFAULT_BLOCK_WALL);

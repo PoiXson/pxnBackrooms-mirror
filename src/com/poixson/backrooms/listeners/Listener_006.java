@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -27,6 +28,14 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 	public Listener_006(final BackroomsPlugin plugin, final Level_000 level0) {
 		super(plugin);
 		this.level0 = level0;
+	}
+
+
+
+	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+	public void onPlayerChangedWorld(final PlayerChangedWorldEvent event) {
+		this.plugin.getInvisiblePlayersTask()
+			.update(event.getPlayer());
 	}
 
 
@@ -52,6 +61,8 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 						this.doLeverTP(6, block.getLocation(), diff_y);
 						(new DelayedLever(this.plugin, block.getLocation(), false, 10L))
 							.start();
+						this.plugin.getInvisiblePlayersTask()
+							.update(player);
 					}
 					break LEVEL_SWITCH;
 				}
@@ -62,6 +73,8 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 						this.doLeverTP(0, block.getLocation(), 0-diff_y);
 						(new DelayedLever(this.plugin, block.getLocation(), true, 10L))
 							.start();
+						this.plugin.getInvisiblePlayersTask()
+							.update(player);
 					}
 					break LEVEL_SWITCH;
 				}
@@ -84,18 +97,13 @@ public class Listener_006 extends xListener<BackroomsPlugin> {
 
 
 	protected void doLeverTP(final int to_level, final Location leverLoc, final int y) {
-		final boolean invisible_players = this.level0.gen_006.invisible_players.get();
+		final double distance = this.level0.gen_006.tp_distance.get();
 		final World world = leverLoc.getWorld();
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (world.equals(player.getWorld())) {
 				final Location playerLoc = player.getLocation();
-				if (playerLoc.distance(leverLoc) < this.getDistanceTP())
-					if (invisible_players && to_level == 6)
-						player.setInvisible(true);
+				if (playerLoc.distance(leverLoc) < distance)
 					player.teleport( playerLoc.add(0.0, y, 0.0) );
-					if (invisible_players && to_level != 6)
-						player.setInvisible(false);
-				}
 			}
 		}
 	}

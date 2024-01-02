@@ -46,6 +46,7 @@ import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
 import com.poixson.backrooms.listeners.Listener_PlayerDamage;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
+import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.tasks.TeleportManager;
 import com.poixson.backrooms.worlds.Level_000;
@@ -74,6 +75,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// reconvergence task
 	protected final AtomicReference<TaskReconvergence> taskReconvergence = new AtomicReference<TaskReconvergence>(null);
+
+	// invisible players - level 6
+	protected final AtomicReference<TaskInvisiblePlayers> taskInvisible = new AtomicReference<TaskInvisiblePlayers>(null);
 
 	// quotes
 	protected final AtomicReference<QuoteAnnouncer> quoteAnnouncer = new AtomicReference<QuoteAnnouncer>(null);
@@ -171,6 +175,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.stop();
 			task.start();
 		}
+		// invisible players task
+		{
+			final TaskInvisiblePlayers task = new TaskInvisiblePlayers(this);
+			final TaskInvisiblePlayers previous = this.taskInvisible.getAndSet(task);
+			if (previous != null)
+				previous.stop();
+			task.start();
+		}
 		// player damage listeners
 		{
 			final Listener_PlayerDamage listener = new Listener_PlayerDamage(this);
@@ -192,6 +204,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	public void onDisable() {
 		super.onDisable();
+		// invisible players task
+		{
+			final TaskInvisiblePlayers task = this.taskInvisible.getAndSet(null);
+			if (task != null)
+				task.stop();
+		}
 		// reconvergence task
 		{
 			final TaskReconvergence task = this.taskReconvergence.getAndSet(null);
@@ -288,6 +306,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected void configDefaults(final FileConfiguration cfg) {
 		TaskReconvergence.ConfigDefaults(cfg);
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
+		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
 		Gen_000.ConfigDefaults(cfg); // lobby
 		Gen_001.ConfigDefaults(cfg); // basement
@@ -321,7 +340,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 		return this.config.get().getBoolean("Enable Dynmap Config Gen");
 	}
 
-
+	public boolean enableInvisiblePlayers() {
+		return this.config.get().getBoolean("Enable Invisible Players");
+	}
 
 	public int getSpawnDistance() {
 		return this.config.get().getInt("Spawn Distance");
@@ -341,6 +362,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	// -------------------------------------------------------------------------------
+	// tasks
 
 
 
@@ -352,6 +374,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 	public QuoteAnnouncer getQuoteAnnouncer() {
 		return this.quoteAnnouncer.get();
+	}
+	public TaskInvisiblePlayers getInvisiblePlayersTask() {
+		return this.taskInvisible.get();
 	}
 
 
