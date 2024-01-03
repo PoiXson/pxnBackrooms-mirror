@@ -1,9 +1,9 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
-import static com.poixson.utils.LocationUtils.FaceToAxString;
 import static com.poixson.utils.LocationUtils.AxToFace;
+import static com.poixson.utils.LocationUtils.FaceToAxString;
+import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
 import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
 

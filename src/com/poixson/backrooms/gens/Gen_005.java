@@ -330,9 +330,6 @@ public class Gen_005 extends BackroomsGen {
 								chunk.setBlock(ix, cy, iz, block_subceiling);
 							else {
 								chunk.setBlock(ix, cy, iz, block_hall_ceiling);
-//								final Slab slab = (Slab) chunk.getBlockData(ix, cy, iz);
-//								slab.setType(Slab.Type.TOP);
-//								chunk.setBlock(ix, cy, iz, slab);
 							}
 						}
 					}
