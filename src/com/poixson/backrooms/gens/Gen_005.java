@@ -290,6 +290,10 @@ public class Gen_005 extends BackroomsGen {
 					chunk.setBlock(ix, this.level_y+yy+1, iz,block_subfloor);
 				dao = hotelData.get(new Iab(ix, iz));
 				if (dao == null) continue;
+				if (ENABLE_TOP_005) {
+					for (int i=0; i<SUBCEILING; i++)
+						chunk.setBlock(ix, cy+i+1, iz, block_subceiling);
+				}
 				switch (dao.type) {
 				case WALL:
 //TODO: use block_hall_wall_top_z and block_hall_wall_bottom_z
@@ -340,10 +344,6 @@ public class Gen_005 extends BackroomsGen {
 					break;
 				}
 				default: throw new RuntimeException("Unknown hotel type: " + dao.type.toString());
-				}
-				if (ENABLE_TOP_005) {
-					for (int i=0; i<SUBCEILING; i++)
-						chunk.setBlock(ix, cy+i+1, iz, block_subceiling);
 				}
 			} // end ix
 		} // end iz
