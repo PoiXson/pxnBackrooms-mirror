@@ -9,11 +9,11 @@ import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
 
 import java.util.LinkedList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Barrel;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -465,10 +465,8 @@ public class Gen_771 extends BackroomsGen {
 						((Level_771)this.backlevel).loot_chests_lower.add((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + 1;
 					}
-					chunk.setBlock(xx, yy, zz, Material.BARREL);
-					final BlockData data = chunk.getBlockData(xx, yy, zz);
-					((Barrel)data).setFacing(BlockFace.UP);
-					chunk.setBlock(xx, yy, zz, data);
+					final BlockData barrel = Bukkit.createBlockData("barrel[facing=up]");
+					chunk.setBlock(xx, yy, zz, barrel);
 					(new ChestFiller_771(this.plugin, "level771", xx, yy, zz))
 						.start();
 				}

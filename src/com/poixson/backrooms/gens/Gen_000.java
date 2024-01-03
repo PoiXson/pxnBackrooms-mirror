@@ -17,7 +17,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Barrel;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
@@ -322,9 +321,7 @@ public class Gen_000 extends BackroomsGen {
 						if (dao.wall_dist == 1) {
 //TODO
 							((Level_000)this.backlevel).loot_chests_0.add(xx, zz);
-							chunk.setBlock(ix, y+1, iz, Material.BARREL);
-							final Barrel barrel = (Barrel) chunk.getBlockData(ix, y+1, iz);
-							barrel.setFacing(BlockFace.UP);
+							final BlockData barrel = Bukkit.createBlockData("minecraft:barrel[facing=up]");
 							chunk.setBlock(ix, y+1, iz, barrel);
 							chests.add(new Iabc(xx, y+1, zz));
 						} else

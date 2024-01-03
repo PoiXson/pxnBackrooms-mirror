@@ -8,9 +8,9 @@ import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.Fence;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -87,17 +87,9 @@ public class Pop_309 implements BackroomsPop {
 									&&  xx < path_x+5
 									&&  xx > path_x-5)
 										continue LOOP_X;
-									for (int iy=0; iy<5; iy++) {
-										region.setType(xx, sy+iy, zz, Material.IRON_BARS);
-										final Fence fence = (Fence) region.getBlockData(xx, sy+iy, zz);
-										synchronized (fence) {
-											fence.setFace(BlockFace.NORTH, true);
-											fence.setFace(BlockFace.SOUTH, true);
-											fence.setFace(BlockFace.EAST,  true);
-											fence.setFace(BlockFace.WEST,  true);
-											region.setBlockData(xx, sy+iy, zz, fence);
-										}
-									}
+									final BlockData bars = Bukkit.createBlockData("iron_bars[north=true,south=true,east=true,west=true]");
+									for (int iy=0; iy<5; iy++)
+										region.setBlockData(xx, sy+iy, zz, bars);
 									region.setType(xx, sy+5, zz, Material.CUT_COPPER_SLAB);
 								}
 							}
