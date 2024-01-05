@@ -341,8 +341,7 @@ public class Level_000 extends BackroomsLevel {
 
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		final int y = this.getY(0);
-		return world.getBlockAt(100, y, 100).getLocation();
+		return world.getBlockAt(100, this.getY(1), 100).getLocation();
 	}
 
 
