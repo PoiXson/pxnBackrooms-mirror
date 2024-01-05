@@ -59,13 +59,6 @@ public class Level_771 extends BackroomsLevel {
 
 
 	@Override
-	public int getMainLevel() {
-		return 771; // crossroads
-	}
-
-
-
-	@Override
 	public void register() {
 		super.register();
 		this.portal_ladder    .start();
@@ -83,6 +76,38 @@ public class Level_771 extends BackroomsLevel {
 		this.loot_chests_upper.stop();
 		this.loot_chests_lower.stop();
 	}
+
+
+
+	@Override
+	public int getMainLevel() {
+		return 771; // crossroads
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
+	@Override
+	public int getY(final int level) {
+		return LEVEL_Y + LEVEL_H + 1;
+	}
+	@Override
+	public int getMaxY(final int level) {
+		return 320;
+	}
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 771);
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// spawn
 
 
 
@@ -130,18 +155,8 @@ public class Level_771 extends BackroomsLevel {
 
 
 
-	@Override
-	public int getY(final int level) {
-		return LEVEL_Y + LEVEL_H + 1;
-	}
-	@Override
-	public int getMaxY(final int level) {
-		return 320;
-	}
-	@Override
-	public boolean containsLevel(final int level) {
-		return (level == 771);
-	}
+	// -------------------------------------------------------------------------------
+	// generate
 
 
 

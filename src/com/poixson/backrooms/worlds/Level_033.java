@@ -54,13 +54,6 @@ public class Level_033 extends BackroomsLevel {
 
 
 	@Override
-	public int getMainLevel() {
-		return 33; // run for your life
-	}
-
-
-
-	@Override
 	public void register() {
 		super.register();
 		this.listener_033.register();
@@ -79,6 +72,18 @@ public class Level_033 extends BackroomsLevel {
 
 
 	@Override
+	public int getMainLevel() {
+		return 33; // run for your life
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
+	@Override
 	public int getY(final int level) {
 		return LEVEL_Y + 1;
 	}
@@ -93,16 +98,8 @@ public class Level_033 extends BackroomsLevel {
 
 
 
-	@Override
-	protected void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
-	}
-
-
-
 	// -------------------------------------------------------------------------------
-	// locations
+	// spawn
 
 
 
@@ -125,6 +122,19 @@ public class Level_033 extends BackroomsLevel {
 	@Override
 	public Location getSpawnNear(final int level, final Location spawn) {
 		return spawn;
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
+	@Override
+	protected void generate(final int chunkX, final int chunkZ,
+			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
+		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

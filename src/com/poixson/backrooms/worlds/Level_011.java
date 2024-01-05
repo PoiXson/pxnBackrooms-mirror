@@ -86,6 +86,11 @@ public class Level_011 extends BackroomsLevel {
 
 
 
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
 	@Override
 	public int getLevel(final Location loc) {
 		final int y = loc.getBlockY();
@@ -124,6 +129,17 @@ public class Level_011 extends BackroomsLevel {
 		default: return false;
 		}
 	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// spawn
+
+
+
+	// -------------------------------------------------------------------------------
+	// generate
+
 
 
 

@@ -46,6 +46,11 @@ public class Level_094 extends BackroomsLevel {
 
 
 
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
 	@Override
 	public int getY(final int level) {
 		return 255;
@@ -58,6 +63,16 @@ public class Level_094 extends BackroomsLevel {
 	public boolean containsLevel(final int level) {
 		return (level == 94);
 	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// spawn
+
+
+
+	// -------------------------------------------------------------------------------
+	// generate
 
 
 

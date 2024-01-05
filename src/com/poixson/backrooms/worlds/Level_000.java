@@ -179,13 +179,6 @@ public class Level_000 extends BackroomsLevel {
 
 
 	@Override
-	public int getMainLevel() {
-		return 0; // lobby
-	}
-
-
-
-	@Override
 	public void register() {
 		super.register();
 		this.portal_0_to_1  .start();
@@ -217,6 +210,92 @@ public class Level_000 extends BackroomsLevel {
 		this.cheese_rooms   .stop();
 		this.loot_chests_0  .stop();
 	}
+
+
+
+	@Override
+	public int getMainLevel() {
+		return 0; // lobby
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
+	@Override
+	public int getLevel(final Location loc) {
+		final int x = loc.getBlockX();
+		final int y = loc.getBlockY();
+		final int z = loc.getBlockZ();
+		// the windows
+		if (y < Y_309
+		&&  x >= -46 && x <= 62
+		&&  z >= -46 && z <= 62)
+			return 188;
+		if (y < Y_023) return  1; // basement
+		if (y < Y_000) return 23; // overgrowth
+		if (y < Y_006) return  0; // lobby
+		if (y < Y_037) return  6; // lights out
+		if (y < Y_005) return 37; // pools
+		if (y < Y_019) return  5; // hotel
+		if (y < Y_309) return 19; // attic
+		return 309;               // radio station
+	}
+	@Override
+	public boolean containsLevel(final int level) {
+		switch (level) {
+		case   1: // basement
+		case  23: // overgrowth
+		case   0: // lobby
+		case   6: // lights out
+		case  37: // pools
+		case   5: // hotel
+		case  19: // attic
+		case 309: // radio station
+		case 188: // the windows
+			return true;
+		default: return false;
+		}
+	}
+
+	@Override
+	public int getY(final int level) {
+		switch (level) {
+		case   1: return Y_001; // basement
+		case  23: return Y_023; // overgrowth
+		case   0: return Y_000; // lobby
+		case   6: return Y_006; // lights out
+		case  37: return Y_037; // pools
+		case   5: return Y_005; // hotel
+		case  19: return Y_019; // attic
+		case 309: return Y_309; // radio station
+		case 188: return Y_188; // the windows
+		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+		}
+	}
+	@Override
+	public int getMaxY(final int level) {
+		switch (level) {
+		case   1: return Y_023 - 1; // basement
+		case  23: return Y_000 - 1; // overgrowth
+		case   0: return Y_006 - 1; // lobby
+		case   6: return Y_037 - 1; // lights out
+		case  37: return Y_005 - 1; // pools
+		case   5: return Y_019 - 1; // hotel
+		case  19: return Y_309 - 1; // attic
+		case 309: return 320;       // radio station
+		case 188: return Y_309 - 1; // the windows
+		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+		}
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// spawn
 
 
 
@@ -254,57 +333,6 @@ public class Level_000 extends BackroomsLevel {
 		}
 	}
 
-
-
-	@Override
-	public int getLevel(final Location loc) {
-		final int x = loc.getBlockX();
-		final int y = loc.getBlockY();
-		final int z = loc.getBlockZ();
-		// the windows
-		if (y < Y_309
-		&&  x >= -46 && x <= 62
-		&&  z >= -46 && z <= 62)
-			return 188;
-		if (y < Y_023) return  1; // basement
-		if (y < Y_000) return 23; // overgrowth
-		if (y < Y_006) return  0; // lobby
-		if (y < Y_037) return  6; // lights out
-		if (y < Y_005) return 37; // pools
-		if (y < Y_019) return  5; // hotel
-		if (y < Y_309) return 19; // attic
-		return 309;               // radio station
-	}
-	@Override
-	public int getY(final int level) {
-		switch (level) {
-		case   1: return Y_001; // basement
-		case  23: return Y_023; // overgrowth
-		case   0: return Y_000; // lobby
-		case   6: return Y_006; // lights out
-		case  37: return Y_037; // pools
-		case   5: return Y_005; // hotel
-		case  19: return Y_019; // attic
-		case 309: return Y_309; // radio station
-		case 188: return Y_188; // the windows
-		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		}
-	}
-	@Override
-	public int getMaxY(final int level) {
-		switch (level) {
-		case   1: return Y_023 - 1; // basement
-		case  23: return Y_000 - 1; // overgrowth
-		case   0: return Y_006 - 1; // lobby
-		case   6: return Y_037 - 1; // lights out
-		case  37: return Y_005 - 1; // pools
-		case   5: return Y_019 - 1; // hotel
-		case  19: return Y_309 - 1; // attic
-		case 309: return 320;       // radio station
-		case 188: return Y_309 - 1; // the windows
-		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		}
-	}
 	@Override
 	public int getSpawnDistanceNear(final int level) {
 		switch (level) {
@@ -313,22 +341,11 @@ public class Level_000 extends BackroomsLevel {
 		}
 		return DEFAULT_SPAWN_NEAR_DISTANCE;
 	}
-	@Override
-	public boolean containsLevel(final int level) {
-		switch (level) {
-		case   1: // basement
-		case  23: // overgrowth
-		case   0: // lobby
-		case   6: // lights out
-		case  37: // pools
-		case   5: // hotel
-		case  19: // attic
-		case 309: // radio station
-		case 188: // the windows
-			return true;
-		default: return false;
-		}
-	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// generate
 
 
 

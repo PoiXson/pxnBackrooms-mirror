@@ -55,6 +55,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		plugin.register(this.getMainLevel(), this);
 	}
 
+
+
 	public void register() {
 		for (final BackroomsGen gen : this.gens)
 			gen.register();
@@ -62,50 +64,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	public void unregister() {
 		for (final BackroomsGen gen : this.gens)
 			gen.unregister();
-	}
-
-
-
-	protected class PopulatorManager extends BlockPopulator {
-		@Override
-		public void populate(final WorldInfo worldInfo, final Random rnd,
-				final int chunkX, final int chunkZ, final LimitedRegion region) {
-			final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
-			// block plotters
-			for (final BackroomsPop pop : BackroomsLevel.this.pops)
-				pop.populate(chunkX, chunkZ, region, delayed_plotters);
-			// place delayed blocks
-			if (!delayed_plotters.isEmpty()) {
-				for (final BlockPlotter plot : delayed_plotters)
-					plot.run();
-				delayed_plotters.clear();
-			}
-		}
-	}
-
-	@Override
-	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
-		list.add(this.popman);
-		return list;
-	}
-
-
-
-	public int getMainLevel() {
-		return this.mainlevel;
-	}
-	public boolean isWorldMain(final int level) {
-		return (this.getMainLevel() == level);
-	}
-	public boolean isWorldStacked() {
-		return (this.gens.size() > 1);
-	}
-
-
-
-	public BackroomsPlugin getPlugin() {
-		return this.plugin;
 	}
 
 
@@ -123,47 +81,19 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	// -------------------------------------------------------------------------------
-	// generate world
+	public abstract int getMainLevel();
 
-
-
-	@Override
-	public void generateSurface(final WorldInfo worldInfo, final Random random,
-			final int chunkX, final int chunkZ, final ChunkData chunk) {
-		// seed
-		final int seed = Long.valueOf( worldInfo.getSeed() ).intValue();
-		for (final BackroomsGen gen : this.gens)
-			gen.setSeed(seed);
-		// generate
-		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
-		this.generate(chunkX, chunkZ, chunk, delayed_plotters);
-		// place delayed blocks
-		if (!delayed_plotters.isEmpty()) {
-			for (final BlockPlotter plot : delayed_plotters)
-				plot.run();
-			delayed_plotters.clear();
-		}
+	public boolean isWorldMain(final int level) {
+		return (this.getMainLevel() == level);
 	}
-	protected abstract void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots);
+	public boolean isWorldStacked() {
+		return (this.gens.size() > 1);
+	}
 
 
 
-	@Override
-	public BiomeProvider getDefaultBiomeProvider(final WorldInfo worldInfo) {
-		return new BiomeProvider() {
-			private final List<Biome> biomes = new LinkedList<Biome>();
-			{ this.biomes.add(Biome.THE_VOID); }
-			@Override
-			public List<Biome> getBiomes(final WorldInfo worldInfo) {
-				return this.biomes;
-			}
-			@Override
-			public Biome getBiome(final WorldInfo worldInfo, final int x, final int y, final int z) {
-				return Biome.THE_VOID;
-			}
-		};
+	public BackroomsPlugin getPlugin() {
+		return this.plugin;
 	}
 
 
@@ -187,6 +117,13 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 
 	public abstract boolean containsLevel(final int level);
+
+
+
+	// -------------------------------------------------------------------------------
+	// spawn
+
+
 
 	public Location validateSpawn(final Location loc) {
 		final Block blockA = loc.getBlock();
@@ -238,6 +175,77 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final int y = this.getY(level_main);
 		final Location loc = world.getBlockAt(0, y, 0).getLocation();
 		return this.getSpawnNear(level_main, loc);
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
+	@Override
+	public void generateSurface(final WorldInfo worldInfo, final Random random,
+			final int chunkX, final int chunkZ, final ChunkData chunk) {
+		// seed
+		final int seed = Long.valueOf( worldInfo.getSeed() ).intValue();
+		for (final BackroomsGen gen : this.gens)
+			gen.setSeed(seed);
+		// generate
+		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
+		this.generate(chunkX, chunkZ, chunk, delayed_plotters);
+		// place delayed blocks
+		if (!delayed_plotters.isEmpty()) {
+			for (final BlockPlotter plot : delayed_plotters)
+				plot.run();
+			delayed_plotters.clear();
+		}
+	}
+	protected abstract void generate(final int chunkX, final int chunkZ,
+			final ChunkData chunk, final LinkedList<BlockPlotter> plots);
+
+
+
+	@Override
+	public BiomeProvider getDefaultBiomeProvider(final WorldInfo worldInfo) {
+		return new BiomeProvider() {
+			private final List<Biome> biomes = new LinkedList<Biome>();
+			{ this.biomes.add(Biome.THE_VOID); }
+			@Override
+			public List<Biome> getBiomes(final WorldInfo worldInfo) {
+				return this.biomes;
+			}
+			@Override
+			public Biome getBiome(final WorldInfo worldInfo, final int x, final int y, final int z) {
+				return Biome.THE_VOID;
+			}
+		};
+	}
+
+
+
+	protected class PopulatorManager extends BlockPopulator {
+		@Override
+		public void populate(final WorldInfo worldInfo, final Random rnd,
+				final int chunkX, final int chunkZ, final LimitedRegion region) {
+			final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
+			// block plotters
+			for (final BackroomsPop pop : BackroomsLevel.this.pops)
+				pop.populate(chunkX, chunkZ, region, delayed_plotters);
+			// place delayed blocks
+			if (!delayed_plotters.isEmpty()) {
+				for (final BlockPlotter plot : delayed_plotters)
+					plot.run();
+				delayed_plotters.clear();
+			}
+		}
+	}
+
+	@Override
+	public List<BlockPopulator> getDefaultPopulators(final World world) {
+		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
+		list.add(this.popman);
+		return list;
 	}
 
 
@@ -388,19 +396,19 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			default:
 				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE);  break;
 			}
-			// F3 debug info
-			switch (level) {
-			case 0:   // lobby
-			case 7:   // thalassophobia
-			case 9:   // suburbs
-			case 10:  // field of wheat
-			case 11:  // concrete jungle
-			case 151: // dollhouse
-			case 866: // dirtfield
-				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
-			default:
-				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;
-			}
+//			// F3 debug info
+//			switch (level) {
+//			case 0:   // lobby
+//			case 7:   // thalassophobia
+//			case 9:   // suburbs
+//			case 10:  // field of wheat
+//			case 11:  // concrete jungle
+//			case 151: // dollhouse
+//			case 866: // dirtfield
+//				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
+//			default:
+//				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;
+//			}
 		}
 		// not retained after restart
 		{
