@@ -32,10 +32,6 @@ import org.bukkit.plugin.PluginManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_033;
-import com.poixson.backrooms.worlds.Level_094;
-import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.xRand;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -308,7 +304,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			mvworld.setDifficulty(Difficulty.HARD);
 			mvworld.setPVPMode(true);
 			mvworld.setGenerator(BackroomsPlugin.GENERATOR_NAME);
-			mvworld.setRespawnToWorld("level0");
 			world.setGameRule(GameRule.KEEP_INVENTORY,             Boolean.TRUE );
 			world.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS,       Boolean.TRUE );
 			world.setGameRule(GameRule.DROWNING_DAMAGE,            Boolean.TRUE );
@@ -333,25 +328,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			case 771: mvworld.setGameMode(GameMode.ADVENTURE); break;
 			default:  mvworld.setGameMode(GameMode.SURVIVAL ); break;
 			}
-			// fixed spawn
-//TODO fixed spawn should probably be 0x 0z
-			final int y;
-			switch (level) {
-			case 0:   y = Level_000.Y_000;   break; // lobby
-//			case 7:   y = Level_007.LEVEL_Y; break; // thalassophobia
-//			case 9:   y = Level_009.LEVEL_Y; break; // suburbs
-//			case 10:  y = Level_010.LEVEL_Y; break; // field of wheat
-//			case 11:  y = Level_011.LEVEL_Y; break; // concrete jungle
-			case 33:  y = Level_033.LEVEL_Y; break; // run for your life
-//			case 36:  y = Level_036.LEVEL_Y; break; // airport
-			case 78:  y = 200;               break; // space
-			case 94:  y = Level_094.LEVEL_Y; break; // motion
-//			case 151: y = Level_151.LEVEL_Y; break; // dollhouse
-			case 771: y = Level_771.LEVEL_Y; break; // crossroads
-//			case 866: y = Level_866.LEVEL_Y; break; // dirtfield
-			default:  y = 0;                 break;
-			}
-			mvworld.setSpawnLocation(world.getBlockAt(0, y, 0).getLocation());
 			// time
 			switch (level) {
 			case 0:  // lobby
