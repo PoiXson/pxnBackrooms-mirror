@@ -141,9 +141,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 				final Iterator<Entry<Integer, BackroomsLevel>> it = BackroomsPlugin.this.backlevels.entrySet().iterator();
 				while (it.hasNext()) {
 					final Entry<Integer, BackroomsLevel> entry = it.next();
-					final int level = entry.getKey().intValue();
-					if (entry.getValue().isWorldMain(level))
-						BackroomsLevel.MakeWorld(level, seed);
+					final int            level     = entry.getKey().intValue();
+					final BackroomsLevel backlevel = entry.getValue();
+					if (backlevel.isWorldMain(level))
+						backlevel.setup(seed);
 				}
 			}
 		}).runTask(this);

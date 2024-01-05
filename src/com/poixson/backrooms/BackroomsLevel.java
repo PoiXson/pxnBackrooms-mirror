@@ -1,7 +1,6 @@
 package com.poixson.backrooms;
 
 import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-import static com.poixson.tools.xJavaPlugin.Log;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -278,11 +277,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public static void MakeWorld(final int level, final String seed) {
+	public void setup(final String seed) {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
+		final int level = this.getMainLevel();
 		final String name = "level" + Integer.toString(level);
 		if (!manager.isMVWorld(name, false)) {
-			Log().warning(LOG_PREFIX + "Creating backrooms level: " + Integer.toString(level));
+			this.log().warning(String.format("%sCreating backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
 			final Environment env;
 			switch (level) {
 			case 78: env = Environment.THE_END; break;
