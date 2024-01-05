@@ -130,7 +130,7 @@ public class Level_000 extends BackroomsLevel {
 
 
 	public Level_000(final BackroomsPlugin plugin) {
-		super(plugin, 0);
+		super(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
@@ -174,6 +174,13 @@ public class Level_000 extends BackroomsLevel {
 		this.cheese_rooms    = new LocationStoreManager(plugin, "level0", "cheese_rooms"   ); // cheese hotel room
 		// loot
 		this.loot_chests_0   = new LocationStoreManager(plugin, "level0", "loot_0"         ); // loot chests
+	}
+
+
+
+	@Override
+	public int getMainLevel() {
+		return 0; // lobby
 	}
 
 

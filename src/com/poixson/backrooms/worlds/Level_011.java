@@ -58,7 +58,7 @@ public class Level_011 extends BackroomsLevel {
 
 
 	public Level_011(final BackroomsPlugin plugin) {
-		super(plugin, 11);
+		super(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
@@ -75,6 +75,13 @@ public class Level_011 extends BackroomsLevel {
 		this.gen_011 = this.register(new Gen_011(this, Y_011,     0)); // concrete jungle
 		// populators
 		this.pop_308 = this.register(new Pop_308(this)); // ikea
+	}
+
+
+
+	@Override
+	public int getMainLevel() {
+		return 11; // abandoned city
 	}
 
 

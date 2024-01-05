@@ -38,7 +38,7 @@ public class Level_771 extends BackroomsLevel {
 
 
 	public Level_771(final BackroomsPlugin plugin) {
-		super(plugin, 771);
+		super(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 771);
@@ -54,6 +54,13 @@ public class Level_771 extends BackroomsLevel {
 		// loot
 		this.loot_chests_upper = new LocationStoreManager(plugin, "level771", "loot_upper"   ); // upper path loot chests
 		this.loot_chests_lower = new LocationStoreManager(plugin, "level771", "loot_lower"   ); // lower path loot chests
+	}
+
+
+
+	@Override
+	public int getMainLevel() {
+		return 771; // crossroads
 	}
 
 

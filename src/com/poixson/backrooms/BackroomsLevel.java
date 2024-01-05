@@ -48,13 +48,10 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	protected final CopyOnWriteArraySet<BackroomsPop> pops = new CopyOnWriteArraySet<BackroomsPop>();
 	protected final PopulatorManager popman = new PopulatorManager();
 
-	protected final int mainlevel;
 
 
-
-	public BackroomsLevel(final BackroomsPlugin plugin, final int mainlevel) {
-		this.plugin    = plugin;
-		this.mainlevel = mainlevel;
+	public BackroomsLevel(final BackroomsPlugin plugin) {
+		this.plugin = plugin;
 		plugin.register(this.getMainLevel(), this);
 	}
 

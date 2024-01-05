@@ -36,7 +36,7 @@ public class Level_033 extends BackroomsLevel {
 
 
 	public Level_033(final BackroomsPlugin plugin) {
-		super(plugin, 33);
+		super(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 33);
@@ -49,6 +49,13 @@ public class Level_033 extends BackroomsLevel {
 		// next hall
 		this.varstore = new VarStore("level33");
 		this.varstore.start(plugin);
+	}
+
+
+
+	@Override
+	public int getMainLevel() {
+		return 33; // run for your life
 	}
 
 
