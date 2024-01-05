@@ -104,11 +104,11 @@ public class Gen_188 extends BackroomsGen {
 		if (block_hotel_wall_center   == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Center"  );
 		if (block_hotel_wall_bottom_x == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Bottom-X");
 		if (block_hotel_wall_bottom_z == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Bottom-Z");
-		if (block_attic_wall          == null) throw new RuntimeException("Invalid block type for level 5 Attic-Wall"        );
-		if (block_pool_wall           == null) throw new RuntimeException("Invalid block type for level 5 Pool-Wall"         );
-		if (block_lightsout_wall      == null) throw new RuntimeException("Invalid block type for level 5 LightsOut-Wall"    );
-		if (block_lobby_wall          == null) throw new RuntimeException("Invalid block type for level 5 Lobby-Wall"        );
-		if (block_overgrowth_wall     == null) throw new RuntimeException("Invalid block type for level 5 Overgrowth-Wall"   );
+		if (block_attic_wall          == null) throw new RuntimeException("Invalid block type for level 19 Attic-Wall"       );
+		if (block_pool_wall           == null) throw new RuntimeException("Invalid block type for level 37 Pool-Wall"        );
+		if (block_lightsout_wall      == null) throw new RuntimeException("Invalid block type for level 6 LightsOut-Wall"    );
+		if (block_lobby_wall          == null) throw new RuntimeException("Invalid block type for level 0 Lobby-Wall"        );
+		if (block_overgrowth_wall     == null) throw new RuntimeException("Invalid block type for level 23 Overgrowth-Wall"  );
 		final boolean dark_room = this.dark_room.get();
 		final BlockData light = Bukkit.createBlockData("light[level=15]");
 		final int y  = Y_188;
