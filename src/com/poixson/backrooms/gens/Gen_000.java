@@ -31,6 +31,7 @@ import com.poixson.backrooms.gens.Gen_001.BasementData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.tools.DelayedChestFiller;
+import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabc;
@@ -41,7 +42,6 @@ import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
-import com.poixson.utils.RandomUtils;
 
 
 // 0 | Lobby
@@ -275,7 +275,6 @@ public class Gen_000 extends BackroomsGen {
 		int modX, modZ;
 		int outlets = 0;
 		int outlet_rnd;
-		int outlet_last = 0;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
 			modZ = (zz < 0 ? 0-zz : zz) % 7;
@@ -293,8 +292,7 @@ public class Gen_000 extends BackroomsGen {
 					// lobby walls
 					final int h = this.level_h + 3;
 					chunk.setBlock(ix, y, iz, block_subfloor);
-					outlet_rnd = RandomUtils.GetNewRandom(0, 100+(int)Math.pow(10.0, outlets), outlet_last);
-					outlet_last = outlet_rnd;
+					outlet_rnd = xRand.Get(0, 100+(int)Math.pow(10.0, outlets)).nextInt();
 					if (outlet_rnd == 11) { chunk.setBlock(ix, y+1, iz, block_wall_outlet); outlets++; }
 					else                    chunk.setBlock(ix, y+1, iz, block_wall_base  );
 					for (int iy=2; iy<h; iy++)

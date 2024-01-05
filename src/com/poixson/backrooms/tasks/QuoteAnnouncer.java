@@ -12,8 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.xRand;
 import com.poixson.utils.FileUtils;
-import com.poixson.utils.RandomUtils;
 
 
 public class QuoteAnnouncer {
@@ -24,7 +24,7 @@ public class QuoteAnnouncer {
 
 	protected final String[] quotes;
 
-	protected int lastRnd = -1;
+	protected int last_index = -1;
 
 
 
@@ -72,9 +72,10 @@ public class QuoteAnnouncer {
 
 	public String getQuote() {
 		final int count = this.quotes.length;
-		final int rnd = RandomUtils.GetNewRandom(0, count, this.lastRnd);
-		this.lastRnd = rnd;
-		return this.quotes[rnd];
+		final xRand rnd = xRand.Get(0, count);
+		final int index = rnd.nextInt(this.last_index);
+		this.last_index = index;
+		return this.quotes[index];
 	}
 
 

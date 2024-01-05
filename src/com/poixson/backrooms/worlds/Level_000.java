@@ -30,10 +30,10 @@ import com.poixson.backrooms.gens.Pop_309;
 import com.poixson.backrooms.listeners.Listener_001;
 import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.backrooms.listeners.Listener_023;
+import com.poixson.tools.xRand;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.LocationStoreManager;
-import com.poixson.utils.RandomUtils;
 
 
 // 309 | Radio Station
@@ -323,7 +323,7 @@ public class Level_000 extends BackroomsLevel {
 		case 309: {
 			final int distance = this.plugin.getSpawnDistance();
 			final int y = this.getY(level);
-			final int z = RandomUtils.GetRandom(0, distance);
+			final int z = xRand.Get(0, distance).nextInt();
 			final int x = this.gen_309.getPathX(z);
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));

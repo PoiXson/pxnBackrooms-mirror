@@ -35,8 +35,8 @@ import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
+import com.poixson.tools.xRand;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.RandomUtils;
 
 
 public abstract class BackroomsLevel extends ChunkGenerator {
@@ -136,9 +136,10 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
+		final xRand rnd = xRand.Get(0-distance, distance);
 		final int y = this.getY(level);
-		final int x = RandomUtils.GetRandom(0-distance, distance);
-		final int z = RandomUtils.GetRandom(0-distance, distance);
+		final int x = rnd.nextInt();
+		final int z = rnd.nextInt();
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
@@ -147,16 +148,17 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final int max_y         = this.getMaxY(level);
 		final int distance_near = this.getSpawnDistanceNear(level);
 		final int distanceMin = Math.floorDiv(distance_near, 3);
-		final float yaw = (float) RandomUtils.GetRandom(0, 360);
 		final World world = spawn.getWorld();
 		final int y = spawn.getBlockY();
+		final xRand rnd = xRand.Get(distance_min, distance_near);
+		final float yaw = (float) xRand.Get(0, 360).nextInt();
 		final int h = max_y - y;
 		int x, z;
 		Location near, valid;
 		for (int tries=0; tries<20; tries++) {
 			for (int iy=0; iy<h; iy++) {
-				x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance_near);
-				z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance_near);
+				x = area.getBlockX() + rnd.nextInt();
+				z = area.getBlockZ() + rnd.nextInt();
 				near = world.getBlockAt(x, y+iy, z).getLocation();
 				valid = this.validateSpawn(near);
 				if (valid != null) {

@@ -11,9 +11,9 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
+import com.poixson.tools.xRand;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.LocationStoreManager;
-import com.poixson.utils.RandomUtils;
 
 
 // 771 | Crossroads
@@ -114,9 +114,10 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
+		final xRand rnd = xRand.Get(0-distance, distance);
 		final int y = this.getY(level);
-		int x = RandomUtils.GetRandom(0-distance, distance);
-		int z = RandomUtils.GetRandom(0-distance, distance);
+		int x = rnd.nextInt();
+		int z = rnd.nextInt();
 		if (Math.abs(x) > Math.abs(z)) z = 0;
 		else                           x = 0;
 		final World world = this.plugin.getWorldFromLevel(level);
@@ -128,7 +129,8 @@ public class Level_771 extends BackroomsLevel {
 		final int max_y = this.getMaxY(level);
 		final int distance_near = DEFAULT_SPAWN_NEAR_DISTANCE;
 		final int distanceMin = Math.floorDiv(distance_near, 3);
-		final float yaw = (float) RandomUtils.GetRandom(0, 360);
+		final xRand rnd = xRand.Get(distance_min, distance_near);
+		final float yaw = (float) xRand.Get(0, 360).nextInt();
 		final World world = spawn.getWorld();
 		final int y = spawn.getBlockY();
 		final int h = max_y - y;
@@ -139,8 +141,8 @@ public class Level_771 extends BackroomsLevel {
 		Location near, valid;
 		for (int tries=0; tries<20; tries++) {
 			for (int iy=0; iy<h; iy++) {
-				if (axis) z = spawn.getBlockZ() + RandomUtils.GetRandom(distanceMin, distance_near);
-				else      x = spawn.getBlockX() + RandomUtils.GetRandom(distanceMin, distance_near);
+				if (axis) z = spawn.getBlockZ() + rnd.nextInt();
+				else      x = spawn.getBlockX() + rnd.nextInt();
 				near = world.getBlockAt(x, y+iy, z).getLocation();
 				valid = this.validateSpawn(near);
 				if (valid != null) {

@@ -2,7 +2,6 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_094.ENABLE_GEN_094;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
-import static com.poixson.utils.RandomUtils.GetRandom;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,6 +21,7 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_094.PregenLevel94;
+import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -238,11 +238,11 @@ public class Gen_094 extends BackroomsGen {
 		final int house_width       = this.house_width.get();
 		final int house_height      = this.house_height.get();
 		final HashMap<Iab, HillsData> hillsData = ((PregenLevel94)pregen).hills;
+		final xRand rnd = xRand.Get(0, grass_rose_chance);
 		HillsData dao;
 		final int y = this.level_y + 1;
 		int depth_dirt;
-		int mod_grass, rnd;
-		int last_rnd = 0;
+		int mod_grass, rnd_grass;
 		Iab house_loc = null;
 		int house_y   = 0;
 		boolean house_dir = false;
@@ -267,10 +267,9 @@ public class Gen_094 extends BackroomsGen {
 						chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_grass_slab);
 					} else {
 						mod_grass = (int) Math.floor(dao.valueHill * 1000.0) % 3;
-						rnd = GetRandom(0, grass_rose_chance, last_rnd);
-						last_rnd = rnd;
-						if      (rnd == 1)       chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_rose            );
-						else if (rnd < 20) {
+						rnd_grass = rnd.nextInt();
+						if      (rnd_grass == 1) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_rose            );
+						else if (rnd_grass < 20) {
 							chunk                     .setBlock(ix, (y+depth_dirt)-1, iz, block_grass_tall_lower);
 							chunk                     .setBlock(ix,  y+depth_dirt,    iz, block_grass_tall_upper); }
 						else if (mod_grass == 0) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_grass_short     );

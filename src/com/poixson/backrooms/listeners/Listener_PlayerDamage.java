@@ -17,9 +17,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.xRand;
 import com.poixson.tools.xTime;
 import com.poixson.tools.events.xListener;
-import com.poixson.utils.RandomUtils;
 
 
 public class Listener_PlayerDamage extends xListener<BackroomsPlugin> {
@@ -77,7 +77,7 @@ public class Listener_PlayerDamage extends xListener<BackroomsPlugin> {
 				}
 				default: return;
 				}
-				final int rnd = RandomUtils.GetRandom(0, 9999);
+				final int rnd = xRand.Get(0, 9999).nextInt();
 				if (rnd % 10 < 5)
 					return;
 				// noclip into the backrooms
