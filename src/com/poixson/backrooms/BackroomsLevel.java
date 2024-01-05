@@ -147,12 +147,11 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
 		final xRand rnd = xRand.Get(0-distance, distance);
-		final int y = this.getY(level);
 		final int x = rnd.nextInt();
 		final int z = rnd.nextInt();
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		return world.getBlockAt(x, y, z).getLocation();
+		return world.getBlockAt(x, 0, z).getLocation();
 	}
 	public Location getSpawnNear(final int level, final Location area) {
 		final int max_y         = this.getMaxY(level);
@@ -161,7 +160,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final xRand rnd = xRand.Get(distance_min, distance_near);
 		final float yaw = (float) xRand.Get(0, 360).nextInt();
 		final World world = area.getWorld();
-		final int y = area.getBlockY();
+		final int y = this.getY(level);
 		final int h = max_y - y;
 		int x, z;
 		Location near, valid;

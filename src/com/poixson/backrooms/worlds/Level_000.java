@@ -321,20 +321,18 @@ public class Level_000 extends BackroomsLevel {
 		case 188: {
 			final int x = 0;
 			final int z = 0;
-			final int y = this.getY(level);
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
+			return world.getBlockAt(x, 0, z).getLocation();
 		}
 		// radio station
 		case 309: {
 			final int distance = this.plugin.getSpawnDistance();
-			final int y = this.getY(level);
 			final int z = xRand.Get(0, distance).nextInt();
 			final int x = this.gen_309.getPathX(z);
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
+			return world.getBlockAt(x, 0, z).getLocation();
 		}
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}

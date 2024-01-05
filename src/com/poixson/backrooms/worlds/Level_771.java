@@ -115,14 +115,13 @@ public class Level_771 extends BackroomsLevel {
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
 		final xRand rnd = xRand.Get(0-distance, distance);
-		final int y = this.getY(level);
 		int x = rnd.nextInt();
 		int z = rnd.nextInt();
 		if (Math.abs(x) > Math.abs(z)) z = 0;
 		else                           x = 0;
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
+		return world.getBlockAt(x, 0, z).getLocation();
 	}
 	@Override
 	public Location getSpawnNear(final int level, final Location spawn) {
@@ -132,7 +131,7 @@ public class Level_771 extends BackroomsLevel {
 		final xRand rnd = xRand.Get(distance_min, distance_near);
 		final float yaw = (float) xRand.Get(0, 360).nextInt();
 		final World world = spawn.getWorld();
-		final int y = spawn.getBlockY();
+		final int y = this.getY(level);
 		final int h = max_y - y;
 		// true if north/south roads
 		final boolean axis = (spawn.getBlockX() == 0);
