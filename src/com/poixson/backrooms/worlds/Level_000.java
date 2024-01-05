@@ -2,6 +2,7 @@ package com.poixson.backrooms.worlds;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -336,6 +337,12 @@ public class Level_000 extends BackroomsLevel {
 		}
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
+	}
+
+	@Override
+	public Location getFixedSpawnLocation(final World world, final Random random) {
+		final int y = this.getY(0);
+		return world.getBlockAt(100, y, 100).getLocation();
 	}
 
 

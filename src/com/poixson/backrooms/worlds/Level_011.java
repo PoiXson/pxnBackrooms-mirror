@@ -1,8 +1,10 @@
 package com.poixson.backrooms.worlds;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
@@ -143,6 +145,12 @@ public class Level_011 extends BackroomsLevel {
 		case 40: return super.getSpawnArea(40);
 		default: return super.getSpawnArea(11);
 		}
+	}
+
+	@Override
+	public Location getFixedSpawnLocation(final World world, final Random random) {
+		final int y = this.getY(0);
+		return world.getBlockAt(100, y, 100).getLocation();
 	}
 
 
