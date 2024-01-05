@@ -79,18 +79,15 @@ public class Level_011 extends BackroomsLevel {
 
 
 
-	@Override
-	public int getMainLevel() {
-		return 11; // abandoned city
-	}
-
-
-
 	// -------------------------------------------------------------------------------
 	// locations
 
 
 
+	@Override
+	public int getMainLevel() {
+		return 11; // abandoned city
+	}
 	@Override
 	public int getLevel(final Location loc) {
 		final int y = loc.getBlockY();
@@ -98,6 +95,20 @@ public class Level_011 extends BackroomsLevel {
 		if (y < Y_011) return 308; // ikea
 		return 11;                 // concrete jungle
 	}
+	@Override
+	public boolean containsLevel(final int level) {
+		switch (level) {
+		case   4: // abandoned office
+		case 308: // ikea
+		case  40: // arcade
+		case  11: // concrete jungle
+			return true;
+		default: return false;
+		}
+	}
+
+
+
 	@Override
 	public int getY(final int level) {
 		switch (level) {
@@ -116,17 +127,6 @@ public class Level_011 extends BackroomsLevel {
 		case  40: return Y_011 - 1; // arcade
 		case  11: return 320;       // concrete jungle
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		}
-	}
-	@Override
-	public boolean containsLevel(final int level) {
-		switch (level) {
-		case   4: // abandoned office
-		case 308: // ikea
-		case  40: // arcade
-		case  11: // concrete jungle
-			return true;
-		default: return false;
 		}
 	}
 

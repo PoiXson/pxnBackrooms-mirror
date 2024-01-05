@@ -60,11 +60,8 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 			}
 			for (; i<numargs; i++) {
 				final Player p = Bukkit.getPlayer(args[i]);
-				if (p == null) {
-					sender.sendMessage(CHAT_PREFIX + "Unknown player: " + args[i]);
-				} else {
-					this.plugin.noclip(p, level);
-				}
+				if (p == null) sender.sendMessage(CHAT_PREFIX + "Unknown player: " + args[i]);
+				else           this.plugin.noclip(p, level);
 			}
 		// tp self
 		} else {

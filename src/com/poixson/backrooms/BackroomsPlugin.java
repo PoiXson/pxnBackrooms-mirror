@@ -383,10 +383,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		final int num = this.backlevels.size();
 		final int[] levels = new int[num];
 		int i = 0;
-		for (final Integer lvl : this.backlevels.keySet()) {
-			levels[i] = lvl.intValue();
-			i++;
-		}
+		for (final Integer lvl : this.backlevels.keySet())
+			levels[i++] = lvl.intValue();
 		return levels;
 	}
 

@@ -213,18 +213,15 @@ public class Level_000 extends BackroomsLevel {
 
 
 
-	@Override
-	public int getMainLevel() {
-		return 0; // lobby
-	}
-
-
-
 	// -------------------------------------------------------------------------------
 	// locations
 
 
 
+	@Override
+	public int getMainLevel() {
+		return 0; // lobby
+	}
 	@Override
 	public int getLevel(final Location loc) {
 		final int x = loc.getBlockX();
@@ -260,6 +257,8 @@ public class Level_000 extends BackroomsLevel {
 		default: return false;
 		}
 	}
+
+
 
 	@Override
 	public int getY(final int level) {
@@ -332,6 +331,8 @@ public class Level_000 extends BackroomsLevel {
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
+
+
 
 	@Override
 	public int getSpawnDistanceNear(final int level) {

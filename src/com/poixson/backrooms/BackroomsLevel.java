@@ -84,17 +84,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public abstract int getMainLevel();
-
-	public boolean isWorldMain(final int level) {
-		return (this.getMainLevel() == level);
-	}
-	public boolean isWorldStacked() {
-		return (this.gens.size() > 1);
-	}
-
-
-
 	public BackroomsPlugin getPlugin() {
 		return this.plugin;
 	}
@@ -106,20 +95,23 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public boolean canCacheSpawn() {
-		return true;
+	public abstract int getMainLevel();
+
+	public boolean isWorldMain(final int level) {
+		return (this.getMainLevel() == level);
+	}
+	public boolean isWorldStacked() {
+		return (this.gens.size() > 1);
 	}
 
 	public int getLevel(final Location loc) {
 		return this.getMainLevel();
 	}
-	public abstract int getY(final int level);
-	public abstract int getMaxY(final int level);
-	public int getSpawnDistanceNear(final int level) {
-		return DEFAULT_SPAWN_NEAR_DISTANCE;
-	}
 
 	public abstract boolean containsLevel(final int level);
+
+	public abstract int getY(final int level);
+	public abstract int getMaxY(final int level);
 
 
 

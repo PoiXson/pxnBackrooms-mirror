@@ -93,9 +93,6 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 		}
 	}
 	protected void update() {
-		// flush teleport manager
-		this.plugin.getTeleportManager()
-			.flush();
 		// announce quote
 		this.plugin.getQuoteAnnouncer()
 			.announce();

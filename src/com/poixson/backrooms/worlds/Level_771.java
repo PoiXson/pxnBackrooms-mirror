@@ -79,15 +79,19 @@ public class Level_771 extends BackroomsLevel {
 
 
 
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
 	@Override
 	public int getMainLevel() {
 		return 771; // crossroads
 	}
-
-
-
-	// -------------------------------------------------------------------------------
-	// locations
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 771);
+	}
 
 
 
@@ -98,10 +102,6 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public int getMaxY(final int level) {
 		return 320;
-	}
-	@Override
-	public boolean containsLevel(final int level) {
-		return (level == 771);
 	}
 
 
@@ -128,7 +128,7 @@ public class Level_771 extends BackroomsLevel {
 	public Location getSpawnNear(final int level, final Location spawn) {
 		final int max_y = this.getMaxY(level);
 		final int distance_near = DEFAULT_SPAWN_NEAR_DISTANCE;
-		final int distanceMin = Math.floorDiv(distance_near, 3);
+		final int distance_min  = Math.floorDiv(distance_near, 3);
 		final xRand rnd = xRand.Get(distance_min, distance_near);
 		final float yaw = (float) xRand.Get(0, 360).nextInt();
 		final World world = spawn.getWorld();
@@ -144,14 +144,14 @@ public class Level_771 extends BackroomsLevel {
 				if (axis) z = spawn.getBlockZ() + rnd.nextInt();
 				else      x = spawn.getBlockX() + rnd.nextInt();
 				near = world.getBlockAt(x, y+iy, z).getLocation();
-				valid = this.validateSpawn(near);
+				valid = this.validSpawn(near);
 				if (valid != null) {
 					valid.setYaw(yaw);
 					return valid;
 				}
 			}
 		}
-		this.log().warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
+		this.log().warning(String.format("%sFailed to find a safe spawn location: %s", LOG_PREFIX, spawn.toString()));
 		return spawn;
 	}
 

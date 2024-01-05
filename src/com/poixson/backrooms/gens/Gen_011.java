@@ -1,6 +1,7 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
+import static com.poixson.backrooms.worlds.Level_011.ENABLE_GEN_011;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
@@ -38,6 +39,7 @@ public class Gen_011 extends BackroomsGen {
 	@Override
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+		if (!ENABLE_GEN_011) return;
 		final BlockData block_subfloor = StringToBlockData(this.block_subfloor, DEFAULT_BLOCK_SUBFLOOR);
 		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 11 SubFloor");
 		for (int iz=0; iz<16; iz++) {

@@ -71,15 +71,19 @@ public class Level_033 extends BackroomsLevel {
 
 
 
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
 	@Override
 	public int getMainLevel() {
 		return 33; // run for your life
 	}
-
-
-
-	// -------------------------------------------------------------------------------
-	// locations
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 33);
+	}
 
 
 
@@ -90,10 +94,6 @@ public class Level_033 extends BackroomsLevel {
 	@Override
 	public int getMaxY(final int level) {
 		return LEVEL_Y + LEVEL_H;
-	}
-	@Override
-	public boolean containsLevel(final int level) {
-		return (level == 33);
 	}
 
 

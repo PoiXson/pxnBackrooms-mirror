@@ -39,15 +39,19 @@ public class Level_094 extends BackroomsLevel {
 
 
 
+	// -------------------------------------------------------------------------------
+	// locations
+
+
+
 	@Override
 	public int getMainLevel() {
 		return 94; // motion
 	}
-
-
-
-	// -------------------------------------------------------------------------------
-	// locations
+	@Override
+	public boolean containsLevel(final int level) {
+		return (level == 94);
+	}
 
 
 
@@ -59,15 +63,15 @@ public class Level_094 extends BackroomsLevel {
 	public int getMaxY(final int level) {
 		return 319;
 	}
-	@Override
-	public boolean containsLevel(final int level) {
-		return (level == 94);
-	}
 
 
 
 	// -------------------------------------------------------------------------------
 	// spawn
+
+
+
+//TODO: prevent spawning inside a house
 
 
 
