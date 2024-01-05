@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Logger;
 
@@ -47,6 +48,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	protected final CopyOnWriteArraySet<BackroomsGen> gens = new CopyOnWriteArraySet<BackroomsGen>();
 	protected final CopyOnWriteArraySet<BackroomsPop> pops = new CopyOnWriteArraySet<BackroomsPop>();
 	protected final PopulatorManager popman = new PopulatorManager();
+
+	protected final ConcurrentHashMap<Integer, Location> spawns = new ConcurrentHashMap<Integer, Location>();
 
 
 
@@ -125,7 +128,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public Location validateSpawn(final Location loc) {
+	public Location validSpawn(final Location loc) {
 		final Block blockA = loc.getBlock();
 		final Block blockB = blockA.getRelative(0, 1, 0);
 		if (blockA.isPassable()
@@ -142,16 +145,16 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final int z = rnd.nextInt();
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		return this.getSpawnNear(level, world.getBlockAt(x, y, z).getLocation());
+		return world.getBlockAt(x, y, z).getLocation();
 	}
-	public Location getSpawnNear(final int level, final Location spawn) {
+	public Location getSpawnNear(final int level, final Location area) {
 		final int max_y         = this.getMaxY(level);
 		final int distance_near = this.getSpawnDistanceNear(level);
-		final int distanceMin = Math.floorDiv(distance_near, 3);
-		final World world = spawn.getWorld();
-		final int y = spawn.getBlockY();
+		final int distance_min  = Math.floorDiv(distance_near, 3);
 		final xRand rnd = xRand.Get(distance_min, distance_near);
 		final float yaw = (float) xRand.Get(0, 360).nextInt();
+		final World world = area.getWorld();
+		final int y = area.getBlockY();
 		final int h = max_y - y;
 		int x, z;
 		Location near, valid;
@@ -160,15 +163,31 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 				x = area.getBlockX() + rnd.nextInt();
 				z = area.getBlockZ() + rnd.nextInt();
 				near = world.getBlockAt(x, y+iy, z).getLocation();
-				valid = this.validateSpawn(near);
+				valid = this.validSpawn(near);
 				if (valid != null) {
 					valid.setYaw(yaw);
 					return valid;
 				}
 			}
 		}
-		this.log().warning(LOG_PREFIX + "Failed to find a safe spawn location: " + spawn.toString());
-		return spawn;
+		this.log().warning(String.format("%sFailed to find a safe spawn location: %s", LOG_PREFIX, area.toString()));
+		return area;
+	}
+
+	public Location getSpawnLocation(final int level) {
+		// cached area
+		{
+			final Location area = this.spawns.get(Integer.valueOf(level));
+			if (area != null)
+				return this.getSpawnNear(level, area);
+		}
+		// find spawn area
+		{
+			final Location area = this.getNewSpawnArea(level);
+			if (area == null) return null;
+			this.spawns.put(Integer.valueOf(level), area);
+			return this.getSpawnNear(level, area);
+		}
 	}
 
 	@Override
@@ -177,6 +196,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final int y = this.getY(level_main);
 		final Location loc = world.getBlockAt(0, y, 0).getLocation();
 		return this.getSpawnNear(level_main, loc);
+	}
+
+
+
+	public int getSpawnDistanceNear(final int level) {
+		return DEFAULT_SPAWN_NEAR_DISTANCE;
 	}
 
 

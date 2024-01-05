@@ -498,40 +498,30 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public void noclip(final Player player, final int level_to) {
-		if (level_to == Integer.MIN_VALUE) {
-			this.noclip(player);
-			return;
-		}
-		final TeleportManager manager = this.tpManager.get();
-		Location loc = manager.getSpawnLocation(level_to);
+	public void noclip(final Player player) {
+		this.noclip(player, 0);
+	}
+	public void noclip(final Player player, final int level) {
+		Location loc = this.getSpawnLocation(level);
 		if (loc == null) {
-			this.log().warning(LOG_PREFIX + "Failed to find spawn for level: " + Integer.toString(level_to));
-			final World world = this.getWorldFromLevel(level_to);
+			this.log().warning(String.format("%sFailed to find spawn for level: %d", LOG_PREFIX, Integer.valueOf(level)));
+			this.log().warning(String.format("%sFailed to find spawn for level: %d", LOG_PREFIX, Integer.valueOf(level)));
+			final World world = this.getWorldFromLevel(level);
 			if (world == null) {
-				this.log().warning(LOG_PREFIX + "Unknown backrooms world for level: " + Integer.toString(level_to));
+				this.log().warning(String.format("%sUnknown backrooms world for level %d", LOG_PREFIX, Integer.valueOf(level)));
 				return;
 			}
 			loc = world.getSpawnLocation();
 		}
-		this.log().info(LOG_PREFIX+"No-clip player: "+player.getName()+" to level: "+Integer.toString(level_to));
+		this.log().info(String.format("%sNo-clip player: %s to level: %d", LOG_PREFIX, player.getName(), Integer.valueOf(level)));
 		player.teleport(loc);
 		player.setNoDamageTicks(100);
 		player.setFallDistance(0.0f);
 	}
-	public int noclip(final Player player) {
-		final int level_from = this.getLevel(player);
-		final int level_to   = this.noclip(level_from);
-		this.noclip(player, level_to);
-		return level_to;
-	}
-	public int noclip(final int level_from) {
-		final TeleportManager manager = this.tpManager.get();
-		if (manager == null) {
-			this.log().warning(LOG_PREFIX+"teleport chance weights not loaded");
-			return 0;
-		}
-		return manager.getDestinationLevel(level_from);
+
+	public Location getSpawnLocation(final int level) {
+		final BackroomsLevel backlevel = this.getBackroomsLevel(level);
+		return (backlevel == null ? null : backlevel.getSpawnLocation(level));
 	}
 
 

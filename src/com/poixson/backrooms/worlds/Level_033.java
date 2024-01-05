@@ -104,13 +104,16 @@ public class Level_033 extends BackroomsLevel {
 
 
 	@Override
-	public boolean canCacheSpawn() {
-		return false;
+	public Location getNewSpawnArea(final int level) {
+		throw new UnsupportedOperationException();
+	}
+	@Override
+	public Location getSpawnNear(final int level, final Location area) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Location getNewSpawnArea(final int level) {
-//TODO: check valid spawn - player could fall out of world immediately
+	public Location getSpawnLocation(final int level) {
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		int x = this.varstore.getInt(KEY_NEXT_HALL_X);
@@ -118,10 +121,6 @@ public class Level_033 extends BackroomsLevel {
 		final int y = this.getY(level);
 		this.varstore.set(KEY_NEXT_HALL_X, (Math.floorDiv(x, 16)+1) * 16);
 		return world.getBlockAt(x+7, y, 7).getLocation();
-	}
-	@Override
-	public Location getSpawnNear(final int level, final Location spawn) {
-		return spawn;
 	}
 
 
