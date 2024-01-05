@@ -299,6 +299,14 @@ public class Level_000 extends BackroomsLevel {
 
 
 	@Override
+	public Location getSpawnArea(final int level) {
+		switch (level) {
+		case 188: return super.getSpawnArea(188);
+		case 309: return super.getSpawnArea(309);
+		default:  return super.getSpawnArea(  0);
+		}
+	}
+	@Override
 	public Location getNewSpawnArea(final int level) {
 		switch (level) {
 		case  1: // basement

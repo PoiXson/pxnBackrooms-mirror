@@ -129,6 +129,21 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		return null;
 	}
 
+	public Location getSpawnArea(final int level) {
+		// cached area
+		{
+			final Location area = this.spawns.get(Integer.valueOf(level));
+			if (area != null)
+				return area;
+		}
+		// find spawn area
+		{
+			final Location area = this.getNewSpawnArea(level);
+			if (area == null) return null;
+			this.spawns.put(Integer.valueOf(level), area);
+			return area;
+		}
+	}
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
 		final xRand rnd = xRand.Get(0-distance, distance);
@@ -167,19 +182,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 
 	public Location getSpawnLocation(final int level) {
-		// cached area
-		{
-			final Location area = this.spawns.get(Integer.valueOf(level));
-			if (area != null)
-				return this.getSpawnNear(level, area);
-		}
-		// find spawn area
-		{
-			final Location area = this.getNewSpawnArea(level);
-			if (area == null) return null;
-			this.spawns.put(Integer.valueOf(level), area);
-			return this.getSpawnNear(level, area);
-		}
+		final Location area = this.getSpawnArea(level);
+		return this.getSpawnNear(level, area);
 	}
 
 	@Override

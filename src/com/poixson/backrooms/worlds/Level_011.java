@@ -137,6 +137,16 @@ public class Level_011 extends BackroomsLevel {
 
 
 
+	@Override
+	public Location getSpawnArea(final int level) {
+		switch (level) {
+		case 40: return super.getSpawnArea(40);
+		default: return super.getSpawnArea(11);
+		}
+	}
+
+
+
 	// -------------------------------------------------------------------------------
 	// generate
 
