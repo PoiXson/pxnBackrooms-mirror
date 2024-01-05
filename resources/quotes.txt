@@ -57,6 +57,7 @@ The walls have secrets
 I'm glad to see you're back
 You don't want the seeker to win
 I can't stop thinking about killing you
+You never have to think again
 Would you like to see a magic trick?
 Want to see a magic trick?
 I tried to save you
@@ -149,3 +150,5 @@ Recover the body
 Moist
 Are we they?
 I'll get you
+I have a question for you
+Unprotected Area!
