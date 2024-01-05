@@ -48,7 +48,6 @@ import com.poixson.backrooms.listeners.Listener_PlayerDamage;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
-import com.poixson.backrooms.tasks.TeleportManager;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_011;
 import com.poixson.backrooms.worlds.Level_033;
@@ -81,9 +80,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// quotes
 	protected final AtomicReference<QuoteAnnouncer> quoteAnnouncer = new AtomicReference<QuoteAnnouncer>(null);
-
-	// chance to teleport to levels
-	protected final AtomicReference<TeleportManager> tpManager = new AtomicReference<TeleportManager>(null);
 
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
@@ -162,8 +158,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
-		// load teleport chance
-		this.tpManager.set(TeleportManager.Load(this));
 		// load quotes
 		this.quoteAnnouncer.set(QuoteAnnouncer.Load(this));
 		// reconvergence task
@@ -241,8 +235,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 			if (listener != null)
 				listener.unregister();
 		}
-		// teleport chance
-		this.tpManager.set(null);
 		this.dynmap_perspective.set(null);
 		// quotes
 		this.quoteAnnouncer.set(null);
@@ -368,9 +360,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public TaskReconvergence getReconvergenceTask() {
 		return this.taskReconvergence.get();
-	}
-	public TeleportManager getTeleportManager() {
-		return this.tpManager.get();
 	}
 	public QuoteAnnouncer getQuoteAnnouncer() {
 		return this.quoteAnnouncer.get();
