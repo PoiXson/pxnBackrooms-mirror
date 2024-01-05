@@ -9,12 +9,14 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.tools.xRand;
@@ -51,6 +53,27 @@ public class Listener_NoClip extends xListener<BackroomsPlugin> {
 
 	public Listener_NoClip(final BackroomsPlugin plugin) {
 		super(plugin);
+	}
+
+
+
+	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+	public void onPlayerRespawn(final PlayerRespawnEvent event) {
+		if (event.isBedSpawn())    return;
+		if (event.isAnchorSpawn()) return;
+		switch (event.getRespawnReason()) {
+		case DEATH: {
+			final Player player = event.getPlayer();
+			final int level    = this.plugin.getLevel(player.getLocation());
+			final Location loc = this.plugin.getSpawnLocation(level);
+			if (loc != null)
+				event.setRespawnLocation(loc);
+			break;
+		}
+		case END_PORTAL:
+		case PLUGIN:
+		default: break;
+		}
 	}
 
 
