@@ -120,6 +120,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
+	public void flushSpawns() {
+		this.spawns.clear();
+	}
+
+
+
 	public Location validSpawn(final Location loc) {
 		final Block blockA = loc.getBlock();
 		final Block blockB = blockA.getRelative(0, 1, 0);

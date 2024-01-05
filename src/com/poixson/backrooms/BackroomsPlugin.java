@@ -496,6 +496,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
+	public void flushSpawns() {
+		for (final BackroomsLevel level : this.backlevels.values())
+			level.flushSpawns();
+	}
+
+
+
 	public void noclip(final Player player) {
 		this.noclip(player, 0);
 	}
