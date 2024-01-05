@@ -34,6 +34,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.plotter.BlockPlotter;
+import com.poixson.tools.plotter.PlotterFactory;
 
 
 // 188 | The Windows
@@ -268,6 +269,37 @@ public class Gen_188 extends BackroomsGen {
 				} // end iy
 			} // end ix
 		} // end iz
+		// doors
+		if (chunkX == 3 && chunkZ == 0) {
+			final BlockPlotter plot =
+				(new PlotterFactory())
+				.placer(chunk)
+				.axis("eus")
+				.xyz(13, y+SUBFLOOR+1, 0)
+				.whd(3, 4, 8)
+				.build();
+			plot.type('.', Material.AIR    );
+			plot.type('x', Material.BEDROCK);
+			plot.type('#', block_wall      );
+			plot.type('0', block_window    );
+			plot.type('_', Material.STONE_PRESSURE_PLATE              );
+			plot.type('-', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
+			plot.type('d', "minecraft:iron_door[half=upper,hinge=left,facing=east]" );
+			plot.type('D', "minecraft:iron_door[half=lower,hinge=left,facing=east]" );
+			plot.type('b', "minecraft:iron_door[half=upper,hinge=right,facing=east]");
+			plot.type('B', "minecraft:iron_door[half=lower,hinge=right,facing=east]");
+			final StringBuilder[][] matrix = plot.getMatrix3D();
+			matrix[0][1].append("__ __ __");
+			matrix[1][3].append("00#00#00");
+			matrix[1][2].append("db#db#db");
+			matrix[1][1].append("DB#DB#DB");
+			matrix[1][0].append("xxxxxxxx");
+			matrix[2][3].append("xxxxxxxx");
+			matrix[2][2].append("........");
+			matrix[2][1].append("--.--.--");
+			matrix[2][0].append("xxxxxxxx");
+			plot.run();
+		}
 	}
 
 
