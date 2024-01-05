@@ -7,6 +7,7 @@ import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_X;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_Z;
 import static com.poixson.backrooms.worlds.Level_000.H_019;
 import static com.poixson.backrooms.worlds.Level_000.H_188;
+import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.backrooms.worlds.Level_000.Y_000;
 import static com.poixson.backrooms.worlds.Level_000.Y_001;
 import static com.poixson.backrooms.worlds.Level_000.Y_005;
@@ -125,8 +126,9 @@ public class Gen_188 extends BackroomsGen {
 				// floor
 				chunk.setBlock(ix, y, iz, Material.BEDROCK);
 				if (outer == 0 && inner == 0) {
-					chunk.setBlock(ix, y+1, iz, Material.DIRT);
-					chunk.setBlock(ix, y+2, iz, Material.DIRT);
+					final int yy = y + SUBFLOOR + 1;
+					for (int iy=0; iy<SUBFLOOR; iy++)
+						chunk.setBlock(ix, y+iy+1, iz, block_subfloor);
 					// border path
 					if (xx < -43 || xx > 58
 					||  zz < -43 || zz > 58) {
@@ -163,7 +165,7 @@ public class Gen_188 extends BackroomsGen {
 						}
 					}
 					if ((xx+zz+500) % 3 == 0)
-						chunk.setBlock(ix, y+7, iz, light);
+						chunk.setBlock(ix, yy+4, iz, light);
 					// ceiling
 					chunk.setBlock(ix, y+cy, iz, block_ceiling);
 				}
