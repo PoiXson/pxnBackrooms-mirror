@@ -18,10 +18,12 @@ import static com.poixson.backrooms.worlds.Level_000.Y_188;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
@@ -35,6 +37,24 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 188 | The Windows
 public class Gen_188 extends BackroomsGen {
 
+	// default blocks
+	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:dirt";
+	public static final String DEFAULT_BLOCK_FLOOR            = "minecraft:grass_block";
+	public static final String DEFAULT_BLOCK_FLOOR_PATH_LINES = "minecraft:polished_andesite";
+	public static final String DEFAULT_BLOCK_FLOOR_PATH_AREAS = "minecraft:polished_granite";
+	public static final String DEFAULT_BLOCK_WALL             = "minecraft:quartz_block";
+	public static final String DEFAULT_BLOCK_CEILING          = "minecraft:white_wool";
+	public static final String DEFAULT_BLOCK_WINDOW           = "minecraft:black_stained_glass";
+
+	// blocks
+	public final AtomicReference<String> block_subfloor         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_floor            = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_floor_path_lines = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_floor_path_areas = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_wall             = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_ceiling          = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_window           = new AtomicReference<String>(null);
+
 
 
 	public Gen_188(final BackroomsLevel backlevel, final int level_y, final int level_h) {
@@ -47,6 +67,13 @@ public class Gen_188 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		final Level_000 level0 = (Level_000) this.backlevel;
+		final BlockData block_subfloor            = StringToBlockData(this.block_subfloor,                     DEFAULT_BLOCK_SUBFLOOR          );
+		final BlockData block_floor               = StringToBlockData(this.block_floor,                        DEFAULT_BLOCK_FLOOR             );
+		final BlockData block_floor_path_lines    = StringToBlockData(this.block_floor_path_lines,             DEFAULT_BLOCK_FLOOR_PATH_LINES  );
+		final BlockData block_floor_path_areas    = StringToBlockData(this.block_floor_path_areas,             DEFAULT_BLOCK_FLOOR_PATH_AREAS  );
+		final BlockData block_wall                = StringToBlockData(this.block_wall,                         DEFAULT_BLOCK_WALL              );
+		final BlockData block_ceiling             = StringToBlockData(this.block_ceiling,                      DEFAULT_BLOCK_CEILING           );
+		final BlockData block_window              = StringToBlockData(this.block_window,                       DEFAULT_BLOCK_WINDOW            );
 		final BlockData block_hotel_wall_top_x    = StringToBlockData(level0.gen_005.block_hall_wall_top_x,    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
 		final BlockData block_hotel_wall_top_z    = StringToBlockData(level0.gen_005.block_hall_wall_top_z,    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
 		final BlockData block_hotel_wall_center   = StringToBlockData(level0.gen_005.block_hall_wall_center,   DEFAULT_BLOCK_HALL_WALL_CENTER  );
@@ -57,6 +84,13 @@ public class Gen_188 extends BackroomsGen {
 		final BlockData block_lightsout_wall      = StringToBlockData(level0.gen_006.block_wall,       Gen_006.DEFAULT_BLOCK_WALL              );
 		final BlockData block_lobby_wall          = StringToBlockData(level0.gen_000.block_wall,       Gen_000.DEFAULT_BLOCK_WALL              );
 		final BlockData block_overgrowth_wall     = StringToBlockData(level0.gen_023.block_wall,       Gen_023.DEFAULT_BLOCK_WALL              );
+		if (block_subfloor            == null) throw new RuntimeException("Invalid block type for level 188 SubFloor"        );
+		if (block_floor               == null) throw new RuntimeException("Invalid block type for level 188 Floor"           );
+		if (block_floor_path_lines    == null) throw new RuntimeException("Invalid block type for level 188 Floor-Path-Lines");
+		if (block_floor_path_areas    == null) throw new RuntimeException("Invalid block type for level 188 Floor-Path-Areas");
+		if (block_wall                == null) throw new RuntimeException("Invalid block type for level 188 Wall"            );
+		if (block_ceiling             == null) throw new RuntimeException("Invalid block type for level 188 Ceiling"         );
+		if (block_window              == null) throw new RuntimeException("Invalid block type for level 188 Window"          );
 		if (block_hotel_wall_top_x    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Top-X"   );
 		if (block_hotel_wall_top_z    == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Top-Z"   );
 		if (block_hotel_wall_center   == null) throw new RuntimeException("Invalid block type for level 5 Hall-Wall-Center"  );
@@ -96,34 +130,34 @@ public class Gen_188 extends BackroomsGen {
 					// border path
 					if (xx < -43 || xx > 58
 					||  zz < -43 || zz > 58) {
-						chunk.setBlock(ix, y+3, iz, Material.POLISHED_ANDESITE);
+						chunk.setBlock(ix, yy, iz, block_floor_path_lines);
 					// grass/path
 					} else {
 						// grass circle on the side
 						final double circle_side = Math.sqrt(Math.pow(xx-69.0, 2.0) + Math.pow(zz-69.0, 2.0));
 						if (circle_side < 38.0) {
-							chunk.setBlock(ix, y+3, iz, Material.GRASS_BLOCK);
+							chunk.setBlock(ix, yy, iz, block_floor);
 						} else
 						// path around side circle grass
 						if (circle_side < 42.0) {
-							chunk.setBlock(ix, y+3, iz, Material.POLISHED_ANDESITE);
+							chunk.setBlock(ix, yy, iz, block_floor_path_lines);
 						} else {
 							// cut side path
 							final double path_cut = ((double)xx) + (((double)zz) * 0.65);
 							if (path_cut > 42.0) {
-								chunk.setBlock(ix, y+3, iz, Material.POLISHED_GRANITE);
+								chunk.setBlock(ix, yy, iz, block_floor_path_areas);
 							} else {
 								// center path circle
 								final double circle_center = Math.sqrt(Math.pow(xx+20.0, 2.0) + Math.pow(zz+5.0, 2.0));
 								if (circle_center < 9.0) {
-									chunk.setBlock(ix, y+3, iz, Material.POLISHED_GRANITE);
+									chunk.setBlock(ix, yy, iz, block_floor_path_areas);
 								} else {
 									// cross path
 									final double path_xz = ((double)xx) +  ((double)zz) + 25.0;
 									final double path_zx = ((double)xx) - (((double)zz) *  2.8);
 									if ((path_xz < 5.0 && path_xz >-5.0)
-									||  (path_zx < 9.0 && path_zx >-9.0)) chunk.setBlock(ix, y+3, iz, Material.POLISHED_ANDESITE);
-									else                                  chunk.setBlock(ix, y+3, iz, Material.GRASS_BLOCK      );
+									||  (path_zx < 9.0 && path_zx >-9.0)) chunk.setBlock(ix, yy, iz, block_floor_path_lines);
+									else                                  chunk.setBlock(ix, yy, iz, block_floor           );
 								}
 							}
 						}
@@ -131,7 +165,7 @@ public class Gen_188 extends BackroomsGen {
 					if ((xx+zz+500) % 3 == 0)
 						chunk.setBlock(ix, y+7, iz, light);
 					// ceiling
-					chunk.setBlock(ix, y+cy, iz, Material.WHITE_WOOL);
+					chunk.setBlock(ix, y+cy, iz, block_ceiling);
 				}
 				// walls
 				BlockData block_hotel_wall_top    = null;
@@ -194,7 +228,7 @@ public class Gen_188 extends BackroomsGen {
 						} else {
 							// window
 							if (isWindow) {
-								chunk.setBlock(ix, yy, iz, Material.BLACK_STAINED_GLASS);
+								chunk.setBlock(ix, yy, iz, block_window);
 							// wall
 							} else {
 								if      (yy > Y_019  ) chunk.setBlock(ix, yy, iz, block_attic_wall       ); // attic
@@ -211,8 +245,8 @@ public class Gen_188 extends BackroomsGen {
 					} else
 					// inner wall
 					if (inner > 0) {
-						if (isWindow) chunk.setBlock(ix, y+iy, iz, Material.BLACK_STAINED_GLASS);
-						else          chunk.setBlock(ix, y+iy, iz, Material.QUARTZ_BLOCK       );
+						if (isWindow) chunk.setBlock(ix, y+iy, iz, block_window);
+						else          chunk.setBlock(ix, y+iy, iz, block_wall  );
 					} else
 					// light inside wall
 					if (inside == 1) {
@@ -233,10 +267,25 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
-//TODO
+		// block types
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(188);
+			this.block_subfloor        .set(cfg.getString("SubFloor"        ));
+			this.block_floor           .set(cfg.getString("Floor"           ));
+			this.block_floor_path_lines.set(cfg.getString("Floor-Path-Lines"));
+			this.block_floor_path_areas.set(cfg.getString("Floor-Path-Areas"));
+			this.block_ceiling         .set(cfg.getString("Ceiling"         ));
+			this.block_window          .set(cfg.getString("Window"          ));
+		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
-//TODO
+		// block types
+		cfg.addDefault("Level188.Blocks.SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
+		cfg.addDefault("Level188.Blocks.Floor",            DEFAULT_BLOCK_FLOOR           );
+		cfg.addDefault("Level188.Blocks.Floor-Path-Lines", DEFAULT_BLOCK_FLOOR_PATH_LINES);
+		cfg.addDefault("Level188.Blocks.Floor-Path-Areas", DEFAULT_BLOCK_FLOOR_PATH_AREAS);
+		cfg.addDefault("Level188.Blocks.Ceiling",          DEFAULT_BLOCK_CEILING         );
+		cfg.addDefault("Level188.Blocks.Window",           DEFAULT_BLOCK_WINDOW          );
 	}
 
 
