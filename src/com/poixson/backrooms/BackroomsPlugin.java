@@ -43,8 +43,8 @@ import com.poixson.backrooms.gens.Gen_188;
 import com.poixson.backrooms.gens.Gen_308;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
+import com.poixson.backrooms.listeners.Listener_NoClip;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
-import com.poixson.backrooms.listeners.Listener_PlayerDamage;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
@@ -83,8 +83,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
-	protected final AtomicReference<Listener_PlayerDamage> listenerPlayerDamage = new AtomicReference<Listener_PlayerDamage>(null);
-	protected final AtomicReference<Listener_OutOfWorld>   listenerOutOfWorld   = new AtomicReference<Listener_OutOfWorld>(null);
+	protected final AtomicReference<Listener_NoClip>     listenerNoClip     = new AtomicReference<Listener_NoClip>(null);
+	protected final AtomicReference<Listener_OutOfWorld> listenerOutOfWorld = new AtomicReference<Listener_OutOfWorld>(null);
 
 	// dynmap config generator
 	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
@@ -179,8 +179,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// player damage listeners
 		{
-			final Listener_PlayerDamage listener = new Listener_PlayerDamage(this);
-			final Listener_PlayerDamage previous = this.listenerPlayerDamage.getAndSet(listener);
+			final Listener_NoClip listener = new Listener_NoClip(this);
+			final Listener_NoClip previous = this.listenerNoClip.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
@@ -231,7 +231,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// player damage listeners
 		{
-			final Listener_PlayerDamage listener = this.listenerPlayerDamage.getAndSet(null);
+			final Listener_NoClip listener = this.listenerNoClip.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
