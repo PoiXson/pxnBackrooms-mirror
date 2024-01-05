@@ -294,7 +294,7 @@ public class Gen_188 extends BackroomsGen {
 			matrix[1][2].append("db#db#db");
 			matrix[1][1].append("DB#DB#DB");
 			matrix[1][0].append("xxxxxxxx");
-			matrix[2][3].append("xxxxxxxx");
+			matrix[2][3].append("........");
 			matrix[2][2].append("........");
 			matrix[2][1].append("--.--.--");
 			matrix[2][0].append("xxxxxxxx");
@@ -325,7 +325,7 @@ public class Gen_188 extends BackroomsGen {
 			matrix[1][2].append("db#db#db");
 			matrix[1][1].append("DB#DB#DB");
 			matrix[1][0].append("xxxxxxxx");
-			matrix[2][3].append("xxxxxxxx");
+			matrix[2][3].append("........");
 			matrix[2][2].append("........");
 			matrix[2][1].append("--.--.--");
 			matrix[2][0].append("xxxxxxxx");
