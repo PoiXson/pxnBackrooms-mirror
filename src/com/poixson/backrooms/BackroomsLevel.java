@@ -91,19 +91,18 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 	public abstract int getMainLevel();
+	public abstract boolean containsLevel(final int level);
 
 	public boolean isWorldMain(final int level) {
 		return (this.getMainLevel() == level);
 	}
-	public boolean isWorldStacked() {
-		return (this.gens.size() > 1);
+	public boolean isSingleLevelWorld() {
+		return (this.gens.size() <= 1);
 	}
 
 	public int getLevel(final Location loc) {
 		return this.getMainLevel();
 	}
-
-	public abstract boolean containsLevel(final int level);
 
 	public abstract int getY(final int level);
 	public abstract int getMaxY(final int level);
@@ -186,6 +185,9 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		return this.getSpawnNear(level, area);
 	}
 
+	public Location getFixedSpawnLocation(final World world) {
+		return this.getFixedSpawnLocation(world, null);
+	}
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
 		final int level_main = this.getMainLevel();
@@ -292,7 +294,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 				throw new RuntimeException("Failed to create world: " + name);
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();
-			mvworld.setAlias("backrooms");
 			mvworld.setAutoLoad(true);
 			mvworld.setHidden(true);
 			mvworld.setKeepSpawnInMemory(false);
