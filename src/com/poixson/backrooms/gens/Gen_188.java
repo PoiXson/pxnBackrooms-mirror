@@ -19,6 +19,7 @@ import static com.poixson.backrooms.worlds.Level_000.Y_188;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
@@ -38,6 +39,9 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 188 | The Windows
 public class Gen_188 extends BackroomsGen {
 
+	// default params
+	public static final boolean DEFAULT_DARK_ROOM = false;
+
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:dirt";
 	public static final String DEFAULT_BLOCK_FLOOR            = "minecraft:grass_block";
@@ -46,6 +50,9 @@ public class Gen_188 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_WALL             = "minecraft:quartz_block";
 	public static final String DEFAULT_BLOCK_CEILING          = "minecraft:white_wool";
 	public static final String DEFAULT_BLOCK_WINDOW           = "minecraft:black_stained_glass";
+
+	// params
+	public final AtomicBoolean dark_room = new AtomicBoolean(DEFAULT_DARK_ROOM);
 
 	// blocks
 	public final AtomicReference<String> block_subfloor         = new AtomicReference<String>(null);
@@ -102,6 +109,7 @@ public class Gen_188 extends BackroomsGen {
 		if (block_lightsout_wall      == null) throw new RuntimeException("Invalid block type for level 5 LightsOut-Wall"    );
 		if (block_lobby_wall          == null) throw new RuntimeException("Invalid block type for level 5 Lobby-Wall"        );
 		if (block_overgrowth_wall     == null) throw new RuntimeException("Invalid block type for level 5 Overgrowth-Wall"   );
+		final boolean dark_room = this.dark_room.get();
 		final BlockData light = Bukkit.createBlockData("light[level=15]");
 		final int y  = Y_188;
 		final int cy =(Y_188 + H_188) - 1;
@@ -252,8 +260,10 @@ public class Gen_188 extends BackroomsGen {
 					} else
 					// light inside wall
 					if (inside == 1) {
-						if (iy > 3 && iy < cy-1)
-							chunk.setBlock(ix, yy, iz, light);
+						if (!dark_room) {
+							if (iy > SUBFLOOR+4 && iy < cy-1)
+								chunk.setBlock(ix, yy, iz, light);
+						}
 					}
 				} // end iy
 			} // end ix
@@ -269,6 +279,11 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig() {
+		// params
+		{
+			final ConfigurationSection cfg = this.plugin.getLevelParams(0);
+			this.dark_room.set(cfg.getBoolean("Dark-Room"));
+		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(188);
@@ -281,6 +296,8 @@ public class Gen_188 extends BackroomsGen {
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
+		// params
+		cfg.addDefault("Level188.Params.Dark-Room", DEFAULT_DARK_ROOM);
 		// block types
 		cfg.addDefault("Level188.Blocks.SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
 		cfg.addDefault("Level188.Blocks.Floor",            DEFAULT_BLOCK_FLOOR           );
