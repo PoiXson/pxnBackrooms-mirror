@@ -94,8 +94,8 @@ public class Gen_188 extends BackroomsGen {
 					chunk.setBlock(ix, y+1, iz, Material.DIRT);
 					chunk.setBlock(ix, y+2, iz, Material.DIRT);
 					// border path
-					if (xx ==-46 || xx ==-44 || xx == 61 || xx == 60 || (xx ==-43 && zz ==-43) || (xx ==-43 && zz == 59)
-					||  zz ==-46 || zz ==-44 || zz == 61 || zz == 60 || (xx == 59 && zz == 59) || (xx == 59 && zz ==-43)) {
+					if (xx < -43 || xx > 58
+					||  zz < -43 || zz > 58) {
 						chunk.setBlock(ix, y+3, iz, Material.POLISHED_ANDESITE);
 					// grass/path
 					} else {
