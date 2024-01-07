@@ -327,4 +327,4 @@ radio_lot_fence();
 radio_building_back( -13, -13, 42, 16, 21);
 radio_building_front(-13,   7, 15,  9, 21);
 radio_path(12, 31, 5, 21);
-radio_antenna(-11, 14, -11, 16);
+radio_antenna(-11, 9, -11, 16);
