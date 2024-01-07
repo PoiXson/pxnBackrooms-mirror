@@ -1,23 +1,29 @@
 
+importClass(Packages.org.bukkit.Bukkit);
 importClass(Packages.org.bukkit.Material);
 
+importClass(Packages.com.poixson.utils.FastNoiseLiteD);
 importClass(Packages.com.poixson.tools.plotter.PlotterFactory);
 importClass(Packages.com.poixson.utils.StringUtils);
 
 
 
 function radio_lot_ground() {
+	let noise_floor = new FastNoiseLiteD();
+	noise_floor.setSeed(seed);
+	noise_floor.setFrequency(0.1);
+	noise_floor.setFractalOctaves(2);
+	noise_floor.setFractalType(FastNoiseLiteD.FractalType.FBm);
+	let lichen = Bukkit.createBlockData("minecraft:glow_lichen[down=true]");
 	for (let iz=-16; iz<32; iz++) {
 		for (let ix=-16; ix<32; ix++) {
-			// gravel surface
-			for (let iy=surface_y-5; iy<surface_y; iy++) {
-				if (iy == surface_y-1
-				|| Material.AIR.equals(region.getType(ix, iy, iz)))
-					region.setType(ix, iy, iz, Material.GRAVEL);
-			}
-			// air above ground
-			for (let iy=surface_y; iy<surface_y+5; iy++)
-				region.setType(ix, iy, iz, Material.AIR);
+			let value = noise_floor.getNoise(ix, iz);
+			if      (value > 0.5) region.setType(ix, surface_y, iz, Material.CLAY                      );
+			else if (value > 0.0) region.setType(ix, surface_y, iz, Material.LIGHT_GRAY_CONCRETE_POWDER);
+			else                  region.setType(ix, surface_y, iz, Material.PODZOL                    );
+			if ((value > 0.2 && value < 0.45)
+			||  (value >-0.4 && value <-0.35))
+				region.setBlock(ix, surface_y+1, iz, lichen);
 		}
 	}
 }
