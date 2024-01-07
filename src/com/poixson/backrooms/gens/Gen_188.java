@@ -45,7 +45,7 @@ public class Gen_188 extends BackroomsGen {
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:dirt";
-	public static final String DEFAULT_BLOCK_FLOOR            = "minecraft:grass_block";
+	public static final String DEFAULT_BLOCK_FLOOR            = "minecraft:green_wool";
 	public static final String DEFAULT_BLOCK_FLOOR_PATH_LINES = "minecraft:polished_andesite";
 	public static final String DEFAULT_BLOCK_FLOOR_PATH_AREAS = "minecraft:polished_granite";
 	public static final String DEFAULT_BLOCK_WALL             = "minecraft:quartz_block";
