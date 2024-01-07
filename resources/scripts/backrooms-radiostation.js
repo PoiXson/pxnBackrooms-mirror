@@ -54,11 +54,11 @@ function radio_lot_fence() {
 		.xyz(-16, surface_y, -16)
 		.whd(48, 5, 48)
 		.build();
-	plot.type('=', Material.COPPER_BLOCK);
-	plot.type('_', Material.CUT_COPPER_SLAB);
+	plot.type('=', Material.COPPER_BLOCK                       );
+	plot.type('_', Material.CUT_COPPER_SLAB                    );
 	plot.type('x', "minecraft:iron_bars[north=true,south=true]");
 	plot.type('X', "minecraft:iron_bars[east=true,west=true]"  );
-	plot.type('I', Material.MOSSY_STONE_BRICK_WALL);
+	plot.type('I', Material.MOSSY_STONE_BRICK_WALL             );
 	let matrix = plot.getMatrix3D();
 	// north fence
 	matrix[4][0]            .append('_'.repeat(48));
@@ -93,9 +93,8 @@ function radio_path(x, z, w, d) {
 	let block_fence = Bukkit.createBlockData("minecraft:iron_bars[north=true,south=true]");
 	// path across yard
 	for (let iz=0; iz<d; iz++) {
-		for (let ix=0; ix<w; ix++) {
+		for (let ix=0; ix<w; ix++)
 			region.setBlockData(x+ix, surface_y, z-iz, block_floor);
-		}
 		region.setBlockData(x-1, surface_y, z-iz, block_fence); // west fence
 		region.setBlockData(x+w, surface_y, z-iz, block_fence); // east fence
 	}
@@ -106,8 +105,8 @@ function radio_path(x, z, w, d) {
 	}
 	// pillars
 	for (let iy=0; iy<5; iy++) {
-		region.setType(x-1, iy+surface_y+1, z-d, Material.STONE_BRICK_WALL);
-		region.setType(x+w, iy+surface_y+1, z-d, Material.STONE_BRICK_WALL);
+		region.setType(x-1, iy+surface_y+1, z-d, Material.POLISHED_DEEPSLATE_WALL);
+		region.setType(x+w, iy+surface_y+1, z-d, Material.POLISHED_DEEPSLATE_WALL);
 	}
 	// porch roof
 	{
@@ -242,11 +241,11 @@ function radio_building_back(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_ANDESITE    ); // wall fill
-	plot.type('#', Material.POLISHED_BASALT      ); // wall corner
-	plot.type('=', Material.POLISHED_GRANITE     ); // wall stripe
-	plot.type('_', Material.POLISHED_GRANITE_SLAB); // wall top
-	plot.type('F', Material.POLISHED_DIORITE     ); // floor
+	plot.type('@', Material.POLISHED_ANDESITE             ); // wall fill
+	plot.type('#', Material.POLISHED_BASALT               ); // wall corner
+	plot.type('=', Material.POLISHED_GRANITE              ); // wall stripe
+	plot.type('_', Material.POLISHED_GRANITE_SLAB         ); // wall top
+	plot.type('F', Material.POLISHED_DIORITE              ); // floor
 	plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
 	plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
 	plot.type('.', Material.AIR);
@@ -258,8 +257,7 @@ function radio_building_back(x, z, w, h, d) {
 	let wall, fill;
 	for (let iy=0; iy<h-1; iy++) {
 		wall = (iy==7 ? '=' : '@');
-		if (iy == 0  ) fill = ' '; else // subfloor
-		if (iy == 1  ) fill = 'F'; else // floor 1
+		if (iy == 0  ) fill = 'F'; else // floor 1
 		if (iy == 6  ) fill = '-'; else // ceiling 1
 		if (iy == 7  ) fill = 'F'; else // floor 2
 		if (iy == h-3) fill = '-'; else // ceiling 2
@@ -287,10 +285,10 @@ function radio_building_front(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_ANDESITE    ); // wall fill
-	plot.type('#', Material.POLISHED_BASALT      ); // wall corner
-	plot.type('_', Material.POLISHED_GRANITE_SLAB); // wall top
-	plot.type('F', Material.POLISHED_DIORITE     ); // floor
+	plot.type('@', Material.POLISHED_ANDESITE             ); // wall fill
+	plot.type('#', Material.POLISHED_BASALT               ); // wall corner
+	plot.type('_', Material.POLISHED_GRANITE_SLAB         ); // wall top
+	plot.type('F', Material.POLISHED_DIORITE              ); // floor
 	plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
 	plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
 	plot.type('.', Material.AIR);
@@ -308,7 +306,7 @@ function radio_building_front(x, z, w, h, d) {
 		// north/south walls
 		if (iy < h-2)
 		matrix[iy][  0].append('#').append(fill.repeat(w-2)).append('#'); // back wall
-		matrix[iy][d-1].append('#').append('@'.repeat(w-2)).append('#'); // front wall
+		matrix[iy][d-1].append('#').append( '@'.repeat(w-2)).append('#'); // front wall
 		// east/west walls
 		for (let iz=1; iz<d-1; iz++)
 			matrix[iy][iz].append('@').append(fill.repeat(w-2)).append('@');
