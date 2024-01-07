@@ -130,6 +130,7 @@ public class Pop_309 implements BackroomsPop {
 				.setVariable("region",         region        )
 				.setVariable("surface_y",      y             )
 				.setVariable("enable_ceiling", ENABLE_TOP_309)
+				.setVariable("seed",           this.gen.getSeed()       )
 				.setVariable("path_width",     this.gen.path_width.get())
 				.setVariable("path_start_x",   PATH_START_X  )
 				.setVariable("path_start_z",   PATH_START_Z  );

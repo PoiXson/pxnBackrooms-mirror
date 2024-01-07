@@ -2,6 +2,7 @@ package com.poixson.backrooms;
 
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
@@ -15,6 +16,7 @@ public abstract class BackroomsGen {
 	protected final BackroomsLevel backlevel;
 
 	protected final CopyOnWriteArraySet<FastNoiseLiteD> noises = new CopyOnWriteArraySet<FastNoiseLiteD>();
+	protected final AtomicInteger seed = new AtomicInteger(0);
 
 	public final int level_y;
 	public final int level_h;
@@ -37,11 +39,18 @@ public abstract class BackroomsGen {
 
 
 	protected FastNoiseLiteD register(final FastNoiseLiteD noise) {
+		noise.setSeed(this.seed.get());
 		this.noises.add(noise);
 		return noise;
 	}
 
+
+
+	public int getSeed() {
+		return this.seed.get();
+	}
 	public void setSeed(final int seed) {
+		this.seed.set(seed);
 		for (final FastNoiseLiteD noise : this.noises)
 			noise.setSeed(seed);
 	}
