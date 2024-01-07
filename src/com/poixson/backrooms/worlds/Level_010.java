@@ -28,7 +28,7 @@ public class Level_010 extends BackroomsLevel {
 			gen_tpl.add(10, "wheat", "Field of Wheat");
 		}
 		// generators
-		this.gen = this.register(new Gen_010(this, LEVEL_Y, 0));
+		this.gen = this.register(new Gen_010(this, this.seed, LEVEL_Y, 0));
 	}
 
 

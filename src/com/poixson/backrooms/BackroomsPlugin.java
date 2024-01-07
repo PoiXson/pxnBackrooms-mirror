@@ -55,6 +55,7 @@ import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
+import com.poixson.tools.xRand;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
@@ -136,15 +137,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 		(new BukkitRunnable() {
 			@Override
 			public void run() {
-//TODO: this is converting long to string
-				final String seed = Long.toString( Bukkit.getWorld("world").getSeed() );
 				final Iterator<Entry<Integer, BackroomsLevel>> it = BackroomsPlugin.this.backlevels.entrySet().iterator();
 				while (it.hasNext()) {
 					final Entry<Integer, BackroomsLevel> entry = it.next();
 					final int            level     = entry.getKey().intValue();
 					final BackroomsLevel backlevel = entry.getValue();
 					if (backlevel.isWorldMain(level))
-						backlevel.setup(seed);
+						backlevel.setup();
 				}
 			}
 		}).runTask(this);
@@ -298,6 +297,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
 		TaskReconvergence.ConfigDefaults(cfg);
+		cfg.addDefault("Seed", Integer.toString( xRand.Get(11, 9999999).nextInt() ));
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
@@ -328,6 +328,15 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 
 
+
+	public int getSeed() {
+		final String seed = this.getSeedString();
+		return (IsEmpty(seed) ? 0 : seed.hashCode());
+	}
+	public String getSeedString() {
+		return this.config.get()
+				.getString("Seed");
+	}
 
 	public boolean enableDynmapConfigGen() {
 		return this.config.get().getBoolean("Enable Dynmap Config Gen");

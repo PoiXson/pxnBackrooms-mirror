@@ -96,8 +96,9 @@ public class Gen_000 extends BackroomsGen {
 
 
 
-	public Gen_000(final BackroomsLevel backlevel, final int level_y, final int level_h) {
-		super(backlevel, level_y, level_h);
+	public Gen_000(final BackroomsLevel backlevel, final int seed,
+			final int level_y, final int level_h) {
+		super(backlevel, seed, level_y, level_h);
 		// noise
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLoot       = this.register(new FastNoiseLiteD());

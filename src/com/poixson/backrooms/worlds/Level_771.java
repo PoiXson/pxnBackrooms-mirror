@@ -46,7 +46,7 @@ public class Level_771 extends BackroomsLevel {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen = this.register(new Gen_771(this, LEVEL_Y, LEVEL_H));
+		this.gen = this.register(new Gen_771(this, this.seed, LEVEL_Y, LEVEL_H));
 		// exit locations
 		this.portal_ladder     = new LocationStoreManager(plugin, "level771", "portal_ladder"); // upper/lower ladder
 		this.portal_drop       = new LocationStoreManager(plugin, "level771", "portal_drop"  ); // shaft to lower bridge

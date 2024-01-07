@@ -34,7 +34,7 @@ public class Level_094 extends BackroomsLevel {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen = this.register(new Gen_094(this, 0, 0));
+		this.gen = this.register(new Gen_094(this, this.seed, 0, 0));
 	}
 
 

@@ -146,15 +146,15 @@ public class Level_000 extends BackroomsLevel {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen_001 = this.register(new Gen_001(this, Y_001, H_001)); // basement
-		this.gen_023 = this.register(new Gen_023(this, Y_023, H_023)); // overgrowth
-		this.gen_000 = this.register(new Gen_000(this, Y_000, H_000)); // lobby
-		this.gen_006 = this.register(new Gen_006(this, Y_006, H_006)); // lights out
-		this.gen_037 = this.register(new Gen_037(this, Y_037, H_037)); // pools
-		this.gen_005 = this.register(new Gen_005(this, Y_005, H_005)); // hotel
-		this.gen_019 = this.register(new Gen_019(this, Y_019, H_019)); // attic
-		this.gen_188 = this.register(new Gen_188(this, Y_188, H_188)); // the windows
-		this.gen_309 = this.register(new Gen_309(this, Y_309,     0)); // radio station
+		this.gen_001 = this.register(new Gen_001(this, this.seed, Y_001, H_001)); // basement
+		this.gen_023 = this.register(new Gen_023(this, this.seed, Y_023, H_023)); // overgrowth
+		this.gen_000 = this.register(new Gen_000(this, this.seed, Y_000, H_000)); // lobby
+		this.gen_006 = this.register(new Gen_006(this, this.seed, Y_006, H_006)); // lights out
+		this.gen_037 = this.register(new Gen_037(this, this.seed, Y_037, H_037)); // pools
+		this.gen_005 = this.register(new Gen_005(this, this.seed, Y_005, H_005)); // hotel
+		this.gen_019 = this.register(new Gen_019(this, this.seed, Y_019, H_019)); // attic
+		this.gen_188 = this.register(new Gen_188(this, this.seed, Y_188, H_188)); // the windows
+		this.gen_309 = this.register(new Gen_309(this, this.seed, Y_309,     0)); // radio station
 		// populators
 		this.pop_001 = this.register(new Pop_001(this)); // basement
 		this.pop_005 = this.register(new Pop_005(this)); // hotel

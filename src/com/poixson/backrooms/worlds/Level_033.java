@@ -43,7 +43,7 @@ public class Level_033 extends BackroomsLevel {
 			gen_tpl.add(33, "run", "Run For Your Life", LEVEL_Y+LEVEL_H+1);
 		}
 		// generators
-		this.gen = this.register(new Gen_033(this, LEVEL_Y, LEVEL_H));
+		this.gen = this.register(new Gen_033(this, this.seed, LEVEL_Y, LEVEL_H));
 		// listeners
 		this.listener_033 = new Listener_033(plugin);
 		// next hall

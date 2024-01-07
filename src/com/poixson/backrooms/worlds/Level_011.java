@@ -71,10 +71,10 @@ public class Level_011 extends BackroomsLevel {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen_004 = this.register(new Gen_004(this, Y_004, H_004)); // abandoned office
-		this.gen_308 = this.register(new Gen_308(this, Y_308, H_308)); // ikea
-		this.gen_040 = this.register(new Gen_040(this, Y_040, H_040)); // arcade
-		this.gen_011 = this.register(new Gen_011(this, Y_011,     0)); // concrete jungle
+		this.gen_004 = this.register(new Gen_004(this, this.seed, Y_004, H_004)); // abandoned office
+		this.gen_308 = this.register(new Gen_308(this, this.seed, Y_308, H_308)); // ikea
+		this.gen_040 = this.register(new Gen_040(this, this.seed, Y_040, H_040)); // arcade
+		this.gen_011 = this.register(new Gen_011(this, this.seed, Y_011,     0)); // concrete jungle
 		// populators
 		this.pop_308 = this.register(new Pop_308(this)); // ikea
 	}

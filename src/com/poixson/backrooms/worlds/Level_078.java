@@ -30,7 +30,7 @@ public class Level_078 extends BackroomsLevel {
 			gen_tpl.add(78, "space", "Space");
 		}
 		// generators
-		this.gen = this.register(new Gen_078(this, 0, 0));
+		this.gen = this.register(new Gen_078(this, this.seed, 0, 0));
 		// listeners
 		this.listener_078 = new Listener_078(plugin);
 	}

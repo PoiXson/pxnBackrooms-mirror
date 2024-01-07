@@ -30,8 +30,9 @@ public class Gen_011 extends BackroomsGen {
 
 
 
-	public Gen_011(final BackroomsLevel backlevel, final int level_y, final int level_h) {
-		super(backlevel, level_y, level_h);
+	public Gen_011(final BackroomsLevel backlevel, final int seed,
+			final int level_y, final int level_h) {
+		super(backlevel, seed, level_y, level_h);
 	}
 
 

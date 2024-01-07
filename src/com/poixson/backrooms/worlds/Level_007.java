@@ -30,7 +30,7 @@ public class Level_007 extends BackroomsLevel {
 			gen_tpl.add(151, "thalas", "Thalassophobia", LEVEL_Y+LEVEL_H+SUBFLOOR+1);
 		}
 		// generators
-		this.gen = this.register(new Gen_007(this, LEVEL_Y, LEVEL_H));
+		this.gen = this.register(new Gen_007(this, this.seed, LEVEL_Y, LEVEL_H));
 	}
 
 

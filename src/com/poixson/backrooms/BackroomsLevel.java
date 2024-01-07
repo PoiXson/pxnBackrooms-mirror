@@ -39,6 +39,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 100;
 
 	protected final BackroomsPlugin plugin;
+	protected final int seed;
 
 	protected final CopyOnWriteArraySet<BackroomsGen> gens = new CopyOnWriteArraySet<BackroomsGen>();
 	protected final CopyOnWriteArraySet<BackroomsPop> pops = new CopyOnWriteArraySet<BackroomsPop>();
@@ -50,6 +51,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	public BackroomsLevel(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
+		this.seed = plugin.getSeed();
 		plugin.register(this.getMainLevel(), this);
 	}
 
@@ -211,10 +213,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	@Override
 	public void generateSurface(final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
-		// seed
-		final int seed = Long.valueOf( worldInfo.getSeed() ).intValue();
-		for (final BackroomsGen gen : this.gens)
-			gen.setSeed(seed);
 		// generate
 		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
 		this.generate(chunkX, chunkZ, chunk, delayed_plotters);
@@ -279,7 +277,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public void setup(final String seed) {
+	public void setup() {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
 		final int level = this.getMainLevel();
 		final String name = "level" + Integer.toString(level);
@@ -290,7 +288,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			case 78: env = Environment.THE_END; break;
 			default: env = Environment.NORMAL;  break;
 			}
-			if (!manager.addWorld(name, env, seed, WorldType.NORMAL, Boolean.FALSE, BackroomsPlugin.GENERATOR_NAME, true))
+			final String seedStr = this.plugin.getSeedString();
+			if (!manager.addWorld(name, env, seedStr, WorldType.NORMAL, Boolean.FALSE, BackroomsPlugin.GENERATOR_NAME, true))
 				throw new RuntimeException("Failed to create world: " + name);
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();

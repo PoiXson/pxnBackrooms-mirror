@@ -26,7 +26,7 @@ public class Level_036 extends BackroomsLevel {
 			gen_tpl.add(36, "airport", "Airport");
 		}
 		// generators
-		this.gen = this.register(new Gen_036(this, 0, 0));
+		this.gen = this.register(new Gen_036(this, this.seed, 0, 0));
 	}
 
 

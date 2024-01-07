@@ -33,7 +33,7 @@ public class Level_151 extends BackroomsLevel {
 			gen_tpl.add(151, "dollhouse", "Dollhouse", LEVEL_Y+LEVEL_H+SUBFLOOR+1);
 		}
 		// generators
-		this.gen = this.register(new Gen_151(this, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));
+		this.gen = this.register(new Gen_151(this, this.seed, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));
 	}
 
 

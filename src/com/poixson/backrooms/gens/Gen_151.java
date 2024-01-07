@@ -13,10 +13,10 @@ public class Gen_151 extends BackroomsGen {
 
 
 
-	public Gen_151(final BackroomsLevel backlevel,
+	public Gen_151(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h,
 			final int subfloor, final int subceiling) {
-		super(backlevel, level_y, level_h);
+		super(backlevel, seed, level_y, level_h);
 / *
 		// attic walls
 		this.noiseHouseWalls = this.register(new FastNoiseLiteD());
