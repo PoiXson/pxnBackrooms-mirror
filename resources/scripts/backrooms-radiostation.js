@@ -15,15 +15,34 @@ function radio_lot_ground() {
 	noise_floor.setFractalOctaves(2);
 	noise_floor.setFractalType(FastNoiseLiteD.FractalType.FBm);
 	let lichen = Bukkit.createBlockData("minecraft:glow_lichen[down=true]");
+	// prepare area
 	for (let iz=-16; iz<32; iz++) {
 		for (let ix=-16; ix<32; ix++) {
+			// fill dirt
+			for (let iy=surface_y-5; iy<surface_y; iy++) {
+				switch (region.getType(ix, iy, iz)) {
+					case Material.AIR:
+					case Material.GRASS_BLOCK:
+						region.setType(ix, iy, iz, Material.DIRT);
+						break;
+					default: break;
+				}
+			}
+			// air above ground
+			for (let iy=surface_y; iy<surface_y+5; iy++)
+				region.setType(ix, iy, iz, Material.AIR);
+		}
+	}
+	// lot ground
+	for (let iz=-15; iz<31; iz++) {
+		for (let ix=-15; ix<31; ix++) {
 			let value = noise_floor.getNoise(ix, iz);
-			if      (value > 0.5) region.setType(ix, surface_y, iz, Material.CLAY                      );
-			else if (value > 0.0) region.setType(ix, surface_y, iz, Material.LIGHT_GRAY_CONCRETE_POWDER);
-			else                  region.setType(ix, surface_y, iz, Material.PODZOL                    );
+			if      (value > 0.5) region.setType(ix, surface_y-1, iz, Material.CLAY                      );
+			else if (value > 0.0) region.setType(ix, surface_y-1, iz, Material.LIGHT_GRAY_CONCRETE_POWDER);
+			else                  region.setType(ix, surface_y-1, iz, Material.PODZOL                    );
 			if ((value > 0.2 && value < 0.45)
 			||  (value >-0.4 && value <-0.35))
-				region.setBlock(ix, surface_y+1, iz, lichen);
+				region.setBlockData(ix, surface_y, iz, lichen);
 		}
 	}
 }
@@ -72,20 +91,16 @@ function radio_lot_fence() {
 
 
 function radio_antenna(x, y, z, size) {
-	let plot = (new PlotterFactory())
-		.placer(region)
-		.xyz(x, y, z)
-		.build();
-	plot.type('#', "minecraft:iron_block");
-	plot.type('x', "minecraft:iron_bars[east=true,west=true]"  );
-	plot.type('z', "minecraft:iron_bars[north=true,south=true]");
-	plot.type('N', "minecraft:iron_bars[south=true,west=true]" );
-	plot.type('n', "minecraft:iron_bars[south=true,east=true]" );
-	plot.type('S', "minecraft:iron_bars[north=true,west=true]" );
-	plot.type('s', "minecraft:iron_bars[north=true,east=true]" );
-	plot.type('H', "minecraft:ladder[facing=north]"            );
+	let block_beam          = Bukkit.createBlockData("minecraft:iron_block"                      );
+	let block_iron_bars_xns = Bukkit.createBlockData("minecraft:iron_bars[east=true,west=true]"  );
+	let block_iron_bars_zew = Bukkit.createBlockData("minecraft:iron_bars[north=true,south=true]");
+	let block_iron_bars_ne  = Bukkit.createBlockData("minecraft:iron_bars[south=true,west=true]" );
+	let block_iron_bars_nw  = Bukkit.createBlockData("minecraft:iron_bars[south=true,east=true]" );
+	let block_iron_bars_se  = Bukkit.createBlockData("minecraft:iron_bars[north=true,west=true]" );
+	let block_iron_bars_sw  = Bukkit.createBlockData("minecraft:iron_bars[north=true,east=true]" );
+	let block_ladder        = Bukkit.createBlockData("minecraft:ladder[facing=north]"            );
 	let size_half = Math.floor(size * 0.5);
-	let iy          = 0;
+	let iy          = surface_y+5                                                 ;
 	let inset       = 0;
 	let inset_micro = 1;
 	let inset_level = 0;
@@ -97,36 +112,36 @@ function radio_antenna(x, y, z, size) {
 			// top of tower
 			if (inset_level > size_half) {
 				for (let i=0; i<5; i++)
-					plot.setBlock(size_half, iy+i, size_half, '#');
+					region.setBlockData(x+size_half, y+iy+i, z+size_half, block_beam);
 				break;
 			}
 			// fence corners
-			plot.setBlock((size-inset_level)+2, iy+1,       inset_level -2, 'N'); // north-east
-			plot.setBlock(      inset_level -2, iy+1,       inset_level -2, 'n'); // north-west
-			plot.setBlock((size-inset_level)+2, iy+1, (size-inset_level)+2, 'S'); // south-east
-			plot.setBlock(      inset_level -2, iy+1, (size-inset_level)+2, 's'); // south-west
+			region.setBlockData( x+(size-inset_level)+2, y+iy+1,(z+      inset_level)-2, block_iron_bars_ne); // north-east
+			region.setBlockData((x+     inset_level) -2, y+iy+1,(z+      inset_level)-2, block_iron_bars_nw); // north-west
+			region.setBlockData( x+(size-inset_level)+2, y+iy+1, z+(size-inset_level)+2, block_iron_bars_se); // south-east
+			region.setBlockData((x+      inset_level)-2, y+iy+1, z+(size-inset_level)+2, block_iron_bars_sw); // south-west
 			// flat square
 			let fence_width = (size - (inset_level*2)) + 3;
 			for (let i=0; i<fence_width; i++) {
 				// fences
-				plot.setBlock((   i+inset_level)-1, iy+1,       inset_level -2, 'x'); // x north
-				plot.setBlock((   i+inset_level)-1, iy+1, (size-inset_level)+2, 'x'); // x south
-				plot.setBlock((size-inset_level)+2, iy+1,    (i+inset_level)-1, 'z'); // z east
-				plot.setBlock(      inset_level -2, iy+1,    (i+inset_level)-1, 'z'); // z west
+				region.setBlockData(x+(   i+inset_level)-1, y+iy+1, z+      inset_level -2, block_iron_bars_xns); // x north
+				region.setBlockData(x+(   i+inset_level)-1, y+iy+1, z+(size-inset_level)+2, block_iron_bars_xns); // x south
+				region.setBlockData(x+(size-inset_level)+2, y+iy+1, z+   (i+inset_level)-1, block_iron_bars_zew); // z east
+				region.setBlockData(x+      inset_level -2, y+iy+1, z+   (i+inset_level)-1, block_iron_bars_zew); // z west
 				// beams
 				if (i < fence_width-1) {
-					plot.setBlock((   i+inset_level)-1, iy,       inset_level -1, '#'); // x north
-					plot.setBlock(    i+inset_level,    iy, (size-inset_level)+1, '#'); // x south
-					plot.setBlock((size-inset_level)+1, iy, (   i+inset_level)-1, '#'); // z east
+					region.setBlockData(x+(   i+inset_level)-1, y+iy, z+      inset_level -1, block_beam); // x north
+					region.setBlockData(x+    i+inset_level,    y+iy, z+(size-inset_level)+1, block_beam); // x south
+					region.setBlockData(x+(size-inset_level)+1, y+iy, z+(   i+inset_level)-1, block_beam); // z east
 					if (i != fence_width-3)
-					plot.setBlock(      inset_level -1, iy,     i+inset_level,    '#'); // z west
+					region.setBlockData(x+      inset_level -1, y+iy, z+    i+inset_level,    block_beam); // z west
 				}
 			}
 			// inside cross
 			let w = (size - inset_level) + 1;
 			for (let i=inset_level; i<w; i++) {
-				plot.setBlock(i, iy, size_half, '#');
-				plot.setBlock(size_half, iy, i, '#');
+				region.setBlockData(x+i,         y+iy, z+size_half, block_beam);
+				region.setBlockData(x+size_half, y+iy, z+i,         block_beam);
 			}
 		}
 		if (inset_micro >= 3) {
@@ -135,19 +150,19 @@ function radio_antenna(x, y, z, size) {
 		}
 		// braces
 		if (inset_level < size_half-1) {
-			plot.setBlock(       inset, iy,      inset, '#');
-			plot.setBlock((size)-inset, iy,      inset, '#');
-			plot.setBlock(       inset, iy, size-inset, '#');
-			plot.setBlock((size)-inset, iy, size-inset, '#');
+			region.setBlockData(x+       inset, y+iy, z+     inset, block_beam);
+			region.setBlockData(x+(size)-inset, y+iy, z+     inset, block_beam);
+			region.setBlockData(x+       inset, y+iy, z+size-inset, block_beam);
+			region.setBlockData(x+(size)-inset, y+iy, z+size-inset, block_beam);
 		}
 		// legs
-		plot.setBlock(size-inset_level, iy,      inset_level, '#'); // north-east
-		plot.setBlock(     inset_level, iy,      inset_level, '#'); // north-west
-		plot.setBlock(size-inset_level, iy, size-inset_level, '#'); // south-east
-		plot.setBlock(     inset_level, iy, size-inset_level, '#'); // south-west
+		region.setBlockData(x+size-inset_level, y+iy, z+     inset_level, block_beam); // north-east
+		region.setBlockData(x+     inset_level, y+iy, z+     inset_level, block_beam); // north-west
+		region.setBlockData(x+size-inset_level, y+iy, z+size-inset_level, block_beam); // south-east
+		region.setBlockData(x+     inset_level, y+iy, z+size-inset_level, block_beam); // south-west
 		// ladder
 		if (iy > 0)
-			plot.setBlock(inset_level, iy+1, (size-inset_level)-1, 'H');
+			region.setBlockData(x+inset_level, y+iy+1, z+(size-inset_level)-1, block_ladder);
 		iy++;
 		inset_micro++;
 	}
@@ -162,14 +177,15 @@ function radio_building_back(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_DIORITE      ); // wall fill
-	plot.type('#', Material.POLISHED_BASALT       ); // wall corner
-	plot.type('=', Material.POLISHED_ANDESITE     ); // wall stripe
-	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
-	if (enable_ceiling) {
-		plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
-		plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
-	} else {
+	plot.type('@', Material.POLISHED_ANDESITE    ); // wall fill
+	plot.type('#', Material.POLISHED_BASALT      ); // wall corner
+	plot.type('=', Material.POLISHED_GRANITE     ); // wall stripe
+	plot.type('_', Material.POLISHED_GRANITE_SLAB); // wall top
+	plot.type('F', Material.POLISHED_DIORITE     ); // floor
+	plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
+	plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
+	plot.type('.', Material.AIR);
+	if (!enable_ceiling) {
 		plot.type('~', Material.AIR); // roof
 		plot.type('-', Material.AIR); // ceiling
 	}
@@ -177,12 +193,16 @@ function radio_building_back(x, z, w, h, d) {
 	let wall, fill;
 	for (let iy=0; iy<h-1; iy++) {
 		wall = (iy==7 ? '=' : '@');
-		if (iy == h-2) fill = '~'; else
-		if (iy == h-3) fill = '-'; else
-			fill = ' ';
+		if (iy == 0  ) fill = ' '; else // subfloor
+		if (iy == 1  ) fill = 'F'; else // floor 1
+		if (iy == 6  ) fill = '-'; else // ceiling 1
+		if (iy == 7  ) fill = 'F'; else // floor 2
+		if (iy == h-3) fill = '-'; else // ceiling 2
+		if (iy == h-2) fill = '~'; else // roof
+			fill = '.';
 		// north/south walls
-		matrix[iy][  0].append('#').append(wall.repeat(w-2)).append('#');
-		matrix[iy][d-1].append('#').append(wall.repeat(w-2)).append('#');
+		matrix[iy][  0].append('#').append(wall.repeat(w-2)).append('#'); // back wall
+		matrix[iy][d-1].append('#').append(wall.repeat(w-2)).append('#'); // front wall
 		// east/west walls
 		for (let iz=1; iz<d-1; iz++)
 			matrix[iy][iz].append(wall).append(fill.repeat(w-2)).append(wall);
@@ -202,27 +222,28 @@ function radio_building_front(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_DIORITE      ); // wall fill
-	plot.type('#', Material.POLISHED_BASALT       ); // wall corner
-	plot.type('_', Material.POLISHED_ANDESITE_SLAB); // wall top
-	plot.type('.', Material.AIR                   ); // inside wall
-	if (enable_ceiling) {
-		plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
-		plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
-	} else {
+	plot.type('@', Material.POLISHED_ANDESITE    ); // wall fill
+	plot.type('#', Material.POLISHED_BASALT      ); // wall corner
+	plot.type('_', Material.POLISHED_GRANITE_SLAB); // wall top
+	plot.type('F', Material.POLISHED_DIORITE     ); // floor
+	plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
+	plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
+	plot.type('.', Material.AIR);
+	if (!enable_ceiling) {
 		plot.type('~', Material.AIR); // roof
 		plot.type('-', Material.AIR); // ceiling
 	}
 	let matrix = plot.getMatrix3D();
 	let fill;
 	for (let iy=0; iy<h-1; iy++) {
+		if (iy == 0  ) fill = 'F'; else
 		if (iy == h-2) fill = '~'; else
 		if (iy == h-3) fill = '-'; else
-			fill = ' ';
+			fill = '.';
 		// north/south walls
 		if (iy < h-2)
-		matrix[iy][  0].append('#').append('.'.repeat(w-2)).append('#');
-		matrix[iy][d-1].append('#').append('@'.repeat(w-2)).append('#');
+		matrix[iy][  0].append('#').append(fill.repeat(w-2)).append('#'); // back wall
+		matrix[iy][d-1].append('#').append('@'.repeat(w-2)).append('#'); // front wall
 		// east/west walls
 		for (let iz=1; iz<d-1; iz++)
 			matrix[iy][iz].append('@').append(fill.repeat(w-2)).append('@');
