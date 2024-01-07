@@ -88,6 +88,71 @@ function radio_lot_fence() {
 	plot.run();
 }
 
+function radio_path(x, z, w, d) {
+	let block_floor = Bukkit.createBlockData("minecraft:cobblestone_slab[type=bottom]"   );
+	let block_fence = Bukkit.createBlockData("minecraft:iron_bars[north=true,south=true]");
+	// path across yard
+	for (let iz=0; iz<d; iz++) {
+		for (let ix=0; ix<w; ix++) {
+			region.setBlockData(x+ix, surface_y, z-iz, block_floor);
+		}
+		region.setBlockData(x-1, surface_y, z-iz, block_fence); // west fence
+		region.setBlockData(x+w, surface_y, z-iz, block_fence); // east fence
+	}
+	// porch at door
+	for (let iz=0; iz<3; iz++) {
+		for (let ix=-1; ix<=w; ix++)
+			region.setType(x+ix, surface_y, (z-iz)-d, Material.COBBLESTONE);
+	}
+	// pillars
+	for (let iy=0; iy<5; iy++) {
+		region.setType(x-1, iy+surface_y+1, z-d, Material.STONE_BRICK_WALL);
+		region.setType(x+w, iy+surface_y+1, z-d, Material.STONE_BRICK_WALL);
+	}
+	// porch roof
+	{
+		let plot = (new PlotterFactory())
+			.placer(region)
+			.axis("une")
+			.xyz(x-2, surface_y+5, (z-d)+1)
+			.whd(9, 3, 4)
+			.build();
+		plot.type('-', "minecraft:polished_andesite_slab[type=top]"                      );
+		plot.type('_', "minecraft:polished_andesite_slab[type=bottom]"                   );
+		plot.type('#', "minecraft:polished_granite"                                      );
+		plot.type('@', "minecraft:polished_andesite"                                     );
+		plot.type('*', "minecraft:lodestone"                                             );
+		plot.type('+', "minecraft:red_stained_glass_pane[north=true,east=true,west=true]");
+		plot.type('x', "minecraft:red_stained_glass_pane[north=true,south=true]"         );
+		plot.type('L', "minecraft:light[level=15]");
+		let matrix = plot.getMatrix3D();
+		matrix[2][0].append("_________"); matrix[2][1].append("_#######_"); matrix[2][2].append("_#_____#_"); matrix[2][3].append("_#_____#_");
+		matrix[1][0].append("+++++++++"); matrix[1][1].append("x#*#*#*#x"); matrix[1][2].append("x*-----*x"); matrix[1][3].append("x#-----#x");
+		matrix[0][0].append("---------"); matrix[0][1].append("-L  L  L-"); matrix[0][2].append("-       -"); matrix[0][3].append("-       -");
+		plot.run();
+	}
+	// front door
+	{
+		let plot = (new PlotterFactory())
+			.placer(region)
+			.axis("une")
+			.xyz(x, surface_y, (z-d)-2)
+			.whd(10, 10, 10)
+			.build();
+		plot.type('=', "minecraft:polished_deepslate_wall[east=tall,west=tall]" );
+		plot.type('x', "minecraft:tinted_glass"                                 );
+		plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]");
+		plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]");
+		plot.type('_', "minecraft:heavy_weighted_pressure_plate"                );
+		let matrix = plot.getMatrix3D();
+		matrix[4][1].append("=====");
+		matrix[3][1].append("=xxx=");
+		matrix[2][1].append("=xdx=");
+		matrix[1][0].append("  _  "); matrix[1][1].append("=xDx="); matrix[1][2].append("  _  ");
+		plot.run();
+	}
+}
+
 
 
 function radio_antenna(x, y, z, size) {
@@ -261,4 +326,5 @@ radio_lot_ground();
 radio_lot_fence();
 radio_building_back( -13, -13, 42, 16, 21);
 radio_building_front(-13,   7, 15,  9, 21);
+radio_path(12, 31, 5, 21);
 radio_antenna(-11, 14, -11, 16);
