@@ -261,4 +261,4 @@ radio_lot_ground();
 radio_lot_fence();
 radio_building_back( -13, -13, 42, 16, 21);
 radio_building_front(-13,   7, 15,  9, 21);
-radio_antenna(-11, 134, -11, 16);
+radio_antenna(-11, 14, -11, 16);
