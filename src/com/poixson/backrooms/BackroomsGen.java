@@ -49,16 +49,17 @@ public abstract class BackroomsGen {
 	public int getSeed() {
 		return this.seed;
 	}
+
+
+
 	public void initNoise() {}
+
+	protected abstract void loadConfig();
 
 
 
 	public abstract void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ);
-
-
-
-	protected abstract void loadConfig();
 
 
 

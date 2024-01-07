@@ -339,15 +339,18 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 
 	public boolean enableDynmapConfigGen() {
-		return this.config.get().getBoolean("Enable Dynmap Config Gen");
+		return this.config.get()
+				.getBoolean("Enable Dynmap Config Gen");
 	}
 
 	public boolean enableInvisiblePlayers() {
-		return this.config.get().getBoolean("Enable Invisible Players");
+		return this.config.get()
+				.getBoolean("Enable Invisible Players");
 	}
 
 	public int getSpawnDistance() {
-		return this.config.get().getInt("Spawn Distance");
+		return this.config.get()
+				.getInt("Spawn Distance");
 	}
 
 	public ConfigurationSection getLevelParams(final int level) {
