@@ -127,7 +127,7 @@ function radio_path(x, z, w, d) {
 		let matrix = plot.getMatrix3D();
 		matrix[2][0].append("_________"); matrix[2][1].append("_#######_"); matrix[2][2].append("_#_____#_"); matrix[2][3].append("_#_____#_");
 		matrix[1][0].append("+++++++++"); matrix[1][1].append("x#*#*#*#x"); matrix[1][2].append("x*-----*x"); matrix[1][3].append("x#-----#x");
-		matrix[0][0].append("---------"); matrix[0][1].append("-L  L  L-"); matrix[0][2].append("-       -"); matrix[0][3].append("-       -");
+		matrix[0][0].append("---------"); matrix[0][1].append("- L L L -"); matrix[0][2].append("-       -"); matrix[0][3].append("-       -");
 		plot.run();
 	}
 	// front door
