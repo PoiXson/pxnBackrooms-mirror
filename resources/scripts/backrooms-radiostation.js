@@ -104,7 +104,7 @@ function radio_path(x, z, w, d) {
 			region.setType(x+ix, surface_y, (z-iz)-d, Material.COBBLESTONE);
 	}
 	// pillars
-	for (let iy=0; iy<5; iy++) {
+	for (let iy=0; iy<4; iy++) {
 		region.setType(x-1, iy+surface_y+1, z-d, Material.POLISHED_DEEPSLATE_WALL);
 		region.setType(x+w, iy+surface_y+1, z-d, Material.POLISHED_DEEPSLATE_WALL);
 	}
@@ -113,21 +113,23 @@ function radio_path(x, z, w, d) {
 		let plot = (new PlotterFactory())
 			.placer(region)
 			.axis("une")
-			.xyz(x-2, surface_y+5, (z-d)+1)
-			.whd(9, 3, 4)
+			.xyz(x-2, surface_y+4, (z-d)+1)
+			.whd(9, 4, 4)
 			.build();
 		plot.type('-', "minecraft:polished_andesite_slab[type=top]"                      );
 		plot.type('_', "minecraft:polished_andesite_slab[type=bottom]"                   );
 		plot.type('#', "minecraft:polished_granite"                                      );
 		plot.type('@', "minecraft:polished_andesite"                                     );
+		plot.type('s', "minecraft:cobbled_deepslate_slab[type=top]"                      );
 		plot.type('*', "minecraft:lodestone"                                             );
 		plot.type('+', "minecraft:red_stained_glass_pane[north=true,east=true,west=true]");
 		plot.type('x', "minecraft:red_stained_glass_pane[north=true,south=true]"         );
 		plot.type('L', "minecraft:light[level=15]");
 		let matrix = plot.getMatrix3D();
-		matrix[2][0].append("_________"); matrix[2][1].append("_#######_"); matrix[2][2].append("_#_____#_"); matrix[2][3].append("_#_____#_");
-		matrix[1][0].append("+++++++++"); matrix[1][1].append("x#*#*#*#x"); matrix[1][2].append("x*-----*x"); matrix[1][3].append("x#-----#x");
-		matrix[0][0].append("---------"); matrix[0][1].append("- L L L -"); matrix[0][2].append("-       -"); matrix[0][3].append("-       -");
+		matrix[3][0].append("_________"); matrix[3][1].append("_#######_"); matrix[3][2].append("_#_____#_"); matrix[3][3].append("_#_____#_");
+		matrix[2][0].append("+++++++++"); matrix[2][1].append("x#*#*#*#x"); matrix[2][2].append("x*#####*x"); matrix[2][3].append("x#######x");
+		matrix[1][0].append("---------"); matrix[1][1].append("-@sssss@-"); matrix[1][2].append("-sssssss-"); matrix[1][3].append("-sssssss-");
+		matrix[0][1].append("  L L L  ");
 		plot.run();
 	}
 	// front door
@@ -144,9 +146,9 @@ function radio_path(x, z, w, d) {
 		plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]");
 		plot.type('_', "minecraft:heavy_weighted_pressure_plate"                );
 		let matrix = plot.getMatrix3D();
-		matrix[4][1].append("=====");
-		matrix[3][1].append("=xxx=");
-		matrix[2][1].append("=xdx=");
+		matrix[4][1]                              .append("=====");
+		matrix[3][1]                              .append("=xxx=");
+		matrix[2][1]                              .append("=xdx=");
 		matrix[1][0].append("  _  "); matrix[1][1].append("=xDx="); matrix[1][2].append("  _  ");
 		plot.run();
 	}
@@ -241,8 +243,9 @@ function radio_building_back(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_ANDESITE             ); // wall fill
-	plot.type('#', Material.POLISHED_BASALT               ); // wall corner
+	plot.type('#', Material.POLISHED_ANDESITE             ); // wall fill
+	plot.type('|', Material.POLISHED_BASALT               ); // wall corner
+	plot.type('T', Material.TUFF                          ); // wall top accent
 	plot.type('=', Material.POLISHED_GRANITE              ); // wall stripe
 	plot.type('_', Material.POLISHED_GRANITE_SLAB         ); // wall top
 	plot.type('F', Material.POLISHED_DIORITE              ); // floor
@@ -254,9 +257,10 @@ function radio_building_back(x, z, w, h, d) {
 		plot.type('-', Material.AIR); // ceiling
 	}
 	let matrix = plot.getMatrix3D();
-	let wall, fill;
+	let fill, wall, accent;
 	for (let iy=0; iy<h-1; iy++) {
-		wall = (iy==7 ? '=' : '@');
+		wall   = (iy==7   ? '=' : '#');
+		accent = (iy==h-2 ? 'T' : ' ');
 		if (iy == 0  ) fill = 'F'; else // floor 1
 		if (iy == 6  ) fill = '-'; else // ceiling 1
 		if (iy == 7  ) fill = 'F'; else // floor 2
@@ -264,17 +268,23 @@ function radio_building_back(x, z, w, h, d) {
 		if (iy == h-2) fill = '~'; else // roof
 			fill = '.';
 		// north/south walls
-		matrix[iy][  0].append('#').append(wall.repeat(w-2)).append('#'); // back wall
-		matrix[iy][d-1].append('#').append(wall.repeat(w-2)).append('#'); // front wall
-		// east/west walls
-		for (let iz=1; iz<d-1; iz++)
-			matrix[iy][iz].append(wall).append(fill.repeat(w-2)).append(wall);
+		matrix[iy][d-1].append('|').append(accent.repeat(w-2)).append('|'); // front accent
+		matrix[iy][  0].append('|').append(accent.repeat(w-2)).append('|'); // back accent
+		if (iy < h-2) {
+			matrix[iy][  1].append(" |").append(wall.repeat(w-4)).append("| "); // back wall
+			matrix[iy][d-2].append(" |").append(wall.repeat(w-4)).append("| "); // front wall
+			// east/west walls
+			for (let iz=2; iz<d-2; iz++)
+				matrix[iy][iz].append(' ').append(wall).append(fill.repeat(w-4)).append(wall).append(' '); // side walls
+		}
 	}
 	// wall top
-	matrix[h-1][  0].append('_'.repeat(w));
-	matrix[h-1][d-1].append('_'.repeat(w));
-	for (let iz=1; iz<d-1; iz++)
-		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_');
+	matrix[h-1][d-1].append('_'.repeat(w)); // front wall top
+	matrix[h-1][  0].append('_'.repeat(w)); // back wall top
+	for (let iz=1; iz<d-1; iz++) {
+		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_'); // wall top
+		matrix[h-2][iz].append('T').append('~'.repeat(w-2)).append('T'); // top accent
+	}
 	plot.run();
 }
 
@@ -285,8 +295,9 @@ function radio_building_front(x, z, w, h, d) {
 		.xyz(x, surface_y, z)
 		.whd(w, h, d)
 		.build();
-	plot.type('@', Material.POLISHED_ANDESITE             ); // wall fill
-	plot.type('#', Material.POLISHED_BASALT               ); // wall corner
+	plot.type('#', Material.POLISHED_ANDESITE             ); // wall fill
+	plot.type('|', Material.POLISHED_BASALT               ); // wall corner
+	plot.type('T', Material.TUFF                          ); // wall top accent
 	plot.type('_', Material.POLISHED_GRANITE_SLAB         ); // wall top
 	plot.type('F', Material.POLISHED_DIORITE              ); // floor
 	plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
@@ -297,24 +308,31 @@ function radio_building_front(x, z, w, h, d) {
 		plot.type('-', Material.AIR); // ceiling
 	}
 	let matrix = plot.getMatrix3D();
-	let fill;
+	let fill, accent;
 	for (let iy=0; iy<h-1; iy++) {
-		if (iy == 0  ) fill = 'F'; else
-		if (iy == h-2) fill = '~'; else
-		if (iy == h-3) fill = '-'; else
+		accent = (iy==h-2 ? 'T' : ' ');
+		if (iy == 0  ) fill = 'F'; else // floor
+		if (iy == h-2) fill = '~'; else // roof
+		if (iy == h-3) fill = '-'; else // ceiling
 			fill = '.';
 		// north/south walls
-		if (iy < h-2)
-		matrix[iy][  0].append('#').append(fill.repeat(w-2)).append('#'); // back wall
-		matrix[iy][d-1].append('#').append( '@'.repeat(w-2)).append('#'); // front wall
-		// east/west walls
-		for (let iz=1; iz<d-1; iz++)
-			matrix[iy][iz].append('@').append(fill.repeat(w-2)).append('@');
+		matrix[iy][d-1].append('|').append(accent.repeat(w-2)).append('|'); // front accent
+		if (iy < h-2) {
+			matrix[iy][  0].append(" |").append(fill.repeat(w-4)).append("| "); // back wall
+			matrix[iy][d-2].append(" |").append( '#'.repeat(w-4)).append("| "); // front wall
+			// east/west walls
+			for (let iz=1; iz<d-2; iz++)
+				matrix[iy][iz].append(" #").append(fill.repeat(w-4)).append("# "); // side walls
+		}
 	}
 	// wall top
-	matrix[h-1][d-1].append('_'.repeat(w));
-	for (let iz=1; iz<d-1; iz++)
-		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_');
+	matrix[h-1][d-1].append('_'.repeat(w)); // front wall top
+	matrix[h-1][  1]            .append(' '.repeat(w-1)).append('_'); // next to building wall top
+	matrix[h-2][  1].append(' ').append('~'.repeat(w-2)).append('T'); // next to building accent
+	for (let iz=2; iz<d-1; iz++) {
+		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_'); // wall top
+		matrix[h-2][iz].append('T').append('~'.repeat(w-2)).append('T'); // top accent
+	}
 	plot.run();
 }
 
@@ -322,7 +340,7 @@ function radio_building_front(x, z, w, h, d) {
 
 radio_lot_ground();
 radio_lot_fence();
-radio_building_back( -13, -13, 42, 16, 21);
-radio_building_front(-13,   7, 15,  9, 21);
+radio_building_back( -14, -14, 44, 16, 23);
+radio_building_front(-14,   7, 17, 9, 21);
 radio_path(12, 31, 5, 21);
 radio_antenna(-11, 9, -11, 16);
