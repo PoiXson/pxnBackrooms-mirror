@@ -480,6 +480,25 @@ function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
 	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]"); plot.setBlock(7, 1, 11, 'D');
 	plot.setBlock(6, 1, 10, '~'); plot.setBlock(6, 1, 12, '~');
 	plot.setBlock(7, 1, 10, '~'); plot.setBlock(7, 1, 12, '~');
+	// recording studio window (1st floor)
+	plot.type('x', "minecraft:black_stained_glass_pane[east=true,west=true]");
+	plot.type('<', "minecraft:oak_stairs[facing=north,half=top]"            );
+	plot.type('>', "minecraft:oak_stairs[facing=south,half=top]"            );
+	for (let ix=0; ix<5; ix++) {
+		plot.setBlock(ix+6, 3, 27, 'x'); // glass
+		plot.setBlock(ix+6, 2, 27, 'x'); // glass
+		plot.setBlock(ix+6, 1, 27, '='); // wall
+		plot.setBlock(ix+6, 1, 26, '>'); // inside desk
+		plot.setBlock(ix+6, 1, 28, '<'); // outside desk
+
+	}
+	// doors - 1st floor recording studio
+	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=left]" ); plot.setBlock(5, 2, 23, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=left]" ); plot.setBlock(5, 1, 23, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=right]"); plot.setBlock(5, 2, 24, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=right]"); plot.setBlock(5, 1, 24, 'D');
+	plot.setBlock(4, 1, 23, '~'); plot.setBlock(6, 1, 23, '~');
+	plot.setBlock(4, 1, 24, '~'); plot.setBlock(6, 1, 24, '~');
 	// clear area for stairs
 	for (let ix=0; ix<5; ix++) {
 		for (let iy=0; iy<3; iy++) {
