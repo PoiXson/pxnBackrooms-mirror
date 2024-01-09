@@ -249,7 +249,8 @@ function radio_building_back(x, z, w, h, d) {
 	plot.type('T', Material.TUFF                          ); // wall top accent
 	plot.type('=', Material.POLISHED_GRANITE              ); // wall stripe
 	plot.type('_', Material.POLISHED_GRANITE_SLAB         ); // wall top
-	plot.type('F', Material.POLISHED_DIORITE              ); // floor
+	plot.type('F', Material.POLISHED_DIORITE              ); // 1st floor
+	plot.type('f', Material.POLISHED_ANDESITE             ); // 2nd floor
 	plot.type('~', "minecraft:stone_slab[type=bottom]"    ); // roof
 	plot.type('-', "minecraft:smooth_stone_slab[type=top]"); // ceiling
 	plot.type('.', Material.AIR);
@@ -265,7 +266,7 @@ function radio_building_back(x, z, w, h, d) {
 		if (iy == 0  ) fill = 'F'; else // floor 1
 		if (iy == 6  ) fill = '-'; else // ceiling 1
 		if (enable_ceiling
-		&&  iy == 7  ) fill = 'F'; else // floor 2
+		&&  iy == 7  ) fill = 'f'; else // floor 2
 		if (iy == h-3) fill = '-'; else // ceiling 2
 		if (iy == h-2) fill = '~'; else // roof
 			fill = '.';
