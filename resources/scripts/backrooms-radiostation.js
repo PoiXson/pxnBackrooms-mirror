@@ -146,10 +146,10 @@ function radio_path(x, z, w, d) {
 		plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]");
 		plot.type('_', "minecraft:heavy_weighted_pressure_plate"                );
 		let matrix = plot.getMatrix3D();
-		matrix[4][1]                              .append("=====");
-		matrix[3][1]                              .append("=xxx=");
-		matrix[2][1]                              .append("=xdx=");
-		matrix[1][0].append("  _  "); matrix[1][1].append("=xDx="); matrix[1][2].append("  _  ");
+		matrix[4][1]                              .append("====="); matrix[4][2].append("xxxxx");
+		matrix[3][1]                              .append("=xxx="); matrix[3][2].append("x   x");
+		matrix[2][1]                              .append("=xdx="); matrix[2][2].append("x   x");
+		matrix[1][0].append("  _  "); matrix[1][1].append("=xDx="); matrix[1][2].append("x _ x");
 		plot.run();
 	}
 }
