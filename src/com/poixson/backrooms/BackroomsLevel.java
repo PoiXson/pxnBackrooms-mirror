@@ -330,7 +330,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			}
 			// time
 			switch (level) {
-			case 0:  // lobby
 			case 7:  // thalassophobia
 			case 33: // run for your life
 			case 78: // space
@@ -339,6 +338,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			case 151: // dollhouse
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
 				mvworld.setTime("noon"); break;
+			case 0:  // lobby
+			case 11: // city
 			default:
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE);
 				mvworld.setTime("noon"); break;
@@ -361,7 +362,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			switch (level) {
 			case 0:   // lobby
 			case 9:   // suburbs
-			case 11:  // concrete jungle
+			case 11:  // city
 			case 78:  // space
 			case 151: // dollhouse
 			case 771: // crossroads
