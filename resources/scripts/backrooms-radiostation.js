@@ -538,6 +538,137 @@ function radio_building_inside_walls_1st(x, z, w, d, h) {
 
 
 
+function radio_building_inside_walls_2nd(x, z, w, d, h) {
+	let plot = (new PlotterFactory())
+		.placer(region)
+		.axis("use")
+		.xyz(x, surface_y+7, z)
+		.whd(w, h, d)
+		.build();
+	plot.type('#', Material.LIGHT_GRAY_CONCRETE          );
+	plot.type('=', Material.STRIPPED_OAK_WOOD            );
+	plot.type('~', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
+	plot.type('.', Material.AIR                          );
+	let matrix = plot.getMatrix3D();
+	// 1st floor
+	matrix[1][ 0].append("########################################");
+	matrix[1][ 1].append("#         #        #          #        #");
+	matrix[1][ 2].append("#         #        #          #        #");
+	matrix[1][ 3].append("#         #        #          #        #");
+	matrix[1][ 4].append("#         #        #          #        #");
+	matrix[1][ 5].append("#         #        #          #        #");
+	matrix[1][ 6].append("#         #        #          #        #");
+	matrix[1][ 7].append("#         #####################        #");
+	matrix[1][ 8].append("#         #                   #        #");
+	matrix[1][ 9].append("#         #                   #        #");
+	matrix[1][10].append("###########                   #        #");
+	matrix[1][11].append("#    #                        #        #");
+	matrix[1][12].append("#    #         #########################");
+	matrix[1][13].append("#    #         #         #          #  #");
+	matrix[1][14].append("#    #         #         #          #  #");
+	matrix[1][15].append("#    #         #         #          ####");
+	matrix[1][16].append("#    #         #         #          #  #");
+	matrix[1][17].append("#    #         #         #          #  #");
+	matrix[1][18].append("########################################");
+	// duplicate up y
+	for (let iz=0; iz<19; iz++) {
+		for (let iy=2; iy<h; iy++)
+			matrix[iy][iz].append(matrix[1][iz].toString());
+	}
+	plot.run();
+	// fence along stairs
+	plot.type('+', "minecraft:iron_bars[east=true,west=true]");
+	for (let ix=0; ix<5; ix++)
+	plot.setBlock(6+ix, 1, 15, '+');
+	// doors - room near stairs (north)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(7, 2, 10, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(7, 1, 10, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(8, 2, 10, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(8, 1, 10, 'D');
+	plot.setBlock(7, 1,  9, '~'); plot.setBlock(8, 1,  9, '~');
+	plot.setBlock(7, 1, 11, '~'); plot.setBlock(8, 1, 11, '~');
+	// doors - room near stairs (west)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=west,hinge=right]"); plot.setBlock(5, 2, 13, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=west,hinge=right]"); plot.setBlock(5, 1, 13, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=west,hinge=left]" ); plot.setBlock(5, 2, 14, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=west,hinge=left]" ); plot.setBlock(5, 1, 14, 'D');
+	plot.setBlock(4, 1, 13, '~'); plot.setBlock(6, 1, 13, '~');
+	plot.setBlock(4, 1, 14, '~'); plot.setBlock(6, 1, 14, '~');
+	// doors - north room (west)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(13, 2, 7, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(13, 1, 7, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(14, 2, 7, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(14, 1, 7, 'D');
+	plot.setBlock(13, 1, 6, '~'); plot.setBlock(14, 1, 6, '~');
+	plot.setBlock(13, 1, 8, '~'); plot.setBlock(14, 1, 8, '~');
+	// doors - north room (east)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(23, 2, 7, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(23, 1, 7, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(24, 2, 7, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(24, 1, 7, 'D');
+	plot.setBlock(23, 1, 6, '~'); plot.setBlock(24, 1, 6, '~');
+	plot.setBlock(23, 1, 8, '~'); plot.setBlock(24, 1, 8, '~');
+	// doors - south room (west)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(19, 2, 12, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(19, 1, 12, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(20, 2, 12, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(20, 1, 12, 'D');
+	plot.setBlock(19, 1, 11, '~'); plot.setBlock(20, 1, 11, '~');
+	plot.setBlock(19, 1, 13, '~'); plot.setBlock(20, 1, 13, '~');
+	// doors - south room (east)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(27, 2, 12, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(27, 1, 12, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(28, 2, 12, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(28, 1, 12, 'D');
+	plot.setBlock(27, 1, 11, '~'); plot.setBlock(28, 1, 11, '~');
+	plot.setBlock(27, 1, 13, '~'); plot.setBlock(28, 1, 13, '~');
+	// door - roof access
+	plot.type('d', "minecraft:spruce_door[half=upper,facing=east]"); plot.setBlock(36, 2, 14, 'd');
+	plot.type('D', "minecraft:spruce_door[half=lower,facing=east]"); plot.setBlock(36, 1, 14, 'D');
+	plot.setBlock(35, 1, 14, '~');
+	// roof access platform
+	plot.type('%', Material.STONE);
+	plot.type('_', Material.STONE_PRESSURE_PLATE);
+	for (let iz=0; iz<3; iz++) {
+		for (let ix=0; ix<3; ix++) {
+			if (ix == 1 && iz == 1) continue;
+			plot.setBlock(ix+37, 8, iz+12, '_');
+			plot.setBlock(ix+37, 7, iz+12, '%');
+		}
+	}
+	// roof access ladder
+	plot.type('H', "ladder[facing=west]");
+	for (let iy=0; iy<6; iy++)
+		plot.setBlock(38, iy+2, 13, 'H');
+	// roof access hatch
+	plot.type('/', "spruce_trapdoor[facing=east,half=bottom]");
+	plot.setBlock(38, 8, 13, '/');
+	// door - storage
+	plot.type('d', "minecraft:spruce_door[half=upper,facing=east]"); plot.setBlock(36, 2, 16, 'd');
+	plot.type('D', "minecraft:spruce_door[half=lower,facing=east]"); plot.setBlock(36, 1, 16, 'D');
+	plot.setBlock(35, 1, 16, '~');
+	// doors - far east room (end of hall)
+	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=left]" ); plot.setBlock(30, 2,  9, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=left]" ); plot.setBlock(30, 1,  9, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=right]"); plot.setBlock(30, 2, 10, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=right]"); plot.setBlock(30, 1, 10, 'D');
+	plot.setBlock(29, 1,  9, '~'); plot.setBlock(31, 1,  9, '~');
+	plot.setBlock(29, 1, 10, '~'); plot.setBlock(31, 1, 10, '~');
+	// recording studio window (2nd floor)
+	plot.type('x', "minecraft:black_stained_glass_pane[east=true,west=true]");
+	plot.type('<', "minecraft:oak_stairs[facing=south,half=top]"            );
+	plot.type('>', "minecraft:oak_stairs[facing=north,half=top]"            );
+	for (let ix=0; ix<4; ix++) {
+		plot.setBlock(ix+1, 3, 10, 'x'); // glass
+		plot.setBlock(ix+1, 2, 10, 'x'); // glass
+		plot.setBlock(ix+1, 1, 10, '='); // wall
+		plot.setBlock(ix+1, 1, 11, '>'); // inside desk
+		plot.setBlock(ix+1, 1,  9, '<'); // outside desk
+	}
+}
+
+
+
 radio_lot_ground();
 radio_lot_fence();
 radio_building_back( -14, -14, 44, 16, 23);
@@ -545,3 +676,4 @@ radio_building_front(-14,   7, 17, 9, 21);
 radio_path(12, 31, 5, 21);
 radio_antenna(-11, 9, -11, 16);
 radio_building_inside_walls_1st(-12, -12, 44, 38, 7);
+radio_building_inside_walls_2nd(-12, -12, 44, 19, 7);
