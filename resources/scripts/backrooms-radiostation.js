@@ -157,6 +157,7 @@ function radio_path(x, z, w, d) {
 
 
 function radio_antenna(x, y, z, size) {
+	if (!enable_ceiling) return;
 	let block_beam          = Bukkit.createBlockData("minecraft:iron_block"                      );
 	let block_iron_bars_xns = Bukkit.createBlockData("minecraft:iron_bars[east=true,west=true]"  );
 	let block_iron_bars_zew = Bukkit.createBlockData("minecraft:iron_bars[north=true,south=true]");
@@ -263,7 +264,8 @@ function radio_building_back(x, z, w, h, d) {
 		accent = (iy==h-2 ? 'T' : ' ');
 		if (iy == 0  ) fill = 'F'; else // floor 1
 		if (iy == 6  ) fill = '-'; else // ceiling 1
-		if (iy == 7  ) fill = 'F'; else // floor 2
+		if (enable_ceiling
+		&&  iy == 7  ) fill = 'F'; else // floor 2
 		if (iy == h-3) fill = '-'; else // ceiling 2
 		if (iy == h-2) fill = '~'; else // roof
 			fill = '.';
