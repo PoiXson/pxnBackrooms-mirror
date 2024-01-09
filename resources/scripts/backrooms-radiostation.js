@@ -158,6 +158,7 @@ function radio_path(x, z, w, d) {
 
 function radio_antenna(x, y, z, size) {
 	if (!enable_ceiling) return;
+	let h_spire = 7;
 	let block_beam          = Bukkit.createBlockData("minecraft:iron_block"                      );
 	let block_iron_bars_xns = Bukkit.createBlockData("minecraft:iron_bars[east=true,west=true]"  );
 	let block_iron_bars_zew = Bukkit.createBlockData("minecraft:iron_bars[north=true,south=true]");
@@ -178,8 +179,15 @@ function radio_antenna(x, y, z, size) {
 			inset_level++;
 			// top of tower
 			if (inset_level > size_half) {
-				for (let i=0; i<5; i++)
-					region.setBlockData(x+size_half, y+iy+i, z+size_half, block_beam);
+				let xx = x + size_half;
+				let zz = z + size_half;
+				let yy = y + iy;
+				for (let i=0; i<h_spire; i++) {
+					region.setType(     xx, yy+i, zz,   Material.WAXED_COPPER_BLOCK);
+					region.setBlockData(xx, yy+i, zz-1, block_ladder               );
+				}
+				region.setType(xx, yy-1,       zz, Material.WAXED_COPPER_BLOCK);
+				region.setType(xx, yy+h_spire, zz, Material.LIGHTNING_ROD     );
 				break;
 			}
 			// fence corners
