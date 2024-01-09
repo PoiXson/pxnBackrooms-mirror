@@ -345,7 +345,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			}
 			// weather
 			switch (level) {
-			case 0:   // lobby
 			case 7:   // thalassophobia
 			case 33:  // run for your life
 			case 78:  // space
@@ -353,6 +352,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			case 771: // crossroads
 			case 866: // dirtfield
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.FALSE); break;
+			case 0:   // lobby
+			case 11:  // city
 			default:
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.TRUE);  break;
 			}
