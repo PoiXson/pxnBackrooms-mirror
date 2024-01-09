@@ -340,9 +340,186 @@ function radio_building_front(x, z, w, h, d) {
 
 
 
+function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
+	let plot = (new PlotterFactory())
+		.placer(region)
+		.axis("use")
+		.xyz(x, surface_y, z)
+		.whd(w, h_1st, d)
+		.build();
+	plot.type('#', Material.LIGHT_GRAY_CONCRETE               );
+	plot.type('P', Material.LIGHT_GRAY_CONCRETE_POWDER        );
+	plot.type('=', Material.STRIPPED_OAK_WOOD                 );
+	plot.type('-', "minecraft:oak_slab[type=top]"             );
+	plot.type('c', "minecraft:purpur_stairs[facing=west]"     ); // chair
+	plot.type('C', "minecraft:purpur_stairs[facing=east]"     ); // chair
+	plot.type('s', "minecraft:crimson_wall_sign[facing=north]"); // chair
+	plot.type('S', "minecraft:crimson_wall_sign[facing=south]"); // chair
+	plot.type('~', Material.HEAVY_WEIGHTED_PRESSURE_PLATE     );
+	plot.type('.', Material.AIR                               );
+	let matrix = plot.getMatrix3D();
+	// 1st floor
+	matrix[1][ 0].append("########################################");
+	matrix[1][ 1].append("#            #       #         #       #");
+	matrix[1][ 2].append("#            #       #         #       #");
+	matrix[1][ 3].append("#            #       #         #       #");
+	matrix[1][ 4].append("#            #       #         #       #");
+	matrix[1][ 5].append("#            #       #    ######       #");
+	matrix[1][ 6].append("######################    #    #       #");
+	matrix[1][ 7].append("#                         #    #       #");
+	matrix[1][ 8].append("#                         #    #       #");
+	matrix[1][ 9].append("#                         #    #       #");
+	matrix[1][10].append("#                         #    #       #");
+	matrix[1][11].append("#    ################PPPPPPPPPPP########");
+	matrix[1][12].append("#    #  #           #P         P        ");
+	matrix[1][13].append("#    #  #           #P         P        ");
+	matrix[1][14].append("#    #  #           #P         P        ");
+	matrix[1][15].append("#    #  ####        #P         P        ");
+	matrix[1][16].append("#    #  #  #        #P         P        ");
+	matrix[1][17].append("#    #  #  #        #P         P        ");
+	matrix[1][18].append("#    ################PPP     PPP        ");
+	matrix[1][19].append("#    #      #"                           );
+	matrix[1][20].append("#    #      #"                           );
+	matrix[1][21].append("#    #      #"                           );
+	matrix[1][22].append("#    #      #"                           );
+	matrix[1][23].append("#    #      #"                           );
+	matrix[1][24].append("#    #      #"                           );
+	matrix[1][25].append("#    #      #"                           );
+	matrix[1][26].append("#    #      #"                           );
+	matrix[1][27].append("#############"                           );
+	matrix[1][28].append("#           #"                           );
+	matrix[1][29].append("#           #"                           );
+	matrix[1][30].append("#           #"                           );
+	matrix[1][31].append("#           #"                           );
+	matrix[1][32].append("#           #"                           );
+	matrix[1][33].append("#           #"                           );
+	matrix[1][34].append("#           #"                           );
+	matrix[1][35].append("#           #"                           );
+	matrix[1][36].append("#           #"                           );
+	matrix[1][37].append("#############"                           );
+	// front door
+	for (let iz=0; iz<38; iz++) {
+		for (let iy=2; iy<h_1st; iy++) {
+			if (iy >= 5) StringUtils.ReplaceInString(matrix[iy][18], "PPPPP", 24);
+			matrix[iy][iz].append(matrix[1][iz].toString());
+		}
+	}
+	// reception desk
+	StringUtils.ReplaceInString(matrix[3][11], "---", 27);
+	StringUtils.ReplaceInString(matrix[2][11], "...", 27);
+	StringUtils.ReplaceInString(matrix[1][11], "===", 27);
+	// reception benches
+	StringUtils.ReplaceInString(matrix[1][13], "s", 22); StringUtils.ReplaceInString(matrix[1][12], "s", 30);
+	StringUtils.ReplaceInString(matrix[1][17], "S", 22); StringUtils.ReplaceInString(matrix[1][16], "S", 30);
+	for (let iz=0; iz<3; iz++) {
+		StringUtils.ReplaceInString(matrix[1][14+iz], "c", 22);
+		StringUtils.ReplaceInString(matrix[1][13+iz], "C", 30);
+	}
+	plot.run();
+	// doors - reception to hall
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(23, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(23, 1, 11, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(24, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(24, 1, 11, 'D');
+	plot.setBlock(23, 1, 10, '~'); plot.setBlock(24, 1, 10, '~');
+	plot.setBlock(23, 1, 12, '~'); plot.setBlock(24, 1, 12, '~');
+	// reception back door
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south]" ); plot.setBlock(29, 2, 5, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south]"); plot.setBlock(29, 1, 5, 'D');
+	plot.setBlock(29, 1,  4, '~'); plot.setBlock(29, 1,  6, '~');
+	// doors - east room
+	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=left]" ); plot.setBlock(31, 2, 2, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=left]" ); plot.setBlock(31, 1, 2, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=right]"); plot.setBlock(31, 2, 3, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=right]"); plot.setBlock(31, 1, 3, 'D');
+	plot.setBlock(30, 1, 2, '~'); plot.setBlock(32, 1, 2, '~');
+	plot.setBlock(30, 1, 3, '~'); plot.setBlock(32, 1, 3, '~');
+	// doors - far south room
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(2, 2, 27, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(2, 1, 27, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(3, 2, 27, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(3, 1, 27, 'D');
+	plot.setBlock(2, 1, 26, '~'); plot.setBlock(2, 1, 28, '~');
+	plot.setBlock(3, 1, 26, '~'); plot.setBlock(3, 1, 28, '~');
+	// doors - adjacent waiting room
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(15, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(15, 1, 11, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(16, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(16, 1, 11, 'D');
+	plot.setBlock(15, 1, 10, '~'); plot.setBlock(15, 1, 12, '~');
+	plot.setBlock(16, 1, 10, '~'); plot.setBlock(16, 1, 12, '~');
+	// doors - east rooms, north to south
+	plot.type('d', "minecraft:spruce_door[half=upper,facing=south,hinge=right]"); plot.setBlock(36, 2, 11, 'd');
+	plot.type('D', "minecraft:spruce_door[half=lower,facing=south,hinge=right]"); plot.setBlock(36, 1, 11, 'D');
+	plot.type('d', "minecraft:spruce_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(37, 2, 11, 'd');
+	plot.type('D', "minecraft:spruce_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(37, 1, 11, 'D');
+	plot.setBlock(36, 1, 10, '~'); plot.setBlock(36, 1, 12, '~');
+	plot.setBlock(37, 1, 10, '~'); plot.setBlock(37, 1, 12, '~');
+	// doors - north center room
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(17, 2, 6, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(17, 1, 6, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(18, 2, 6, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(18, 1, 6, 'D');
+	plot.setBlock(17, 1, 5, '~'); plot.setBlock(18, 1, 5, '~');
+	plot.setBlock(17, 1, 7, '~'); plot.setBlock(18, 1, 7, '~');
+	// doors - north west room
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock( 9, 2, 6, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock( 9, 1, 6, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(10, 2, 6, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(10, 1, 6, 'D');
+	plot.setBlock(9, 1, 5, '~'); plot.setBlock(10, 1, 5, '~');
+	plot.setBlock(9, 1, 7, '~'); plot.setBlock(10, 1, 7, '~');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(3, 2, 6, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(3, 1, 6, 'D');
+	plot.setBlock(3, 1, 5, '~'); plot.setBlock(3, 1, 7, '~');
+	// doors to stairs
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]" ); plot.setBlock(6, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]" ); plot.setBlock(6, 1, 11, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]"); plot.setBlock(7, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]"); plot.setBlock(7, 1, 11, 'D');
+	plot.setBlock(6, 1, 10, '~'); plot.setBlock(6, 1, 12, '~');
+	plot.setBlock(7, 1, 10, '~'); plot.setBlock(7, 1, 12, '~');
+	// clear area for stairs
+	for (let ix=0; ix<5; ix++) {
+		for (let iy=0; iy<3; iy++) {
+			plot.setBlock(6+ix, 5+iy, 16, '.');
+			plot.setBlock(6+ix, 5+iy, 17, '.');
+		}
+	}
+	// stairs (lower)
+	plot.type('<', "minecraft:oak_stairs[facing=south]");
+	for (let i=0; i<3; i++) {
+		plot.setBlock(6, 1+i, 13+i, '<');
+		plot.setBlock(7, 1+i, 13+i, '<');
+	}
+	// landing
+	plot.type('F', "minecraft:polished_diorite_slab[type=top]");
+	for (let iz=0; iz<2; iz++) {
+		for (let ix=0; ix<2; ix++)
+			plot.setBlock(6+ix, 3, 16+iz, 'F')
+	}
+	// stairs (upper)
+	plot.type('<', "minecraft:oak_stairs[facing=east]");
+	for (let i=0; i<4; i++) {
+		plot.setBlock(8+i, 4+i, 16, '<');
+		plot.setBlock(8+i, 4+i, 17, '<');
+	}
+	// storage under stairs (hall)
+	plot.type('d', "minecraft:spruce_door[half=upper,facing=east]"); plot.setBlock(5, 2, 17, 'd');
+	plot.type('D', "minecraft:spruce_door[half=lower,facing=east]"); plot.setBlock(5, 1, 17, 'D');
+	plot.setBlock(4, 1, 17, '~');
+	// storage under stairs (room)
+	plot.type('d', "minecraft:spruce_door[half=upper,facing=south]"); plot.setBlock(10, 2, 15, 'd');
+	plot.type('D', "minecraft:spruce_door[half=lower,facing=south]"); plot.setBlock(10, 1, 15, 'D');
+	plot.setBlock(10, 1, 14, '~');
+}
+
+
+
 radio_lot_ground();
 radio_lot_fence();
 radio_building_back( -14, -14, 44, 16, 23);
 radio_building_front(-14,   7, 17, 9, 21);
 radio_path(12, 31, 5, 21);
 radio_antenna(-11, 9, -11, 16);
+radio_building_inside_walls(-12, -12, 44, 38, 7, 7);
