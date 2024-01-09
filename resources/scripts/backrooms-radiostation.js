@@ -341,12 +341,12 @@ function radio_building_front(x, z, w, h, d) {
 
 
 
-function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
+function radio_building_inside_walls_1st(x, z, w, d, h) {
 	let plot = (new PlotterFactory())
 		.placer(region)
 		.axis("use")
 		.xyz(x, surface_y, z)
-		.whd(w, h_1st, d)
+		.whd(w, h, d)
 		.build();
 	plot.type('#', Material.LIGHT_GRAY_CONCRETE               );
 	plot.type('P', Material.LIGHT_GRAY_CONCRETE_POWDER        );
@@ -378,7 +378,7 @@ function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
 	matrix[1][15].append("#    #  ####        #P         P        ");
 	matrix[1][16].append("#    #  #  #        #P         P        ");
 	matrix[1][17].append("#    #  #  #        #P         P        ");
-	matrix[1][18].append("#    ################PPP     PPP        ");
+	matrix[1][18].append("#    ################PPPPPPPPPPP        ");
 	matrix[1][19].append("#    #      #"                           );
 	matrix[1][20].append("#    #      #"                           );
 	matrix[1][21].append("#    #      #"                           );
@@ -398,13 +398,15 @@ function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
 	matrix[1][35].append("#           #"                           );
 	matrix[1][36].append("#           #"                           );
 	matrix[1][37].append("#############"                           );
-	// front door
+	// duplicate up y
 	for (let iz=0; iz<38; iz++) {
-		for (let iy=2; iy<h_1st; iy++) {
-			if (iy >= 5) StringUtils.ReplaceInString(matrix[iy][18], "PPPPP", 24);
+		for (let iy=2; iy<h; iy++)
 			matrix[iy][iz].append(matrix[1][iz].toString());
-		}
 	}
+	// front door
+	StringUtils.ReplaceInString(matrix[4][18], "     ", 24);
+	for (let iy=1; iy<4; iy++)
+		StringUtils.ReplaceInString(matrix[iy][18], "     ", 24);
 	// reception desk
 	StringUtils.ReplaceInString(matrix[3][11], "---", 27);
 	StringUtils.ReplaceInString(matrix[2][11], "...", 27);
@@ -425,7 +427,7 @@ function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
 	plot.setBlock(23, 1, 10, '~'); plot.setBlock(24, 1, 10, '~');
 	plot.setBlock(23, 1, 12, '~'); plot.setBlock(24, 1, 12, '~');
 	// reception back door
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south]" ); plot.setBlock(29, 2, 5, 'd');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south]"); plot.setBlock(29, 2, 5, 'd');
 	plot.type('D', "minecraft:iron_door[half=lower,facing=south]"); plot.setBlock(29, 1, 5, 'D');
 	plot.setBlock(29, 1,  4, '~'); plot.setBlock(29, 1,  6, '~');
 	// doors - east room
@@ -470,14 +472,14 @@ function radio_building_inside_walls(x, z, w, d, h_1st, h_2nd) {
 	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(10, 1, 6, 'D');
 	plot.setBlock(9, 1, 5, '~'); plot.setBlock(10, 1, 5, '~');
 	plot.setBlock(9, 1, 7, '~'); plot.setBlock(10, 1, 7, '~');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(3, 2, 6, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(3, 1, 6, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]"); plot.setBlock(3, 2, 6, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]"); plot.setBlock(3, 1, 6, 'D');
 	plot.setBlock(3, 1, 5, '~'); plot.setBlock(3, 1, 7, '~');
 	// doors to stairs
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]" ); plot.setBlock(6, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]" ); plot.setBlock(6, 1, 11, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]"); plot.setBlock(7, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]"); plot.setBlock(7, 1, 11, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(6, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(6, 1, 11, 'D');
+	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(7, 2, 11, 'd');
+	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(7, 1, 11, 'D');
 	plot.setBlock(6, 1, 10, '~'); plot.setBlock(6, 1, 12, '~');
 	plot.setBlock(7, 1, 10, '~'); plot.setBlock(7, 1, 12, '~');
 	// recording studio window (1st floor)
@@ -542,4 +544,4 @@ radio_building_back( -14, -14, 44, 16, 23);
 radio_building_front(-14,   7, 17, 9, 21);
 radio_path(12, 31, 5, 21);
 radio_antenna(-11, 9, -11, 16);
-radio_building_inside_walls(-12, -12, 44, 38, 7, 7);
+radio_building_inside_walls_1st(-12, -12, 44, 38, 7);
