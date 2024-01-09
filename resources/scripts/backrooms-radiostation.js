@@ -518,7 +518,7 @@ function radio_building_inside_walls_1st(x, z, w, d, h) {
 	plot.type('F', "minecraft:polished_diorite_slab[type=top]");
 	for (let iz=0; iz<2; iz++) {
 		for (let ix=0; ix<2; ix++)
-			plot.setBlock(6+ix, 3, 16+iz, 'F')
+			plot.setBlock(6+ix, 3, 16+iz, 'F');
 	}
 	// stairs (upper)
 	plot.type('<', "minecraft:oak_stairs[facing=east]");
