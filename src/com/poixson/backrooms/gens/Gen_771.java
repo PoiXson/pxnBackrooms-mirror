@@ -39,12 +39,12 @@ public class Gen_771 extends BackroomsGen {
 
 	// default params
 	public static final double DEFAULT_NOISE_LAMPS_FREQ = 0.3;
-	public static final double DEFAULT_NOISE_EXITS_FREQ = 0.5;
-	public static final double DEFAULT_NOISE_LOOT_FREQ  = 0.1;
+	public static final double DEFAULT_NOISE_EXITS_FREQ = 0.08;
+	public static final double DEFAULT_NOISE_LOOT_FREQ  = 0.08;
 	public static final double DEFAULT_THRESH_LAMPS     = 0.42; // lanterns
-	public static final double DEFAULT_THRESH_LADDER    = 0.81; // ladder shaft
-	public static final double DEFAULT_THRESH_VOID      = 0.85; // void shaft
-	public static final double DEFAULT_THRESH_LOOT      = 0.7;  // loot chest
+	public static final double DEFAULT_THRESH_VOID      = 0.9;  // void shaft
+	public static final double DEFAULT_THRESH_LADDER    = 0.79; // ladder shaft
+	public static final double DEFAULT_THRESH_LOOT      = 0.64; // loot chest
 	public static final int PILLAR_B_OFFSET = 10;
 
 	// default blocks
