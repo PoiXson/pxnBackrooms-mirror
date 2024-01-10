@@ -6,6 +6,10 @@ importClass(Packages.com.poixson.utils.FastNoiseLiteD);
 importClass(Packages.com.poixson.tools.plotter.PlotterFactory);
 importClass(Packages.com.poixson.utils.StringUtils);
 
+importClass(Packages.java.awt.Color);
+importClass(Packages.java.awt.Font);
+importClass(Packages.java.awt.image.BufferedImage);
+
 
 
 function radio_lot_ground() {
@@ -677,6 +681,43 @@ function radio_building_inside_walls_2nd(x, z, w, d, h) {
 
 
 
+function radio_roof_sign(x, y, z, w, h) {
+	let text = "WBRB";
+	//let text = "WPXN";
+	let font  = Font.MONOSPACED;
+	let style = Font.PLAIN;
+	let img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+	let graphics = img.createGraphics();
+	graphics.setFont(new Font(font, style, h+3));
+	graphics.setColor(Color.WHITE);
+	graphics.setBackground(Color.BLACK);
+	graphics.drawString(text, 0, h);
+	let plot = (new PlotterFactory())
+		.placer(region)
+		.axis("use")
+		.xyz(x, surface_y+y, z)
+		.whd(w, 2, 1)
+		.build();
+	plot.type('#', "minecraft:copper_block");
+	plot.type('=', "minecraft:stone"       );
+	plot.type('+', "minecraft:iron_bars[north=true,south=true,east=true,west=true]");
+	for (let iy=0; iy<h; iy++) {
+		for (let ix=0; ix<w; ix++) {
+			let color = new Color(img.getRGB(ix, h-iy-1));
+			if (Color.WHITE.equals(color))
+				plot.setBlock(ix, iy+2, 0, '#');
+		}
+	}
+	graphics.dispose();
+	let matrix = plot.getMatrix3D();
+	// 1st floor
+	matrix[1][0].append(" +  +  +  +  +    +   +");
+	matrix[0][0].append(" =  =  =  =  =    =   =");
+	plot.run();
+}
+
+
+
 radio_lot_ground();
 radio_lot_fence();
 radio_building_back( -14, -14, 44, 16, 23);
@@ -685,3 +726,4 @@ radio_path(12, 31, 5, 21);
 radio_antenna(-11, 9, -11, 16);
 radio_building_inside_walls_1st(-12, -12, 44, 38, 7);
 radio_building_inside_walls_2nd(-12, -12, 44, 19, 7);
+radio_roof_sign(5, 14, 7, 24, 7);
