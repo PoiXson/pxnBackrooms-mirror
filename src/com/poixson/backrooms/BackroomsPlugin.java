@@ -535,6 +535,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		player.teleport(loc);
 		player.setNoDamageTicks(100);
 		player.setFallDistance(0.0f);
+		player.sendTitle("Level "+Integer.toString(level), null, 15, 70, 40);
 	}
 
 	public Location getSpawnLocation(final int level) {
