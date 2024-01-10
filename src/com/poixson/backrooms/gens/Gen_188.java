@@ -111,6 +111,7 @@ public class Gen_188 extends BackroomsGen {
 		if (block_lightsout_wall      == null) throw new RuntimeException("Invalid block type for level 6 LightsOut-Wall"    );
 		if (block_lobby_wall          == null) throw new RuntimeException("Invalid block type for level 0 Lobby-Wall"        );
 		if (block_overgrowth_wall     == null) throw new RuntimeException("Invalid block type for level 23 Overgrowth-Wall"  );
+		final BlockData block_water = Bukkit.createBlockData("minecraft:water[level=0]");
 		final boolean dark_room = this.dark_room.get();
 		final BlockData light = Bukkit.createBlockData("light[level=15]");
 		final int y  = Y_188;
@@ -240,7 +241,8 @@ public class Gen_188 extends BackroomsGen {
 						} else {
 							// window
 							if (isWindow) {
-								chunk.setBlock(ix, yy, iz, block_window);
+								if (yy < Y_037+SUBFLOOR+5 && yy > Y_037 )
+									chunk.setBlock(ix, yy, iz, block_water); // poolrooms
 							// wall
 							} else {
 								if      (yy > Y_019  ) chunk.setBlock(ix, yy, iz, block_attic_wall       ); // attic
