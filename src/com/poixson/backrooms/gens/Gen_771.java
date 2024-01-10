@@ -108,10 +108,6 @@ public class Gen_771 extends BackroomsGen {
 	public void generate(final PreGenData pregen, final ChunkData chunk,
 			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_771) return;
-		for (int iz=0; iz<16; iz++) {
-			for (int ix=0; ix<16; ix++)
-				chunk.setBlock(ix, this.level_y, iz, Material.BARRIER);
-		}
 		final boolean centerX = (chunkX == 0 || chunkX == -1);
 		final boolean centerZ = (chunkZ == 0 || chunkZ == -1);
 		// world center

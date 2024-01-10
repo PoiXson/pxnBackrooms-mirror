@@ -1,5 +1,6 @@
 package com.poixson.backrooms.listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -38,7 +39,6 @@ public class Listener_OutOfWorld  extends xListener<BackroomsPlugin> {
 			LEVEL_SWITCH:
 			switch (level) {
 			case 309: this.plugin.noclip(event.getPlayer(), 771); break LEVEL_SWITCH; // 309 radio station to 771 crossroads
-			case 771: this.plugin.noclip(event.getPlayer(), 309); break LEVEL_SWITCH; // 771 crossroads    to 309 radio station
 			default: break LEVEL_SWITCH;
 			}
 			break WHERE_SWITCH;
@@ -49,7 +49,13 @@ public class Listener_OutOfWorld  extends xListener<BackroomsPlugin> {
 			case   1: this.plugin.noclip(event.getPlayer(),  94); break LEVEL_SWITCH; //   1 basement          to 94 motion
 			case  33: this.plugin.noclip(event.getPlayer(),   6); break LEVEL_SWITCH; //  33 run for your life to 6 lights out
 			case  94: this.plugin.noclip(event.getPlayer(), 771); break LEVEL_SWITCH; //  94 motion            to 771 crossroads
-			case 771: this.plugin.noclip(event.getPlayer(),   1); break LEVEL_SWITCH; // 771 crossroads        to   1 basement
+			case 771: // 771 crossroads
+				// teleport to sky
+				if (event.getOutsideDistance() > 20) {
+					final Player player = event.getPlayer();
+					player.teleport(player.getLocation().add(0.0, 600.0, 0.0));
+				}
+				break LEVEL_SWITCH;
 			default: break LEVEL_SWITCH;
 			}
 			break WHERE_SWITCH;
