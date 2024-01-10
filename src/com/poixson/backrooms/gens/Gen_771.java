@@ -321,8 +321,8 @@ public class Gen_771 extends BackroomsGen {
 				.placer(chunk)
 				.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
 				.xz(x, z)
-				.y(this.level_y)
-				.whd(16, 3, 16)
+				.y(this.level_y-3)
+				.whd(16, 6, 16)
 				.build();
 		final String wall_dirs;
 		switch (direction) {
@@ -334,6 +334,7 @@ public class Gen_771 extends BackroomsGen {
 		plot.type('*', Material.BLACKSTONE         );
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
 		plot.type('i', Material.SOUL_LANTERN);
+		plot.type('x', Material.BARRIER            );
 		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
@@ -341,12 +342,15 @@ public class Gen_771 extends BackroomsGen {
 		final int cx = chunkX * 16;
 		final int cz = chunkZ * 16;
 		for (int i=0; i<16; i++) {
-			matrix[1][i].append("   +");
-			matrix[0][i].append("*##" );
+			matrix[4][i].append("   +");
+			matrix[3][i].append("*##x");
+			matrix[2][i].append("   x");
+			matrix[1][i].append("   x");
+			matrix[0][i].append("   x");
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
 			if (value_light > thresh_light) {
-				matrix[2][i].append("   i");
-				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
+				matrix[5][i].append("   i");
+				StringUtils.ReplaceInString(matrix[4][i], "L", 2);
 			}
 		}
 		plot.run();
