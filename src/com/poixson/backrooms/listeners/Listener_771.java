@@ -1,5 +1,6 @@
 package com.poixson.backrooms.listeners;
 
+import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.backrooms.worlds.Level_771.LEVEL_H;
 import static com.poixson.backrooms.worlds.Level_771.LEVEL_Y;
 import static com.poixson.utils.BlockUtils.IsButton;
@@ -78,8 +79,10 @@ public class Listener_771 extends xListener<BackroomsPlugin> {
 			for (final Location loc : locs) changer.add(loc, block_air  );
 			for (final Location loc : locs) changer.add(loc, block_slab );
 			for (final Location loc : locs) changer.add(loc, block_solid);
-			if (this.block_changer.compareAndSet(null, changer))
+			if (this.block_changer.compareAndSet(null, changer)) {
 				changer.start();
+				this.plugin.log().info(LOG_PREFIX+"Crossroads center door opened");
+			}
 		}
 	}
 
