@@ -380,8 +380,9 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			}
 			// fall damage
 			switch (level) {
-			case  0: // lobby
-			case 94: // motion
+			case  0:  // lobby
+			case 94:  // motion
+			case 771: // crossroads
 				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.FALSE); break;
 			default:
 				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.TRUE);  break;
