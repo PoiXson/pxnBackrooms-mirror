@@ -359,33 +359,44 @@ public class Gen_771 extends BackroomsGen {
 
 
 
-	protected void generatePillars(final ChunkData chunk,
-			final BlockFace facing, final BlockFace side,
-			final int chunkX, final int chunkZ, final int x, final int z) {
-		final double thresh_ladder = this.thresh_ladder.get();
+	protected PillarType findPillarType(final int chunkX, final int chunkZ, final int x, final int z) {
+		// near world center
+		if (Math.abs(chunkX) < 30
+		&&  Math.abs(chunkZ) < 30)
+			return PillarType.PILLAR_NORM;
 		final double thresh_void   = this.thresh_void.get();
+		final double thresh_ladder = this.thresh_ladder.get();
 		final double thresh_loot   = this.thresh_loot.get();
 		// round to nearest chunk group and convert to block location
 		final int px = Math.floorDiv(chunkX+1, 4) * 64;
 		final int pz = Math.floorDiv(chunkZ+1, 4) * 64;
-		final double valB = this.noiseSpecial.getNoise(px, pz);
-		final double valC = this.noiseSpecial.getNoise(px+PILLAR_B_OFFSET, pz+PILLAR_B_OFFSET);
-		final PillarType pillar_type;
-		if (Math.abs(chunkX) < 30
-		&&  Math.abs(chunkZ) < 30) {
-			pillar_type = PillarType.PILLAR_NORM;
-		} else
-		if (valB > thresh_ladder) {
-			if (valC > thresh_loot) {
-			if (valC > thresh_void) pillar_type = PillarType.PILLAR_VOID;   // void shaft
-			else                    pillar_type = PillarType.PILLAR_DROP;   // drop shaft
-			} else                  pillar_type = PillarType.PILLAR_LADDER; // ladder shaft
-		} else {
-			if (valC < thresh_loot) pillar_type = PillarType.PILLAR_NORM;   // normal pillar
-			else                                                            // loot chest
-			if (((int)Math.floor(valC*10000.0)) % 2 == 0) pillar_type = PillarType.PILLAR_LOOT_UPPER;
-			else                                          pillar_type = PillarType.PILLAR_LOOT_LOWER;
+		final double val = this.noiseExits.getNoise(px, pz);
+		if (val > thresh_void)
+			return PillarType.PILLAR_VOID; // void shaft
+		if (val > thresh_ladder) {
+			return (
+				((int)Math.floor(val*10000.0)) % 5 < 2
+				? PillarType.PILLAR_DROP   // drop shaft
+				: PillarType.PILLAR_LADDER // ladder shaft
+			);
 		}
+		if (val > thresh_loot) {
+			return (
+				((int)Math.floor(val*10000.0)) % 2 == 0
+				? PillarType.PILLAR_LOOT_UPPER
+				: PillarType.PILLAR_LOOT_LOWER
+			);
+		}
+		// normal pillar
+		return PillarType.PILLAR_NORM;
+	}
+
+
+
+	protected void generatePillars(final ChunkData chunk,
+			final BlockFace facing, final BlockFace side,
+			final int chunkX, final int chunkZ, final int x, final int z) {
+		final PillarType pillar_type = this.findPillarType(chunkX, chunkZ, x, z);
 		final int mod_pillar;
 		switch (facing) {
 		case NORTH: case SOUTH: mod_pillar = Math.abs(chunkZ) % 4; break;
