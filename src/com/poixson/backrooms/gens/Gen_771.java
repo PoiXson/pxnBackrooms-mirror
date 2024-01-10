@@ -190,35 +190,50 @@ public class Gen_771 extends BackroomsGen {
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
 			.y((this.level_y + this.level_h) - 3)
-			.whd(16, 5, 16)
+			.whd(16, 6, 16)
 			.build();
 		plot.type('#', Material.POLISHED_BLACKSTONE         );
 		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
 		plot.type('X', Material.GILDED_BLACKSTONE           );
 		plot.type('*', Material.BLACKSTONE                  );
-//TODO
-//		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
-		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB, "[type=top]");
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=true,north=tall,south=tall,east=tall,west=tall]");
+		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB,       "[type=top]"   );
+		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=bottom]");
 		plot.type('.', Material.LIGHT, "[level=15]");
 		plot.type(',', Material.LIGHT, "[level=9]" );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
-		matrix[0][ 0].append("###########---"); matrix[1][ 0].append(" , , , , , ,  #"); matrix[2][ 0].append("              ##"); matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                ");
-		matrix[0][ 1].append("###########---"); matrix[1][ 1].append("              #"); matrix[2][ 1].append("              ##"); matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   ");
-		matrix[0][ 2].append("##########---" ); matrix[1][ 2].append(" , , , , , , ##"); matrix[2][ 2].append("             ###"); matrix[3][ 2].append("**X##X##########"); matrix[4][ 2].append("                ");
-		matrix[0][ 3].append("##########---" ); matrix[1][ 3].append("             #" ); matrix[2][ 3].append("             ##" ); matrix[3][ 3].append("*##*###*#######" ); matrix[4][ 3].append("  .   .   .   . ");
-		matrix[0][ 4].append("#########---"  ); matrix[1][ 4].append(" , , , , ,  ##" ); matrix[2][ 4].append("            ###" ); matrix[3][ 4].append("*###X####X#####" ); matrix[4][ 4].append("               +");
-		matrix[0][ 5].append("########----"  ); matrix[1][ 5].append("            #"  ); matrix[2][ 5].append("            ##"  ); matrix[3][ 5].append("*#X##*#####*##"  ); matrix[4][ 5].append("              ++");
-		matrix[0][ 6].append("#######----"   ); matrix[1][ 6].append(" , , , , , ##"  ); matrix[2][ 6].append("           ###"  ); matrix[3][ 6].append("*#####*#######"  ); matrix[4][ 6].append("              +" );
-		matrix[0][ 7].append("######-----"   ); matrix[1][ 7].append("           #"   ); matrix[2][ 7].append("           ##"   ); matrix[3][ 7].append("*##*###X#####"   ); matrix[4][ 7].append("  .   .   .  ++" );
-		matrix[0][ 8].append("#####-----"    ); matrix[1][ 8].append(" , , , ,  ##"   ); matrix[2][ 8].append("          ###"   ); matrix[3][ 8].append("*#######*####"   ); matrix[4][ 8].append("             +"  );
-		matrix[0][ 9].append("####-----"     ); matrix[1][ 9].append("         ##"    ); matrix[2][ 9].append("         ###"    ); matrix[3][ 9].append("*###X####*##"    ); matrix[4][ 9].append("            ++"  );
-		matrix[0][10].append("##------"      ); matrix[1][10].append(" , , ,  ##"     ); matrix[2][10].append("        ###"     ); matrix[3][10].append("*##########"     ); matrix[4][10].append("           ++"   );
-		matrix[0][11].append("-------"       ); matrix[1][11].append("       ##"      ); matrix[2][11].append("       ###"      ); matrix[3][11].append("*####*####"      ); matrix[4][11].append("  .   .   ++"    );
-		matrix[0][12].append("-----"         ); matrix[1][12].append(" ,   ###"       ); matrix[2][12].append("     ####"       ); matrix[3][12].append("*########"       ); matrix[4][12].append("         ++"     );
-		matrix[0][13].append("--"            ); matrix[1][13].append("  ####"         ); matrix[2][13].append("  #####"         ); matrix[3][13].append("*######"         ); matrix[4][13].append("       +++"      );
-		matrix[0][14].append(""              ); matrix[1][14].append("###"            ); matrix[2][14].append("#####"           ); matrix[3][14].append("*####"           ); matrix[4][14].append("     +++"        );
-		matrix[0][15].append(""              ); matrix[1][15].append(""               ); matrix[2][15].append("###"             ); matrix[3][15].append("*##"             ); matrix[4][15].append("  . ++"          );
+		matrix[0][ 0].append("###########---"  ); matrix[1][ 0].append(" , , , , , ,  #" ); matrix[2][ 0].append("              ##");
+		matrix[0][ 1].append("###########---"  ); matrix[1][ 1].append("              #" ); matrix[2][ 1].append("              ##");
+		matrix[0][ 2].append("##########---"   ); matrix[1][ 2].append(" , , , , , , ##" ); matrix[2][ 2].append("             ###");
+		matrix[0][ 3].append("##########---"   ); matrix[1][ 3].append("             #"  ); matrix[2][ 3].append("             ##" );
+		matrix[0][ 4].append("#########---"    ); matrix[1][ 4].append(" , , , , ,  ##"  ); matrix[2][ 4].append("            ###" );
+		matrix[0][ 5].append("########----"    ); matrix[1][ 5].append("            #"   ); matrix[2][ 5].append("            ##"  );
+		matrix[0][ 6].append("#######----"     ); matrix[1][ 6].append(" , , , , , ##"   ); matrix[2][ 6].append("           ###"  );
+		matrix[0][ 7].append("######-----"     ); matrix[1][ 7].append("           #"    ); matrix[2][ 7].append("           ##"   );
+		matrix[0][ 8].append("#####-----"      ); matrix[1][ 8].append(" , , , ,  ##"    ); matrix[2][ 8].append("          ###"   );
+		matrix[0][ 9].append("####-----"       ); matrix[1][ 9].append("         ##"     ); matrix[2][ 9].append("         ###"    );
+		matrix[0][10].append("##------"        ); matrix[1][10].append(" , , ,  ##"      ); matrix[2][10].append("        ###"     );
+		matrix[0][11].append("-------"         ); matrix[1][11].append("       ##"       ); matrix[2][11].append("       ###"      );
+		matrix[0][12].append("-----"           ); matrix[1][12].append(" ,   ###"        ); matrix[2][12].append("     ####"       );
+		matrix[0][13].append("--"              ); matrix[1][13].append("  ####"          ); matrix[2][13].append("  #####"         );
+		matrix[0][14].append(""                ); matrix[1][14].append("###"             ); matrix[2][14].append("#####"           );
+		matrix[0][15].append(""                ); matrix[1][15].append(""                ); matrix[2][15].append("###"             );
+		matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                "); matrix[5][ 0].append("                ");
+		matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   "); matrix[5][ 1].append("                ");
+		matrix[3][ 2].append("**X##X##########"); matrix[4][ 2].append("                "); matrix[5][ 2].append("                ");
+		matrix[3][ 3].append("*##*###*#######" ); matrix[4][ 3].append("  .   .   .   . "); matrix[5][ 3].append("                ");
+		matrix[3][ 4].append("*###X####X#####" ); matrix[4][ 4].append("               +"); matrix[5][ 4].append("               _");
+		matrix[3][ 5].append("*#X##*#####*##"  ); matrix[4][ 5].append("              ++"); matrix[5][ 5].append("              __");
+		matrix[3][ 6].append("*#####*#######"  ); matrix[4][ 6].append("              +" ); matrix[5][ 6].append("              _" );
+		matrix[3][ 7].append("*##*###X#####"   ); matrix[4][ 7].append("  .   .   .  ++" ); matrix[5][ 7].append("             __" );
+		matrix[3][ 8].append("*#######*####"   ); matrix[4][ 8].append("             +"  ); matrix[5][ 8].append("             _"  );
+		matrix[3][ 9].append("*###X####*##"    ); matrix[4][ 9].append("            ++"  ); matrix[5][ 9].append("            __"  );
+		matrix[3][10].append("*##########"     ); matrix[4][10].append("           ++"   ); matrix[5][10].append("           __"   );
+		matrix[3][11].append("*####*####"      ); matrix[4][11].append("  .   .   ++"    ); matrix[5][11].append("          __"    );
+		matrix[3][12].append("*########"       ); matrix[4][12].append("         ++"     ); matrix[5][12].append("         __"     );
+		matrix[3][13].append("*######"         ); matrix[4][13].append("       +++"      ); matrix[5][13].append("       ___"      );
+		matrix[3][14].append("*####"           ); matrix[4][14].append("     +++"        ); matrix[5][14].append("     ___"        );
+		matrix[3][15].append("*##"             ); matrix[4][15].append("  . ++"          ); matrix[5][15].append("    __"          );
 		plot.run();
 	}
 
@@ -273,12 +288,16 @@ public class Gen_771 extends BackroomsGen {
 			.y(this.level_y+this.level_h)
 			.whd(16, 3, 16)
 			.build();
+		final String wall_dirs;
+		switch (direction) {
+		case NORTH:
+		case SOUTH: wall_dirs = "north=low,south=low"; break;
+		default:    wall_dirs = "east=low,west=low";   break;
+		}
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
-//TODO
-//		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('i', Material.LANTERN);
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
 		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
@@ -308,11 +327,15 @@ public class Gen_771 extends BackroomsGen {
 				.y(this.level_y)
 				.whd(16, 3, 16)
 				.build();
+		final String wall_dirs;
+		switch (direction) {
+		case NORTH:
+		case SOUTH: wall_dirs = "north=low,south=low"; break;
+		default:    wall_dirs = "east=low,west=low";   break;
+		}
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE);
-//TODO
-//		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "autoface");
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL);
+		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
 		plot.type('i', Material.SOUL_LANTERN);
 		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
@@ -412,8 +435,6 @@ public class Gen_771 extends BackroomsGen {
 		plot.type('D', Material.SPRUCE_DOOR,      "[half=lower,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.POLISHED_BLACKSTONE_PRESSURE_PLATE);
 		plot.type('-', Material.DARK_OAK_PRESSURE_PLATE);
-//TODO
-//		plot.type('+', Material.DEEPSLATE_TILE_WALL, "autoface");
 		plot.type('+', Material.DEEPSLATE_TILE_WALL);
 		plot.type('S', Material.DARK_OAK_WALL_SIGN, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		plot.type(',', Material.LIGHT, "[level=15]");
