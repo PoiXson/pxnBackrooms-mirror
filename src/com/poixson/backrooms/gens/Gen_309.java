@@ -36,7 +36,7 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_GROUND_LACUN  = 2.0;
 	public static final double DEFAULT_NOISE_TREES_FREQ    = 0.2;
 	public static final int    DEFAULT_PATH_WIDTH          = 3;
-	public static final int    DEFAULT_PATH_CLEARING       = 10;
+	public static final int    DEFAULT_PATH_CLEARING       = 15;
 	public static final int PATH_START_X = 14;
 	public static final int PATH_START_Z = 32;
 
