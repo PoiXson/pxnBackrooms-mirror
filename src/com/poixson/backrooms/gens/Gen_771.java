@@ -85,8 +85,8 @@ public class Gen_771 extends BackroomsGen {
 		super(backlevel, seed, level_y, level_h);
 		// noise
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
-		this.noiseSpecial = this.register(new FastNoiseLiteD());
-		this.noiseLoot = this.register(new FastNoiseLiteD());
+		this.noiseSpecial    = this.register(new FastNoiseLiteD());
+		this.noiseLoot       = this.register(new FastNoiseLiteD());
 	}
 
 
@@ -94,12 +94,9 @@ public class Gen_771 extends BackroomsGen {
 	@Override
 	public void initNoise() {
 		super.initNoise();
-		// road lanterns
-		this.noiseRoadLights.setFrequency(this.noise_lamps_freq.get());
-		// special exits
-		this.noiseSpecial.setFrequency(this.noise_exits_freq.get());
-		// chest loot
-		this.noiseLoot.setFrequency(this.noise_loot_freq.get());
+		this.noiseRoadLights.setFrequency(this.noise_lamps_freq.get()); // road lanterns
+		this.noiseSpecial   .setFrequency(this.noise_exits_freq.get()); // special exits
+		this.noiseLoot      .setFrequency(this.noise_loot_freq .get()); // chest loot
 	}
 
 
@@ -145,11 +142,11 @@ public class Gen_771 extends BackroomsGen {
 			.whd(16, 15, 16)
 			.build();
 		final BlockFace facing = AxToFace(axis.charAt(2));
-		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                     );
-		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=top]"   );
-		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=bottom]");
+		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                       );
+		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB,   "[type=top]"   );
+		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB,   "[type=bottom]");
 		plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
-		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing)+",half=top]");
+		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing)+",half=top]"         );
 		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
 		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE  );
 		plot.type('!', Material.LIGHTNING_ROD                 );
@@ -295,9 +292,9 @@ public class Gen_771 extends BackroomsGen {
 		default:    wall_dirs = "east=low,west=low";   break;
 		}
 		plot.type('#', Material.POLISHED_BLACKSTONE);
-		plot.type('*', Material.BLACKSTONE);
-		plot.type('i', Material.LANTERN);
+		plot.type('*', Material.BLACKSTONE         );
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
+		plot.type('i', Material.LANTERN            );
 		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
@@ -334,7 +331,7 @@ public class Gen_771 extends BackroomsGen {
 		default:    wall_dirs = "east=low,west=low";   break;
 		}
 		plot.type('#', Material.POLISHED_BLACKSTONE);
-		plot.type('*', Material.BLACKSTONE);
+		plot.type('*', Material.BLACKSTONE         );
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
 		plot.type('i', Material.SOUL_LANTERN);
 		plot.type('L', Material.LIGHT, "[level=15]");
@@ -478,11 +475,9 @@ public class Gen_771 extends BackroomsGen {
 					final int zz = (dir.b * 2) + z;
 					final int yy;
 					if (PillarType.PILLAR_LOOT_UPPER.equals(type)) {
-//TODO: duplicating 4 times
 						((Level_771)this.backlevel).loot_chests_upper.add((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + this.level_h + 1;
 					} else {
-//TODO: duplicating 4 times
 						((Level_771)this.backlevel).loot_chests_lower.add((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + 1;
 					}
@@ -496,7 +491,6 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// ladder shaft
 		case PILLAR_LADDER: {
-//TODO: duplicating 4 times
 			((Level_771)this.backlevel).portal_ladder.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h][0].append("   $");
 			// trapdoor
@@ -532,7 +526,6 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// drop shaft to lower road
 		case PILLAR_DROP: {
-//TODO: duplicating 4 times
 			((Level_771)this.backlevel).portal_drop.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
@@ -550,7 +543,6 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// void shaft
 		case PILLAR_VOID: {
-//TODO: duplicating 4 times
 			((Level_771)this.backlevel).portal_void.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
