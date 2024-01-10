@@ -30,12 +30,15 @@ public class Listener_033 extends xListener<BackroomsPlugin> {
 	public void onEntityDamaged(final EntityDamageByEntityEvent event) {
 		final Entity entity = event.getEntity();
 		if (entity instanceof Player) {
-			switch (event.getCause()) {
-			case BLOCK_EXPLOSION:
-			case ENTITY_EXPLOSION:
-				event.setCancelled(true);
-				break;
-			default: break;
+			final int level = this.plugin.getLevel( (Player)entity );
+			if (level == 33) {
+				switch (event.getCause()) {
+				case BLOCK_EXPLOSION:
+				case ENTITY_EXPLOSION:
+					event.setCancelled(true);
+					break;
+				default: break;
+				}
 			}
 		}
 	}
