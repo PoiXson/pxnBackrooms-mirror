@@ -45,14 +45,13 @@ public class Gen_771 extends BackroomsGen {
 	public static final double DEFAULT_THRESH_VOID      = 0.9;  // void shaft
 	public static final double DEFAULT_THRESH_LADDER    = 0.79; // ladder shaft
 	public static final double DEFAULT_THRESH_LOOT      = 0.64; // loot chest
-	public static final int PILLAR_B_OFFSET = 10;
 
 	// default blocks
 //TODO
 
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
-	public final FastNoiseLiteD noiseSpecial;
+	public final FastNoiseLiteD noiseExits;
 	public final FastNoiseLiteD noiseLoot;
 
 	// params
@@ -60,8 +59,8 @@ public class Gen_771 extends BackroomsGen {
 	public final AtomicDouble noise_exits_freq = new AtomicDouble(DEFAULT_NOISE_EXITS_FREQ);
 	public final AtomicDouble noise_loot_freq  = new AtomicDouble(DEFAULT_NOISE_LOOT_FREQ );
 	public final AtomicDouble thresh_lamps     = new AtomicDouble(DEFAULT_THRESH_LAMPS    );
-	public final AtomicDouble thresh_ladder    = new AtomicDouble(DEFAULT_THRESH_LADDER   );
 	public final AtomicDouble thresh_void      = new AtomicDouble(DEFAULT_THRESH_VOID     );
+	public final AtomicDouble thresh_ladder    = new AtomicDouble(DEFAULT_THRESH_LADDER   );
 	public final AtomicDouble thresh_loot      = new AtomicDouble(DEFAULT_THRESH_LOOT     );
 
 	// blocks
@@ -85,7 +84,7 @@ public class Gen_771 extends BackroomsGen {
 		super(backlevel, seed, level_y, level_h);
 		// noise
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
-		this.noiseSpecial    = this.register(new FastNoiseLiteD());
+		this.noiseExits      = this.register(new FastNoiseLiteD());
 		this.noiseLoot       = this.register(new FastNoiseLiteD());
 	}
 
@@ -95,7 +94,7 @@ public class Gen_771 extends BackroomsGen {
 	public void initNoise() {
 		super.initNoise();
 		this.noiseRoadLights.setFrequency(this.noise_lamps_freq.get()); // road lanterns
-		this.noiseSpecial   .setFrequency(this.noise_exits_freq.get()); // special exits
+		this.noiseExits     .setFrequency(this.noise_exits_freq.get()); // special exits
 		this.noiseLoot      .setFrequency(this.noise_loot_freq .get()); // chest loot
 	}
 
@@ -333,7 +332,7 @@ public class Gen_771 extends BackroomsGen {
 		plot.type('#', Material.POLISHED_BLACKSTONE);
 		plot.type('*', Material.BLACKSTONE         );
 		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
-		plot.type('i', Material.SOUL_LANTERN);
+		plot.type('i', Material.SOUL_LANTERN       );
 		plot.type('x', Material.BARRIER            );
 		plot.type('L', Material.LIGHT, "[level=15]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
@@ -620,8 +619,8 @@ public class Gen_771 extends BackroomsGen {
 			this.noise_exits_freq.set(cfg.getDouble("Noise-Exits-Freq"));
 			this.noise_loot_freq .set(cfg.getDouble("Noise-Loot-Freq"));
 			this.thresh_lamps    .set(cfg.getDouble("Thresh-Lamps"   ));
-			this.thresh_ladder   .set(cfg.getDouble("Thresh-Ladder"  ));
 			this.thresh_void     .set(cfg.getDouble("Thresh-Void"    ));
+			this.thresh_ladder   .set(cfg.getDouble("Thresh-Ladder"  ));
 			this.thresh_loot     .set(cfg.getDouble("Thresh-Loot"    ));
 		}
 		// block types
@@ -635,8 +634,8 @@ public class Gen_771 extends BackroomsGen {
 		cfg.addDefault("Level771.Params.Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
 		cfg.addDefault("Level771.Params.Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );
 		cfg.addDefault("Level771.Params.Thresh-Lamps",     DEFAULT_THRESH_LAMPS    );
-		cfg.addDefault("Level771.Params.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
 		cfg.addDefault("Level771.Params.Thresh-Void",      DEFAULT_THRESH_VOID     );
+		cfg.addDefault("Level771.Params.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
 		cfg.addDefault("Level771.Params.Thresh-Loot",      DEFAULT_THRESH_LOOT     );
 		// block types
 //TODO
