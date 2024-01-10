@@ -141,8 +141,8 @@ public class Gen_771 extends BackroomsGen {
 			.placer(chunk)
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
-			.y(this.level_y + this.level_h + 2)
-			.whd(16, 14, 16)
+			.y(this.level_y + this.level_h + 1)
+			.whd(16, 15, 16)
 			.build();
 		final BlockFace facing = AxToFace(axis.charAt(2));
 		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                     );
@@ -155,28 +155,31 @@ public class Gen_771 extends BackroomsGen {
 		plot.type('!', Material.LIGHTNING_ROD                 );
 		plot.type('8', Material.CHAIN                         );
 		plot.type('G', Material.SHROOMLIGHT                   );
+		plot.type('b', Material.ACACIA_BUTTON, "[face=ceiling]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
-		matrix[13][ 0].append("!");
+		matrix[14][ 0].append("!");
 		// big arch
-		matrix[12][ 0].append("#");
-		matrix[11][ 2].append("#"); matrix[11][ 1].append("-"); matrix[12][ 1].append("_");
-		matrix[10][ 4].append("#"); matrix[10][ 3].append("-"); matrix[11][ 3].append("_");
-		matrix[ 9][ 6].append("#"); matrix[ 9][ 5].append("-"); matrix[10][ 5].append("_");
-		matrix[ 8][ 8].append("#"); matrix[ 8][ 7].append("-"); matrix[ 9][ 7].append("_");
-		matrix[ 7][10].append("#"); matrix[ 7][ 9].append("-"); matrix[ 8][ 9].append("_");
-		matrix[ 6][12].append("#"); matrix[ 6][11].append("-"); matrix[ 7][11].append("_");
-		matrix[ 5][14].append("#"); matrix[ 5][13].append("-"); matrix[ 6][13].append("_");
+		matrix[13][ 0].append("#");                             matrix[13][ 1].append("_");
+		matrix[12][ 2].append("#"); matrix[12][ 1].append("-"); matrix[12][ 3].append("_");
+		matrix[11][ 4].append("#"); matrix[11][ 3].append("-"); matrix[11][ 5].append("_");
+		matrix[10][ 6].append("#"); matrix[10][ 5].append("-"); matrix[10][ 7].append("_");
+		matrix[ 9][ 8].append("#"); matrix[ 9][ 7].append("-"); matrix[ 9][ 9].append("_");
+		matrix[ 8][10].append("#"); matrix[ 8][ 9].append("-"); matrix[ 8][11].append("_");
+		matrix[ 7][12].append("#"); matrix[ 7][11].append("-"); matrix[ 7][13].append("_");
+		matrix[ 6][14].append("#"); matrix[ 6][13].append("-");
 		// center lamp
-		for (int i=7; i<12; i++)
+		for (int i=8; i<13; i++)
 			matrix[i][0].append("8");
-		matrix[6][0].append("G");
+		matrix[7][0].append("G");
+		matrix[6][0].append("b");
 		// gateway arch
-		matrix[5][15].append("_"   );
-		matrix[4][15].append("#L"  );
-		matrix[3][15].append(" ^L" );
-		matrix[2][15].append("  ^L");
-		matrix[1][15].append("   |");
-		matrix[0][15].append("   @");
+		matrix[6][15].append("_"   );
+		matrix[5][15].append("#L"  );
+		matrix[4][15].append(" ^L" );
+		matrix[3][15].append("  ^L");
+		matrix[2][15].append("   |");
+		matrix[1][15].append("   @");
+		matrix[0][15].append("   #");
 		plot.run();
 	}
 	protected void generateCenterFloor(final ChunkData chunk,

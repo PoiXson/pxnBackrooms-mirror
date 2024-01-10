@@ -11,6 +11,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
+import com.poixson.backrooms.listeners.Listener_771;
 import com.poixson.tools.xRand;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.LocationStoreManager;
@@ -26,6 +27,9 @@ public class Level_771 extends BackroomsLevel {
 
 	// generators
 	public final Gen_771 gen;
+
+	// listeners
+	protected final Listener_771 listener_771;
 
 	// exit locations
 	public final LocationStoreManager portal_ladder;
@@ -47,6 +51,8 @@ public class Level_771 extends BackroomsLevel {
 		}
 		// generators
 		this.gen = this.register(new Gen_771(this, this.seed, LEVEL_Y, LEVEL_H));
+		// listeners
+		this.listener_771 = new Listener_771(plugin);
 		// exit locations
 		this.portal_ladder     = new LocationStoreManager(plugin, "level771", "portal_ladder"); // upper/lower ladder
 		this.portal_drop       = new LocationStoreManager(plugin, "level771", "portal_drop"  ); // shaft to lower bridge
@@ -66,10 +72,12 @@ public class Level_771 extends BackroomsLevel {
 		this.portal_void      .start();
 		this.loot_chests_upper.start();
 		this.loot_chests_lower.start();
+		this.listener_771.register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
+		this.listener_771.unregister();
 		this.portal_ladder    .stop();
 		this.portal_drop      .stop();
 		this.portal_void      .stop();
