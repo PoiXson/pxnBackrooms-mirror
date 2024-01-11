@@ -39,6 +39,8 @@ public class Gen_309 extends BackroomsGen {
 	public static final int    DEFAULT_PATH_CLEARING       = 15;
 	public static final int PATH_START_X = 14;
 	public static final int PATH_START_Z = 32;
+	public static final double DEFAULT_NOISE_PRAIRIE_FREQ    = 0.004;
+	public static final double DEFAULT_THRESH_PRAIRIE        = 0.35;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
@@ -52,6 +54,7 @@ public class Gen_309 extends BackroomsGen {
 	public final FastNoiseLiteD noisePath;
 	public final FastNoiseLiteD noiseGround;
 	public final FastNoiseLiteD noiseTrees;
+	public final FastNoiseLiteD noisePrairie;
 
 	// params
 	public final AtomicDouble  noise_path_freq     = new AtomicDouble( DEFAULT_NOISE_PATH_FREQ    );
@@ -60,6 +63,8 @@ public class Gen_309 extends BackroomsGen {
 	public final AtomicDouble  noise_ground_gain   = new AtomicDouble( DEFAULT_NOISE_GROUND_GAIN  );
 	public final AtomicDouble  noise_ground_lacun  = new AtomicDouble( DEFAULT_NOISE_GROUND_LACUN );
 	public final AtomicDouble  noise_trees_freq    = new AtomicDouble( DEFAULT_NOISE_TREES_FREQ   );
+	public final AtomicDouble  noise_prairie_freq  = new AtomicDouble( DEFAULT_NOISE_PRAIRIE_FREQ );
+	public final AtomicDouble  thresh_prairie      = new AtomicDouble( DEFAULT_THRESH_PRAIRIE     );
 	public final AtomicInteger path_width    = new AtomicInteger( DEFAULT_PATH_WIDTH   );
 	public final AtomicInteger path_clearing = new AtomicInteger( DEFAULT_PATH_CLEARING);
 
@@ -85,6 +90,7 @@ public class Gen_309 extends BackroomsGen {
 		this.noisePath   = this.register(new FastNoiseLiteD());
 		this.noiseGround = this.register(new FastNoiseLiteD());
 		this.noiseTrees  = this.register(new FastNoiseLiteD());
+		this.noisePrairie = this.register(new FastNoiseLiteD());
 		// path locations
 		this.pathTrace = new PathTracer(this.noisePath, PATH_START_X, PATH_START_Z, this.getPathCacheMap());
 	}
@@ -104,6 +110,12 @@ public class Gen_309 extends BackroomsGen {
 		this.noiseGround.setFractalType(FractalType.Ridged);
 		// tree noise
 		this.noiseTrees.setFrequency(this.noise_trees_freq.get());
+		// prairie noise (doors, stairs, hatches)
+		this.noisePrairie.setFrequency(this.noise_prairie_freq.get());
+		this.noisePrairie.setFractalOctaves(2);
+		this.noisePrairie.setFractalType(FractalType.Ridged);
+		this.noisePrairie.setFractalWeightedStrength(2.0);
+		this.noisePrairie.setFractalLacunarity(5.0);
 	}
 
 
@@ -118,6 +130,9 @@ public class Gen_309 extends BackroomsGen {
 
 	public FastNoiseLiteD getTreeNoise() {
 		return this.noiseTrees;
+	}
+	public FastNoiseLiteD getPrairieNoise() {
+		return this.noisePrairie;
 	}
 
 
@@ -217,6 +232,8 @@ public class Gen_309 extends BackroomsGen {
 			this.noise_ground_gain  .set(cfg.getDouble("Noise-Ground-Gain"  ));
 			this.noise_ground_lacun .set(cfg.getDouble("Noise-Ground-Lacun" ));
 			this.noise_trees_freq   .set(cfg.getDouble("Noise-Trees-Freq"   ));
+			this.noise_prairie_freq .set(cfg.getDouble("Noise-Prairie-Freq" ));
+			this.thresh_prairie     .set(cfg.getDouble("Thresh-Prairie"     ));
 			this.path_width         .set(cfg.getInt(   "Path-Width"         ));
 			this.path_clearing      .set(cfg.getInt(   "Path-Clearing"      ));
 		}
@@ -235,6 +252,8 @@ public class Gen_309 extends BackroomsGen {
 		cfg.addDefault("Level309.Params.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
 		cfg.addDefault("Level309.Params.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
 		cfg.addDefault("Level309.Params.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
+		cfg.addDefault("Level309.Params.Noise-Prairie-Freq",  DEFAULT_NOISE_PRAIRIE_FREQ );
+		cfg.addDefault("Level309.Params.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
 		cfg.addDefault("Level309.Params.Path-Width",          DEFAULT_PATH_WIDTH         );
 		cfg.addDefault("Level309.Params.Path-Clearing",       DEFAULT_PATH_CLEARING      );
 		// block types

@@ -7,6 +7,7 @@ import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import org.bukkit.Material;
 
 import com.poixson.tools.TreePopulator;
+import com.poixson.utils.FastNoiseLiteD;
 
 
 public class Pop_309_Trees extends TreePopulator {
@@ -37,6 +38,11 @@ public class Pop_309_Trees extends TreePopulator {
 		if (!super.isTree(x, z)) return false;
 		if (this.gen.getCenterClearingDistance(x, z, 8.0) < 80.0) return false;
 		if (this.gen.pathTrace.isPath(x, z, this.path_clearing))  return false;
+		final double thresh_prairie = this.gen.thresh_prairie.get();
+		final FastNoiseLiteD noisePrairie = this.gen.getPrairieNoise();
+		final double value = noisePrairie.getNoise(x, z);
+		if (value > thresh_prairie)
+			return false;
 		return true;
 	}
 
