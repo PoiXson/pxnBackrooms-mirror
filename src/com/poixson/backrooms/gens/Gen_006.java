@@ -149,7 +149,7 @@ public class Gen_006 extends BackroomsGen {
 					}
 				// button
 				} else {
-					((Level_000)this.backlevel).portal_0_to_33.add(xx, zz);
+					((Level_000)this.backlevel).portal_6_to_33.add(xx, zz);
 					// level 6 game button
 					{
 						final int y = this.level_y + 2;

@@ -71,7 +71,7 @@ public class Pop_001 implements BackroomsPop {
 		}
 		// build well
 		{
-			this.level0.portal_1_to_771.add(x, z);
+			this.level0.portal_1_well.add(x, z);
 			final BlockPlotter plot =
 				(new PlotterFactory())
 				.placer(region)
