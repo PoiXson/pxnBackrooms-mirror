@@ -6,6 +6,7 @@ import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -35,6 +36,8 @@ public class Pop_309 implements BackroomsPop {
 
 	protected final Pop_309_Trees treePop;
 
+	protected final AtomicInteger special_index = new AtomicInteger(0);
+
 
 
 	public Pop_309(final Level_000 level0) {
@@ -50,16 +53,17 @@ public class Pop_309 implements BackroomsPop {
 	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
 		if (!ENABLE_GEN_309) return;
 		// trees
-		if (ENABLE_TOP_309)
-			this.treePop.populate(null, null, chunkX, chunkZ, region);
+		final int count_trees;
+		if (ENABLE_TOP_309) count_trees = this.treePop.populate(chunkX, chunkZ, region);
+		else                count_trees = 0;
 		// radio station
 		if (chunkX == 0 && chunkZ == 0) {
 			this.populate0x0(region);
 		} else
-		// fence around clearing
-		if (Math.abs(chunkX) < 8
-		&&  Math.abs(chunkZ) < 8) {
-			if (ENABLE_TOP_309) {
+		if (ENABLE_TOP_309) {
+			// fence around clearing
+			if (Math.abs(chunkX) < 8
+			&&  Math.abs(chunkZ) < 8) {
 				double distance;
 				int xx, zz;
 				for (int iz=0; iz<16; iz++) {
@@ -95,8 +99,53 @@ public class Pop_309 implements BackroomsPop {
 							}
 						} // end ix
 				} // end iz
-			} // end ENABLE_TOP_309
+			} else {
+				// stairs
+				if (count_trees == 0
+				&&  ENABLE_TOP_309) {
+					final int path_clearing = this.gen.path_clearing.get() * 3;
+					final int xx = chunkX * 16;
+					final int zz = chunkZ * 16;
+					if (!this.gen.pathTrace.isPath(xx, zz, path_clearing)) {
+						final int special = this.special_index.incrementAndGet();
+						final int special_mod11 = special % 11;
+						final int special_mod7  = special % 7;
+						SWITCH_MOD11:
+						switch (special_mod11) {
+						case 1: this.populate_stairs(chunkX, chunkZ, region); break SWITCH_MOD11; // stairs
+						case 5: this.populate_door(  chunkX, chunkZ, region); break SWITCH_MOD11; // door
+						default:
+							SWITCH_MOD7:
+							switch (special_mod7) {
+							case 1: this.populate_hatch(chunkX, chunkZ, region); break SWITCH_MOD7; // hatch
+							default: break SWITCH_MOD7;
+							}
+							break SWITCH_MOD11;
+						}
+					}
+				}
+			}
 		}
+	}
+
+
+
+	public void populate_stairs(final int chunkX, final int chunkZ, final LimitedRegion region) {
+		final int x = chunkX * 16;
+		final int z = chunkZ * 16;
+		((Level_000)this.gen.backlevel).portal_309_stairs.add(x, z);
+	}
+
+	public void populate_door(final int chunkX, final int chunkZ, final LimitedRegion region) {
+		final int x = chunkX * 16;
+		final int z = chunkZ * 16;
+		((Level_000)this.gen.backlevel).portal_309_doors.add(x, z);
+	}
+
+	public void populate_hatch(final int chunkX, final int chunkZ, final LimitedRegion region) {
+		final int x = chunkX * 16;
+		final int z = chunkZ * 16;
+		((Level_000)this.gen.backlevel).portal_19_to_309.add(x, z);
 	}
 
 
