@@ -121,8 +121,8 @@ public class Gen_188 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				int outer = 0;
-				int inner = 0;
+				int outer  = 0;
+				int inner  = 0;
 				int inside = 0;
 				if (xx == -48) outer++; if (xx == 63) outer++;
 				if (zz == -48) outer++; if (zz == 63) outer++;

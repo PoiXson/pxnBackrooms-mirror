@@ -11,8 +11,8 @@ import com.poixson.utils.FastNoiseLiteD;
 
 public abstract class BackroomsGen {
 
-	protected final BackroomsPlugin plugin;
-	protected final BackroomsLevel backlevel;
+	public final BackroomsPlugin plugin;
+	public final BackroomsLevel backlevel;
 
 	protected final CopyOnWriteArraySet<FastNoiseLiteD> noises = new CopyOnWriteArraySet<FastNoiseLiteD>();
 	protected final int seed;

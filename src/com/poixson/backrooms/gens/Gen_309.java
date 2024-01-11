@@ -29,18 +29,18 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 public class Gen_309 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_NOISE_PATH_FREQ     = 0.01;
-	public static final double DEFAULT_NOISE_GROUND_FREQ   = 0.002;
-	public static final int    DEFAULT_NOISE_GROUND_OCTAVE = 3;
-	public static final double DEFAULT_NOISE_GROUND_GAIN   = 0.5;
-	public static final double DEFAULT_NOISE_GROUND_LACUN  = 2.0;
-	public static final double DEFAULT_NOISE_TREES_FREQ    = 0.2;
-	public static final int    DEFAULT_PATH_WIDTH          = 3;
-	public static final int    DEFAULT_PATH_CLEARING       = 15;
-	public static final int PATH_START_X = 14;
-	public static final int PATH_START_Z = 32;
+	public static final double DEFAULT_NOISE_PATH_FREQ       = 0.01;
+	public static final double DEFAULT_NOISE_GROUND_FREQ     = 0.002;
+	public static final int    DEFAULT_NOISE_GROUND_OCTAVE   = 3;
+	public static final double DEFAULT_NOISE_GROUND_GAIN     = 0.5;
+	public static final double DEFAULT_NOISE_GROUND_LACUN    = 2.0;
+	public static final double DEFAULT_NOISE_TREES_FREQ      = 0.2;
 	public static final double DEFAULT_NOISE_PRAIRIE_FREQ    = 0.004;
 	public static final double DEFAULT_THRESH_PRAIRIE        = 0.35;
+	public static final int    DEFAULT_PATH_WIDTH            = 3;
+	public static final int    DEFAULT_PATH_CLEARING         = 15;
+	public static final int    PATH_START_X                  = 14;
+	public static final int    PATH_START_Z                  = 32;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
@@ -65,8 +65,8 @@ public class Gen_309 extends BackroomsGen {
 	public final AtomicDouble  noise_trees_freq    = new AtomicDouble( DEFAULT_NOISE_TREES_FREQ   );
 	public final AtomicDouble  noise_prairie_freq  = new AtomicDouble( DEFAULT_NOISE_PRAIRIE_FREQ );
 	public final AtomicDouble  thresh_prairie      = new AtomicDouble( DEFAULT_THRESH_PRAIRIE     );
-	public final AtomicInteger path_width    = new AtomicInteger( DEFAULT_PATH_WIDTH   );
-	public final AtomicInteger path_clearing = new AtomicInteger( DEFAULT_PATH_CLEARING);
+	public final AtomicInteger path_width          = new AtomicInteger(DEFAULT_PATH_WIDTH         );
+	public final AtomicInteger path_clearing       = new AtomicInteger(DEFAULT_PATH_CLEARING      );
 
 	// path locations
 	protected final PathTracer pathTrace;
@@ -87,9 +87,9 @@ public class Gen_309 extends BackroomsGen {
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
 		// noise
-		this.noisePath   = this.register(new FastNoiseLiteD());
-		this.noiseGround = this.register(new FastNoiseLiteD());
-		this.noiseTrees  = this.register(new FastNoiseLiteD());
+		this.noisePath    = this.register(new FastNoiseLiteD());
+		this.noiseGround  = this.register(new FastNoiseLiteD());
+		this.noiseTrees   = this.register(new FastNoiseLiteD());
 		this.noisePrairie = this.register(new FastNoiseLiteD());
 		// path locations
 		this.pathTrace = new PathTracer(this.noisePath, PATH_START_X, PATH_START_Z, this.getPathCacheMap());
