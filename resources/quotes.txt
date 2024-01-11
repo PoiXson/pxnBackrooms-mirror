@@ -12,6 +12,7 @@ Remove yourself
 Remove yourself from my area
 Please stop
 Please don't do that
+Please help me!
 Don't do that
 Don't look behind
 Don't look inside
@@ -65,6 +66,8 @@ I really tried
 Do your best, it's not enough
 Did something just move?
 You're so close
+Keep your eyes closed
+Keep your eyes open
 Don't move
 I see you
 I'm watching
@@ -72,6 +75,7 @@ Smile, I'm watching you
 I get so tired of watching you
 I'm behind you
 Something is watching us
+There are things watching
 I want my mommy
 I crave a human name
 The shadows hunger
@@ -81,7 +85,12 @@ I hear something moving
 I can hear your every step
 Let me in
 Let me out
+Let me protect you
+Let me help you
+Let me kill you
+Let me hold your hand
 The water is cold
+It's cold in me
 SO COLD
 I crave a human
 One bite at a time
@@ -112,6 +121,7 @@ Feel free to scream
 Do you want to play a game?
 Wanna play?
 You will die
+You will never leave
 You're doomed
 At least your bones will survive
 A little bit of torture goes a long way
@@ -152,3 +162,4 @@ Are we they?
 I'll get you
 I have a question for you
 Unprotected Area!
+I would love to go in the forest with you
