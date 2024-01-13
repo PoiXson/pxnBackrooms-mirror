@@ -326,6 +326,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			world.setGameRule(GameRule.SNOW_ACCUMULATION_HEIGHT,    Integer.valueOf( 8));
 			// game mode
 			switch (level) {
+			case 33:
 			case 771: mvworld.setGameMode(GameMode.ADVENTURE); break;
 			default:  mvworld.setGameMode(GameMode.SURVIVAL ); break;
 			}
