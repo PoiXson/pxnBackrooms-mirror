@@ -634,6 +634,7 @@ function radio_building_inside_walls_2nd(x, z, w, d, h) {
 	for (let iz=0; iz<3; iz++) {
 		for (let ix=0; ix<3; ix++) {
 			if (ix == 1 && iz == 1) continue;
+			if (ix == 1 || iz == 1)
 			plot.setBlock(placer, ix+37, 8, iz+12, '_');
 			plot.setBlock(placer, ix+37, 7, iz+12, '%');
 		}
