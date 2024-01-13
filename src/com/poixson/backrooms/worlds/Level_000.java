@@ -28,8 +28,6 @@ import com.poixson.backrooms.gens.Pop_001;
 import com.poixson.backrooms.gens.Pop_005;
 import com.poixson.backrooms.gens.Pop_037;
 import com.poixson.backrooms.gens.Pop_309;
-import com.poixson.backrooms.listeners.Listener_001;
-import com.poixson.backrooms.listeners.Listener_006;
 import com.poixson.backrooms.listeners.Listener_023;
 import com.poixson.tools.xRand;
 import com.poixson.tools.dao.Iab;
@@ -112,8 +110,6 @@ public class Level_000 extends BackroomsLevel {
 	public final Pop_309 pop_309;
 
 	// listeners
-	protected final Listener_001 listener_001;
-	protected final Listener_006 listener_006;
 	protected final Listener_023 listener_023;
 
 	// exit locations
@@ -164,8 +160,6 @@ public class Level_000 extends BackroomsLevel {
 		this.pop_037 = this.register(new Pop_037(this)); // pools
 		this.pop_309 = this.register(new Pop_309(this)); // radio station
 		// listeners
-		this.listener_001 = new Listener_001(plugin);
-		this.listener_006 = new Listener_006(plugin, this);
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
 		this.portal_0_to_1     = new LocationStoreManager(plugin, "level0", "portal_0_to_1"    ); // lobby to basement
@@ -200,15 +194,11 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_309_doors .start();
 		this.cheese_rooms     .start();
 		this.loot_chests_0    .start();
-		this.listener_001.register();
-		this.listener_006.register();
 		this.listener_023.register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
-		this.listener_001.unregister();
-		this.listener_006.unregister();
 		this.listener_023.unregister();
 		this.portal_0_to_1    .stop();
 		this.portal_0_to_6    .stop();

@@ -19,13 +19,13 @@ import com.poixson.tools.events.xListener;
 
 
 // 6 | Lobby/Lights-Out teleport
-public class Listener_006 extends xListener<BackroomsPlugin> {
+public class Listener_Interact extends xListener<BackroomsPlugin> {
 
 	protected final Level_000 level0;
 
 
 
-	public Listener_006(final BackroomsPlugin plugin, final Level_000 level0) {
+	public Listener_Interact(final BackroomsPlugin plugin) {
 		super(plugin);
 		this.level0 = level0;
 	}

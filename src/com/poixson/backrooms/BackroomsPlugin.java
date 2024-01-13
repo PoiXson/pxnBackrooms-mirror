@@ -43,6 +43,8 @@ import com.poixson.backrooms.gens.Gen_188;
 import com.poixson.backrooms.gens.Gen_308;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
+import com.poixson.backrooms.listeners.Listener_Interact;
+import com.poixson.backrooms.listeners.Listener_MoveNormal;
 import com.poixson.backrooms.listeners.Listener_NoClip;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
@@ -86,6 +88,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
 	protected final AtomicReference<Listener_NoClip>     listenerNoClip     = new AtomicReference<Listener_NoClip>(null);
 	protected final AtomicReference<Listener_OutOfWorld> listenerOutOfWorld = new AtomicReference<Listener_OutOfWorld>(null);
+	protected final AtomicReference<Listener_MoveNormal> listener_move_normal = new AtomicReference<Listener_MoveNormal>(null);
+	protected final AtomicReference<Listener_Interact>   listener_interact    = new AtomicReference<Listener_Interact>(null);
 
 	// dynmap config generator
 	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
@@ -193,11 +197,39 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+		// move normal listener
+		{
+			final Listener_MoveNormal listener = new Listener_MoveNormal(this);
+			final Listener_MoveNormal previous = this.listener_move_normal.getAndSet(listener);
+			if (previous != null)
+				previous.unregister();
+			listener.register();
+		}
+		// interact listener
+		{
+			final Listener_Interact listener = new Listener_Interact(this);
+			final Listener_Interact previous = this.listener_interact.getAndSet(listener);
+			if (previous != null)
+				previous.unregister();
+			listener.register();
+		}
 	}
 
 	@Override
 	public void onDisable() {
 		super.onDisable();
+		// interact listener
+		{
+			final Listener_Interact listener = this.listener_interact.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
+		// move normal listener
+		{
+			final Listener_MoveNormal listener = this.listener_move_normal.getAndSet(null);
+			if (listener != null)
+				listener.unregister();
+		}
 		// invisible players task
 		{
 			final TaskInvisiblePlayers task = this.taskInvisible.getAndSet(null);

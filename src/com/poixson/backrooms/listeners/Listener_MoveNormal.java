@@ -22,7 +22,7 @@ import com.poixson.tools.events.xListener;
 
 
 // 1 | Basement lights
-public class Listener_001 extends xListener<BackroomsPlugin> {
+public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 
@@ -32,7 +32,7 @@ public class Listener_001 extends xListener<BackroomsPlugin> {
 
 
 
-	public Listener_001(final BackroomsPlugin plugin) {
+	public Listener_MoveNormal(final BackroomsPlugin plugin) {
 		super(plugin);
 	}
 
