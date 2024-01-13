@@ -2,14 +2,18 @@
 
 importClass(Packages.org.bukkit.Bukkit);
 importClass(Packages.org.bukkit.Material);
-
-importClass(Packages.com.poixson.utils.FastNoiseLiteD);
-importClass(Packages.com.poixson.tools.plotter.PlotterFactory);
-importClass(Packages.com.poixson.utils.StringUtils);
-
 importClass(Packages.java.awt.Color);
 importClass(Packages.java.awt.Font);
 importClass(Packages.java.awt.image.BufferedImage);
+
+importClass(Packages.com.poixson.utils.FastNoiseLiteD);
+importClass(Packages.com.poixson.utils.StringUtils);
+importClass(Packages.com.poixson.tools.plotter.BlockPlotter);
+importClass(Packages.com.poixson.tools.plotter.BlockPlacer);
+
+
+
+let placer = new BlockPlacer(region);
 
 
 
@@ -53,12 +57,10 @@ function radio_lot_ground() {
 }
 
 function radio_lot_fence() {
-	let plot = (new PlotterFactory())
-		.placer(region)
+	let plot = (new BlockPlotter())
 		.axis("use")
 		.xyz(-16, surface_y, -16)
-		.whd(48, 5, 48)
-		.build();
+		.whd(48, 5, 48);
 	plot.type('=', Material.COPPER_BLOCK                       );
 	plot.type('_', Material.CUT_COPPER_SLAB                    );
 	plot.type('x', "minecraft:iron_bars[north=true,south=true]");
@@ -90,7 +92,7 @@ function radio_lot_fence() {
 		matrix[2][z].append(matrix[3][z].toString());
 		matrix[1][z].append(matrix[3][z].toString());
 	}
-	plot.run();
+	plot.run(region, matrix);
 }
 
 function radio_path(x, z, w, d) {
@@ -115,12 +117,10 @@ function radio_path(x, z, w, d) {
 	}
 	// porch roof
 	{
-		let plot = (new PlotterFactory())
-			.placer(region)
+		let plot = (new BlockPlotter())
 			.axis("une")
 			.xyz(x-2, surface_y+4, (z-d)+1)
-			.whd(9, 4, 4)
-			.build();
+			.whd(9, 4, 4);
 		plot.type('-', "minecraft:polished_andesite_slab[type=top]"                      );
 		plot.type('_', "minecraft:polished_andesite_slab[type=bottom]"                   );
 		plot.type('#', "minecraft:polished_granite"                                      );
@@ -135,16 +135,14 @@ function radio_path(x, z, w, d) {
 		matrix[2][0].append("+++++++++"); matrix[2][1].append("x#*#*#*#x"); matrix[2][2].append("x*#####*x"); matrix[2][3].append("x#######x");
 		matrix[1][0].append("---------"); matrix[1][1].append("-@sssss@-"); matrix[1][2].append("-sssssss-"); matrix[1][3].append("-sssssss-");
 		matrix[0][1].append("  L L L  ");
-		plot.run();
+		plot.run(region, matrix);
 	}
 	// front door
 	{
-		let plot = (new PlotterFactory())
-			.placer(region)
+		let plot = (new BlockPlotter())
 			.axis("une")
 			.xyz(x, surface_y, (z-d)-2)
-			.whd(10, 10, 10)
-			.build();
+			.whd(10, 10, 10);
 		plot.type('=', "minecraft:polished_deepslate_wall[east=tall,west=tall]" );
 		plot.type('x', "minecraft:tinted_glass"                                 );
 		plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]");
@@ -155,7 +153,7 @@ function radio_path(x, z, w, d) {
 		matrix[3][1]                              .append("=xxx="); matrix[3][2].append("x   x");
 		matrix[2][1]                              .append("=xdx="); matrix[2][2].append("x   x");
 		matrix[1][0].append("  _  "); matrix[1][1].append("=xDx="); matrix[1][2].append("x _ x");
-		plot.run();
+		plot.run(region, matrix);
 	}
 }
 
@@ -251,12 +249,10 @@ function radio_antenna(x, y, z, size) {
 
 
 function radio_building_back(x, z, w, h, d) {
-	let plot = (new PlotterFactory())
-		.placer(region)
+	let plot = (new BlockPlotter())
 		.axis("use")
 		.xyz(x, surface_y, z)
-		.whd(w, h, d)
-		.build();
+		.whd(w, h, d);
 	plot.type('#', Material.POLISHED_ANDESITE             ); // wall fill
 	plot.type('|', Material.POLISHED_BASALT               ); // wall corner
 	plot.type('T', Material.TUFF                          ); // wall top accent
@@ -301,16 +297,14 @@ function radio_building_back(x, z, w, h, d) {
 		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_'); // wall top
 		matrix[h-2][iz].append('T').append('~'.repeat(w-2)).append('T'); // top accent
 	}
-	plot.run();
+	plot.run(region, matrix);
 }
 
 function radio_building_front(x, z, w, h, d) {
-	let plot = (new PlotterFactory())
-		.placer(region)
+	let plot = (new BlockPlotter())
 		.axis("use")
 		.xyz(x, surface_y, z)
-		.whd(w, h, d)
-		.build();
+		.whd(w, h, d);
 	plot.type('#', Material.POLISHED_ANDESITE             ); // wall fill
 	plot.type('|', Material.POLISHED_BASALT               ); // wall corner
 	plot.type('T', Material.TUFF                          ); // wall top accent
@@ -349,18 +343,16 @@ function radio_building_front(x, z, w, h, d) {
 		matrix[h-1][iz].append('_').append(' '.repeat(w-2)).append('_'); // wall top
 		matrix[h-2][iz].append('T').append('~'.repeat(w-2)).append('T'); // top accent
 	}
-	plot.run();
+	plot.run(region, matrix);
 }
 
 
 
 function radio_building_inside_walls_1st(x, z, w, d, h) {
-	let plot = (new PlotterFactory())
-		.placer(region)
+	let plot = (new BlockPlotter())
 		.axis("use")
 		.xyz(x, surface_y, z)
-		.whd(w, h, d)
-		.build();
+		.whd(w, h, d);
 	plot.type('#', Material.LIGHT_GRAY_CONCRETE               );
 	plot.type('P', Material.LIGHT_GRAY_CONCRETE_POWDER        );
 	plot.type('=', Material.STRIPPED_OAK_WOOD                 );
@@ -431,133 +423,130 @@ function radio_building_inside_walls_1st(x, z, w, d, h) {
 		StringUtils.ReplaceInString(matrix[1][14+iz], "c", 22);
 		StringUtils.ReplaceInString(matrix[1][13+iz], "C", 30);
 	}
-	plot.run();
+	plot.run(region, matrix);
 	// doors - reception to hall
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(23, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(23, 1, 11, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(24, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(24, 1, 11, 'D');
-	plot.setBlock(23, 1, 10, '~'); plot.setBlock(24, 1, 10, '~');
-	plot.setBlock(23, 1, 12, '~'); plot.setBlock(24, 1, 12, '~');
+	plot.setBlock(placer, 23, 2, 11, "minecraft:iron_door[half=upper,facing=north,hinge=left]" );
+	plot.setBlock(placer, 23, 1, 11, "minecraft:iron_door[half=lower,facing=north,hinge=left]" );
+	plot.setBlock(placer, 24, 2, 11, "minecraft:iron_door[half=upper,facing=north,hinge=right]");
+	plot.setBlock(placer, 24, 1, 11, "minecraft:iron_door[half=lower,facing=north,hinge=right]");
+	plot.setBlock(placer, 23, 1, 10, '~'); plot.setBlock(placer, 24, 1, 10, '~');
+	plot.setBlock(placer, 23, 1, 12, '~'); plot.setBlock(placer, 24, 1, 12, '~');
 	// reception back door
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south]"); plot.setBlock(29, 2, 5, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south]"); plot.setBlock(29, 1, 5, 'D');
-	plot.setBlock(29, 1,  4, '~'); plot.setBlock(29, 1,  6, '~');
+	plot.setBlock(placer, 29, 2, 5, "minecraft:iron_door[half=upper,facing=south]");
+	plot.setBlock(placer, 29, 1, 5, "minecraft:iron_door[half=lower,facing=south]");
+	plot.setBlock(placer, 29, 1,  4, '~'); plot.setBlock(placer, 29, 1,  6, '~');
 	// doors - east room
-	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=left]" ); plot.setBlock(31, 2, 2, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=left]" ); plot.setBlock(31, 1, 2, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=right]"); plot.setBlock(31, 2, 3, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=right]"); plot.setBlock(31, 1, 3, 'D');
-	plot.setBlock(30, 1, 2, '~'); plot.setBlock(32, 1, 2, '~');
-	plot.setBlock(30, 1, 3, '~'); plot.setBlock(32, 1, 3, '~');
+	plot.setBlock(placer, 31, 2, 2, "minecraft:iron_door[half=upper,facing=east,hinge=left]" );
+	plot.setBlock(placer, 31, 1, 2, "minecraft:iron_door[half=lower,facing=east,hinge=left]" );
+	plot.setBlock(placer, 31, 2, 3, "minecraft:iron_door[half=upper,facing=east,hinge=right]");
+	plot.setBlock(placer, 31, 1, 3, "minecraft:iron_door[half=lower,facing=east,hinge=right]");
+	plot.setBlock(placer, 30, 1, 2, '~'); plot.setBlock(placer, 32, 1, 2, '~');
+	plot.setBlock(placer, 30, 1, 3, '~'); plot.setBlock(placer, 32, 1, 3, '~');
 	// doors - far south room
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(2, 2, 27, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(2, 1, 27, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(3, 2, 27, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(3, 1, 27, 'D');
-	plot.setBlock(2, 1, 26, '~'); plot.setBlock(2, 1, 28, '~');
-	plot.setBlock(3, 1, 26, '~'); plot.setBlock(3, 1, 28, '~');
+	plot.setBlock(placer, 2, 2, 27, "minecraft:iron_door[half=upper,facing=south,hinge=right]");
+	plot.setBlock(placer, 2, 1, 27, "minecraft:iron_door[half=lower,facing=south,hinge=right]");
+	plot.setBlock(placer, 3, 2, 27, "minecraft:iron_door[half=upper,facing=south,hinge=left]" );
+	plot.setBlock(placer, 3, 1, 27, "minecraft:iron_door[half=lower,facing=south,hinge=left]" );
+	plot.setBlock(placer, 2, 1, 26, '~'); plot.setBlock(placer, 2, 1, 28, '~');
+	plot.setBlock(placer, 3, 1, 26, '~'); plot.setBlock(placer, 3, 1, 28, '~');
 	// doors - adjacent waiting room
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(15, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(15, 1, 11, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(16, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(16, 1, 11, 'D');
-	plot.setBlock(15, 1, 10, '~'); plot.setBlock(15, 1, 12, '~');
-	plot.setBlock(16, 1, 10, '~'); plot.setBlock(16, 1, 12, '~');
+	plot.setBlock(placer, 15, 2, 11, "minecraft:iron_door[half=upper,facing=south,hinge=right]");
+	plot.setBlock(placer, 15, 1, 11, "minecraft:iron_door[half=lower,facing=south,hinge=right]");
+	plot.setBlock(placer, 16, 2, 11, "minecraft:iron_door[half=upper,facing=south,hinge=left]" );
+	plot.setBlock(placer, 16, 1, 11, "minecraft:iron_door[half=lower,facing=south,hinge=left]" );
+	plot.setBlock(placer, 15, 1, 10, '~'); plot.setBlock(placer, 15, 1, 12, '~');
+	plot.setBlock(placer, 16, 1, 10, '~'); plot.setBlock(placer, 16, 1, 12, '~');
 	// doors - east rooms, north to south
-	plot.type('d', "minecraft:spruce_door[half=upper,facing=south,hinge=right]"); plot.setBlock(36, 2, 11, 'd');
-	plot.type('D', "minecraft:spruce_door[half=lower,facing=south,hinge=right]"); plot.setBlock(36, 1, 11, 'D');
-	plot.type('d', "minecraft:spruce_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(37, 2, 11, 'd');
-	plot.type('D', "minecraft:spruce_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(37, 1, 11, 'D');
-	plot.setBlock(36, 1, 10, '~'); plot.setBlock(36, 1, 12, '~');
-	plot.setBlock(37, 1, 10, '~'); plot.setBlock(37, 1, 12, '~');
+	plot.setBlock(placer, 36, 2, 11, "minecraft:spruce_door[half=upper,facing=south,hinge=right]");
+	plot.setBlock(placer, 36, 1, 11, "minecraft:spruce_door[half=lower,facing=south,hinge=right]");
+	plot.setBlock(placer, 37, 2, 11, "minecraft:spruce_door[half=upper,facing=south,hinge=left]" );
+	plot.setBlock(placer, 37, 1, 11, "minecraft:spruce_door[half=lower,facing=south,hinge=left]" );
+	plot.setBlock(placer, 36, 1, 10, '~'); plot.setBlock(placer, 36, 1, 12, '~');
+	plot.setBlock(placer, 37, 1, 10, '~'); plot.setBlock(placer, 37, 1, 12, '~');
 	// doors - north center room
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(17, 2, 6, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(17, 1, 6, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(18, 2, 6, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(18, 1, 6, 'D');
-	plot.setBlock(17, 1, 5, '~'); plot.setBlock(18, 1, 5, '~');
-	plot.setBlock(17, 1, 7, '~'); plot.setBlock(18, 1, 7, '~');
+	plot.setBlock(placer, 17, 2, 6, "minecraft:iron_door[half=upper,facing=north,hinge=left]" );
+	plot.setBlock(placer, 17, 1, 6, "minecraft:iron_door[half=lower,facing=north,hinge=left]" );
+	plot.setBlock(placer, 18, 2, 6, "minecraft:iron_door[half=upper,facing=north,hinge=right]");
+	plot.setBlock(placer, 18, 1, 6, "minecraft:iron_door[half=lower,facing=north,hinge=right]");
+	plot.setBlock(placer, 17, 1, 5, '~'); plot.setBlock(placer, 18, 1, 5, '~');
+	plot.setBlock(placer, 17, 1, 7, '~'); plot.setBlock(placer, 18, 1, 7, '~');
 	// doors - north west room
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock( 9, 2, 6, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock( 9, 1, 6, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(10, 2, 6, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(10, 1, 6, 'D');
-	plot.setBlock(9, 1, 5, '~'); plot.setBlock(10, 1, 5, '~');
-	plot.setBlock(9, 1, 7, '~'); plot.setBlock(10, 1, 7, '~');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]"); plot.setBlock(3, 2, 6, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]"); plot.setBlock(3, 1, 6, 'D');
-	plot.setBlock(3, 1, 5, '~'); plot.setBlock(3, 1, 7, '~');
+	plot.setBlock(placer,  9, 2, 6, "minecraft:iron_door[half=upper,facing=north,hinge=left]" );
+	plot.setBlock(placer,  9, 1, 6, "minecraft:iron_door[half=lower,facing=north,hinge=left]" );
+	plot.setBlock(placer, 10, 2, 6, "minecraft:iron_door[half=upper,facing=north,hinge=right]");
+	plot.setBlock(placer, 10, 1, 6, "minecraft:iron_door[half=lower,facing=north,hinge=right]");
+	plot.setBlock(placer,  9, 1, 5, '~'); plot.setBlock(placer, 10, 1, 5, '~');
+	plot.setBlock(placer,  9, 1, 7, '~'); plot.setBlock(placer, 10, 1, 7, '~');
+	plot.setBlock(placer,  3, 2, 6, "minecraft:iron_door[half=upper,facing=north,hinge=left]");
+	plot.setBlock(placer,  3, 1, 6, "minecraft:iron_door[half=lower,facing=north,hinge=left]");
+	plot.setBlock(placer,  3, 1, 5, '~'); plot.setBlock(placer, 3, 1, 7, '~');
 	// doors to stairs
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(6, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(6, 1, 11, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(7, 2, 11, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(7, 1, 11, 'D');
-	plot.setBlock(6, 1, 10, '~'); plot.setBlock(6, 1, 12, '~');
-	plot.setBlock(7, 1, 10, '~'); plot.setBlock(7, 1, 12, '~');
+	plot.setBlock(placer, 6, 2, 11, "minecraft:iron_door[half=upper,facing=south,hinge=right]");
+	plot.setBlock(placer, 6, 1, 11, "minecraft:iron_door[half=lower,facing=south,hinge=right]");
+	plot.setBlock(placer, 7, 2, 11, "minecraft:iron_door[half=upper,facing=south,hinge=left]" );
+	plot.setBlock(placer, 7, 1, 11, "minecraft:iron_door[half=lower,facing=south,hinge=left]" );
+	plot.setBlock(placer, 6, 1, 10, '~'); plot.setBlock(placer, 6, 1, 12, '~');
+	plot.setBlock(placer, 7, 1, 10, '~'); plot.setBlock(placer, 7, 1, 12, '~');
 	// recording studio window (1st floor)
 	plot.type('x', "minecraft:black_stained_glass_pane[east=true,west=true]");
 	plot.type('<', "minecraft:oak_stairs[facing=north,half=top]"            );
 	plot.type('>', "minecraft:oak_stairs[facing=south,half=top]"            );
 	for (let ix=0; ix<5; ix++) {
-		plot.setBlock(ix+6, 3, 27, 'x'); // glass
-		plot.setBlock(ix+6, 2, 27, 'x'); // glass
-		plot.setBlock(ix+6, 1, 27, '='); // wall
-		plot.setBlock(ix+6, 1, 26, '>'); // inside desk
-		plot.setBlock(ix+6, 1, 28, '<'); // outside desk
-
+		plot.setBlock(placer, ix+6, 3, 27, 'x'); // glass
+		plot.setBlock(placer, ix+6, 2, 27, 'x'); // glass
+		plot.setBlock(placer, ix+6, 1, 27, '='); // wall
+		plot.setBlock(placer, ix+6, 1, 26, '>'); // inside desk
+		plot.setBlock(placer, ix+6, 1, 28, '<'); // outside desk
 	}
 	// doors - 1st floor recording studio
-	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=left]" ); plot.setBlock(5, 2, 23, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=left]" ); plot.setBlock(5, 1, 23, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=right]"); plot.setBlock(5, 2, 24, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=right]"); plot.setBlock(5, 1, 24, 'D');
-	plot.setBlock(4, 1, 23, '~'); plot.setBlock(6, 1, 23, '~');
-	plot.setBlock(4, 1, 24, '~'); plot.setBlock(6, 1, 24, '~');
+	plot.setBlock(placer, 5, 2, 23, "minecraft:iron_door[half=upper,facing=east,hinge=left]" );
+	plot.setBlock(placer, 5, 1, 23, "minecraft:iron_door[half=lower,facing=east,hinge=left]" );
+	plot.setBlock(placer, 5, 2, 24, "minecraft:iron_door[half=upper,facing=east,hinge=right]");
+	plot.setBlock(placer, 5, 1, 24, "minecraft:iron_door[half=lower,facing=east,hinge=right]");
+	plot.setBlock(placer, 4, 1, 23, '~'); plot.setBlock(placer, 6, 1, 23, '~');
+	plot.setBlock(placer, 4, 1, 24, '~'); plot.setBlock(placer, 6, 1, 24, '~');
 	// clear area for stairs
 	for (let ix=0; ix<5; ix++) {
 		for (let iy=0; iy<3; iy++) {
-			plot.setBlock(6+ix, 5+iy, 16, '.');
-			plot.setBlock(6+ix, 5+iy, 17, '.');
+			plot.setBlock(placer, 6+ix, 5+iy, 16, '.');
+			plot.setBlock(placer, 6+ix, 5+iy, 17, '.');
 		}
 	}
 	// stairs (lower)
 	plot.type('<', "minecraft:oak_stairs[facing=south]");
 	for (let i=0; i<3; i++) {
-		plot.setBlock(6, 1+i, 13+i, '<');
-		plot.setBlock(7, 1+i, 13+i, '<');
+		plot.setBlock(placer, 6, 1+i, 13+i, '<');
+		plot.setBlock(placer, 7, 1+i, 13+i, '<');
 	}
 	// landing
 	plot.type('F', "minecraft:polished_diorite_slab[type=top]");
 	for (let iz=0; iz<2; iz++) {
 		for (let ix=0; ix<2; ix++)
-			plot.setBlock(6+ix, 3, 16+iz, 'F');
+			plot.setBlock(placer, 6+ix, 3, 16+iz, 'F');
 	}
 	// stairs (upper)
 	plot.type('<', "minecraft:oak_stairs[facing=east]");
 	for (let i=0; i<4; i++) {
-		plot.setBlock(8+i, 4+i, 16, '<');
-		plot.setBlock(8+i, 4+i, 17, '<');
+		plot.setBlock(placer, 8+i, 4+i, 16, '<');
+		plot.setBlock(placer, 8+i, 4+i, 17, '<');
 	}
 	// storage under stairs (hall)
-	plot.type('d', "minecraft:spruce_door[half=upper,facing=east]"); plot.setBlock(5, 2, 17, 'd');
-	plot.type('D', "minecraft:spruce_door[half=lower,facing=east]"); plot.setBlock(5, 1, 17, 'D');
-	plot.setBlock(4, 1, 17, '~');
+	plot.setBlock(placer, 5, 2, 17, "minecraft:spruce_door[half=upper,facing=east]");
+	plot.setBlock(placer, 5, 1, 17, "minecraft:spruce_door[half=lower,facing=east]");
+	plot.setBlock(placer, 4, 1, 17, '~');
 	// storage under stairs (room)
-	plot.type('d', "minecraft:spruce_door[half=upper,facing=south]"); plot.setBlock(10, 2, 15, 'd');
-	plot.type('D', "minecraft:spruce_door[half=lower,facing=south]"); plot.setBlock(10, 1, 15, 'D');
-	plot.setBlock(10, 1, 14, '~');
+	plot.setBlock(placer, 10, 2, 15, "minecraft:spruce_door[half=upper,facing=south]");
+	plot.setBlock(placer, 10, 1, 15, "minecraft:spruce_door[half=lower,facing=south]");
+	plot.setBlock(placer, 10, 1, 14, '~');
 }
 
 
 
 function radio_building_inside_walls_2nd(x, z, w, d, h) {
-	let plot = (new PlotterFactory())
-		.placer(region)
+	let plot = (new BlockPlotter())
 		.axis("use")
 		.xyz(x, surface_y+7, z)
-		.whd(w, h, d)
-		.build();
+		.whd(w, h, d);
 	plot.type('#', Material.LIGHT_GRAY_CONCRETE          );
 	plot.type('=', Material.STRIPPED_OAK_WOOD            );
 	plot.type('~', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
@@ -588,95 +577,94 @@ function radio_building_inside_walls_2nd(x, z, w, d, h) {
 		for (let iy=2; iy<h; iy++)
 			matrix[iy][iz].append(matrix[1][iz].toString());
 	}
-	plot.run();
+	plot.run(region, matrix);
 	// fence along stairs
 	plot.type('+', "minecraft:iron_bars[east=true,west=true]");
 	for (let ix=0; ix<5; ix++)
-	plot.setBlock(6+ix, 1, 15, '+');
+	plot.setBlock(placer, 6+ix, 1, 15, '+');
 	// doors - room near stairs (north)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(7, 2, 10, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(7, 1, 10, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(8, 2, 10, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(8, 1, 10, 'D');
-	plot.setBlock(7, 1,  9, '~'); plot.setBlock(8, 1,  9, '~');
-	plot.setBlock(7, 1, 11, '~'); plot.setBlock(8, 1, 11, '~');
+	plot.setBlock(placer, 7, 2, 10, "minecraft:iron_door[half=upper,facing=north,hinge=left]" );
+	plot.setBlock(placer, 7, 1, 10, "minecraft:iron_door[half=lower,facing=north,hinge=left]" );
+	plot.setBlock(placer, 8, 2, 10, "minecraft:iron_door[half=upper,facing=north,hinge=right]");
+	plot.setBlock(placer, 8, 1, 10, "minecraft:iron_door[half=lower,facing=north,hinge=right]");
+	plot.setBlock(placer, 7, 1,  9, '~'); plot.setBlock(placer, 8, 1,  9, '~');
+	plot.setBlock(placer, 7, 1, 11, '~'); plot.setBlock(placer, 8, 1, 11, '~');
 	// doors - room near stairs (west)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=west,hinge=right]"); plot.setBlock(5, 2, 13, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=west,hinge=right]"); plot.setBlock(5, 1, 13, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=west,hinge=left]" ); plot.setBlock(5, 2, 14, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=west,hinge=left]" ); plot.setBlock(5, 1, 14, 'D');
-	plot.setBlock(4, 1, 13, '~'); plot.setBlock(6, 1, 13, '~');
-	plot.setBlock(4, 1, 14, '~'); plot.setBlock(6, 1, 14, '~');
+	plot.setBlock(placer, 5, 2, 13, "minecraft:iron_door[half=upper,facing=west,hinge=right]");
+	plot.setBlock(placer, 5, 1, 13, "minecraft:iron_door[half=lower,facing=west,hinge=right]");
+	plot.setBlock(placer, 5, 2, 14, "minecraft:iron_door[half=upper,facing=west,hinge=left]" );
+	plot.setBlock(placer, 5, 1, 14, "minecraft:iron_door[half=lower,facing=west,hinge=left]" );
+	plot.setBlock(placer, 4, 1, 13, '~'); plot.setBlock(placer, 6, 1, 13, '~');
+	plot.setBlock(placer, 4, 1, 14, '~'); plot.setBlock(placer, 6, 1, 14, '~');
 	// doors - north room (west)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(13, 2, 7, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(13, 1, 7, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(14, 2, 7, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(14, 1, 7, 'D');
-	plot.setBlock(13, 1, 6, '~'); plot.setBlock(14, 1, 6, '~');
-	plot.setBlock(13, 1, 8, '~'); plot.setBlock(14, 1, 8, '~');
+	plot.setBlock(placer, 13, 2, 7, "minecraft:iron_door[half=upper,facing=north,hinge=left]" );
+	plot.setBlock(placer, 13, 1, 7, "minecraft:iron_door[half=lower,facing=north,hinge=left]" );
+	plot.setBlock(placer, 14, 2, 7, "minecraft:iron_door[half=upper,facing=north,hinge=right]");
+	plot.setBlock(placer, 14, 1, 7, "minecraft:iron_door[half=lower,facing=north,hinge=right]");
+	plot.setBlock(placer, 13, 1, 6, '~'); plot.setBlock(placer, 14, 1, 6, '~');
+	plot.setBlock(placer, 13, 1, 8, '~'); plot.setBlock(placer, 14, 1, 8, '~');
 	// doors - north room (east)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=left]" ); plot.setBlock(23, 2, 7, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=left]" ); plot.setBlock(23, 1, 7, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=north,hinge=right]"); plot.setBlock(24, 2, 7, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=north,hinge=right]"); plot.setBlock(24, 1, 7, 'D');
-	plot.setBlock(23, 1, 6, '~'); plot.setBlock(24, 1, 6, '~');
-	plot.setBlock(23, 1, 8, '~'); plot.setBlock(24, 1, 8, '~');
+	plot.setBlock(placer, 23, 2, 7, "minecraft:iron_door[half=upper,facing=north,hinge=left]" );
+	plot.setBlock(placer, 23, 1, 7, "minecraft:iron_door[half=lower,facing=north,hinge=left]" );
+	plot.setBlock(placer, 24, 2, 7, "minecraft:iron_door[half=upper,facing=north,hinge=right]");
+	plot.setBlock(placer, 24, 1, 7, "minecraft:iron_door[half=lower,facing=north,hinge=right]");
+	plot.setBlock(placer, 23, 1, 6, '~'); plot.setBlock(placer, 24, 1, 6, '~');
+	plot.setBlock(placer, 23, 1, 8, '~'); plot.setBlock(placer, 24, 1, 8, '~');
 	// doors - south room (west)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(19, 2, 12, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(19, 1, 12, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(20, 2, 12, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(20, 1, 12, 'D');
-	plot.setBlock(19, 1, 11, '~'); plot.setBlock(20, 1, 11, '~');
-	plot.setBlock(19, 1, 13, '~'); plot.setBlock(20, 1, 13, '~');
+	plot.setBlock(placer, 19, 2, 12, "minecraft:iron_door[half=upper,facing=south,hinge=right]");
+	plot.setBlock(placer, 19, 1, 12, "minecraft:iron_door[half=lower,facing=south,hinge=right]");
+	plot.setBlock(placer, 20, 2, 12, "minecraft:iron_door[half=upper,facing=south,hinge=left]" );
+	plot.setBlock(placer, 20, 1, 12, "minecraft:iron_door[half=lower,facing=south,hinge=left]" );
+	plot.setBlock(placer, 19, 1, 11, '~'); plot.setBlock(placer, 20, 1, 11, '~');
+	plot.setBlock(placer, 19, 1, 13, '~'); plot.setBlock(placer, 20, 1, 13, '~');
 	// doors - south room (east)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=right]"); plot.setBlock(27, 2, 12, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=right]"); plot.setBlock(27, 1, 12, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=south,hinge=left]" ); plot.setBlock(28, 2, 12, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=south,hinge=left]" ); plot.setBlock(28, 1, 12, 'D');
-	plot.setBlock(27, 1, 11, '~'); plot.setBlock(28, 1, 11, '~');
-	plot.setBlock(27, 1, 13, '~'); plot.setBlock(28, 1, 13, '~');
+	plot.setBlock(placer, 27, 2, 12, "minecraft:iron_door[half=upper,facing=south,hinge=right]");
+	plot.setBlock(placer, 27, 1, 12, "minecraft:iron_door[half=lower,facing=south,hinge=right]");
+	plot.setBlock(placer, 28, 2, 12, "minecraft:iron_door[half=upper,facing=south,hinge=left]" );
+	plot.setBlock(placer, 28, 1, 12, "minecraft:iron_door[half=lower,facing=south,hinge=left]" );
+	plot.setBlock(placer, 27, 1, 11, '~'); plot.setBlock(placer, 28, 1, 11, '~');
+	plot.setBlock(placer, 27, 1, 13, '~'); plot.setBlock(placer, 28, 1, 13, '~');
 	// door - roof access
-	plot.type('d', "minecraft:spruce_door[half=upper,facing=east]"); plot.setBlock(36, 2, 14, 'd');
-	plot.type('D', "minecraft:spruce_door[half=lower,facing=east]"); plot.setBlock(36, 1, 14, 'D');
-	plot.setBlock(35, 1, 14, '~');
+	plot.setBlock(placer, 36, 2, 14, "minecraft:spruce_door[half=upper,facing=east]");
+	plot.setBlock(placer, 36, 1, 14, "minecraft:spruce_door[half=lower,facing=east]");
+	plot.setBlock(placer, 35, 1, 14, '~');
 	// roof access platform
 	plot.type('%', Material.STONE);
 	plot.type('_', Material.STONE_PRESSURE_PLATE);
 	for (let iz=0; iz<3; iz++) {
 		for (let ix=0; ix<3; ix++) {
 			if (ix == 1 && iz == 1) continue;
-			plot.setBlock(ix+37, 8, iz+12, '_');
-			plot.setBlock(ix+37, 7, iz+12, '%');
+			plot.setBlock(placer, ix+37, 8, iz+12, '_');
+			plot.setBlock(placer, ix+37, 7, iz+12, '%');
 		}
 	}
 	// roof access ladder
 	plot.type('H', "ladder[facing=west]");
 	for (let iy=0; iy<6; iy++)
-		plot.setBlock(38, iy+2, 13, 'H');
+		plot.setBlock(placer, 38, iy+2, 13, 'H');
 	// roof access hatch
-	plot.type('/', "spruce_trapdoor[facing=east,half=bottom]");
-	plot.setBlock(38, 8, 13, '/');
+	plot.setBlock(placer, 38, 8, 13, "spruce_trapdoor[facing=east,half=bottom]");
 	// door - storage
-	plot.type('d', "minecraft:spruce_door[half=upper,facing=east]"); plot.setBlock(36, 2, 16, 'd');
-	plot.type('D', "minecraft:spruce_door[half=lower,facing=east]"); plot.setBlock(36, 1, 16, 'D');
-	plot.setBlock(35, 1, 16, '~');
+	plot.setBlock(placer, 36, 2, 16, "minecraft:spruce_door[half=upper,facing=east]");
+	plot.setBlock(placer, 36, 1, 16, "minecraft:spruce_door[half=lower,facing=east]");
+	plot.setBlock(placer, 35, 1, 16, '~');
 	// doors - far east room (end of hall)
-	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=left]" ); plot.setBlock(30, 2,  9, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=left]" ); plot.setBlock(30, 1,  9, 'D');
-	plot.type('d', "minecraft:iron_door[half=upper,facing=east,hinge=right]"); plot.setBlock(30, 2, 10, 'd');
-	plot.type('D', "minecraft:iron_door[half=lower,facing=east,hinge=right]"); plot.setBlock(30, 1, 10, 'D');
-	plot.setBlock(29, 1,  9, '~'); plot.setBlock(31, 1,  9, '~');
-	plot.setBlock(29, 1, 10, '~'); plot.setBlock(31, 1, 10, '~');
+	plot.setBlock(placer, 30, 2,  9, "minecraft:iron_door[half=upper,facing=east,hinge=left]");
+	plot.setBlock(placer, 30, 1,  9, "minecraft:iron_door[half=lower,facing=east,hinge=left]");
+	plot.setBlock(placer, 30, 2, 10, "minecraft:iron_door[half=upper,facing=east,hinge=right]");
+	plot.setBlock(placer, 30, 1, 10, "minecraft:iron_door[half=lower,facing=east,hinge=right]");
+	plot.setBlock(placer, 29, 1,  9, '~'); plot.setBlock(placer, 31, 1,  9, '~');
+	plot.setBlock(placer, 29, 1, 10, '~'); plot.setBlock(placer, 31, 1, 10, '~');
 	// recording studio window (2nd floor)
 	plot.type('x', "minecraft:black_stained_glass_pane[east=true,west=true]");
 	plot.type('<', "minecraft:oak_stairs[facing=south,half=top]"            );
 	plot.type('>', "minecraft:oak_stairs[facing=north,half=top]"            );
 	for (let ix=0; ix<4; ix++) {
-		plot.setBlock(ix+1, 3, 10, 'x'); // glass
-		plot.setBlock(ix+1, 2, 10, 'x'); // glass
-		plot.setBlock(ix+1, 1, 10, '='); // wall
-		plot.setBlock(ix+1, 1, 11, '>'); // inside desk
-		plot.setBlock(ix+1, 1,  9, '<'); // outside desk
+		plot.setBlock(placer, ix+1, 3, 10, 'x'); // glass
+		plot.setBlock(placer, ix+1, 2, 10, 'x'); // glass
+		plot.setBlock(placer, ix+1, 1, 10, '='); // wall
+		plot.setBlock(placer, ix+1, 1, 11, '>'); // inside desk
+		plot.setBlock(placer, ix+1, 1,  9, '<'); // outside desk
 	}
 }
 
@@ -693,12 +681,10 @@ function radio_roof_sign(x, y, z, w, h) {
 	graphics.setColor(Color.WHITE);
 	graphics.setBackground(Color.BLACK);
 	graphics.drawString(text, 0, h);
-	let plot = (new PlotterFactory())
-		.placer(region)
+	let plot = (new BlockPlotter())
 		.axis("use")
 		.xyz(x, surface_y+y, z)
-		.whd(w, 2, 1)
-		.build();
+		.whd(w, 2, 1);
 	plot.type('#', "minecraft:copper_block");
 	plot.type('=', "minecraft:stone"       );
 	plot.type('+', "minecraft:iron_bars[north=true,south=true,east=true,west=true]");
@@ -706,7 +692,7 @@ function radio_roof_sign(x, y, z, w, h) {
 		for (let ix=0; ix<w; ix++) {
 			let color = new Color(img.getRGB(ix, h-iy-1));
 			if (Color.WHITE.equals(color))
-				plot.setBlock(ix, iy+2, 0, '#');
+				plot.setBlock(placer, ix, iy+2, 0, '#');
 		}
 	}
 	graphics.dispose();
@@ -714,7 +700,7 @@ function radio_roof_sign(x, y, z, w, h) {
 	// 1st floor
 	matrix[1][0].append(" +  +  +  +  +    +   +");
 	matrix[0][0].append(" =  =  =  =  =    =   =");
-	plot.run();
+	plot.run(region, matrix);
 }
 
 

@@ -9,6 +9,7 @@ import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_094;
 import com.poixson.backrooms.gens.Gen_094.HillsData;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -88,13 +89,13 @@ public class Level_094 extends BackroomsLevel {
 
 
 	@Override
-	protected void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
+	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// pre-generate
 		final PregenLevel94 pregen = new PregenLevel94();
 		this.gen.pregenerate(pregen.hills, chunkX, chunkZ);
 		// generate
-		this.gen.generate(pregen, chunk, plots, chunkX, chunkZ);
+		this.gen.generate(pregen, plots, chunk, chunkX, chunkZ);
 	}
 
 

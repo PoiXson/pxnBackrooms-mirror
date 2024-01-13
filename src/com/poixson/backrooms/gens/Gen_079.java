@@ -15,8 +15,9 @@ public class Gen_079 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 //TODO
 	}
 

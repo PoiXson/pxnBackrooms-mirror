@@ -8,6 +8,7 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_011;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
 
@@ -23,8 +24,8 @@ public class Pop_308 implements BackroomsPop {
 
 
 	@Override
-	public void populate(final int chunkX, final int chunkZ,
-	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_308) return;
 	}
 

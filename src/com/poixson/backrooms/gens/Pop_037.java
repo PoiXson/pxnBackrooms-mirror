@@ -10,6 +10,7 @@ import org.bukkit.generator.LimitedRegion;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.LineTracer;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -112,8 +113,8 @@ public class Pop_037 implements BackroomsPop {
 
 
 	@Override
-	public void populate(final int chunkX, final int chunkZ,
-	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_037) return;
 		final Material block_wall_a = Material.matchMaterial(this.gen.block_wall_a.get());
 		final Material block_wall_b = Material.matchMaterial(this.gen.block_wall_b.get());

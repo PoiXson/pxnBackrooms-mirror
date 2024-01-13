@@ -24,8 +24,9 @@ public class Gen_866 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 / *
 		if (!ENABLE_GEN_866) return;
 		for (int iz=0; iz<16; iz++) {

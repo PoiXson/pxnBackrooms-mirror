@@ -10,8 +10,8 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 
 
 public class Pop_001 implements BackroomsPop {
@@ -32,8 +32,8 @@ public class Pop_001 implements BackroomsPop {
 
 
 	@Override
-	public void populate(final int chunkX, final int chunkZ,
-	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_001) return;
 		int xx, zz;
 		double value;
@@ -73,13 +73,11 @@ public class Pop_001 implements BackroomsPop {
 		{
 			this.level0.portal_1_well.add(x, z);
 			final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(region)
+				(new BlockPlotter())
 				.axis("use")
 				.xyz(x, this.gen.level_y, z)
 				.wd(WELL_SIZE, WELL_SIZE)
-				.h(SUBFLOOR+WELL_HEIGHT+5)
-				.build();
+				.h(SUBFLOOR+WELL_HEIGHT+5);
 			plot.type('#', Material.BEDROCK);
 			plot.type('x', Material.MOSSY_STONE_BRICKS);
 			plot.type('.', Material.AIR  );
@@ -111,7 +109,7 @@ public class Pop_001 implements BackroomsPop {
 				for (int iz=0; iz<5; iz++)
 					matrix[iy+i][iz].append(".....");
 			}
-			plot.run();
+			plot.run(region, matrix);
 		}
 	}
 

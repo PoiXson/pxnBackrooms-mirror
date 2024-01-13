@@ -13,6 +13,7 @@ import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
 import com.poixson.tools.xRand;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.LocationStoreManager;
 
@@ -170,9 +171,9 @@ public class Level_771 extends BackroomsLevel {
 
 
 	@Override
-	protected void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		this.gen.generate(null, plots, chunk, chunkX, chunkZ);
 	}
 
 

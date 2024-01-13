@@ -24,9 +24,9 @@ import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -184,8 +184,9 @@ public class Gen_037 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_037) return;
 		final BlockData block_wall_a     = StringToBlockData(this.block_wall_a,     DEFAULT_BLOCK_WALL_A    );
 		final BlockData block_wall_b     = StringToBlockData(this.block_wall_b,     DEFAULT_BLOCK_WALL_B    );
@@ -221,12 +222,10 @@ public class Gen_037 extends BackroomsGen {
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
 				final BlockPlotter plot =
-					(new PlotterFactory())
-					.placer(chunk)
+					(new BlockPlotter())
 					.axis("use")
 					.xyz(rx*8, y, rz*8)
-					.whd(8, h, 8)
-					.build();
+					.whd(8, h, 8);
 				plot.type('#', block_wall_a);
 				plot.type('@', block_wall_b);
 				plot.type('w', "minecraft:water[level=0]");
@@ -419,13 +418,11 @@ public class Gen_037 extends BackroomsGen {
 							((Level_000)this.backlevel).portal_0_to_37.add(xx, zz);
 							final int hh = Level_000.H_000 + SUBCEILING + Level_000.H_006 + SUBFLOOR + 5;
 							final BlockPlotter pp =
-								(new PlotterFactory())
-								.placer(chunk)
+								(new BlockPlotter())
 								.axis("use")
 								.xz(rx*8, rz*8)
 								.y(Level_000.Y_000+SUBFLOOR)
-								.whd(6, hh+1, 6)
-								.build();
+								.whd(6, hh+1, 6);
 							pp.type('#', Material.BEDROCK  );
 							pp.type('g', Material.GLOWSTONE);
 							pp.type('.', Material.AIR      );
@@ -463,7 +460,7 @@ public class Gen_037 extends BackroomsGen {
 							mtx[hh][3].append("g,,,,g");
 							mtx[hh][4].append(" g,,g ");
 							mtx[hh][5].append("  gg  ");
-							plots.add(pp);
+							plots.add(new Tuple<BlockPlotter, StringBuilder[][]>(pp, mtx));
 						}
 					}
 					break;
@@ -480,7 +477,7 @@ public class Gen_037 extends BackroomsGen {
 					for (int iz=0; iz<8; iz++)
 						StringUtils.ReplaceWith(matrix[h-1][iz], ' ', 'g');
 				}
-				plot.run();
+				plot.run(chunk, matrix);
 			} // end room x
 		} // end room z
 	}

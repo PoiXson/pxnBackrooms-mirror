@@ -20,6 +20,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.tools.PathTracer;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
@@ -138,8 +139,9 @@ public class Gen_309 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_309) return;
 		final int path_width = this.path_width.get();
 		final BlockData block_dirt     = StringToBlockData(this.block_dirt,     DEFAULT_BLOCK_DIRT    );

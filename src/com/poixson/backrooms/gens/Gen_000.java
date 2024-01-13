@@ -33,10 +33,10 @@ import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabc;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.utils.FastNoiseLiteD.CellularReturnType;
@@ -247,8 +247,9 @@ public class Gen_000 extends BackroomsGen {
 	}
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_000) return;
 		final BlockData block_wall            = StringToBlockData(this.block_wall,        DEFAULT_BLOCK_WALL       );
 		final BlockData block_wall_base       = StringToBlockData(this.block_wall_base,   DEFAULT_BLOCK_WALL_BASE  );
@@ -344,21 +345,19 @@ public class Gen_000 extends BackroomsGen {
 							if (!found_basement_wall) {
 								((Level_000)this.backlevel).portal_0_to_1.add(xx, zz);
 								final int h = Level_000.H_023 + this.level_h + (SUBFLOOR*3) + (SUBCEILING*2);
-								final PlotterFactory factory =
-									(new PlotterFactory())
-									.placer(chunk)
+								final BlockPlotter plot =
+									(new BlockPlotter())
 									.axis("use")
 									.rotate(dao.box_dir)
 									.y((cy - h) + 1)
 									.whd(5, h, 6);
 								switch (dao.box_dir) {
-								case NORTH: factory.xz(ix-3, iz-4); break;
-								case SOUTH: factory.xz(ix,   iz  ); break;
-								case EAST:  factory.xz(ix-2, iz-2); break;
-								case WEST:  factory.xz(ix-4, iz-3); break;
+								case NORTH: plot.xz(ix-3, iz-4); break;
+								case SOUTH: plot.xz(ix,   iz  ); break;
+								case EAST:  plot.xz(ix-2, iz-2); break;
+								case WEST:  plot.xz(ix-4, iz-3); break;
 								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
 								}
-								final BlockPlotter plot = factory.build();
 								plot.type('.', Material.AIR         );
 								plot.type('=', block_wall           );
 								plot.type('x', Material.BEDROCK     );
@@ -426,7 +425,7 @@ public class Gen_000 extends BackroomsGen {
 								matrix[iy][2].append("=xxx=");
 								matrix[iy][3].append("=xxx=");
 								matrix[iy][4].append("== ==");
-								plots.add(plot);
+								plots.add(new Tuple<BlockPlotter, StringBuilder[][]>(plot, matrix));
 							}
 						} // end portal to basement
 					} // end special

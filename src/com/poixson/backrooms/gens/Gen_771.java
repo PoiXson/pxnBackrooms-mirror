@@ -27,9 +27,9 @@ import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
@@ -101,8 +101,9 @@ public class Gen_771 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_771) return;
 		final boolean centerX = (chunkX == 0 || chunkX == -1);
 		final boolean centerZ = (chunkZ == 0 || chunkZ == -1);
@@ -133,13 +134,11 @@ public class Gen_771 extends BackroomsGen {
 	protected void generateCenterArches(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
 		final BlockPlotter plot =
-			(new PlotterFactory())
-			.placer(chunk)
+			(new BlockPlotter())
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
 			.y(this.level_y + this.level_h + 1)
-			.whd(16, 15, 16)
-			.build();
+			.whd(16, 15, 16);
 		final BlockFace facing = AxToFace(axis.charAt(2));
 		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                       );
 		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB,   "[type=top]"   );
@@ -176,18 +175,16 @@ public class Gen_771 extends BackroomsGen {
 		matrix[2][15].append("   |");
 		matrix[1][15].append("   @");
 		matrix[0][15].append("   #");
-		plot.run();
+		plot.run(chunk, matrix);
 	}
 	protected void generateCenterFloor(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
 		final BlockPlotter plot =
-			(new PlotterFactory())
-			.placer(chunk)
+			(new BlockPlotter())
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
 			.y((this.level_y + this.level_h) - 3)
-			.whd(16, 6, 16)
-			.build();
+			.whd(16, 6, 16);
 		plot.type('#', Material.POLISHED_BLACKSTONE         );
 		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
 		plot.type('X', Material.GILDED_BLACKSTONE           );
@@ -230,7 +227,7 @@ public class Gen_771 extends BackroomsGen {
 		matrix[3][13].append("*######"         ); matrix[4][13].append("       +++"      ); matrix[5][13].append("       ___"      );
 		matrix[3][14].append("*####"           ); matrix[4][14].append("     +++"        ); matrix[5][14].append("     ___"        );
 		matrix[3][15].append("*##"             ); matrix[4][15].append("  . ++"          ); matrix[5][15].append("    __"          );
-		plot.run();
+		plot.run(chunk, matrix);
 	}
 
 
@@ -277,13 +274,11 @@ public class Gen_771 extends BackroomsGen {
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final double thresh_lamps = this.thresh_lamps.get();
 		final BlockPlotter plot =
-			(new PlotterFactory())
-			.placer(chunk)
+			(new BlockPlotter())
 			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
 			.xz(x, z)
 			.y(this.level_y+this.level_h)
-			.whd(16, 3, 16)
-			.build();
+			.whd(16, 3, 16);
 		final String wall_dirs;
 		switch (direction) {
 		case NORTH:
@@ -309,20 +304,18 @@ public class Gen_771 extends BackroomsGen {
 				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
 			}
 		}
-		plot.run();
+		plot.run(chunk, matrix);
 	}
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final double thresh_light = this.thresh_lamps.get();
 		final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(chunk)
+				(new BlockPlotter())
 				.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
 				.xz(x, z)
 				.y(this.level_y-3)
-				.whd(16, 6, 16)
-				.build();
+				.whd(16, 6, 16);
 		final String wall_dirs;
 		switch (direction) {
 		case NORTH:
@@ -352,7 +345,7 @@ public class Gen_771 extends BackroomsGen {
 				StringUtils.ReplaceInString(matrix[4][i], "L", 2);
 			}
 		}
-		plot.run();
+		plot.run(chunk, matrix);
 	}
 
 
@@ -426,13 +419,11 @@ public class Gen_771 extends BackroomsGen {
 			final BlockFace facing, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
 		final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(chunk)
+				(new BlockPlotter())
 				.axis("u"+FaceToAxString(facing)+FaceToAxString(side))
 				.xz(x, z)
 				.y(this.level_y)
-				.whd(2, this.level_h+2, 5)
-				.build();
+				.whd(2, this.level_h+2, 5);
 		plot.type('#', Material.DEEPSLATE_BRICKS);
 		plot.type('w', Material.DARK_OAK_PLANKS);
 		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(facing.getOppositeFace())+"]");
@@ -570,7 +561,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		default: break;
 		}
-		plot.run();
+		plot.run(chunk, matrix);
 	}
 
 

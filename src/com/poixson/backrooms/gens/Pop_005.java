@@ -16,6 +16,7 @@ import com.poixson.backrooms.gens.hotel.HotelRoomGuest;
 import com.poixson.backrooms.gens.hotel.HotelRoomPool;
 import com.poixson.backrooms.gens.hotel.HotelRoomStairs;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -36,24 +37,24 @@ public class Pop_005 implements BackroomsPop {
 
 
 	@Override
-	public void populate(final int chunkX, final int chunkZ,
-	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_005) return;
 		final int x = (chunkX * 16) + 7;
 		final int z = (chunkZ * 16) + 7;
 		final int y = this.gen.level_y + SUBFLOOR + 1;
 		// returns x z w d
-		final Iabcd area = this.findRoomWalls(x, y, z, region);
+		final Iabcd area = this.findRoomWalls(region, x, y, z);
 		if (area == null) return;
 //TODO: alternate rooms: front desk, theater
-		this.buildHotelRooms(area, y, region, plots);
+		this.buildHotelRooms(plots, region, area, y);
 	}
 
 
 
 	// returns x z w d
-	public Iabcd findRoomWalls(final int x, final int y, final int z,
-			final LimitedRegion region) {
+	public Iabcd findRoomWalls(final LimitedRegion region,
+			final int x, final int y, final int z) {
 		final Material block_subwall = StringToMaterial(this.gen.block_subwall, DEFAULT_BLOCK_SUBWALL);
 		if (block_subwall == null) throw new RuntimeException("Invalid block type for level 5 Hall-SubWall");
 		// is room area, not hall or wall
@@ -107,8 +108,8 @@ public class Pop_005 implements BackroomsPop {
 
 
 	// group of rooms
-	public void buildHotelRooms(final Iabcd area, final int y,
-			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void buildHotelRooms(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final Iabcd area, final int y) {
 		final int room_size = this.gen.nominal_room_size.get();
 		if (room_size < 4 || room_size > 20) throw new RuntimeException("Invalid nominal room size: "+Integer.toString(room_size));
 		final Material door_guest = Material.matchMaterial(this.gen.door_guest.get());
@@ -193,7 +194,7 @@ public class Pop_005 implements BackroomsPop {
 				if (room_area.d == 9) {
 					if (room_stairs.checkAtticWall(region, room_area, direction)) {
 						this.level0.portal_5_to_19.add(room_area.a, room_area.b);
-						room_stairs.build(room_area, y, direction, region, plots);
+						room_stairs.build(plots, region, room_area, y, direction);
 						continue LOOP_ROOM_X;
 					}
 				}
@@ -201,11 +202,11 @@ public class Pop_005 implements BackroomsPop {
 				final BlockFace pool_direction = room_pool.canBuildHere(room_area, region);
 				if (pool_direction != null) {
 					this.level0.portal_5_to_37.add(room_area.a, room_area.b);
-					room_pool.build(room_area, y, direction, region, plots);
+					room_pool.build(plots, region, room_area, y, direction);
 					continue LOOP_ROOM_X;
 				}
 				// hotel guest room
-				room_guest.build(room_area, y, direction, region, plots);
+				room_guest.build(plots, region, room_area, y, direction);
 			} // end ix
 		} // end iz
 	}

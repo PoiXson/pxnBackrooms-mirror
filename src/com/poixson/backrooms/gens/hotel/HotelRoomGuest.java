@@ -17,9 +17,9 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.gens.hotel.HotelRoomSpecs.RoomTheme;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
@@ -44,8 +44,8 @@ public class HotelRoomGuest implements HotelRoom {
 
 
 	@Override
-	public void build(final Iabcd area, final int y, final BlockFace facing,
-			final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void build(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final Iabcd area, final int y, final BlockFace facing) {
 		final boolean axis_x = "x".equals(FaceToPillarAxisString(Rotate(facing, 0.25)));
 		final BlockData block_hotel_door_border_top = (axis_x
 			? StringToBlockData(this.level0.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
@@ -66,13 +66,11 @@ public class HotelRoomGuest implements HotelRoom {
 		final int d = area.d;
 		final int h = Level_000.H_005 + 2;
 		final BlockPlotter plot =
-			(new PlotterFactory())
-			.placer(region)
+			(new BlockPlotter())
 			.axis("use")
 			.rotate(facing.getOppositeFace())
 			.xyz(x, y, z)
-			.whd(w, h, d)
-			.build();
+			.whd(w, h, d);
 		plot.type('#', specs.walls);
 		plot.type(',', specs.carpet);
 		plot.type('.', Material.AIR);
@@ -105,7 +103,7 @@ public class HotelRoomGuest implements HotelRoom {
 		StringUtils.ReplaceInString(matrix[3][1], "&&&", door_x+1);
 		StringUtils.ReplaceInString(matrix[2][1], "$.$", door_x+1);
 		StringUtils.ReplaceInString(matrix[1][1], "$_$", door_x+1);
-		plot.run();
+		plot.run(region, matrix);
 	}
 
 

@@ -23,9 +23,9 @@ import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_094.PregenLevel94;
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
@@ -203,8 +203,9 @@ public class Gen_094 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_094) return;
 		final BlockData block_dirt             = StringToBlockData(this.block_dirt,              DEFAULT_BLOCK_DIRT             );
 		final BlockData block_grass_block      = StringToBlockData(this.block_grass_block,       DEFAULT_BLOCK_GRASS_BLOCK      );
@@ -296,12 +297,10 @@ public class Gen_094 extends BackroomsGen {
 				((Stairs)block_house_roofB).setFacing(BlockFace.EAST);
 			}
 			final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(chunk)
+				(new BlockPlotter())
 				.axis("use")
 				.xyz(house_loc.a, y+house_y, house_loc.b)
-				.whd(house_width, house_height+house_half+1, house_width)
-				.build();
+				.whd(house_width, house_height+house_half+1, house_width);
 			plot.type('#', block_house_wall      );
 			plot.type('<', block_house_roofA     );
 			plot.type('>', block_house_roofB     );
@@ -350,7 +349,7 @@ public class Gen_094 extends BackroomsGen {
 				StringUtils.ReplaceInString(matrix[house_height-i][house_half+1],  "w", 0            );
 				StringUtils.ReplaceInString(matrix[house_height-i][house_half+1],  "w", house_width-1);
 			}
-			plot.run();
+			plot.run(chunk, matrix);
 		}
 	}
 

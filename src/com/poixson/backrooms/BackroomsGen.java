@@ -5,6 +5,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
@@ -58,8 +59,9 @@ public abstract class BackroomsGen {
 
 
 
-	public abstract void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ);
+	public abstract void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ);
 
 
 

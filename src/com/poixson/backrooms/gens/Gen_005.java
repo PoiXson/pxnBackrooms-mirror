@@ -24,6 +24,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.tools.abstractions.AtomicDouble;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -245,8 +246,9 @@ public class Gen_005 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_005) return;
 		final BlockData block_subfloor           = StringToBlockData(this.block_subfloor,           DEFAULT_BLOCK_SUBFLOOR          );
 		final BlockData block_subceiling         = StringToBlockData(this.block_subceiling,         DEFAULT_BLOCK_SUBCEILING        );

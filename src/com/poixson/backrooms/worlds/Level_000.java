@@ -30,6 +30,7 @@ import com.poixson.backrooms.gens.Pop_037;
 import com.poixson.backrooms.gens.Pop_309;
 import com.poixson.backrooms.listeners.Listener_023;
 import com.poixson.tools.xRand;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.LocationStoreManager;
@@ -375,12 +376,12 @@ public class Level_000 extends BackroomsLevel {
 
 
 	@Override
-	protected void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
+	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// level 188 - the windows
 		if (chunkX >-4 && chunkZ >-4
 		&&  chunkX < 4 && chunkZ < 4) {
-			this.gen_188.generate(null, chunk, null, chunkX, chunkZ);
+			this.gen_188.generate(null, null, chunk, chunkX, chunkZ);
 		// other levels
 		} else {
 			// pre-generate
@@ -390,15 +391,15 @@ public class Level_000 extends BackroomsLevel {
 			this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
 			this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // pools
 			// generate
-			this.gen_001.generate(pregen, chunk, plots, chunkX, chunkZ); // basement
-			this.gen_023.generate(pregen, chunk, plots, chunkX, chunkZ); // overgrowth
-			this.gen_000.generate(pregen, chunk, plots, chunkX, chunkZ); // lobby
-			this.gen_006.generate(pregen, chunk, plots, chunkX, chunkZ); // lights out
-			this.gen_037.generate(pregen, chunk, plots, chunkX, chunkZ); // pools
-			this.gen_005.generate(pregen, chunk, plots, chunkX, chunkZ); // hotel
-			this.gen_019.generate(pregen, chunk, plots, chunkX, chunkZ); // attic
+			this.gen_001.generate(pregen, plots, chunk, chunkX, chunkZ); // basement
+			this.gen_023.generate(pregen, plots, chunk, chunkX, chunkZ); // overgrowth
+			this.gen_000.generate(pregen, plots, chunk, chunkX, chunkZ); // lobby
+			this.gen_006.generate(pregen, plots, chunk, chunkX, chunkZ); // lights out
+			this.gen_037.generate(pregen, plots, chunk, chunkX, chunkZ); // pools
+			this.gen_005.generate(pregen, plots, chunk, chunkX, chunkZ); // hotel
+			this.gen_019.generate(pregen, plots, chunk, chunkX, chunkZ); // attic
 		}
-		this.gen_309.generate(null, chunk, null, chunkX, chunkZ); // radio station
+		this.gen_309.generate(null, null, chunk, chunkX, chunkZ); // radio station
 	}
 
 

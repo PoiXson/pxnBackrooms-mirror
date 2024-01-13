@@ -33,8 +33,8 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 
 
 // 188 | The Windows
@@ -74,8 +74,9 @@ public class Gen_188 extends BackroomsGen {
 
 
 	@Override
-	public void generate(final PreGenData pregen, final ChunkData chunk,
-			final LinkedList<BlockPlotter> plots, final int chunkX, final int chunkZ) {
+	public void generate(final PreGenData pregen,
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		final Level_000 level0 = (Level_000) this.backlevel;
 		final BlockData block_subfloor            = StringToBlockData(this.block_subfloor,                     DEFAULT_BLOCK_SUBFLOOR          );
 		final BlockData block_floor               = StringToBlockData(this.block_floor,                        DEFAULT_BLOCK_FLOOR             );
@@ -275,12 +276,10 @@ public class Gen_188 extends BackroomsGen {
 		// east doors
 		if (chunkX == 3 && chunkZ == 0) {
 			final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(chunk)
+				(new BlockPlotter())
 				.axis("eus")
 				.xyz(13, y+SUBFLOOR+1, 0)
-				.whd(3, 4, 8)
-				.build();
+				.whd(3, 4, 8);
 			plot.type('.', Material.AIR    );
 			plot.type('x', Material.BEDROCK);
 			plot.type('#', block_wall      );
@@ -301,17 +300,15 @@ public class Gen_188 extends BackroomsGen {
 			matrix[2][2].append("........");
 			matrix[2][1].append("--.--.--");
 			matrix[2][0].append("xxxxxxxx");
-			plot.run();
+			plot.run(chunk, matrix);
 		}
 		// south doors
 		if (chunkX == 1 && chunkZ == 3) {
 			final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(chunk)
+				(new BlockPlotter())
 				.axis("suw")
 				.xyz(10, y+SUBFLOOR+1, 13)
-				.whd(9, 4, 3)
-				.build();
+				.whd(9, 4, 3);
 			plot.type('.', Material.AIR    );
 			plot.type('x', Material.BEDROCK);
 			plot.type('#', block_wall      );
@@ -332,7 +329,7 @@ public class Gen_188 extends BackroomsGen {
 			matrix[2][2].append("........");
 			matrix[2][1].append("--.--.--");
 			matrix[2][0].append("xxxxxxxx");
-			plot.run();
+			plot.run(chunk, matrix);
 		}
 	}
 

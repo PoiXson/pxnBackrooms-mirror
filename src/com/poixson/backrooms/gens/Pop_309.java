@@ -25,8 +25,8 @@ import com.poixson.scripting.xScript;
 import com.poixson.scripting.xScriptInstance;
 import com.poixson.scripting.loader.xScriptLoader;
 import com.poixson.scripting.loader.xScriptLoader_File;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.plotter.PlotterFactory;
 
 
 // 309 | Radio Station
@@ -54,8 +54,8 @@ public class Pop_309 implements BackroomsPop {
 
 
 	@Override
-	public void populate(final int chunkX, final int chunkZ,
-	final LimitedRegion region, final LinkedList<BlockPlotter> plots) {
+	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_309) return;
 		// trees
 		final int count_trees;
@@ -150,12 +150,10 @@ public class Pop_309 implements BackroomsPop {
 	public void populate_stairs(final int x, final int y, final int z, final LimitedRegion region) {
 		((Level_000)this.gen.backlevel).portal_309_stairs.add(x, z);
 		final BlockPlotter plot =
-			(new PlotterFactory())
-			.placer(region)
+			(new BlockPlotter())
 			.axis("use")
 			.xyz(x+6, y, z+6)
-			.whd(2, 11, 11)
-			.build();
+			.whd(2, 11, 11);
 		plot.type('<', "minecraft:stone_brick_stairs[facing=south]");
 		plot.type('>', "minecraft:stone_brick_stairs[facing=north,half=top]");
 		plot.type('L', "minecraft:light[level=15]"                 );
@@ -164,7 +162,7 @@ public class Pop_309 implements BackroomsPop {
 			matrix[i][i  ].append("<<");
 			matrix[i][i+1].append(">>");
 		}
-		plot.run();
+		plot.run(region, matrix);
 	}
 
 
@@ -176,12 +174,10 @@ public class Pop_309 implements BackroomsPop {
 		final Material block_door = this.getDoorStyle(value);
 		final Material block_wall = this.getDoorWallStyle(value);
 		final BlockPlotter plot =
-			(new PlotterFactory())
-			.placer(region)
+			(new BlockPlotter())
 			.axis("use")
 			.xyz(x+6, y-1, z+6)
-			.whd(3, 4, 3)
-			.build();
+			.whd(3, 4, 3);
 		plot.type('#', block_wall                             );
 		plot.type('d', block_door, "[facing=north,half=upper,hinge=right]");
 		plot.type('D', block_door, "[facing=north,half=lower,hinge=right]");
@@ -194,7 +190,7 @@ public class Pop_309 implements BackroomsPop {
 		matrix[2][1].append("# #"); matrix[2][0].append(" d" ); matrix[2][2].append(" b" );
 		matrix[1][1].append("#_#"); matrix[1][0].append("LDL"); matrix[1][2].append("LBL");
 		matrix[0][1].append(" #" );
-		plot.run();
+		plot.run(region, matrix);
 	}
 	public Material getDoorStyle(final double value) {
 		final int style = ((int)Math.floor(value * 1000.0)) % 11;
@@ -258,12 +254,10 @@ public class Pop_309 implements BackroomsPop {
 		// top half
 		{
 			final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(region)
+				(new BlockPlotter())
 				.axis("dse")
 				.xyz(x+6, y+1, z+6)
-				.whd(5, 12, 5)
-				.build();
+				.whd(5, 12, 5);
 			plot.type('#', Material.STONE_BRICKS                    );
 			plot.type('-', Material.STONE_BRICK_SLAB                );
 			plot.type('/', "minecraft:spruce_trapdoor[facing=south]");
@@ -288,17 +282,15 @@ public class Pop_309 implements BackroomsPop {
 				matrix[iy][2].append(" #H#");
 				matrix[iy][3].append("  #" );
 			}
-			plot.run();
+			plot.run(region, matrix);
 		}
 		// bottom half
 		{
 			final BlockPlotter plot =
-				(new PlotterFactory())
-				.placer(region)
+				(new BlockPlotter())
 				.axis("use")
 				.xyz(x+7, Y_019+SUBFLOOR, z+7)
-				.whd(3, 15, 3)
-				.build();
+				.whd(3, 15, 3);
 			plot.type('#', Material.STONE_BRICKS      );
 			plot.type('$', Material.MOSSY_STONE_BRICKS);
 			plot.type('H', Material.LADDER            );
@@ -317,7 +309,7 @@ public class Pop_309 implements BackroomsPop {
 			matrix[0][0].append("$$$");
 			matrix[0][1].append("$$$");
 			matrix[0][2].append("$$$");
-			plot.run();
+			plot.run(region, matrix);
 		}
 		((Level_000)this.gen.backlevel).portal_19_to_309.add(x, z);
 	}

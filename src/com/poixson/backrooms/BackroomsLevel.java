@@ -32,6 +32,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.poixson.tools.xRand;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
 
@@ -214,17 +215,17 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	public void generateSurface(final WorldInfo worldInfo, final Random random,
 			final int chunkX, final int chunkZ, final ChunkData chunk) {
 		// generate
-		final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
-		this.generate(chunkX, chunkZ, chunk, delayed_plotters);
+		final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> delayed_plotters = new LinkedList<Tuple<BlockPlotter, StringBuilder[][]>>();
+		this.generate(delayed_plotters, chunk, chunkX, chunkZ);
 		// place delayed blocks
 		if (!delayed_plotters.isEmpty()) {
-			for (final BlockPlotter plot : delayed_plotters)
-				plot.run();
+			for (final Tuple<BlockPlotter, StringBuilder[][]> entry : delayed_plotters)
+				entry.key.run(chunk, entry.val);
 			delayed_plotters.clear();
 		}
 	}
-	protected abstract void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots);
+	protected abstract void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ);
 
 
 
@@ -250,14 +251,14 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		@Override
 		public void populate(final WorldInfo worldInfo, final Random rnd,
 				final int chunkX, final int chunkZ, final LimitedRegion region) {
-			final LinkedList<BlockPlotter> delayed_plotters = new LinkedList<BlockPlotter>();
+			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> delayed_plotters = new LinkedList<Tuple<BlockPlotter, StringBuilder[][]>>();
 			// block plotters
 			for (final BackroomsPop pop : BackroomsLevel.this.pops)
-				pop.populate(chunkX, chunkZ, region, delayed_plotters);
+				pop.populate(delayed_plotters, region, chunkX, chunkZ);
 			// place delayed blocks
 			if (!delayed_plotters.isEmpty()) {
-				for (final BlockPlotter plot : delayed_plotters)
-					plot.run();
+				for (final Tuple<BlockPlotter, StringBuilder[][]> entry : delayed_plotters)
+					entry.key.run(region, entry.val);
 				delayed_plotters.clear();
 			}
 		}

@@ -14,6 +14,7 @@ import com.poixson.backrooms.gens.Gen_011;
 import com.poixson.backrooms.gens.Gen_040;
 import com.poixson.backrooms.gens.Gen_308;
 import com.poixson.backrooms.gens.Pop_308;
+import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
 
@@ -162,13 +163,13 @@ public class Level_011 extends BackroomsLevel {
 
 
 	@Override
-	protected void generate(final int chunkX, final int chunkZ,
-			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
+	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
+			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// generate
-		this.gen_004.generate(null, chunk, plots, chunkX, chunkZ); // abandoned office
-		this.gen_308.generate(null, chunk, plots, chunkX, chunkZ); // ikea
-		this.gen_040.generate(null, chunk, plots, chunkX, chunkZ); // arcade
-		this.gen_011.generate(null, chunk, plots, chunkX, chunkZ); // concrete jungle
+		this.gen_004.generate(null, plots, chunk, chunkX, chunkZ); // abandoned office
+		this.gen_308.generate(null, plots, chunk, chunkX, chunkZ); // ikea
+		this.gen_040.generate(null, plots, chunk, chunkX, chunkZ); // arcade
+		this.gen_011.generate(null, plots, chunk, chunkX, chunkZ); // concrete jungle
 	}
 
 
