@@ -21,14 +21,13 @@ import com.poixson.tools.events.PlayerMoveNormalEvent;
 import com.poixson.tools.events.xListener;
 
 
-// 1 | Basement lights
+//   1 | Basement - lights
+// 309 | Radio Station - forest stairs
 public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 
-	public static final int LAMP_Y = Gen_001.LAMP_Y;
-
-	protected final HashMap<UUID, List<Location>> playerLights = new HashMap<UUID, List<Location>>();
+	protected final HashMap<UUID, List<Location>> player_lights = new HashMap<UUID, List<Location>>();
 
 
 
@@ -41,16 +40,16 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 	@Override
 	public void unregister() {
 		super.unregister();
-		synchronized (this.playerLights) {
+		synchronized (this.player_lights) {
 			Block blk;
-			for (final List<Location> list : this.playerLights.values()) {
+			for (final List<Location> list : this.player_lights.values()) {
 				for (final Location loc : list) {
 					blk = loc.getBlock();
 					if (Material.REDSTONE_TORCH.equals(blk.getType()))
 						blk.setType(Material.BEDROCK);
 				}
 			}
-			this.playerLights.clear();
+			this.player_lights.clear();
 		}
 	}
 
@@ -60,7 +59,7 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 	public void onPlayerMoveNormal(final PlayerMoveNormalEvent event) {
 		final Player player = event.getPlayer();
 		final int level = this.plugin.getLevel(player);
-		// basement
+		// basement lights
 		if (level == 1) {
 			final Location to = event.getTo();
 			final World world = to.getWorld();
@@ -82,7 +81,7 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 					}
 				}
 			}
-			final int y = Level_000.Y_001 + LAMP_Y + 5;
+			final int y = Level_000.Y_001 + Gen_001.LAMP_Y + 5;
 			final int r = BASEMENT_LIGHT_RADIUS;
 			int xx, zz;
 			for (int iz=0-r-1; iz<r; iz+=10) {
@@ -99,17 +98,17 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 					}
 				}
 			}
-		// not basement
+		// outside of basement
 		} else {
 			// player left the basement
 			final UUID uuid = player.getUniqueId();
-			if (this.playerLights.containsKey(uuid)) {
+			if (this.player_lights.containsKey(uuid)) {
 				// turn off all lights for player
-				final List<Location> list = this.playerLights.get(uuid);
-				this.playerLights.remove(uuid);
+				final List<Location> list = this.player_lights.get(uuid);
+				this.player_lights.remove(uuid);
 				for (final Location loc : list)
 					this.lightTurnOff(loc);
-				this.playerLights.remove(uuid);
+				this.player_lights.remove(uuid);
 			}
 		}
 		// forest stairs
@@ -123,6 +122,11 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 
 
 
+	// -------------------------------------------------------------------------------
+	// basement lights
+
+
+
 	protected void lightTurnOff(final Location loc) {
 		if (this.canTurnOff(loc)) {
 			final Block block = loc.getBlock();
@@ -131,7 +135,7 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 		}
 	}
 	protected boolean canTurnOff(final Location loc) {
-		for (final List<Location> list : this.playerLights.values()) {
+		for (final List<Location> list : this.player_lights.values()) {
 			if (list.contains(loc))
 				return false;
 		}
@@ -143,14 +147,14 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 	protected List<Location> getPlayerLightsList(final UUID uuid) {
 		// existing list
 		{
-			final List<Location> list = this.playerLights.get(uuid);
+			final List<Location> list = this.player_lights.get(uuid);
 			if (list != null)
 				return list;
 		}
 		// new list
 		{
 			final List<Location> list = new ArrayList<Location>();
-			this.playerLights.put(uuid, list);
+			this.player_lights.put(uuid, list);
 			return list;
 		}
 	}

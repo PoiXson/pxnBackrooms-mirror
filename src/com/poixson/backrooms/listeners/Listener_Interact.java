@@ -18,16 +18,17 @@ import com.poixson.tools.DelayedLever;
 import com.poixson.tools.events.xListener;
 
 
-// 6 | Lobby/Lights-Out teleport
+// 6 | Lobby <-> Lights-Out - teleports
 public class Listener_Interact extends xListener<BackroomsPlugin> {
 
-	protected final Level_000 level0;
+	protected final double tp_range;
 
 
 
 	public Listener_Interact(final BackroomsPlugin plugin) {
 		super(plugin);
-		this.level0 = level0;
+		final Level_000 level0 = (Level_000) plugin.getBackroomsLevel(0);
+		this.tp_range = level0.gen_006.tp_range.get();
 	}
 
 
@@ -97,12 +98,11 @@ public class Listener_Interact extends xListener<BackroomsPlugin> {
 
 
 	protected void doLeverTP(final int to_level, final Location leverLoc, final int y) {
-		final double distance = this.level0.gen_006.tp_distance.get();
 		final World world = leverLoc.getWorld();
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (world.equals(player.getWorld())) {
 				final Location playerLoc = player.getLocation();
-				if (playerLoc.distance(leverLoc) < distance)
+				if (playerLoc.distance(leverLoc) < this.tp_range)
 					player.teleport( playerLoc.add(0.0, y, 0.0) );
 			}
 		}

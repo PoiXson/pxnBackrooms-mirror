@@ -74,24 +74,24 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// backrooms levels
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
-	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visitLevels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
+	protected final ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>> visit_levels = new ConcurrentHashMap<UUID, CopyOnWriteArraySet<Integer>>();
 
 	// reconvergence task
-	protected final AtomicReference<TaskReconvergence> taskReconvergence = new AtomicReference<TaskReconvergence>(null);
+	protected final AtomicReference<TaskReconvergence> task_reconvergence = new AtomicReference<TaskReconvergence>(null);
 
 	// invisible players - level 6
-	protected final AtomicReference<TaskInvisiblePlayers> taskInvisible = new AtomicReference<TaskInvisiblePlayers>(null);
+	protected final AtomicReference<TaskInvisiblePlayers> task_invisible = new AtomicReference<TaskInvisiblePlayers>(null);
 	// freakout on stairs - level 309
 	protected final HashMap<Player, FreakOut> freakouts = new HashMap<Player, FreakOut>();
 
 	// quotes
-	protected final AtomicReference<QuoteAnnouncer> quoteAnnouncer = new AtomicReference<QuoteAnnouncer>(null);
+	protected final AtomicReference<QuoteAnnouncer> quote_announcer = new AtomicReference<QuoteAnnouncer>(null);
 
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
-	protected final AtomicReference<Listener_NoClip>     listenerNoClip     = new AtomicReference<Listener_NoClip>(null);
-	protected final AtomicReference<Listener_OutOfWorld> listenerOutOfWorld = new AtomicReference<Listener_OutOfWorld>(null);
+	protected final AtomicReference<Listener_NoClip>     listener_noclip      = new AtomicReference<Listener_NoClip>(null);
 	protected final AtomicReference<Listener_MoveNormal> listener_move_normal = new AtomicReference<Listener_MoveNormal>(null);
+	protected final AtomicReference<Listener_OutOfWorld> listener_outofworld  = new AtomicReference<Listener_OutOfWorld>(null);
 	protected final AtomicReference<Listener_Interact>   listener_interact    = new AtomicReference<Listener_Interact>(null);
 
 	// dynmap config generator
@@ -166,12 +166,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 			listener.register();
 		}
 		// load quotes
-		this.quoteAnnouncer.set(QuoteAnnouncer.Load(this));
+		this.quote_announcer.set(QuoteAnnouncer.Load(this));
 		// reconvergence task
 		{
 			final ConfigurationSection cfg = this.config.get().getConfigurationSection("Reconvergence");
 			final TaskReconvergence task = new TaskReconvergence(this, cfg);
-			final TaskReconvergence previous = this.taskReconvergence.getAndSet(task);
+			final TaskReconvergence previous = this.task_reconvergence.getAndSet(task);
 			if (previous != null)
 				previous.stop();
 			task.start();
@@ -179,7 +179,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// invisible players task
 		{
 			final TaskInvisiblePlayers task = new TaskInvisiblePlayers(this);
-			final TaskInvisiblePlayers previous = this.taskInvisible.getAndSet(task);
+			final TaskInvisiblePlayers previous = this.task_invisible.getAndSet(task);
 			if (previous != null)
 				previous.stop();
 			task.start();
@@ -187,7 +187,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// player damage listeners
 		{
 			final Listener_NoClip listener = new Listener_NoClip(this);
-			final Listener_NoClip previous = this.listenerNoClip.getAndSet(listener);
+			final Listener_NoClip previous = this.listener_noclip.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
@@ -195,7 +195,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// out of world listeners
 		{
 			final Listener_OutOfWorld listener = new Listener_OutOfWorld(this);
-			final Listener_OutOfWorld previous = this.listenerOutOfWorld.getAndSet(listener);
+			final Listener_OutOfWorld previous = this.listener_outofworld.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
 			listener.register();
@@ -238,13 +238,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// invisible players task
 		{
-			final TaskInvisiblePlayers task = this.taskInvisible.getAndSet(null);
+			final TaskInvisiblePlayers task = this.task_invisible.getAndSet(null);
 			if (task != null)
 				task.stop();
 		}
 		// reconvergence task
 		{
-			final TaskReconvergence task = this.taskReconvergence.getAndSet(null);
+			final TaskReconvergence task = this.task_reconvergence.getAndSet(null);
 			if (task != null)
 				task.stop();
 		}
@@ -263,19 +263,19 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		// out of world listeners
 		{
-			final Listener_OutOfWorld listener = this.listenerOutOfWorld.getAndSet(null);
+			final Listener_OutOfWorld listener = this.listener_outofworld.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
 		// player damage listeners
 		{
-			final Listener_NoClip listener = this.listenerNoClip.getAndSet(null);
+			final Listener_NoClip listener = this.listener_noclip.getAndSet(null);
 			if (listener != null)
 				listener.unregister();
 		}
 		this.dynmap_perspective.set(null);
 		// quotes
-		this.quoteAnnouncer.set(null);
+		this.quote_announcer.set(null);
 	}
 
 
@@ -305,7 +305,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 				final UUID uuid = UUID.fromString(key);
 				final CopyOnWriteArraySet<Integer> visited = new CopyOnWriteArraySet<Integer>();
 				visited.addAll(cfg.getIntegerList(key));
-				this.visitLevels.put(uuid, visited);
+				this.visit_levels.put(uuid, visited);
 			}
 		}
 	}
@@ -317,7 +317,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		{
 			final File file = new File(this.getDataFolder(), "levels-visited.yml");
 			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-			final Iterator<Entry<UUID, CopyOnWriteArraySet<Integer>>> it = this.visitLevels.entrySet().iterator();
+			final Iterator<Entry<UUID, CopyOnWriteArraySet<Integer>>> it = this.visit_levels.entrySet().iterator();
 			while (it.hasNext()) {
 				final Entry<UUID, CopyOnWriteArraySet<Integer>> entry = it.next();
 				final String uuid = entry.getKey().toString();
@@ -410,13 +410,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public TaskReconvergence getReconvergenceTask() {
-		return this.taskReconvergence.get();
+		return this.task_reconvergence.get();
 	}
 	public QuoteAnnouncer getQuoteAnnouncer() {
-		return this.quoteAnnouncer.get();
+		return this.quote_announcer.get();
 	}
 	public TaskInvisiblePlayers getInvisiblePlayersTask() {
-		return this.taskInvisible.get();
+		return this.task_invisible.get();
 	}
 
 
@@ -610,10 +610,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		final UUID uuid = player.getUniqueId();
 		final int level = this.getLevel(player);
 		if (level < 0) return false;
-		CopyOnWriteArraySet<Integer> visited = this.visitLevels.get(uuid);
+		CopyOnWriteArraySet<Integer> visited = this.visit_levels.get(uuid);
 		if (visited == null) {
 			visited = new CopyOnWriteArraySet<Integer>();
-			this.visitLevels.put(uuid, visited);
+			this.visit_levels.put(uuid, visited);
 		}
 		final int sizeLast = visited.size();
 		visited.add(Integer.valueOf(level));
