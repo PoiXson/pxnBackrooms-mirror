@@ -356,6 +356,7 @@ function radio_building_inside_walls_1st(x, z, w, d, h) {
 	plot.type('#', Material.LIGHT_GRAY_CONCRETE               );
 	plot.type('P', Material.LIGHT_GRAY_CONCRETE_POWDER        );
 	plot.type('=', Material.STRIPPED_OAK_WOOD                 );
+	plot.type('L', Material.GLOWSTONE                         );
 	plot.type('-', "minecraft:oak_slab[type=top]"             );
 	plot.type('c', "minecraft:purpur_stairs[facing=west]"     ); // chair
 	plot.type('C', "minecraft:purpur_stairs[facing=east]"     ); // chair
@@ -367,46 +368,54 @@ function radio_building_inside_walls_1st(x, z, w, d, h) {
 	// 1st floor
 	matrix[1][ 0].append("########################################");
 	matrix[1][ 1].append("#            #       #         #       #");
-	matrix[1][ 2].append("#            #       #         #       #");
-	matrix[1][ 3].append("#            #       #         #       #");
-	matrix[1][ 4].append("#            #       #         #       #");
-	matrix[1][ 5].append("#            #       #    ######       #");
+	matrix[1][ 2].append("#   L    L   #       #     L   #       #");
+	matrix[1][ 3].append("#   L    L   #  LLL  #     L   # L   L #");
+	matrix[1][ 4].append("#   L    L   #       #         # L   L #");
+	matrix[1][ 5].append("#            #       # LL ######       #");
 	matrix[1][ 6].append("######################    #    #       #");
-	matrix[1][ 7].append("#                         #    #       #");
-	matrix[1][ 8].append("#                         #    #       #");
-	matrix[1][ 9].append("#                         #    #       #");
+	matrix[1][ 7].append("#                         #    # L   L #");
+	matrix[1][ 8].append("#     L   L   L   L   L   # LL # L   L #");
+	matrix[1][ 9].append("#     L   L   L   L   L   #    #       #");
 	matrix[1][10].append("#                         #    #       #");
 	matrix[1][11].append("#    ################PPPPPPPPPPP########");
-	matrix[1][12].append("#    #  #           #P         P        ");
+	matrix[1][12].append("# LL #  #           #P         P        ");
 	matrix[1][13].append("#    #  #           #P         P        ");
-	matrix[1][14].append("#    #  #           #P         P        ");
-	matrix[1][15].append("#    #  ####        #P         P        ");
-	matrix[1][16].append("#    #  #  #        #P         P        ");
+	matrix[1][14].append("#    #  #           #P  L   L  P        ");
+	matrix[1][15].append("#    #  ####        #P  L   L  P   LL   ");
+	matrix[1][16].append("# LL #  #  #        #P         P        ");
 	matrix[1][17].append("#    #  #  #        #P         P        ");
 	matrix[1][18].append("#    ################PPPPPPPPPPP        ");
 	matrix[1][19].append("#    #      #"                           );
-	matrix[1][20].append("#    #      #"                           );
+	matrix[1][20].append("# LL #  LL  #"                           );
 	matrix[1][21].append("#    #      #"                           );
 	matrix[1][22].append("#    #      #"                           );
 	matrix[1][23].append("#    #      #"                           );
-	matrix[1][24].append("#    #      #"                           );
+	matrix[1][24].append("# LL #  LL  #"                           );
 	matrix[1][25].append("#    #      #"                           );
 	matrix[1][26].append("#    #      #"                           );
 	matrix[1][27].append("#############"                           );
 	matrix[1][28].append("#           #"                           );
-	matrix[1][29].append("#           #"                           );
-	matrix[1][30].append("#           #"                           );
+	matrix[1][29].append("#  L     L  #"                           );
+	matrix[1][30].append("#  L     L  #"                           );
 	matrix[1][31].append("#           #"                           );
 	matrix[1][32].append("#           #"                           );
 	matrix[1][33].append("#           #"                           );
-	matrix[1][34].append("#           #"                           );
-	matrix[1][35].append("#           #"                           );
+	matrix[1][34].append("#  L     L  #"                           );
+	matrix[1][35].append("#  L     L  #"                           );
 	matrix[1][36].append("#           #"                           );
 	matrix[1][37].append("#############"                           );
 	// duplicate up y
-	for (let iz=0; iz<38; iz++) {
+	for (let iz=0; iz<d; iz++) {
 		for (let iy=2; iy<h; iy++)
 			matrix[iy][iz].append(matrix[1][iz].toString());
+	}
+	// lights on ceiling only
+	for (let iz=0; iz<d; iz++) {
+		for (let iy=0; iy<h-1; iy++) {
+			let line = matrix[iy][iz].toString().replace('L', ' ');
+			matrix[iy][iz].setLength(0);
+			matrix[iy][iz].append(line);
+		}
 	}
 	// front door
 	StringUtils.ReplaceInString(matrix[4][18], "     ", 24);
@@ -550,32 +559,41 @@ function radio_building_inside_walls_2nd(x, z, w, d, h) {
 	plot.type('#', Material.LIGHT_GRAY_CONCRETE          );
 	plot.type('=', Material.STRIPPED_OAK_WOOD            );
 	plot.type('~', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
+	plot.type('L', Material.GLOWSTONE                    );
 	plot.type('.', Material.AIR                          );
 	let matrix = plot.getMatrix3D();
 	// 1st floor
 	matrix[1][ 0].append("########################################");
 	matrix[1][ 1].append("#         #        #          #        #");
-	matrix[1][ 2].append("#         #        #          #        #");
-	matrix[1][ 3].append("#         #        #          #        #");
+	matrix[1][ 2].append("#  L   L  #   LL   # LL    LL #        #");
+	matrix[1][ 3].append("#  L   L  #        #          # LL  LL #");
 	matrix[1][ 4].append("#         #        #          #        #");
-	matrix[1][ 5].append("#         #        #          #        #");
+	matrix[1][ 5].append("#         #   LL   # LL    LL #        #");
 	matrix[1][ 6].append("#         #        #          #        #");
-	matrix[1][ 7].append("#         #####################        #");
-	matrix[1][ 8].append("#         #                   #        #");
-	matrix[1][ 9].append("#         #                   #        #");
-	matrix[1][10].append("###########                   #        #");
+	matrix[1][ 7].append("#  L   L  #####################        #");
+	matrix[1][ 8].append("#  L   L  #                   #        #");
+	matrix[1][ 9].append("#         #    L   L   L   L  # LL  LL #");
+	matrix[1][10].append("###########    L   L   L   L  #        #");
 	matrix[1][11].append("#    #                        #        #");
-	matrix[1][12].append("#    #         #########################");
-	matrix[1][13].append("#    #         #         #          #  #");
-	matrix[1][14].append("#    #         #         #          #  #");
-	matrix[1][15].append("#    #         #         #          ####");
-	matrix[1][16].append("#    #         #         #          #  #");
+	matrix[1][12].append("#    # LL   LL #########################");
+	matrix[1][13].append("# LL #         #         #          #  #");
+	matrix[1][14].append("#    #         #  L   L  #  L    L  #  #");
+	matrix[1][15].append("#    #         #  L   L  #  L    L  ####");
+	matrix[1][16].append("# LL # LL   LL #  L   L  #  L    L  #L #");
 	matrix[1][17].append("#    #         #         #          #  #");
 	matrix[1][18].append("########################################");
 	// duplicate up y
 	for (let iz=0; iz<19; iz++) {
 		for (let iy=2; iy<h; iy++)
 			matrix[iy][iz].append(matrix[1][iz].toString());
+	}
+	// lights on ceiling only
+	for (let iz=0; iz<d; iz++) {
+		for (let iy=0; iy<h-1; iy++) {
+			let line = matrix[iy][iz].toString().replace('L', ' ');
+			matrix[iy][iz].setLength(0);
+			matrix[iy][iz].append(line);
+		}
 	}
 	plot.run(region, matrix);
 	// fence along stairs
