@@ -112,6 +112,13 @@ public class Listener_MoveNormal extends xListener<BackroomsPlugin> {
 				this.playerLights.remove(uuid);
 			}
 		}
+		// forest stairs
+		if (level == 309) {
+			final Location loc = player.getLocation().clone().add(0, -1, 0);
+			final Material type = loc.getBlock().getType();
+			if (Material.STONE_BRICK_STAIRS.equals(type))
+				this.plugin.addFreakOut(player);
+		}
 	}
 
 

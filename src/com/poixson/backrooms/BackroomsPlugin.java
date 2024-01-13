@@ -47,6 +47,7 @@ import com.poixson.backrooms.listeners.Listener_Interact;
 import com.poixson.backrooms.listeners.Listener_MoveNormal;
 import com.poixson.backrooms.listeners.Listener_NoClip;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
+import com.poixson.backrooms.tasks.FreakOut;
 import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
@@ -80,6 +81,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// invisible players - level 6
 	protected final AtomicReference<TaskInvisiblePlayers> taskInvisible = new AtomicReference<TaskInvisiblePlayers>(null);
+	// freakout on stairs - level 309
+	protected final HashMap<Player, FreakOut> freakouts = new HashMap<Player, FreakOut>();
 
 	// quotes
 	protected final AtomicReference<QuoteAnnouncer> quoteAnnouncer = new AtomicReference<QuoteAnnouncer>(null);
@@ -218,6 +221,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	public void onDisable() {
 		super.onDisable();
+		// stop freakouts
+		for (final FreakOut freak : this.freakouts.values())
+			freak.stop();
 		// interact listener
 		{
 			final Listener_Interact listener = this.listener_interact.getAndSet(null);
@@ -411,6 +417,28 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 	public TaskInvisiblePlayers getInvisiblePlayersTask() {
 		return this.taskInvisible.get();
+	}
+
+
+
+	public void addFreakOut(final Player player) {
+		// existing instance
+		{
+			final FreakOut freak = this.freakouts.get(player);
+			if (freak != null) {
+				freak.reset();
+				return;
+			}
+		}
+		// new instance
+		{
+			final FreakOut freak = new FreakOut(this, player);
+			this.freakouts.put(player, freak);
+			freak.start();
+		}
+	}
+	public void removeFreakOut(final Player player) {
+		this.freakouts.remove(player);
 	}
 
 
