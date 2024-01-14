@@ -42,6 +42,8 @@ public class Gen_309 extends BackroomsGen {
 	public static final int    DEFAULT_PATH_CLEARING         = 15;
 	public static final int    PATH_START_X                  = 14;
 	public static final int    PATH_START_Z                  = 32;
+	public static final int    DEFAULT_SPECIAL_MOD_A         = 15;
+	public static final int    DEFAULT_SPECIAL_MOD_B         = 9;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
@@ -68,6 +70,8 @@ public class Gen_309 extends BackroomsGen {
 	public final AtomicDouble  thresh_prairie      = new AtomicDouble( DEFAULT_THRESH_PRAIRIE     );
 	public final AtomicInteger path_width          = new AtomicInteger(DEFAULT_PATH_WIDTH         );
 	public final AtomicInteger path_clearing       = new AtomicInteger(DEFAULT_PATH_CLEARING      );
+	public final AtomicInteger special_mod_a       = new AtomicInteger(DEFAULT_SPECIAL_MOD_A      );
+	public final AtomicInteger special_mod_b       = new AtomicInteger(DEFAULT_SPECIAL_MOD_B      );
 
 	// path locations
 	protected final PathTracer pathTrace;
@@ -238,6 +242,8 @@ public class Gen_309 extends BackroomsGen {
 			this.thresh_prairie     .set(cfg.getDouble("Thresh-Prairie"     ));
 			this.path_width         .set(cfg.getInt(   "Path-Width"         ));
 			this.path_clearing      .set(cfg.getInt(   "Path-Clearing"      ));
+			this.special_mod_a      .set(cfg.getInt(   "Special-Mod-A"      ));
+			this.special_mod_b      .set(cfg.getInt(   "Special-Mod-B"      ));
 		}
 		// block types
 		{
@@ -258,6 +264,8 @@ public class Gen_309 extends BackroomsGen {
 		cfg.addDefault("Level309.Params.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
 		cfg.addDefault("Level309.Params.Path-Width",          DEFAULT_PATH_WIDTH         );
 		cfg.addDefault("Level309.Params.Path-Clearing",       DEFAULT_PATH_CLEARING      );
+		cfg.addDefault("Level309.Params.Special-Mod-A",       DEFAULT_SPECIAL_MOD_A      );
+		cfg.addDefault("Level309.Params.Special-Mod-B",       DEFAULT_SPECIAL_MOD_B      );
 		// block types
 		cfg.addDefault("Level309.Blocks.Dirt",        DEFAULT_BLOCK_DIRT       );
 		cfg.addDefault("Level309.Blocks.Path",        DEFAULT_BLOCK_PATH       );

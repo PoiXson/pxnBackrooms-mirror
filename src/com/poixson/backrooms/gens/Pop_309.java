@@ -8,6 +8,7 @@ import static com.poixson.backrooms.worlds.Level_000.H_019;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.backrooms.worlds.Level_000.Y_019;
 import static com.poixson.backrooms.worlds.Level_000.Y_309;
+import static com.poixson.utils.NumberUtils.MinMax;
 
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -123,19 +124,19 @@ public class Pop_309 implements BackroomsPop {
 						}
 						if (surface_y != 0) {
 							final int special = this.special_index.incrementAndGet();
-							final int special_mod11 = special % 11;
-							final int special_mod7  = special % 7;
-							SWITCH_MOD11:
-							switch (special_mod11) {
-							case 1: this.populate_stairs(xx, surface_y, zz, region); break SWITCH_MOD11; // stairs
-							case 5: this.populate_door(  xx, surface_y, zz, region); break SWITCH_MOD11; // door
+							final int mod_a = special % MinMax(this.gen.special_mod_a.get(), 5, 100);
+							SWITCH_MOD_A:
+							switch (mod_a) {
+							case 1: this.populate_stairs(xx, surface_y, zz, region); break SWITCH_MOD_A; // stairs
+							case 4: this.populate_door(  xx, surface_y, zz, region); break SWITCH_MOD_A; // door
 							default:
-								SWITCH_MOD7:
-								switch (special_mod7) {
-								case 1: this.populate_hatch(xx, surface_y, zz, region); break SWITCH_MOD7; // hatch
-								default: break SWITCH_MOD7;
+								final int mod_b = special % MinMax(this.gen.special_mod_b.get(), 5, 100);
+								SWITCH_MOD_B:
+								switch (mod_b) {
+								case 1: this.populate_hatch(xx, surface_y, zz, region); break SWITCH_MOD_B; // hatch
+								default: break SWITCH_MOD_B;
 								}
-								break SWITCH_MOD11;
+								break SWITCH_MOD_A;
 							}
 						}
 					}
