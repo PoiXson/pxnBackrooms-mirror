@@ -1,0 +1,14 @@
+{
+	"backrooms.strangewind":{
+		"category": "master",
+		"sounds": [
+			"backrooms:ambient/strangewind"
+		]
+	},
+	"backrooms.waterpipes":{
+		"category": "master",
+		"sounds": [
+			"backrooms:ambient/waterpipes"
+		]
+	}
+}
