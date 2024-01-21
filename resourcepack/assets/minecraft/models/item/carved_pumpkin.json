@@ -1,0 +1,10 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "item/carved_pumpkin"
+	},
+	"overrides": [
+		{ "predicate": { "custom_model_data":   0 }, "model": "block/carved_pumpkin"           },
+		{ "predicate": { "custom_model_data": 999 }, "model": "backrooms:cosmetic/hazmat_mask" }
+	]
+}

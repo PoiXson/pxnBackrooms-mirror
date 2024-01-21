@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{ "model": "block/vinewall"  },
+			{ "model": "block/vinewall2" },
+			{ "model": "block/vinewall3" }
+		]
+	}
+}

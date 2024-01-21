@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"": [
+			{ "model": "block/vine_block"      },
+			{ "model": "block/vine_block_tall" }
+		]
+	}
+}

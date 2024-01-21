@@ -1,0 +1,27 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "minecraft:item/leather_horse_armor"
+	},
+	"overrides": [
+		{ "predicate": { "custom_model_data":  1 }, "model": "modelengine:bozo/mouth"                   },
+		{ "predicate": { "custom_model_data":  2 }, "model": "modelengine:bozo/right_hand"              },
+		{ "predicate": { "custom_model_data":  3 }, "model": "modelengine:bozo/left_hand"               },
+		{ "predicate": { "custom_model_data":  4 }, "model": "modelengine:bozo/right_ring_finger"       },
+		{ "predicate": { "custom_model_data":  5 }, "model": "modelengine:bozo/right_index_finger"      },
+		{ "predicate": { "custom_model_data":  6 }, "model": "modelengine:bozo/right_middle_finger"     },
+		{ "predicate": { "custom_model_data":  7 }, "model": "modelengine:bozo/right_thumb"             },
+		{ "predicate": { "custom_model_data":  8 }, "model": "modelengine:bozo/left_ring_finger"        },
+		{ "predicate": { "custom_model_data":  9 }, "model": "modelengine:bozo/left_index_finger"       },
+		{ "predicate": { "custom_model_data": 10 }, "model": "modelengine:bozo/left_middle_finger"      },
+		{ "predicate": { "custom_model_data": 11 }, "model": "modelengine:bozo/left_thumb"              },
+		{ "predicate": { "custom_model_data": 12 }, "model": "modelengine:bozo/right_ring_finger_top"   },
+		{ "predicate": { "custom_model_data": 13 }, "model": "modelengine:bozo/right_index_finger_top"  },
+		{ "predicate": { "custom_model_data": 14 }, "model": "modelengine:bozo/right_middle_finger_top" },
+		{ "predicate": { "custom_model_data": 15 }, "model": "modelengine:bozo/right_thumb_top"         },
+		{ "predicate": { "custom_model_data": 16 }, "model": "modelengine:bozo/left_ring_finger_top"    },
+		{ "predicate": { "custom_model_data": 17 }, "model": "modelengine:bozo/left_index_finger_top"   },
+		{ "predicate": { "custom_model_data": 18 }, "model": "modelengine:bozo/left_middle_finger_top"  },
+		{ "predicate": { "custom_model_data": 19 }, "model": "modelengine:bozo/left_thumb_top"          }
+	]
+}
