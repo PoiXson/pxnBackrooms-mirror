@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "backrooms:cosmetic/hazmat_chestplate",
+		"layer1": "backrooms:cosmetic/hazmat_chestplate"
+	}
+}

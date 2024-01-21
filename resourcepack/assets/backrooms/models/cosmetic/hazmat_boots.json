@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "backrooms:cosmetic/hazmat_boots",
+		"layer1": "backrooms:cosmetic/hazmat_boots"
+	}
+}

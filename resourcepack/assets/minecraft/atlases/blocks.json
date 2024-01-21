@@ -1,0 +1,7 @@
+{
+	"sources": [
+		{ "source": "entity", "prefix": "entity/", "type": "directory" },
+		{ "namespace": "backrooms", "type": "directory", "source": "cosmetic",   "prefix": "cosmetic/"   },
+		{ "namespace": "backrooms", "type": "directory", "source": "decoration", "prefix": "decoration/" }
+	]
+}
