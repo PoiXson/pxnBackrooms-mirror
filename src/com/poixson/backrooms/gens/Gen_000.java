@@ -55,8 +55,8 @@ public class Gen_000 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_WALL_STRENGTH = 2.28;
 	public static final double DEFAULT_NOISE_LOOT_FREQ     = 0.1;
 	public static final double DEFAULT_THRESH_WALL_L       = 0.38;
-	public static final double DEFAULT_THRESH_WALL_H = 0.5;
-	public static final double DEFAULT_THRESH_LOOT   = 0.65;
+	public static final double DEFAULT_THRESH_WALL_H       = 0.5;
+	public static final double DEFAULT_THRESH_LOOT         = 0.65;
 
 	public static final int WALL_SEARCH_DIST = 6;
 

@@ -155,9 +155,9 @@ public class Pop_309 implements BackroomsPop {
 			.axis("use")
 			.xyz(x+6, y, z+6)
 			.whd(2, 11, 11);
-		plot.type('<', "minecraft:stone_brick_stairs[facing=south]");
+		plot.type('<', "minecraft:stone_brick_stairs[facing=south]"         );
 		plot.type('>', "minecraft:stone_brick_stairs[facing=north,half=top]");
-		plot.type('L', "minecraft:light[level=15]"                 );
+		plot.type('L', "minecraft:light[level=15]"                          );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		for (int i=0; i<10; i++) {
 			matrix[i][i  ].append("<<");
@@ -179,13 +179,13 @@ public class Pop_309 implements BackroomsPop {
 			.axis("use")
 			.xyz(x+6, y-1, z+6)
 			.whd(3, 4, 3);
-		plot.type('#', block_wall                             );
+		plot.type('#', block_wall                                         );
 		plot.type('d', block_door, "[facing=north,half=upper,hinge=right]");
 		plot.type('D', block_door, "[facing=north,half=lower,hinge=right]");
 		plot.type('b', block_door, "[facing=south,half=upper,hinge=right]");
 		plot.type('B', block_door, "[facing=south,half=lower,hinge=right]");
-		plot.type('_', Material.WARPED_PRESSURE_PLATE         );
-		plot.type('L', "minecraft:light[level=15]"            );
+		plot.type('_', Material.WARPED_PRESSURE_PLATE                     );
+		plot.type('L', "minecraft:light[level=15]"                        );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[3][1].append("###");
 		matrix[2][1].append("# #"); matrix[2][0].append(" d" ); matrix[2][2].append(" b" );

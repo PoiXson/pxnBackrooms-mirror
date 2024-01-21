@@ -132,7 +132,7 @@ public class Gen_037 extends BackroomsGen {
 
 
 
-	public class PoolData implements PreGenData {
+	public class PoolData {
 
 		public final double valueRoom, valuePortalHotel, valuePortalLobby;
 		public final boolean possiblePortalHotel;

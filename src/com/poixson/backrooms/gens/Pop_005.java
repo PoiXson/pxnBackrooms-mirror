@@ -63,13 +63,8 @@ public class Pop_005 implements BackroomsPop {
 		int foundS = Integer.MIN_VALUE;
 		int foundE = Integer.MIN_VALUE;
 		int foundW = Integer.MIN_VALUE;
-		DISTANCE_LOOP:
+		//DISTANCE_LOOP:
 		for (int i=2; i<34; i++) {
-			if (foundN != Integer.MIN_VALUE
-			&&  foundS != Integer.MIN_VALUE
-			&&  foundE != Integer.MIN_VALUE
-			&&  foundW != Integer.MIN_VALUE )
-				break DISTANCE_LOOP;
 			// north
 			if (foundN == Integer.MIN_VALUE
 			&& region.isInRegion(x, y, z-i)) {
@@ -94,15 +89,14 @@ public class Pop_005 implements BackroomsPop {
 				if (!block_subwall.equals(region.getType(x-i, y, z)))
 					foundW = (x - i) + 1;
 			}
-		}
-		// full area is available
-		if (foundN == Integer.MIN_VALUE
-		||  foundS == Integer.MIN_VALUE
-		||  foundE == Integer.MIN_VALUE
-		||  foundW == Integer.MIN_VALUE )
-			return null;
-		//               x,      z,      w,             d
-		return new Iabcd(foundW, foundN, foundE-foundW, foundS-foundN);
+			if (foundN != Integer.MIN_VALUE
+			&&  foundS != Integer.MIN_VALUE
+			&&  foundE != Integer.MIN_VALUE
+			&&  foundW != Integer.MIN_VALUE )
+				//               x,      z,      w,             d
+				return new Iabcd(foundW, foundN, foundE-foundW, foundS-foundN);
+		} // end DISTANCE_LOOP
+		return null;
 	}
 
 

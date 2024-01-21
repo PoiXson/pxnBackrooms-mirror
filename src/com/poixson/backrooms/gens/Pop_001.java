@@ -38,9 +38,9 @@ public class Pop_001 implements BackroomsPop {
 		int xx, zz;
 		double value;
 		for (int iz=0; iz<16; iz++) {
+			zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
-				zz = (chunkZ * 16) + iz;
 				value = this.gen.noiseWell.getNoise(xx, zz);
 				if (value > this.gen.noiseWell.getNoise(xx+1, zz)
 				&&  value > this.gen.noiseWell.getNoise(xx-1, zz)
