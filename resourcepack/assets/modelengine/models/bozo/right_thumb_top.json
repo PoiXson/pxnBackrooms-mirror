@@ -1,0 +1,32 @@
+{
+	"textures": {
+		"0": "modelengine:entity/bozo"
+	},
+	"elements": [
+		{
+			"from": [-5.0,5.5,13.0],
+			"to":   [-1.0,10.5,13.0],
+			"faces": {
+				"south": { "uv": [8.125,5.125,7.625,5.75], "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"north": { "uv": [7.625,5.125,7.125,5.75], "tintindex": 0, "rotation": 0, "bozo": "#0" }
+			}
+		},
+		{
+			"from": [-1.0,5.5,8.0],
+			"to":   [8.0,10.5,13.0],
+			"faces": {
+				"east":  { "uv": [4.75,6.5,4.125,7.125], "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"south": { "uv": [5.875,6.5,4.75,7.125], "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"north": { "uv": [4.125,6.5,3.0,7.125],  "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"west":  { "uv": [3.0,6.5,2.375,7.125],  "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"up":    { "uv": [3.0,6.5,4.125,5.875],  "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"down":  { "uv": [4.125,5.875,5.25,6.5], "tintindex": 0, "rotation": 0, "bozo": "#0" }
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [30,225,0]
+		}
+	}
+}

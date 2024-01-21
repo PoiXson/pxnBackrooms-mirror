@@ -1,0 +1,24 @@
+{
+	"textures": {
+		"0": "modelengine:entity/bozo"
+	},
+	"elements": [
+		{
+			"from": [5.5,7.5,6.0],
+			"to":   [10.5,20.5,10.0],
+			"faces": {
+				"east":  { "uv": [2.375,7.75,2.875,9.375], "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"south": { "uv": [4.0,7.75,4.625,9.375],   "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"north": { "uv": [2.875,7.75,3.5,9.375],   "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"west":  { "uv": [3.5,7.75,4.0,9.375],     "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"up":    { "uv": [3.5,7.75,2.875,7.25],    "tintindex": 0, "rotation": 0, "bozo": "#0" },
+				"down":  { "uv": [4.125,7.25,3.5,7.75],    "tintindex": 0, "rotation": 0, "bozo": "#0" }
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [30,225,0]
+		}
+	}
+}
