@@ -1,12 +1,17 @@
 package com.poixson.backrooms;
 
+import static com.poixson.utils.FileUtils.OpenLocalOrResource;
+import static com.poixson.utils.FileUtils.ReadInputStream;
 import static com.poixson.utils.Utils.IsEmpty;
+import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
@@ -48,7 +53,6 @@ import com.poixson.backrooms.listeners.Listener_MoveNormal;
 import com.poixson.backrooms.listeners.Listener_NoClip;
 import com.poixson.backrooms.listeners.Listener_OutOfWorld;
 import com.poixson.backrooms.tasks.FreakOut;
-import com.poixson.backrooms.tasks.QuoteAnnouncer;
 import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.worlds.Level_000;
@@ -85,7 +89,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final HashMap<Player, FreakOut> freakouts = new HashMap<Player, FreakOut>();
 
 	// quotes
-	protected final AtomicReference<QuoteAnnouncer> quote_announcer = new AtomicReference<QuoteAnnouncer>(null);
+	protected final AtomicReference<String[]> quotes = new AtomicReference<String[]>(null);
 
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
@@ -166,7 +170,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			listener.register();
 		}
 		// load quotes
-		this.quote_announcer.set(QuoteAnnouncer.Load(this));
+		this.loadQuotes();
 		// reconvergence task
 		{
 			final ConfigurationSection cfg = this.config.get().getConfigurationSection("Reconvergence");
@@ -274,8 +278,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 				listener.unregister();
 		}
 		this.dynmap_perspective.set(null);
-		// quotes
-		this.quote_announcer.set(null);
+		this.quotes.set(null);
 	}
 
 
@@ -404,6 +407,31 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
+	public void loadQuotes() {
+		final LinkedList<String> quotes = new LinkedList<String>();
+		final InputStream in = OpenLocalOrResource(
+			this.getClass(),
+			this.getDataFolder()+"/quotes.txt",
+			"quotes.txt"
+		);
+		if (in == null) throw new RuntimeException("Failed to load quotes.txt");
+		final String data = ReadInputStream(in);
+		SafeClose(in);
+		final String[] array = data.split("\n");
+		for (final String line : array) {
+			if (!IsEmpty(line))
+				quotes.add(line.trim());
+		}
+		this.quotes.set(quotes.toArray(new String[0]));
+		this.log().info(String.format("%sLoaded [%d] quotes", LOG_PREFIX, Integer.valueOf(quotes.size())));
+	}
+
+	public String[] getQuotes() {
+		return this.quotes.get();
+	}
+
+
+
 	// -------------------------------------------------------------------------------
 	// tasks
 
@@ -411,9 +439,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	public TaskReconvergence getReconvergenceTask() {
 		return this.task_reconvergence.get();
-	}
-	public QuoteAnnouncer getQuoteAnnouncer() {
-		return this.quote_announcer.get();
 	}
 	public TaskInvisiblePlayers getInvisiblePlayersTask() {
 		return this.task_invisible.get();
