@@ -42,8 +42,8 @@ public class Gen_309 extends BackroomsGen {
 	public static final int    DEFAULT_PATH_CLEARING         = 15;
 	public static final int    PATH_START_X                  = 14;
 	public static final int    PATH_START_Z                  = 32;
-	public static final int    DEFAULT_SPECIAL_MOD_A         = 15;
-	public static final int    DEFAULT_SPECIAL_MOD_B         = 9;
+	public static final int    DEFAULT_SPECIAL_MOD_A         = 19;
+	public static final int    DEFAULT_SPECIAL_MOD_B         = 15;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
