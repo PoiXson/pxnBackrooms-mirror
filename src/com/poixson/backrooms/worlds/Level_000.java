@@ -68,7 +68,7 @@ public class Level_000 extends BackroomsLevel {
 
 	// basement
 	public static final int Y_001 = 0;
-	public static final int H_001 = 30;
+	public static final int H_001 = 20;
 	// overgrowth
 	public static final int Y_023 = Y_001 + H_001 + SUBFLOOR + 2;
 	public static final int H_023 = 5;
