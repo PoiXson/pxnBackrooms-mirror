@@ -44,7 +44,9 @@ import com.poixson.backrooms.gens.Gen_033;
 import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.gens.Gen_040;
 import com.poixson.backrooms.gens.Gen_094;
+import com.poixson.backrooms.gens.Gen_122;
 import com.poixson.backrooms.gens.Gen_188;
+import com.poixson.backrooms.gens.Gen_264;
 import com.poixson.backrooms.gens.Gen_308;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Gen_771;
@@ -134,7 +136,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		new Level_007(this); // thalassophobia
 //		new Level_009(this); // suburbs
 //		new Level_010(this); // field of wheat
-		new Level_011(this); // concrete jungle, arcade, ikea, abandoned office
+		new Level_011(this); // city, arcade, ikea, mall, museum, office
 		new Level_033(this); // run for your life
 //		new Level_078(this); // space
 		new Level_094(this); // motion
@@ -360,8 +362,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		Gen_040.ConfigDefaults(cfg); // arcade
 //		Gen_078.ConfigDefaults(cfg); // space
 		Gen_094.ConfigDefaults(cfg); // motion
+		Gen_122.ConfigDefaults(cfg); // mall
 //		Gen_151.ConfigDefaults(cfg); // dollhouse
 		Gen_188.ConfigDefaults(cfg); // the windows
+		Gen_264.ConfigDefaults(cfg); // museum
 		Gen_308.ConfigDefaults(cfg); // ikea
 		Gen_309.ConfigDefaults(cfg); // radio station
 		Gen_771.ConfigDefaults(cfg); // crossroads
