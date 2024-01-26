@@ -19,7 +19,7 @@ import com.poixson.pluginlib.tools.plugin.xListener;
 
 
 // 78 | Space
-public class Listener_078 extends xListener<BackroomsPlugin> {
+public class Listener_078 extends xListener {
 
 	public static final int GRAVITY_REACH = 10;
 

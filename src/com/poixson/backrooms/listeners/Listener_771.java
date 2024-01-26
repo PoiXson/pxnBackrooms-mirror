@@ -22,9 +22,11 @@ import com.poixson.tools.SeriesBlockChanger;
 import com.poixson.tools.events.xListener;
 
 
-public class Listener_771 extends xListener<BackroomsPlugin> {
+public class Listener_771 extends xListener {
 
 	public static final long DEFAULT_TICKS_PER_BLOCK = 6L;
+
+	protected final BackroomsPlugin plugin;
 
 	protected final AtomicReference<SeriesBlockChanger> block_changer = new AtomicReference<SeriesBlockChanger>(null);
 
@@ -32,6 +34,7 @@ public class Listener_771 extends xListener<BackroomsPlugin> {
 
 	public Listener_771(final BackroomsPlugin plugin) {
 		super(plugin);
+		this.plugin = plugin;
 	}
 
 

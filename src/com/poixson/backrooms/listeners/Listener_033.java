@@ -11,12 +11,15 @@ import com.poixson.tools.events.xListener;
 
 
 // 33 | Run For Your Life!
-public class Listener_033 extends xListener<BackroomsPlugin> {
+public class Listener_033 extends xListener {
+
+	protected final BackroomsPlugin plugin;
 
 
 
 	public Listener_033(final BackroomsPlugin plugin) {
 		super(plugin);
+		this.plugin = plugin;
 	}
 
 

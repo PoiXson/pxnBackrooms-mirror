@@ -17,12 +17,15 @@ import com.poixson.tools.events.xListener;
 
 
 // 23 | Overgrowth
-public class Listener_023 extends xListener<BackroomsPlugin> {
+public class Listener_023 extends xListener {
+
+	protected final BackroomsPlugin plugin;
 
 
 
 	public Listener_023(final BackroomsPlugin plugin) {
 		super(plugin);
+		this.plugin = plugin;
 	}
 
 

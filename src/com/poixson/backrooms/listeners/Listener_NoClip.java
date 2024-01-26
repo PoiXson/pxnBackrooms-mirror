@@ -24,10 +24,12 @@ import com.poixson.tools.xTime;
 import com.poixson.tools.events.xListener;
 
 
-public class Listener_NoClip extends xListener<BackroomsPlugin> {
+public class Listener_NoClip extends xListener {
 
 	public static final long DAMAGE_TIMEOUT = xTime.Parse("5s").ms();
 	public static final double MIN_DAMAGE = 3.0;
+
+	protected final BackroomsPlugin plugin;
 
 	protected final AtomicInteger cleanup = new AtomicInteger(0);
 
@@ -53,6 +55,7 @@ public class Listener_NoClip extends xListener<BackroomsPlugin> {
 
 	public Listener_NoClip(final BackroomsPlugin plugin) {
 		super(plugin);
+		this.plugin = plugin;
 	}
 
 
