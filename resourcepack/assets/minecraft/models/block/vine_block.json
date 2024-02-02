@@ -1,7 +1,8 @@
 {
 	"parent": "block/cube_all",
 	"textures": {
-		"3": "block/vineshang"
+		"3": "block/vineshang",
+		"particle": "block/vineshang_bottom"
 	},
 	"elements": [
 		{
