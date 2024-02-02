@@ -335,6 +335,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			case 7:  // thalassophobia
 			case 33: // run for your life
 			case 78: // space
+			case 771: // crossroads
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
 				mvworld.setTime("midnight"); break;
 			case 151: // dollhouse
