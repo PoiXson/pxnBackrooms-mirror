@@ -236,14 +236,14 @@ public class Level_000 extends BackroomsLevel {
 		&&  x >= -46 && x <= 62
 		&&  z >= -46 && z <= 62)
 			return 188;
-		if (y < Y_023) return  1; // basement
-		if (y < Y_000) return 23; // overgrowth
-		if (y < Y_006) return  0; // lobby
-		if (y < Y_037) return  6; // lights out
-		if (y < Y_005) return 37; // pools
-		if (y < Y_019) return  5; // hotel
-		if (y < Y_309) return 19; // attic
-		return 309;               // radio station
+		if (y < this.getMaxY( 1)) return  1; // basement
+		if (y < this.getMaxY(23)) return 23; // overgrowth
+		if (y < this.getMaxY( 0)) return  0; // lobby
+		if (y < this.getMaxY( 6)) return  6; // lights out
+		if (y < this.getMaxY(37)) return 37; // pools
+		if (y < this.getMaxY( 5)) return  5; // hotel
+		if (y < this.getMaxY(19)) return 19; // attic
+		return 309;                          // radio station
 	}
 	@Override
 	public boolean containsLevel(final int level) {

@@ -114,11 +114,11 @@ public class Level_011 extends BackroomsLevel {
 	@Override
 	public int getLevel(final Location loc) {
 		final int y = loc.getBlockY();
-		if (y < Y_308) return   4; // abandoned office
-		if (y < Y_122) return 264; // museum
-		if (y < Y_308) return 122; // mall
-		if (y < Y_011) return 308; // ikea
-		return 11;                 // concrete jungle
+		if (y < this.getMaxY(  4)) return   4; // office
+		if (y < this.getMaxY(264)) return 264; // museum
+		if (y < this.getMaxY(122)) return 122; // mall
+		if (y < this.getMaxY(308)) return 308; // ikea
+		return 11;                             // city
 	}
 	@Override
 	public boolean containsLevel(final int level) {
