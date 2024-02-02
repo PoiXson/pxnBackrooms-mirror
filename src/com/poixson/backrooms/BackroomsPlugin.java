@@ -347,13 +347,13 @@ public class BackroomsPlugin extends xJavaPlugin {
 		Gen_000.ConfigDefaults(cfg); // lobby
 		Gen_001.ConfigDefaults(cfg); // basement
 //		Gen_002.ConfigDefaults(cfg); // pipe dreams
-		Gen_004.ConfigDefaults(cfg); // abandoned office
+		Gen_004.ConfigDefaults(cfg); // office
 		Gen_005.ConfigDefaults(cfg); // hotel
 		Gen_006.ConfigDefaults(cfg); // lights out
 //		Gen_007.ConfigDefaults(cfg); // thalassophobia
 //		Gen_009.ConfigDefaults(cfg); // suburbs
 //		Gen_010.ConfigDefaults(cfg); // field of wheat
-		Gen_011.ConfigDefaults(cfg); // concrete jungle
+		Gen_011.ConfigDefaults(cfg); // city
 		Gen_019.ConfigDefaults(cfg); // attic
 		Gen_023.ConfigDefaults(cfg); // overgrowth
 		Gen_033.ConfigDefaults(cfg); // run for your life

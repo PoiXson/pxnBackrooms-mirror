@@ -395,7 +395,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			case 7:   // thalassophobia
 			case 9:   // suburbs
 			case 10:  // field of wheat
-			case 11:  // concrete jungle
+			case 11:  // city
 			case 78:  // space
 			case 151: // dollhouse
 			case 771: // crossroads
@@ -410,7 +410,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 //			case 7:   // thalassophobia
 //			case 9:   // suburbs
 //			case 10:  // field of wheat
-//			case 11:  // concrete jungle
+//			case 11:  // city
 //			case 151: // dollhouse
 //			case 866: // dirtfield
 //				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
