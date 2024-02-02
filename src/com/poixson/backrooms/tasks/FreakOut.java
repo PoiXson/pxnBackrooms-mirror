@@ -9,11 +9,17 @@ import com.poixson.tools.abstractions.xStartStop;
 
 public class FreakOut extends BukkitRunnable implements xStartStop {
 
+	public static final int LEVEL_DEST   = 771;
+
+	public static final int EFFECT_TICKS = 60;
+	public static final int TP_TICKS     = 160;
+
 	protected final BackroomsPlugin plugin;
 
 	protected final Player player;
 
 	protected int index = 0;
+	protected int index_total = 0;
 
 
 
@@ -46,15 +52,20 @@ public class FreakOut extends BukkitRunnable implements xStartStop {
 
 	@Override
 	public void run() {
-		final int index = this.index++;
-		if (index >= 60) {
+		final int index       = this.index++;
+		final int index_total = this.index_total++;
+		if (index_total >= TP_TICKS) {
+			this.plugin.noclip(this.player, LEVEL_DEST);
 			this.stop();
 			return;
 		}
-		final int mod2 = index % 2;
-		this.player.setSneaking( mod2 == 0);
-		this.player.setSprinting(mod2 == 1);
-		this.player.setVisualFire(index % 5 < 4);
+		if (index >= EFFECT_TICKS) {
+			this.stop();
+			return;
+		}
+		this.player.setSneaking(  index % 2 == 0);
+		this.player.setSprinting( index % 3 == 1);
+		this.player.setVisualFire(index % 5 <  4);
 	}
 
 
