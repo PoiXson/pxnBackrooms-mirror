@@ -8,7 +8,9 @@ import org.bukkit.World;
 
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
+import com.poixson.backrooms.gens.DataHolder_City;
 import com.poixson.backrooms.gens.Gen_004;
 import com.poixson.backrooms.gens.Gen_011;
 import com.poixson.backrooms.gens.Gen_040;
@@ -189,10 +191,23 @@ public class Level_011 extends BackroomsLevel {
 
 
 
+	public class PregenLevel11 implements PreGenData {
+		public final DataHolder_City city;
+
+		public PregenLevel11(final int chunkX, final int chunkZ) {
+			this.city = new DataHolder_City(Level_011.this.gen_011, chunkX, chunkZ);
+			this.city.findEdges();
+		}
+
+	}
+
+
 
 	@Override
 	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		// pre-generate
+		final PregenLevel11 pregen = new PregenLevel11(chunkX, chunkZ);
 		// generate
 		this.gen_004.generate(pregen, plots, chunk, chunkX, chunkZ); // office
 		this.gen_264.generate(pregen, plots, chunk, chunkX, chunkZ); // museum
