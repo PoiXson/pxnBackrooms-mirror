@@ -646,7 +646,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //TODO: https://github.com/Multiverse/Multiverse-Core/blob/17129f68d204438f1d8e134388b72507dc8c1a63/src/main/java/com/onarandombox/MultiverseCore/commands/CreateCommand.java#L117
 		if (!worldName.startsWith("level"))
 			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
-		this.log().info(String.format("%s%s world: %s", LOG_PREFIX, GENERATOR_NAME, worldName));
+		this.log().info(String.format("%sworld: %s", LOG_PREFIX, worldName));
 		return this.getMainBackroomsLevel(worldName);
 	}
 

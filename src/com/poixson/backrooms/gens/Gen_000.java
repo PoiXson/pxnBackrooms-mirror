@@ -495,12 +495,12 @@ public class Gen_000 extends BackroomsGen {
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(0);
-			this.block_wall       .set(cfg.getString("Wall"       ));
-			this.block_wall_base  .set(cfg.getString("Wall-Base"  ));
-			this.block_subfloor   .set(cfg.getString("SubFloor"   ));
-			this.block_subceiling .set(cfg.getString("SubCeiling" ));
-			this.block_carpet     .set(cfg.getString("Carpet"     ));
-			this.block_ceiling    .set(cfg.getString("Ceiling"    ));
+			this.block_wall      .set(cfg.getString("Wall"      ));
+			this.block_wall_base .set(cfg.getString("Wall-Base" ));
+			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
+			this.block_subceiling.set(cfg.getString("SubCeiling"));
+			this.block_carpet    .set(cfg.getString("Carpet"    ));
+			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
 		}
 	}
 	@Override

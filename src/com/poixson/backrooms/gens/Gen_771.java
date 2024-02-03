@@ -740,11 +740,11 @@ public class Gen_771 extends BackroomsGen {
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(771);
 			this.noise_lamps_freq.set(cfg.getDouble("Noise-Lamps-Freq"));
 			this.noise_exits_freq.set(cfg.getDouble("Noise-Exits-Freq"));
-			this.noise_loot_freq .set(cfg.getDouble("Noise-Loot-Freq"));
-			this.thresh_lamps    .set(cfg.getDouble("Thresh-Lamps"   ));
-			this.thresh_void     .set(cfg.getDouble("Thresh-Void"    ));
-			this.thresh_ladder   .set(cfg.getDouble("Thresh-Ladder"  ));
-			this.thresh_loot     .set(cfg.getDouble("Thresh-Loot"    ));
+			this.noise_loot_freq .set(cfg.getDouble("Noise-Loot-Freq" ));
+			this.thresh_lamps    .set(cfg.getDouble("Thresh-Lamps"    ));
+			this.thresh_void     .set(cfg.getDouble("Thresh-Void"     ));
+			this.thresh_ladder   .set(cfg.getDouble("Thresh-Ladder"   ));
+			this.thresh_loot     .set(cfg.getDouble("Thresh-Loot"     ));
 		}
 		// block types
 		{
