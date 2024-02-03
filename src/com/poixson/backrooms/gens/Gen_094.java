@@ -14,7 +14,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -364,7 +363,7 @@ public class Gen_094 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(94);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(94);
 			this.noise_hills_freq    .set(cfg.getDouble("Noise-Hills-Freq"    ));
 			this.noise_hills_octave  .set(cfg.getInt(   "Noise-Hills-Octave"  ));
 			this.noise_hills_strength.set(cfg.getDouble("Noise-Hills-Strength"));
@@ -380,7 +379,7 @@ public class Gen_094 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(94);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(94);
 			this.block_dirt             .set(cfg.getString("Dirt"             ));
 			this.block_grass_block      .set(cfg.getString("Grass-Block"      ));
 			this.block_grass_slab       .set(cfg.getString("Grass-Slab"       ));
@@ -396,34 +395,41 @@ public class Gen_094 extends BackroomsGen {
 			this.block_house_floor      .set(cfg.getString("House-Floor"      ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level94.Params.Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
-		cfg.addDefault("Level94.Params.Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
-		cfg.addDefault("Level94.Params.Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
-		cfg.addDefault("Level94.Params.Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
-		cfg.addDefault("Level94.Params.Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
-		cfg.addDefault("Level94.Params.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
-		cfg.addDefault("Level94.Params.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
-		cfg.addDefault("Level94.Params.Hills-Gain",           DEFAULT_HILLS_GAIN          );
-		cfg.addDefault("Level94.Params.Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
-		cfg.addDefault("Level94.Params.Water-Depth",          DEFAULT_WATER_DEPTH         );
-		cfg.addDefault("Level94.Params.House-Width",          DEFAULT_HOUSE_WIDTH         );
-		cfg.addDefault("Level94.Params.House-Height",         DEFAULT_HOUSE_HEIGHT        );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level94.Params.Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
+			cfg.addDefault("Level94.Params.Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
+			cfg.addDefault("Level94.Params.Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
+			cfg.addDefault("Level94.Params.Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
+			cfg.addDefault("Level94.Params.Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
+			cfg.addDefault("Level94.Params.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
+			cfg.addDefault("Level94.Params.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
+			cfg.addDefault("Level94.Params.Hills-Gain",           DEFAULT_HILLS_GAIN          );
+			cfg.addDefault("Level94.Params.Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
+			cfg.addDefault("Level94.Params.Water-Depth",          DEFAULT_WATER_DEPTH         );
+			cfg.addDefault("Level94.Params.House-Width",          DEFAULT_HOUSE_WIDTH         );
+			cfg.addDefault("Level94.Params.House-Height",         DEFAULT_HOUSE_HEIGHT        );
+		}
 		// block types
-		cfg.addDefault("Level94.Blocks.Dirt",              DEFAULT_BLOCK_DIRT             );
-		cfg.addDefault("Level94.Blocks.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
-		cfg.addDefault("Level94.Blocks.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
-		cfg.addDefault("Level94.Blocks.Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
-		cfg.addDefault("Level94.Blocks.Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
-		cfg.addDefault("Level94.Blocks.Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
-		cfg.addDefault("Level94.Blocks.Fern",              DEFAULT_BLOCK_FERN             );
-		cfg.addDefault("Level94.Blocks.Rose",              DEFAULT_BLOCK_ROSE             );
-		cfg.addDefault("Level94.Blocks.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
-		cfg.addDefault("Level94.Blocks.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
-		cfg.addDefault("Level94.Blocks.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
-		cfg.addDefault("Level94.Blocks.House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
-		cfg.addDefault("Level94.Blocks.House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level94.Blocks.Dirt",              DEFAULT_BLOCK_DIRT             );
+			cfg.addDefault("Level94.Blocks.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
+			cfg.addDefault("Level94.Blocks.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
+			cfg.addDefault("Level94.Blocks.Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
+			cfg.addDefault("Level94.Blocks.Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
+			cfg.addDefault("Level94.Blocks.Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
+			cfg.addDefault("Level94.Blocks.Fern",              DEFAULT_BLOCK_FERN             );
+			cfg.addDefault("Level94.Blocks.Rose",              DEFAULT_BLOCK_ROSE             );
+			cfg.addDefault("Level94.Blocks.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
+			cfg.addDefault("Level94.Blocks.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
+			cfg.addDefault("Level94.Blocks.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
+			cfg.addDefault("Level94.Blocks.House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
+			cfg.addDefault("Level94.Blocks.House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
+		}
 	}
 
 

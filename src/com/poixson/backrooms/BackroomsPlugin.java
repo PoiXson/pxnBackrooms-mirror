@@ -32,24 +32,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.commands.Commands;
 import com.poixson.backrooms.dynmap.GeneratorPerspective;
-import com.poixson.backrooms.gens.Gen_000;
-import com.poixson.backrooms.gens.Gen_001;
-import com.poixson.backrooms.gens.Gen_004;
-import com.poixson.backrooms.gens.Gen_005;
-import com.poixson.backrooms.gens.Gen_006;
-import com.poixson.backrooms.gens.Gen_011;
-import com.poixson.backrooms.gens.Gen_019;
-import com.poixson.backrooms.gens.Gen_023;
-import com.poixson.backrooms.gens.Gen_033;
-import com.poixson.backrooms.gens.Gen_037;
-import com.poixson.backrooms.gens.Gen_040;
-import com.poixson.backrooms.gens.Gen_094;
-import com.poixson.backrooms.gens.Gen_122;
-import com.poixson.backrooms.gens.Gen_188;
-import com.poixson.backrooms.gens.Gen_264;
-import com.poixson.backrooms.gens.Gen_308;
-import com.poixson.backrooms.gens.Gen_309;
-import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_Interact;
 import com.poixson.backrooms.listeners.Listener_MoveNormal;
 import com.poixson.backrooms.listeners.Listener_NoClip;
@@ -99,6 +81,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<Listener_MoveNormal> listener_move_normal = new AtomicReference<Listener_MoveNormal>(null);
 	protected final AtomicReference<Listener_OutOfWorld> listener_outofworld  = new AtomicReference<Listener_OutOfWorld>(null);
 	protected final AtomicReference<Listener_Interact>   listener_interact    = new AtomicReference<Listener_Interact>(null);
+
+	// configs
+	protected final AtomicReference<FileConfiguration> configLevelParams = new AtomicReference<FileConfiguration>(null);
+	protected final AtomicReference<FileConfiguration> configLevelBlocks = new AtomicReference<FileConfiguration>(null);
 
 	// dynmap config generator
 	protected final AtomicReference<GeneratorPerspective> dynmap_perspective = new AtomicReference<GeneratorPerspective>(null);
@@ -313,6 +299,18 @@ public class BackroomsPlugin extends xJavaPlugin {
 				this.visit_levels.put(uuid, visited);
 			}
 		}
+		// params.yml
+		{
+			final File file = new File(this.getDataFolder(), "params.yml");
+			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+			this.configLevelParams.set(cfg);
+		}
+		// blocks.yml
+		{
+			final File file = new File(this.getDataFolder(), "blocks.yml");
+			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+			this.configLevelBlocks.set(cfg);
+		}
 	}
 	@Override
 	protected void saveConfigs() {
@@ -337,6 +335,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			}
 		}
 	}
+
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
 		TaskReconvergence.ConfigDefaults(cfg);
@@ -344,32 +343,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
-		Gen_000.ConfigDefaults(cfg); // lobby
-		Gen_001.ConfigDefaults(cfg); // basement
-//		Gen_002.ConfigDefaults(cfg); // pipe dreams
-		Gen_004.ConfigDefaults(cfg); // office
-		Gen_005.ConfigDefaults(cfg); // hotel
-		Gen_006.ConfigDefaults(cfg); // lights out
-//		Gen_007.ConfigDefaults(cfg); // thalassophobia
-//		Gen_009.ConfigDefaults(cfg); // suburbs
-//		Gen_010.ConfigDefaults(cfg); // field of wheat
-		Gen_011.ConfigDefaults(cfg); // city
-		Gen_019.ConfigDefaults(cfg); // attic
-		Gen_023.ConfigDefaults(cfg); // overgrowth
-		Gen_033.ConfigDefaults(cfg); // run for your life
-//		Gen_036.ConfigDefaults(cfg); // airport
-		Gen_037.ConfigDefaults(cfg); // poolrooms
-		Gen_040.ConfigDefaults(cfg); // arcade
-//		Gen_078.ConfigDefaults(cfg); // space
-		Gen_094.ConfigDefaults(cfg); // motion
-		Gen_122.ConfigDefaults(cfg); // mall
-//		Gen_151.ConfigDefaults(cfg); // dollhouse
-		Gen_188.ConfigDefaults(cfg); // the windows
-		Gen_264.ConfigDefaults(cfg); // museum
-		Gen_308.ConfigDefaults(cfg); // ikea
-		Gen_309.ConfigDefaults(cfg); // radio station
-		Gen_771.ConfigDefaults(cfg); // crossroads
-//		Gen_866.ConfigDefaults(cfg); // dirtfield
 	}
 
 
@@ -398,13 +371,22 @@ public class BackroomsPlugin extends xJavaPlugin {
 				.getInt("Spawn Distance");
 	}
 
-	public ConfigurationSection getLevelParams(final int level) {
-		return this.config.get()
+
+
+	public ConfigurationSection getConfigLevelParams() {
+		return this.configLevelParams.get();
+	}
+	public ConfigurationSection getConfigLevelBlocks() {
+		return this.configLevelBlocks.get();
+	}
+
+	public ConfigurationSection getConfigLevelParams(final int level) {
+		return this.getConfigLevelParams()
 			.getConfigurationSection(
 				String.format("Level%d.Params", Integer.valueOf(level)));
 	}
-	public ConfigurationSection getLevelBlocks(final int level) {
-		return this.config.get()
+	public ConfigurationSection getConfigLevelBlocks(final int level) {
+		return this.getConfigLevelBlocks()
 			.getConfigurationSection(
 				String.format("Level%d.Blocks", Integer.valueOf(level)));
 	}

@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -493,7 +492,7 @@ public class Gen_037 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(37);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(37);
 			this.noise_room_freq          .set(cfg.getDouble("Noise-Room-Freq"          ));
 			this.noise_room_octave        .set(cfg.getInt(   "Noise-Room-Octave"        ));
 			this.noise_room_gain          .set(cfg.getDouble("Noise-Room-Gain"          ));
@@ -508,7 +507,7 @@ public class Gen_037 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(37);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(37);
 			this.block_wall_a    .set(cfg.getString("WallA"     ));
 			this.block_wall_b    .set(cfg.getString("WallB"     ));
 			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
@@ -516,25 +515,32 @@ public class Gen_037 extends BackroomsGen {
 			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level37.Params.Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
-		cfg.addDefault("Level37.Params.Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
-		cfg.addDefault("Level37.Params.Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
-		cfg.addDefault("Level37.Params.Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
-		cfg.addDefault("Level37.Params.Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
-		cfg.addDefault("Level37.Params.Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
-		cfg.addDefault("Level37.Params.Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
-		cfg.addDefault("Level37.Params.Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
-		cfg.addDefault("Level37.Params.Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
-		cfg.addDefault("Level37.Params.Thresh-Room",               DEFAULT_THRESH_ROOM              );
-		cfg.addDefault("Level37.Params.Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level37.Params.Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
+			cfg.addDefault("Level37.Params.Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
+			cfg.addDefault("Level37.Params.Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
+			cfg.addDefault("Level37.Params.Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
+			cfg.addDefault("Level37.Params.Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
+			cfg.addDefault("Level37.Params.Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
+			cfg.addDefault("Level37.Params.Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
+			cfg.addDefault("Level37.Params.Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
+			cfg.addDefault("Level37.Params.Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
+			cfg.addDefault("Level37.Params.Thresh-Room",               DEFAULT_THRESH_ROOM              );
+			cfg.addDefault("Level37.Params.Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
+		}
 		// block types
-		cfg.addDefault("Level37.Blocks.WallA",      DEFAULT_BLOCK_WALL_A    );
-		cfg.addDefault("Level37.Blocks.WallB",      DEFAULT_BLOCK_WALL_B    );
-		cfg.addDefault("Level37.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-		cfg.addDefault("Level37.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
-		cfg.addDefault("Level37.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level37.Blocks.WallA",      DEFAULT_BLOCK_WALL_A    );
+			cfg.addDefault("Level37.Blocks.WallB",      DEFAULT_BLOCK_WALL_B    );
+			cfg.addDefault("Level37.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+			cfg.addDefault("Level37.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+			cfg.addDefault("Level37.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+		}
 	}
 
 

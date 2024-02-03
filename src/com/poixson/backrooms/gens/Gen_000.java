@@ -18,7 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -482,7 +481,7 @@ public class Gen_000 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(0);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(0);
 			this.noise_wall_freq    .set(cfg.getDouble("Noise-Wall-Freq"    ));
 			this.noise_wall_octave  .set(cfg.getInt(   "Noise-Wall-Octave"  ));
 			this.noise_wall_gain    .set(cfg.getDouble("Noise-Wall-Gain"    ));
@@ -495,7 +494,7 @@ public class Gen_000 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(0);
 			this.block_wall       .set(cfg.getString("Wall"       ));
 			this.block_wall_base  .set(cfg.getString("Wall-Base"  ));
 			this.block_subfloor   .set(cfg.getString("SubFloor"   ));
@@ -504,24 +503,31 @@ public class Gen_000 extends BackroomsGen {
 			this.block_ceiling    .set(cfg.getString("Ceiling"    ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level0.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-		cfg.addDefault("Level0.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-		cfg.addDefault("Level0.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-		cfg.addDefault("Level0.Params.Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
-		cfg.addDefault("Level0.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-		cfg.addDefault("Level0.Params.Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
-		cfg.addDefault("Level0.Params.Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
-		cfg.addDefault("Level0.Params.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
-		cfg.addDefault("Level0.Params.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level0.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+			cfg.addDefault("Level0.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+			cfg.addDefault("Level0.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+			cfg.addDefault("Level0.Params.Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
+			cfg.addDefault("Level0.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+			cfg.addDefault("Level0.Params.Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
+			cfg.addDefault("Level0.Params.Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
+			cfg.addDefault("Level0.Params.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
+			cfg.addDefault("Level0.Params.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
+		}
 		// block types
-		cfg.addDefault("Level0.Blocks.Wall",        DEFAULT_BLOCK_WALL       );
-		cfg.addDefault("Level0.Blocks.Wall-Base",   DEFAULT_BLOCK_WALL_BASE  );
-		cfg.addDefault("Level0.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-		cfg.addDefault("Level0.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
-		cfg.addDefault("Level0.Blocks.Carpet",      DEFAULT_BLOCK_CARPET     );
-		cfg.addDefault("Level0.Blocks.Ceiling",     DEFAULT_BLOCK_CEILING    );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level0.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
+			cfg.addDefault("Level0.Blocks.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
+			cfg.addDefault("Level0.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+			cfg.addDefault("Level0.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+			cfg.addDefault("Level0.Blocks.Carpet",     DEFAULT_BLOCK_CARPET    );
+			cfg.addDefault("Level0.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+		}
 	}
 
 

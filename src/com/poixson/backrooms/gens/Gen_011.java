@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -182,7 +181,7 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(0);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(11);
 			this.noise_road_freq       .set(cfg.getDouble("Noise-Road-Freq"       ));
 			this.noise_road_jitter     .set(cfg.getDouble("Noise-Road-Jitter"     ));
 			this.noise_alley_freq      .set(cfg.getDouble("Noise-Alley-Freq"      ));
@@ -195,28 +194,35 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(11);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(11);
 			this.block_subfloor.set(cfg.getString("SubFloor"));
 			this.block_road    .set(cfg.getString("Road"    ));
 			this.block_alley   .set(cfg.getString("Alley"   ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level0.Params.Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
-		cfg.addDefault("Level0.Params.Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
-		cfg.addDefault("Level0.Params.Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );
-		cfg.addDefault("Level0.Params.Noise-Alley-Jitter",         DEFAULT_NOISE_ALLEY_JITTER        );
-		cfg.addDefault("Level0.Params.Noise-Building-Freq",        DEFAULT_NOISE_BUILDING_FREQ       );
-		cfg.addDefault("Level0.Params.Noise-Building-Jitter-Freq", DEFAULT_NOISE_BUILDING_JITTER_FREQ);
-		cfg.addDefault("Level0.Params.Thresh-Road",                DEFAULT_THRESH_ROAD               );
-		cfg.addDefault("Level0.Params.Thresh-Alley",               DEFAULT_THRESH_ALLEY              );
-		cfg.addDefault("Level0.Params.Building-Height-Base",       DEFAULT_BUILDING_HEIGHT_BASE      );
-		cfg.addDefault("Level0.Params.Building-Height-Factor",     DEFAULT_BUILDING_HEIGHT_FACTOR    );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level11.Params.Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
+			cfg.addDefault("Level11.Params.Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
+			cfg.addDefault("Level11.Params.Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );
+			cfg.addDefault("Level11.Params.Noise-Alley-Jitter",         DEFAULT_NOISE_ALLEY_JITTER        );
+			cfg.addDefault("Level11.Params.Noise-Building-Freq",        DEFAULT_NOISE_BUILDING_FREQ       );
+			cfg.addDefault("Level11.Params.Noise-Building-Jitter-Freq", DEFAULT_NOISE_BUILDING_JITTER_FREQ);
+			cfg.addDefault("Level11.Params.Thresh-Road",                DEFAULT_THRESH_ROAD               );
+			cfg.addDefault("Level11.Params.Thresh-Alley",               DEFAULT_THRESH_ALLEY              );
+			cfg.addDefault("Level11.Params.Building-Height-Base",       DEFAULT_BUILDING_HEIGHT_BASE      );
+			cfg.addDefault("Level11.Params.Building-Height-Factor",     DEFAULT_BUILDING_HEIGHT_FACTOR    );
+		}
 		// block types
-		cfg.addDefault("Level11.Blocks.SubFloor", DEFAULT_BLOCK_SUBFLOOR);
-		cfg.addDefault("Level11.Blocks.Road",     DEFAULT_BLOCK_ROAD    );
-		cfg.addDefault("Level11.Blocks.Alley",    DEFAULT_BLOCK_ALLEY   );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level11.Blocks.SubFloor", DEFAULT_BLOCK_SUBFLOOR);
+			cfg.addDefault("Level11.Blocks.Road",     DEFAULT_BLOCK_ROAD    );
+			cfg.addDefault("Level11.Blocks.Alley",    DEFAULT_BLOCK_ALLEY   );
+		}
 	}
 
 

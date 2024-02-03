@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -229,7 +228,7 @@ public class Gen_001 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(1);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(1);
 			this.noise_wall_freq    .set(cfg.getDouble("Noise-Wall-Freq"    ));
 			this.noise_wall_octave  .set(cfg.getInt(   "Noise-Wall-Octave"  ));
 			this.noise_wall_gain    .set(cfg.getDouble("Noise-Wall-Gain"    ));
@@ -243,30 +242,37 @@ public class Gen_001 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(1);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(1);
 			this.block_wall     .set(cfg.getString("Wall"     ));
 			this.block_subfloor .set(cfg.getString("SubFloor" ));
 			this.block_floor_dry.set(cfg.getString("Floor-Dry"));
 			this.block_floor_wet.set(cfg.getString("Floor-Wet"));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level1.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-		cfg.addDefault("Level1.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-		cfg.addDefault("Level1.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-		cfg.addDefault("Level1.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-		cfg.addDefault("Level1.Params.Noise-Moist-Freq",    DEFAULT_NOISE_MOIST_FREQ   );
-		cfg.addDefault("Level1.Params.Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
-		cfg.addDefault("Level1.Params.Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
-		cfg.addDefault("Level1.Params.Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
-		cfg.addDefault("Level1.Params.Thresh-Wall",         DEFAULT_THRESH_WALL        );
-		cfg.addDefault("Level1.Params.Thresh-Moist",        DEFAULT_THRESH_MOIST       );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level1.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+			cfg.addDefault("Level1.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+			cfg.addDefault("Level1.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+			cfg.addDefault("Level1.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+			cfg.addDefault("Level1.Params.Noise-Moist-Freq",    DEFAULT_NOISE_MOIST_FREQ   );
+			cfg.addDefault("Level1.Params.Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
+			cfg.addDefault("Level1.Params.Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
+			cfg.addDefault("Level1.Params.Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
+			cfg.addDefault("Level1.Params.Thresh-Wall",         DEFAULT_THRESH_WALL        );
+			cfg.addDefault("Level1.Params.Thresh-Moist",        DEFAULT_THRESH_MOIST       );
+		}
 		// block types
-		cfg.addDefault("Level1.Blocks.Wall",      DEFAULT_BLOCK_WALL     );
-		cfg.addDefault("Level1.Blocks.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
-		cfg.addDefault("Level1.Blocks.Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
-		cfg.addDefault("Level1.Blocks.Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level1.Blocks.Wall",      DEFAULT_BLOCK_WALL     );
+			cfg.addDefault("Level1.Blocks.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
+			cfg.addDefault("Level1.Blocks.Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
+			cfg.addDefault("Level1.Blocks.Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
+		}
 	}
 
 

@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -189,7 +188,7 @@ public class Gen_308 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(308);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(308);
 			this.noise_wall_freq  .set(cfg.getDouble("Noise-Wall-Freq"  ));
 			this.noise_wall_jitter.set(cfg.getDouble("Noise-Wall-Jitter"));
 			this.thresh_wall_L1   .set(cfg.getDouble("Thresh-Wall-L1"   ));
@@ -199,7 +198,7 @@ public class Gen_308 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(308);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(308);
 			this.block_wall       .set(cfg.getString("Wall"       ));
 			this.block_wall_stripe.set(cfg.getString("Wall-Stripe"));
 			this.block_subfloor   .set(cfg.getString("SubFloor"   ));
@@ -208,21 +207,28 @@ public class Gen_308 extends BackroomsGen {
 			this.block_ceiling    .set(cfg.getString("Ceiling"    ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level308.Params.Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
-		cfg.addDefault("Level308.Params.Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
-		cfg.addDefault("Level308.Params.Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );
-		cfg.addDefault("Level308.Params.Thresh-Wall-H1",    DEFAULT_THRESH_WALL_H1   );
-		cfg.addDefault("Level308.Params.Thresh-Wall-L2",    DEFAULT_THRESH_WALL_L2   );
-		cfg.addDefault("Level308.Params.Thresh-Wall-H2",    DEFAULT_THRESH_WALL_H2   );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level308.Params.Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
+			cfg.addDefault("Level308.Params.Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
+			cfg.addDefault("Level308.Params.Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );
+			cfg.addDefault("Level308.Params.Thresh-Wall-H1",    DEFAULT_THRESH_WALL_H1   );
+			cfg.addDefault("Level308.Params.Thresh-Wall-L2",    DEFAULT_THRESH_WALL_L2   );
+			cfg.addDefault("Level308.Params.Thresh-Wall-H2",    DEFAULT_THRESH_WALL_H2   );
+		}
 		// block types
-		cfg.addDefault("Level308.Blocks.Wall",        DEFAULT_BLOCK_WALL       );
-		cfg.addDefault("Level308.Blocks.Wall-Stripe", DEFAULT_BLOCK_WALL_STRIPE);
-		cfg.addDefault("Level308.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-		cfg.addDefault("Level308.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
-		cfg.addDefault("Level308.Blocks.Floor",       DEFAULT_BLOCK_FLOOR      );
-		cfg.addDefault("Level308.Blocks.Ceiling",     DEFAULT_BLOCK_CEILING    );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level308.Blocks.Wall",        DEFAULT_BLOCK_WALL       );
+			cfg.addDefault("Level308.Blocks.Wall-Stripe", DEFAULT_BLOCK_WALL_STRIPE);
+			cfg.addDefault("Level308.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+			cfg.addDefault("Level308.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
+			cfg.addDefault("Level308.Blocks.Floor",       DEFAULT_BLOCK_FLOOR      );
+			cfg.addDefault("Level308.Blocks.Ceiling",     DEFAULT_BLOCK_CEILING    );
+		}
 	}
 
 

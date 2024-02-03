@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -231,7 +230,7 @@ public class Gen_309 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(309);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(309);
 			this.noise_path_freq    .set(cfg.getDouble("Noise-Path-Freq"    ));
 			this.noise_ground_freq  .set(cfg.getDouble("Noise-Ground-Freq"  ));
 			this.noise_ground_octave.set(cfg.getInt(   "Noise-Ground-Octave"));
@@ -247,32 +246,39 @@ public class Gen_309 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(309);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(309);
 			this.block_tree_trunk .set(cfg.getString("Tree-Trunk" ));
 			this.block_tree_leaves.set(cfg.getString("Tree-Leaves"));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level309.Params.Noise-Path-Freq",     DEFAULT_NOISE_PATH_FREQ    );
-		cfg.addDefault("Level309.Params.Noise-Ground-Freq",   DEFAULT_NOISE_GROUND_FREQ  );
-		cfg.addDefault("Level309.Params.Noise-Ground-Octave", DEFAULT_NOISE_GROUND_OCTAVE);
-		cfg.addDefault("Level309.Params.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
-		cfg.addDefault("Level309.Params.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
-		cfg.addDefault("Level309.Params.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
-		cfg.addDefault("Level309.Params.Noise-Prairie-Freq",  DEFAULT_NOISE_PRAIRIE_FREQ );
-		cfg.addDefault("Level309.Params.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
-		cfg.addDefault("Level309.Params.Path-Width",          DEFAULT_PATH_WIDTH         );
-		cfg.addDefault("Level309.Params.Path-Clearing",       DEFAULT_PATH_CLEARING      );
-		cfg.addDefault("Level309.Params.Special-Mod-A",       DEFAULT_SPECIAL_MOD_A      );
-		cfg.addDefault("Level309.Params.Special-Mod-B",       DEFAULT_SPECIAL_MOD_B      );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level309.Params.Noise-Path-Freq",     DEFAULT_NOISE_PATH_FREQ    );
+			cfg.addDefault("Level309.Params.Noise-Ground-Freq",   DEFAULT_NOISE_GROUND_FREQ  );
+			cfg.addDefault("Level309.Params.Noise-Ground-Octave", DEFAULT_NOISE_GROUND_OCTAVE);
+			cfg.addDefault("Level309.Params.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
+			cfg.addDefault("Level309.Params.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
+			cfg.addDefault("Level309.Params.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
+			cfg.addDefault("Level309.Params.Noise-Prairie-Freq",  DEFAULT_NOISE_PRAIRIE_FREQ );
+			cfg.addDefault("Level309.Params.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
+			cfg.addDefault("Level309.Params.Path-Width",          DEFAULT_PATH_WIDTH         );
+			cfg.addDefault("Level309.Params.Path-Clearing",       DEFAULT_PATH_CLEARING      );
+			cfg.addDefault("Level309.Params.Special-Mod-A",       DEFAULT_SPECIAL_MOD_A      );
+			cfg.addDefault("Level309.Params.Special-Mod-B",       DEFAULT_SPECIAL_MOD_B      );
+		}
 		// block types
-		cfg.addDefault("Level309.Blocks.Dirt",        DEFAULT_BLOCK_DIRT       );
-		cfg.addDefault("Level309.Blocks.Path",        DEFAULT_BLOCK_PATH       );
-		cfg.addDefault("Level309.Blocks.Grass",       DEFAULT_BLOCK_GRASS      );
-		cfg.addDefault("Level309.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-		cfg.addDefault("Level309.Blocks.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
-		cfg.addDefault("Level309.Blocks.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level309.Blocks.Dirt",        DEFAULT_BLOCK_DIRT       );
+			cfg.addDefault("Level309.Blocks.Path",        DEFAULT_BLOCK_PATH       );
+			cfg.addDefault("Level309.Blocks.Grass",       DEFAULT_BLOCK_GRASS      );
+			cfg.addDefault("Level309.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+			cfg.addDefault("Level309.Blocks.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
+			cfg.addDefault("Level309.Blocks.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
+		}
 	}
 
 

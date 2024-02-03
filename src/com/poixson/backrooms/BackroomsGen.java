@@ -30,6 +30,7 @@ public abstract class BackroomsGen {
 		this.seed      = seed;
 		this.level_y   = level_y;
 		this.level_h   = level_h;
+		this.configDefaults();
 	}
 
 
@@ -56,6 +57,7 @@ public abstract class BackroomsGen {
 	public void initNoise() {}
 
 	protected abstract void loadConfig();
+	public abstract void configDefaults();
 
 
 

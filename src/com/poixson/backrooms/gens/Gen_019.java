@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -128,24 +127,31 @@ public class Gen_019 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(19);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(19);
 			this.noise_lamps_freq.set(cfg.getDouble("Noise-Lamps-Freq"));
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(19);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(19);
 			this.block_wall .set(cfg.getString("Wall" ));
 			this.block_floor.set(cfg.getString("Floor"));
 			this.block_beam .set(cfg.getString("Beam" ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level19.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level19.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
+		}
 		// block types
-		cfg.addDefault("Level19.Blocks.Wall",  DEFAULT_BLOCK_WALL );
-		cfg.addDefault("Level19.Blocks.Floor", DEFAULT_BLOCK_FLOOR);
-		cfg.addDefault("Level19.Blocks.Beam",  DEFAULT_BLOCK_BEAM );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level19.Blocks.Wall",  DEFAULT_BLOCK_WALL );
+			cfg.addDefault("Level19.Blocks.Floor", DEFAULT_BLOCK_FLOOR);
+			cfg.addDefault("Level19.Blocks.Beam",  DEFAULT_BLOCK_BEAM );
+		}
 	}
 
 

@@ -18,7 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -738,7 +737,7 @@ public class Gen_771 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(771);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(771);
 			this.noise_lamps_freq.set(cfg.getDouble("Noise-Lamps-Freq"));
 			this.noise_exits_freq.set(cfg.getDouble("Noise-Exits-Freq"));
 			this.noise_loot_freq .set(cfg.getDouble("Noise-Loot-Freq"));
@@ -749,7 +748,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(771);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(771);
 			this.block_nexus_arch             .set(cfg.getString("Nexus-Arch"             ));
 			this.block_nexus_arch_slab_upper  .set(cfg.getString("Nexus-Arch-Slab-Upper"  ));
 			this.block_nexus_arch_slab_lower  .set(cfg.getString("Nexus-Arch-Slab-Lower"  ));
@@ -785,49 +784,56 @@ public class Gen_771 extends BackroomsGen {
 			this.block_shaft_floor            .set(cfg.getString("Shaft-Floor"            ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level771.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
-		cfg.addDefault("Level771.Params.Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
-		cfg.addDefault("Level771.Params.Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );
-		cfg.addDefault("Level771.Params.Thresh-Lamps",     DEFAULT_THRESH_LAMPS    );
-		cfg.addDefault("Level771.Params.Thresh-Void",      DEFAULT_THRESH_VOID     );
-		cfg.addDefault("Level771.Params.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
-		cfg.addDefault("Level771.Params.Thresh-Loot",      DEFAULT_THRESH_LOOT     );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level771.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
+			cfg.addDefault("Level771.Params.Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
+			cfg.addDefault("Level771.Params.Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );
+			cfg.addDefault("Level771.Params.Thresh-Lamps",     DEFAULT_THRESH_LAMPS    );
+			cfg.addDefault("Level771.Params.Thresh-Void",      DEFAULT_THRESH_VOID     );
+			cfg.addDefault("Level771.Params.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
+			cfg.addDefault("Level771.Params.Thresh-Loot",      DEFAULT_THRESH_LOOT     );
+		}
 		// block types
-		cfg.addDefault("Level771.Blocks.Nexus-Arch",              DEFAULT_BLOCK_NEXUS_ARCH             );
-		cfg.addDefault("Level771.Blocks.Nexus-Arch-Slab-Upper",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
-		cfg.addDefault("Level771.Blocks.Nexus-Arch-Slab-Lower",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
-		cfg.addDefault("Level771.Blocks.Nexus-Arch-Stairs-Upper", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER);
-		cfg.addDefault("Level771.Blocks.Nexus-Arch-Stairs-Lower", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER);
-		cfg.addDefault("Level771.Blocks.Nexus-Arch-Pillar",       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
-		cfg.addDefault("Level771.Blocks.Nexus-Arch-Base",         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
-		cfg.addDefault("Level771.Blocks.Nexus-Floor-Upper",       DEFAULT_BLOCK_NEXUS_FLOOR_UPPER      );
-		cfg.addDefault("Level771.Blocks.Nexus-Floor-Lower",       DEFAULT_BLOCK_NEXUS_FLOOR_LOWER      );
-		cfg.addDefault("Level771.Blocks.Nexus-Floor-Lower-Slab",  DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB );
-		cfg.addDefault("Level771.Blocks.Nexus-Hatch",             DEFAULT_BLOCK_NEXUS_HATCH            );
-		cfg.addDefault("Level771.Blocks.Nexus-Flair-Hot",         DEFAULT_BLOCK_NEXUS_FLAIR_HOT        );
-		cfg.addDefault("Level771.Blocks.Nexus-Flair-Cool",        DEFAULT_BLOCK_NEXUS_FLAIR_COOL       );
-		cfg.addDefault("Level771.Blocks.Nexus-Wall",              DEFAULT_BLOCK_NEXUS_WALL             );
-		cfg.addDefault("Level771.Blocks.Nexus-Wall-Top",          DEFAULT_BLOCK_NEXUS_WALL_TOP         );
-		cfg.addDefault("Level771.Blocks.Nexus-Light-Upper",       DEFAULT_BLOCK_NEXUS_LIGHT_UPPER      );
-		cfg.addDefault("Level771.Blocks.Nexus-Light-Lower",       DEFAULT_BLOCK_NEXUS_LIGHT_LOWER      );
-		cfg.addDefault("Level771.Blocks.Road-Upper",              DEFAULT_BLOCK_ROAD_UPPER             );
-		cfg.addDefault("Level771.Blocks.Road-Lower",              DEFAULT_BLOCK_ROAD_LOWER             );
-		cfg.addDefault("Level771.Blocks.Road-Upper-Center",       DEFAULT_BLOCK_ROAD_UPPER_CENTER      );
-		cfg.addDefault("Level771.Blocks.Road-Lower-Center",       DEFAULT_BLOCK_ROAD_LOWER_CENTER      );
-		cfg.addDefault("Level771.Blocks.Road-Upper-Wall",         DEFAULT_BLOCK_ROAD_UPPER_WALL        );
-		cfg.addDefault("Level771.Blocks.Road-Lower-Wall",         DEFAULT_BLOCK_ROAD_LOWER_WALL        );
-		cfg.addDefault("Level771.Blocks.Road-Upper-Lamp",         DEFAULT_BLOCK_ROAD_UPPER_LAMP        );
-		cfg.addDefault("Level771.Blocks.Road-Lower-Lamp",         DEFAULT_BLOCK_ROAD_LOWER_LAMP        );
-		cfg.addDefault("Level771.Blocks.Road-Upper-Light",        DEFAULT_BLOCK_ROAD_UPPER_LIGHT       );
-		cfg.addDefault("Level771.Blocks.Road-Lower-Light",        DEFAULT_BLOCK_ROAD_LOWER_LIGHT       );
-		cfg.addDefault("Level771.Blocks.Pillar",                  DEFAULT_BLOCK_PILLAR                 );
-		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Upper",     DEFAULT_BLOCK_PILLAR_STAIRS_UPPER    );
-		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Lower",     DEFAULT_BLOCK_PILLAR_STAIRS_LOWER    );
-		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Under",     DEFAULT_BLOCK_PILLAR_STAIRS_UNDER    );
-		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Bottom",    DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM   );
-		cfg.addDefault("Level771.Blocks.Shaft-Floor",             DEFAULT_BLOCK_SHAFT_FLOOR            );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level771.Blocks.Nexus-Arch",              DEFAULT_BLOCK_NEXUS_ARCH             );
+			cfg.addDefault("Level771.Blocks.Nexus-Arch-Slab-Upper",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
+			cfg.addDefault("Level771.Blocks.Nexus-Arch-Slab-Lower",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
+			cfg.addDefault("Level771.Blocks.Nexus-Arch-Stairs-Upper", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER);
+			cfg.addDefault("Level771.Blocks.Nexus-Arch-Stairs-Lower", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER);
+			cfg.addDefault("Level771.Blocks.Nexus-Arch-Pillar",       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
+			cfg.addDefault("Level771.Blocks.Nexus-Arch-Base",         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
+			cfg.addDefault("Level771.Blocks.Nexus-Floor-Upper",       DEFAULT_BLOCK_NEXUS_FLOOR_UPPER      );
+			cfg.addDefault("Level771.Blocks.Nexus-Floor-Lower",       DEFAULT_BLOCK_NEXUS_FLOOR_LOWER      );
+			cfg.addDefault("Level771.Blocks.Nexus-Floor-Lower-Slab",  DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB );
+			cfg.addDefault("Level771.Blocks.Nexus-Hatch",             DEFAULT_BLOCK_NEXUS_HATCH            );
+			cfg.addDefault("Level771.Blocks.Nexus-Flair-Hot",         DEFAULT_BLOCK_NEXUS_FLAIR_HOT        );
+			cfg.addDefault("Level771.Blocks.Nexus-Flair-Cool",        DEFAULT_BLOCK_NEXUS_FLAIR_COOL       );
+			cfg.addDefault("Level771.Blocks.Nexus-Wall",              DEFAULT_BLOCK_NEXUS_WALL             );
+			cfg.addDefault("Level771.Blocks.Nexus-Wall-Top",          DEFAULT_BLOCK_NEXUS_WALL_TOP         );
+			cfg.addDefault("Level771.Blocks.Nexus-Light-Upper",       DEFAULT_BLOCK_NEXUS_LIGHT_UPPER      );
+			cfg.addDefault("Level771.Blocks.Nexus-Light-Lower",       DEFAULT_BLOCK_NEXUS_LIGHT_LOWER      );
+			cfg.addDefault("Level771.Blocks.Road-Upper",              DEFAULT_BLOCK_ROAD_UPPER             );
+			cfg.addDefault("Level771.Blocks.Road-Lower",              DEFAULT_BLOCK_ROAD_LOWER             );
+			cfg.addDefault("Level771.Blocks.Road-Upper-Center",       DEFAULT_BLOCK_ROAD_UPPER_CENTER      );
+			cfg.addDefault("Level771.Blocks.Road-Lower-Center",       DEFAULT_BLOCK_ROAD_LOWER_CENTER      );
+			cfg.addDefault("Level771.Blocks.Road-Upper-Wall",         DEFAULT_BLOCK_ROAD_UPPER_WALL        );
+			cfg.addDefault("Level771.Blocks.Road-Lower-Wall",         DEFAULT_BLOCK_ROAD_LOWER_WALL        );
+			cfg.addDefault("Level771.Blocks.Road-Upper-Lamp",         DEFAULT_BLOCK_ROAD_UPPER_LAMP        );
+			cfg.addDefault("Level771.Blocks.Road-Lower-Lamp",         DEFAULT_BLOCK_ROAD_LOWER_LAMP        );
+			cfg.addDefault("Level771.Blocks.Road-Upper-Light",        DEFAULT_BLOCK_ROAD_UPPER_LIGHT       );
+			cfg.addDefault("Level771.Blocks.Road-Lower-Light",        DEFAULT_BLOCK_ROAD_LOWER_LIGHT       );
+			cfg.addDefault("Level771.Blocks.Pillar",                  DEFAULT_BLOCK_PILLAR                 );
+			cfg.addDefault("Level771.Blocks.Pillar-Stairs-Upper",     DEFAULT_BLOCK_PILLAR_STAIRS_UPPER    );
+			cfg.addDefault("Level771.Blocks.Pillar-Stairs-Lower",     DEFAULT_BLOCK_PILLAR_STAIRS_LOWER    );
+			cfg.addDefault("Level771.Blocks.Pillar-Stairs-Under",     DEFAULT_BLOCK_PILLAR_STAIRS_UNDER    );
+			cfg.addDefault("Level771.Blocks.Pillar-Stairs-Bottom",    DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM   );
+			cfg.addDefault("Level771.Blocks.Shaft-Floor",             DEFAULT_BLOCK_SHAFT_FLOOR            );
+		}
 	}
 
 

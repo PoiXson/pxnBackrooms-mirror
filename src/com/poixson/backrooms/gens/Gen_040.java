@@ -3,7 +3,6 @@ package com.poixson.backrooms.gens;
 import java.util.LinkedList;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -48,7 +47,8 @@ public class Gen_040 extends BackroomsGen {
 	@Override
 	protected void loadConfig() {
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 	}
 
 

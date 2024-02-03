@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
@@ -178,7 +177,7 @@ public class Gen_033 extends BackroomsGen {
 	protected void loadConfig() {
 		// params
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelParams(33);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(33);
 			this.noise_floor_freq  .set(cfg.getDouble("Noise-Floor-Freq"  ));
 			this.noise_floor_octave.set(cfg.getInt(   "Noise-Floor-Octave"));
 			this.noise_floor_gain  .set(cfg.getDouble("Noise-Floor-Gain"  ));
@@ -188,7 +187,7 @@ public class Gen_033 extends BackroomsGen {
 		}
 		// block types
 		{
-			final ConfigurationSection cfg = this.plugin.getLevelBlocks(33);
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(33);
 			this.block_wall      .set(cfg.getString("Wall"      ));
 			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
 			this.block_floor     .set(cfg.getString("Floor"     ));
@@ -198,22 +197,29 @@ public class Gen_033 extends BackroomsGen {
 			this.block_hazard    .set(cfg.getString("Hazard"    ));
 		}
 	}
-	public static void ConfigDefaults(final FileConfiguration cfg) {
+	@Override
+	public void configDefaults() {
 		// params
-		cfg.addDefault("Level33.Params.Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
-		cfg.addDefault("Level33.Params.Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
-		cfg.addDefault("Level33.Params.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
-		cfg.addDefault("Level33.Params.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
-		cfg.addDefault("Level33.Params.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
-		cfg.addDefault("Level33.Params.Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
+			cfg.addDefault("Level33.Params.Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
+			cfg.addDefault("Level33.Params.Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
+			cfg.addDefault("Level33.Params.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
+			cfg.addDefault("Level33.Params.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
+			cfg.addDefault("Level33.Params.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
+			cfg.addDefault("Level33.Params.Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
+		}
 		// block types
-		cfg.addDefault("Level33.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
-		cfg.addDefault("Level33.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
-		cfg.addDefault("Level33.Blocks.Floor",      DEFAULT_BLOCK_FLOOR     );
-		cfg.addDefault("Level33.Blocks.Floor-Safe", DEFAULT_BLOCK_FLOOR_SAFE);
-		cfg.addDefault("Level33.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-		cfg.addDefault("Level33.Blocks.Plate",      DEFAULT_BLOCK_PLATE     );
-		cfg.addDefault("Level33.Blocks.Hazard",     DEFAULT_BLOCK_HAZARD    );
+		{
+			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
+			cfg.addDefault("Level33.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
+			cfg.addDefault("Level33.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+			cfg.addDefault("Level33.Blocks.Floor",      DEFAULT_BLOCK_FLOOR     );
+			cfg.addDefault("Level33.Blocks.Floor-Safe", DEFAULT_BLOCK_FLOOR_SAFE);
+			cfg.addDefault("Level33.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+			cfg.addDefault("Level33.Blocks.Plate",      DEFAULT_BLOCK_PLATE     );
+			cfg.addDefault("Level33.Blocks.Hazard",     DEFAULT_BLOCK_HAZARD    );
+		}
 	}
 
 
