@@ -62,8 +62,8 @@ public class Level_011 extends BackroomsLevel {
 	// city
 	public static final int Y_011 = Y_308 + H_308 + SUBFLOOR + 3;
 	// arcade
-	public static final int Y_040 = Y_308;
-	public static final int H_040 = H_308;
+	public static final int Y_040 = Y_122;
+	public static final int H_040 = H_122;
 
 	// generators
 	public final Gen_011 gen_011;
@@ -211,9 +211,15 @@ public class Level_011 extends BackroomsLevel {
 		// generate
 		this.gen_004.generate(pregen, plots, chunk, chunkX, chunkZ); // office
 		this.gen_264.generate(pregen, plots, chunk, chunkX, chunkZ); // museum
-		this.gen_122.generate(pregen, plots, chunk, chunkX, chunkZ); // mall
+		if (chunkX >-4 && chunkZ >-4
+		&&  chunkX < 4 && chunkZ < 4) {
+			// arcade
+			this.gen_040.generate(null, null, chunk, chunkX, chunkZ);
+		} else {
+			// mall
+			this.gen_122.generate(pregen, plots, chunk, chunkX, chunkZ); // mall
+		}
 		this.gen_308.generate(pregen, plots, chunk, chunkX, chunkZ); // ikea
-		this.gen_040.generate(pregen, plots, chunk, chunkX, chunkZ); // arcade
 		this.gen_011.generate(pregen, plots, chunk, chunkX, chunkZ); // city
 	}
 
