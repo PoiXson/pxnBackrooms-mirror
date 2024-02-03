@@ -7,6 +7,7 @@ import static com.poixson.utils.LocationUtils.FaceToAxString;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
 import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
+import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,7 +34,6 @@ import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.StringUtils;
 
 
 // 771 | Crossroads
@@ -412,7 +412,7 @@ public class Gen_771 extends BackroomsGen {
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
 			if (value_light > thresh_lamps) {
 				matrix[2][i].append("   i");
-				StringUtils.ReplaceInString(matrix[1][i], "L", 2);
+				ReplaceInString(matrix[1][i], "L", 2);
 			}
 		}
 		plot.run(chunk, matrix);
@@ -463,7 +463,7 @@ public class Gen_771 extends BackroomsGen {
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
 			if (value_light > thresh_light) {
 				matrix[5][i].append("   i");
-				StringUtils.ReplaceInString(matrix[4][i], "L", 2);
+				ReplaceInString(matrix[4][i], "L", 2);
 			}
 		}
 		plot.run(chunk, matrix);
@@ -635,31 +635,31 @@ public class Gen_771 extends BackroomsGen {
 			if (x == 0 && z == 0) {
 				matrix[h+1][0].append("_ _");
 				matrix[h+1][1].append(" _" );
-				StringUtils.ReplaceInString(matrix[h][0], "/", 1);
+				ReplaceInString(matrix[h][0], "/", 1);
 			}
 			if (x == -1 && z == -1)
 				matrix[h+1][1].append(" _");
-			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
-			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
-			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 1);
-			matrix[--h][0].append(" ##"); matrix[h][1].append("#%"); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 0);
-			matrix[--h][0].append(" #%"); matrix[h][1].append("#" ); if (x == 0 && z == 0) StringUtils.ReplaceInString(matrix[h][0], "H", 0);
+			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) ReplaceInString(matrix[h][0], "H", 1);
+			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) ReplaceInString(matrix[h][0], "H", 1);
+			matrix[--h][0].append("  #"); matrix[h][1].append("##"); if (x == 0 && z == 0) ReplaceInString(matrix[h][0], "H", 1);
+			matrix[--h][0].append(" ##"); matrix[h][1].append("#%"); if (x == 0 && z == 0) ReplaceInString(matrix[h][0], "H", 0);
+			matrix[--h][0].append(" #%"); matrix[h][1].append("#" ); if (x == 0 && z == 0) ReplaceInString(matrix[h][0], "H", 0);
 			for (int iy=0; iy<h; iy++) {
 				matrix[iy][0].append(" #");
 				matrix[iy][1].append("#" );
 				// ladder and lights
-				if (x == 0 && z == 0)  StringUtils.ReplaceInString(matrix[iy][0], "H", 0);
-				else if (iy % 10 == 0) StringUtils.ReplaceInString(matrix[iy][0], ",", 0);
+				if (x == 0 && z == 0)  ReplaceInString(matrix[iy][0], "H", 0);
+				else if (iy % 10 == 0) ReplaceInString(matrix[iy][0], ",", 0);
 			}
 			// door
 			if (x != 0 && z != 0) {
-				StringUtils.ReplaceInString(matrix[2][1], "d", 0);
-				StringUtils.ReplaceInString(matrix[1][1], "D", 0);
-				StringUtils.ReplaceInString(matrix[1][0], "-", 0);
-				StringUtils.ReplaceInString(matrix[0][1], " ", 0);
+				ReplaceInString(matrix[2][1], "d", 0);
+				ReplaceInString(matrix[1][1], "D", 0);
+				ReplaceInString(matrix[1][0], "-", 0);
+				ReplaceInString(matrix[0][1], " ", 0);
 			}
 			// floor inside shaft
-			StringUtils.ReplaceInString(matrix[0][0], "w", 0);
+			ReplaceInString(matrix[0][0], "w", 0);
 			break;
 		}
 		// drop shaft to lower road
@@ -672,11 +672,11 @@ public class Gen_771 extends BackroomsGen {
 				matrix[iy][1].append("##" );
 			}
 			// doorway
-			StringUtils.ReplaceInString(matrix[4][0], "WW", 0);
-			StringUtils.ReplaceInString(matrix[3][0], "SS", 0);
-			StringUtils.ReplaceInString(matrix[2][1], ".+", 0);
-			StringUtils.ReplaceInString(matrix[1][1], ".+", 0);
-			StringUtils.ReplaceInString(matrix[0][0], "ww", 0);
+			ReplaceInString(matrix[4][0], "WW", 0);
+			ReplaceInString(matrix[3][0], "SS", 0);
+			ReplaceInString(matrix[2][1], ".+", 0);
+			ReplaceInString(matrix[1][1], ".+", 0);
+			ReplaceInString(matrix[0][0], "ww", 0);
 			break;
 		}
 		// void shaft
@@ -689,7 +689,7 @@ public class Gen_771 extends BackroomsGen {
 				matrix[iy][1].append("#" );
 			}
 			// no floor inside shaft
-			StringUtils.ReplaceInString(matrix[0][0], ".", 0);
+			ReplaceInString(matrix[0][0], ".", 0);
 			break;
 		}
 		default: break;
