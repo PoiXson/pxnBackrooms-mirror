@@ -31,7 +31,6 @@ import com.poixson.backrooms.gens.Gen_001.BasementData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.tools.DelayedChestFiller;
-import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
@@ -63,7 +62,6 @@ public class Gen_000 extends BackroomsGen {
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL        = "minecraft:yellow_terracotta";
 	public static final String DEFAULT_BLOCK_WALL_BASE   = "minecraft:orange_terracotta";
-	public static final String DEFAULT_BLOCK_WALL_OUTLET = "minecraft:pink_terracotta";
 	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_SUBCEILING  = "minecraft:oak_planks";
 	public static final String DEFAULT_BLOCK_CARPET      = "minecraft:light_gray_wool";
@@ -87,8 +85,6 @@ public class Gen_000 extends BackroomsGen {
 	// blocks
 	public final AtomicReference<String> block_wall        = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_wall_base   = new AtomicReference<String>(null);
-//TODO: remove this
-	public final AtomicReference<String> block_wall_outlet = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_subfloor    = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_subceiling  = new AtomicReference<String>(null);
 	public final AtomicReference<String> block_carpet      = new AtomicReference<String>(null);
@@ -276,8 +272,8 @@ public class Gen_000 extends BackroomsGen {
 		final int cy = this.level_h + y + 1;
 		int xx, zz;
 		int modX, modZ;
-		int outlets = 0;
-		int outlet_rnd;
+//		int outlets = 0;
+//		int outlet_rnd;
 		for (int iz=0; iz<16; iz++) {
 			zz = (chunkZ * 16) + iz;
 			modZ = (zz < 0 ? 0-zz : zz) % 7;
@@ -294,12 +290,15 @@ public class Gen_000 extends BackroomsGen {
 				if (dao.isWall) {
 					// lobby walls
 					final int h = this.level_h + 3;
-					chunk.setBlock(ix, y, iz, block_subfloor);
-					outlet_rnd = xRand.Get(0, 100+(int)Math.pow(10.0, outlets)).nextInt();
-					if (outlet_rnd == 11) { chunk.setBlock(ix, y+1, iz, block_wall_outlet); outlets++; }
-					else                    chunk.setBlock(ix, y+1, iz, block_wall_base  );
+					chunk.setBlock(ix, y,   iz, block_subfloor );
+					chunk.setBlock(ix, y+1, iz, block_wall_base);
 					for (int iy=2; iy<h; iy++)
 						chunk.setBlock(ix, y+iy, iz, block_wall);
+//TODO
+//					// outlet
+//					outlet_rnd = xRand.Get(0, 100+(int)Math.pow(10.0, outlets)).nextInt();
+//					if (outlet_rnd == 11) {
+//					}
 				// room
 				} else {
 					// floor
@@ -501,7 +500,6 @@ public class Gen_000 extends BackroomsGen {
 			final ConfigurationSection cfg = this.plugin.getLevelBlocks(0);
 			this.block_wall       .set(cfg.getString("Wall"       ));
 			this.block_wall_base  .set(cfg.getString("Wall-Base"  ));
-			this.block_wall_outlet.set(cfg.getString("Wall-Outlet"));
 			this.block_subfloor   .set(cfg.getString("SubFloor"   ));
 			this.block_subceiling .set(cfg.getString("SubCeiling" ));
 			this.block_carpet     .set(cfg.getString("Carpet"     ));
@@ -522,7 +520,6 @@ public class Gen_000 extends BackroomsGen {
 		// block types
 		cfg.addDefault("Level0.Blocks.Wall",        DEFAULT_BLOCK_WALL       );
 		cfg.addDefault("Level0.Blocks.Wall-Base",   DEFAULT_BLOCK_WALL_BASE  );
-		cfg.addDefault("Level0.Blocks.Wall-Outlet", DEFAULT_BLOCK_WALL_OUTLET);
 		cfg.addDefault("Level0.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfg.addDefault("Level0.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
 		cfg.addDefault("Level0.Blocks.Carpet",      DEFAULT_BLOCK_CARPET     );
