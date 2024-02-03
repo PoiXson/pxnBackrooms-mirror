@@ -438,11 +438,11 @@ public class Gen_771 extends BackroomsGen {
 		if (block_road_lower_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Light" );
 		final double thresh_light = this.thresh_lamps.get();
 		final BlockPlotter plot =
-				(new BlockPlotter())
-				.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
-				.xz(x, z)
-				.y(this.level_y-3)
-				.whd(16, 6, 16);
+			(new BlockPlotter())
+			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.xz(x, z)
+			.y(this.level_y-3)
+			.whd(16, 6, 16);
 		plot.type('#', block_road_lower       );
 		plot.type('*', block_road_lower_center);
 		plot.type('+', block_road_lower_wall  );
@@ -552,11 +552,11 @@ public class Gen_771 extends BackroomsGen {
 		if (block_pillar_stairs_bottom == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Bottom");
 		if (block_shaft_floor          == null) throw new RuntimeException("Invalid block type for level 771 Shaft-Floor"         );
 		final BlockPlotter plot =
-				(new BlockPlotter())
-				.axis("u"+FaceToAxString(facing)+FaceToAxString(side))
-				.xz(x, z)
-				.y(this.level_y)
-				.whd(2, this.level_h+2, 5);
+			(new BlockPlotter())
+			.axis("u"+FaceToAxString(facing)+FaceToAxString(side))
+			.xz(x, z)
+			.y(this.level_y)
+			.whd(2, this.level_h+2, 5);
 		plot.type('#', block_pillar              );
 		plot.type('w', block_shaft_floor         );
 		plot.type('%', block_pillar_stairs_upper );

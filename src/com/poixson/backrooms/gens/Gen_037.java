@@ -47,8 +47,8 @@ public class Gen_037 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_PORTAL_LOBBY_FREQ   = 0.02;
 	public static final int    DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE = 2;
 	public static final double DEFAULT_NOISE_PORTAL_HOTEL_FREQ   = 0.01;
-	public static final double DEFAULT_THRESH_ROOM   = 0.2;
-	public static final double DEFAULT_THRESH_PORTAL = 0.5;
+	public static final double DEFAULT_THRESH_ROOM               = 0.2;
+	public static final double DEFAULT_THRESH_PORTAL             = 0.5;
 
 	public static final int WATER_DEPTH = 3;
 

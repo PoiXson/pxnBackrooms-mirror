@@ -247,22 +247,20 @@ public class Gen_000 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!ENABLE_GEN_000) return;
-		final BlockData block_wall            = StringToBlockData(this.block_wall,        DEFAULT_BLOCK_WALL       );
-		final BlockData block_wall_base       = StringToBlockData(this.block_wall_base,   DEFAULT_BLOCK_WALL_BASE  );
-		final BlockData block_wall_outlet     = StringToBlockData(this.block_wall_outlet, DEFAULT_BLOCK_WALL_OUTLET);
-		final BlockData block_subfloor        = StringToBlockData(this.block_subfloor,    DEFAULT_BLOCK_SUBFLOOR   );
-		final BlockData block_subceiling      = StringToBlockData(this.block_subceiling,  DEFAULT_BLOCK_SUBCEILING );
-		final BlockData block_carpet          = StringToBlockData(this.block_carpet,      DEFAULT_BLOCK_CARPET     );
-		final BlockData block_ceiling         = StringToBlockData(this.block_ceiling,     DEFAULT_BLOCK_CEILING    );
+		final BlockData block_wall            = StringToBlockData(this.block_wall,       DEFAULT_BLOCK_WALL      );
+		final BlockData block_wall_base       = StringToBlockData(this.block_wall_base,  DEFAULT_BLOCK_WALL_BASE );
+		final BlockData block_subfloor        = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
+		final BlockData block_subceiling      = StringToBlockData(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
+		final BlockData block_carpet          = StringToBlockData(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
+		final BlockData block_ceiling         = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
 		final BlockData block_overgrowth_wall = StringToBlockData(((Level_000)this.backlevel).gen_023.block_wall, Gen_023.DEFAULT_BLOCK_WALL);
-		if (block_wall            == null) throw new RuntimeException("Invalid block type for level 0 Wall"       );
-		if (block_wall_base       == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base"  );
-		if (block_wall_outlet     == null) throw new RuntimeException("Invalid block type for level 0 Wall-Outlet");
-		if (block_subfloor        == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"   );
-		if (block_subceiling      == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling" );
-		if (block_carpet          == null) throw new RuntimeException("Invalid block type for level 0 Carpet"     );
-		if (block_ceiling         == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"    );
-		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall"      );
+		if (block_wall            == null) throw new RuntimeException("Invalid block type for level 0 Wall"      );
+		if (block_wall_base       == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base" );
+		if (block_subfloor        == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"  );
+		if (block_subceiling      == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling");
+		if (block_carpet          == null) throw new RuntimeException("Invalid block type for level 0 Carpet"    );
+		if (block_ceiling         == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"   );
+		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall"     );
 		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;

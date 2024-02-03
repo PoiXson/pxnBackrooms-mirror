@@ -14,6 +14,7 @@ import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
 
+// 1 | Basement
 public class Pop_001 implements BackroomsPop {
 
 	public static final int WELL_SIZE   = 5;

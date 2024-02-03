@@ -43,8 +43,8 @@ public class Gen_001 extends BackroomsGen {
 	public static final int    DEFAULT_NOISE_MOIST_OCTAVE  = 2;
 	public static final double DEFAULT_NOISE_MOIST_GAIN    = 2.0;
 	public static final double DEFAULT_NOISE_WELL_FREQ     = 0.0028;
-	public static final double DEFAULT_THRESH_WALL  = 0.9;
-	public static final double DEFAULT_THRESH_MOIST = 0.4;
+	public static final double DEFAULT_THRESH_WALL         = 0.9;
+	public static final double DEFAULT_THRESH_MOIST        = 0.4;
 
 	public static final int LAMP_Y = 6;
 
