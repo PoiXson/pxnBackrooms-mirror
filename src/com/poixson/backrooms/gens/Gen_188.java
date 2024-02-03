@@ -1,10 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_X;
-import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z;
-import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_CENTER;
-import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_X;
-import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_Z;
 import static com.poixson.backrooms.worlds.Level_000.H_019;
 import static com.poixson.backrooms.worlds.Level_000.H_188;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
@@ -78,23 +73,23 @@ public class Gen_188 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		final Level_000 level0 = (Level_000) this.backlevel;
-		final BlockData block_subfloor            = StringToBlockData(this.block_subfloor,                     DEFAULT_BLOCK_SUBFLOOR          );
-		final BlockData block_floor               = StringToBlockData(this.block_floor,                        DEFAULT_BLOCK_FLOOR             );
-		final BlockData block_floor_path_lines    = StringToBlockData(this.block_floor_path_lines,             DEFAULT_BLOCK_FLOOR_PATH_LINES  );
-		final BlockData block_floor_path_areas    = StringToBlockData(this.block_floor_path_areas,             DEFAULT_BLOCK_FLOOR_PATH_AREAS  );
-		final BlockData block_wall                = StringToBlockData(this.block_wall,                         DEFAULT_BLOCK_WALL              );
-		final BlockData block_ceiling             = StringToBlockData(this.block_ceiling,                      DEFAULT_BLOCK_CEILING           );
-		final BlockData block_window              = StringToBlockData(this.block_window,                       DEFAULT_BLOCK_WINDOW            );
-		final BlockData block_hotel_wall_top_x    = StringToBlockData(level0.gen_005.block_hall_wall_top_x,    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
-		final BlockData block_hotel_wall_top_z    = StringToBlockData(level0.gen_005.block_hall_wall_top_z,    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
-		final BlockData block_hotel_wall_center   = StringToBlockData(level0.gen_005.block_hall_wall_center,   DEFAULT_BLOCK_HALL_WALL_CENTER  );
-		final BlockData block_hotel_wall_bottom_x = StringToBlockData(level0.gen_005.block_hall_wall_bottom_x, DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
-		final BlockData block_hotel_wall_bottom_z = StringToBlockData(level0.gen_005.block_hall_wall_bottom_z, DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
-		final BlockData block_attic_wall          = StringToBlockData(level0.gen_019.block_wall,       Gen_019.DEFAULT_BLOCK_WALL              );
-		final BlockData block_pool_wall           = StringToBlockData(level0.gen_037.block_wall_a,     Gen_037.DEFAULT_BLOCK_WALL_A            );
-		final BlockData block_lightsout_wall      = StringToBlockData(level0.gen_006.block_wall,       Gen_006.DEFAULT_BLOCK_WALL              );
-		final BlockData block_lobby_wall          = StringToBlockData(level0.gen_000.block_wall,       Gen_000.DEFAULT_BLOCK_WALL              );
-		final BlockData block_overgrowth_wall     = StringToBlockData(level0.gen_023.block_wall,       Gen_023.DEFAULT_BLOCK_WALL              );
+		final BlockData block_subfloor            = StringToBlockData(this.block_subfloor,                     DEFAULT_BLOCK_SUBFLOOR        );
+		final BlockData block_floor               = StringToBlockData(this.block_floor,                        DEFAULT_BLOCK_FLOOR           );
+		final BlockData block_floor_path_lines    = StringToBlockData(this.block_floor_path_lines,             DEFAULT_BLOCK_FLOOR_PATH_LINES);
+		final BlockData block_floor_path_areas    = StringToBlockData(this.block_floor_path_areas,             DEFAULT_BLOCK_FLOOR_PATH_AREAS);
+		final BlockData block_wall                = StringToBlockData(this.block_wall,                         DEFAULT_BLOCK_WALL            );
+		final BlockData block_ceiling             = StringToBlockData(this.block_ceiling,                      DEFAULT_BLOCK_CEILING         );
+		final BlockData block_window              = StringToBlockData(this.block_window,                       DEFAULT_BLOCK_WINDOW          );
+		final BlockData block_hotel_wall_top_x    = StringToBlockData(level0.gen_005.block_hall_wall_top_x,    Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_X   );
+		final BlockData block_hotel_wall_top_z    = StringToBlockData(level0.gen_005.block_hall_wall_top_z,    Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
+		final BlockData block_hotel_wall_center   = StringToBlockData(level0.gen_005.block_hall_wall_center,   Gen_005.DEFAULT_BLOCK_HALL_WALL_CENTER  );
+		final BlockData block_hotel_wall_bottom_x = StringToBlockData(level0.gen_005.block_hall_wall_bottom_x, Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
+		final BlockData block_hotel_wall_bottom_z = StringToBlockData(level0.gen_005.block_hall_wall_bottom_z, Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
+		final BlockData block_attic_wall          = StringToBlockData(level0.gen_019.block_wall,               Gen_019.DEFAULT_BLOCK_WALL              );
+		final BlockData block_pool_wall           = StringToBlockData(level0.gen_037.block_wall_a,             Gen_037.DEFAULT_BLOCK_WALL_A            );
+		final BlockData block_lightsout_wall      = StringToBlockData(level0.gen_006.block_wall,               Gen_006.DEFAULT_BLOCK_WALL              );
+		final BlockData block_lobby_wall          = StringToBlockData(level0.gen_000.block_wall,               Gen_000.DEFAULT_BLOCK_WALL              );
+		final BlockData block_overgrowth_wall     = StringToBlockData(level0.gen_023.block_wall,               Gen_023.DEFAULT_BLOCK_WALL              );
 		if (block_subfloor            == null) throw new RuntimeException("Invalid block type for level 188 SubFloor"        );
 		if (block_floor               == null) throw new RuntimeException("Invalid block type for level 188 Floor"           );
 		if (block_floor_path_lines    == null) throw new RuntimeException("Invalid block type for level 188 Floor-Path-Lines");

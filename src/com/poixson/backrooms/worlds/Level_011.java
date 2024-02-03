@@ -40,9 +40,9 @@ public class Level_011 extends BackroomsLevel {
 	public static final boolean ENABLE_TOP_011 = true;
 	public static final boolean ENABLE_TOP_040 = true;
 	public static final boolean ENABLE_TOP_308 = true;
-	public static final boolean ENABLE_TOP_004 = true;
 	public static final boolean ENABLE_TOP_122 = true;
 	public static final boolean ENABLE_TOP_264 = true;
+	public static final boolean ENABLE_TOP_004 = true;
 
 	public static final int SUBFLOOR   = 3;
 	public static final int SUBCEILING = 3;
