@@ -1,6 +1,7 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
+import static com.poixson.utils.BlockUtils.StringToBlockData;
 import static com.poixson.utils.LocationUtils.AxToFace;
 import static com.poixson.utils.LocationUtils.FaceToAxString;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
@@ -8,6 +9,7 @@ import static com.poixson.utils.LocationUtils.FaceToIxz;
 import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
 
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -47,7 +49,39 @@ public class Gen_771 extends BackroomsGen {
 	public static final double DEFAULT_THRESH_LOOT      = 0.64; // loot chest
 
 	// default blocks
-//TODO
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH              = "minecraft:polished_blackstone_bricks";
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER   = "minecraft:polished_blackstone_brick_slab[type=top]";
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER   = "minecraft:polished_blackstone_brick_slab[type=bottom]";
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER = "minecraft:polished_blackstone_brick_stairs[facing=<FACING>]";
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER = "minecraft:polished_blackstone_brick_stairs[facing=<FACING>,half=top]";
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH_PILLAR       = "minecraft:polished_blackstone_brick_wall";
+	public static final String DEFAULT_BLOCK_NEXUS_ARCH_BASE         = "minecraft:chiseled_polished_blackstone";
+	public static final String DEFAULT_BLOCK_NEXUS_FLOOR_UPPER       = "minecraft:polished_blackstone";
+	public static final String DEFAULT_BLOCK_NEXUS_FLOOR_LOWER       = "minecraft:polished_blackstone";
+	public static final String DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB  = "minecraft:polished_blackstone_slab[type=top]";
+	public static final String DEFAULT_BLOCK_NEXUS_HATCH             = "minecraft:chiseled_polished_blackstone";
+	public static final String DEFAULT_BLOCK_NEXUS_FLAIR_HOT         = "minecraft:gilded_blackstone";
+	public static final String DEFAULT_BLOCK_NEXUS_FLAIR_COOL        = "minecraft:blackstone";
+	public static final String DEFAULT_BLOCK_NEXUS_WALL              = "minecraft:polished_blackstone_brick_wall[up=true,north=tall,south=tall,east=tall,west=tall]";
+	public static final String DEFAULT_BLOCK_NEXUS_WALL_TOP          = "minecraft:polished_blackstone_brick_slab[type=bottom]";
+	public static final String DEFAULT_BLOCK_NEXUS_LIGHT_UPPER       = "minecraft:light[level=15]";
+	public static final String DEFAULT_BLOCK_NEXUS_LIGHT_LOWER       = "minecraft:light[level=9]";
+	public static final String DEFAULT_BLOCK_ROAD_UPPER              = "minecraft:polished_blackstone";
+	public static final String DEFAULT_BLOCK_ROAD_LOWER              = "minecraft:polished_blackstone";
+	public static final String DEFAULT_BLOCK_ROAD_UPPER_CENTER       = "minecraft:blackstone";
+	public static final String DEFAULT_BLOCK_ROAD_LOWER_CENTER       = "minecraft:blackstone";
+	public static final String DEFAULT_BLOCK_ROAD_UPPER_WALL         = "minecraft:polished_blackstone_brick_wall[up=false,<DIRS>]";
+	public static final String DEFAULT_BLOCK_ROAD_LOWER_WALL         = "minecraft:polished_blackstone_brick_wall[up=false,<DIRS>]";
+	public static final String DEFAULT_BLOCK_ROAD_UPPER_LAMP         = "minecraft:lantern";
+	public static final String DEFAULT_BLOCK_ROAD_LOWER_LAMP         = "minecraft:soul_lantern";
+	public static final String DEFAULT_BLOCK_ROAD_UPPER_LIGHT        = "minecraft:light[level=15]";
+	public static final String DEFAULT_BLOCK_ROAD_LOWER_LIGHT        = "minecraft:light[level=15]";
+	public static final String DEFAULT_BLOCK_PILLAR                  = "minecraft:deepslate_bricks";
+	public static final String DEFAULT_BLOCK_PILLAR_STAIRS_UPPER     = "minecraft:deepslate_brick_stairs[half=top,facing=<FACING>]";
+	public static final String DEFAULT_BLOCK_PILLAR_STAIRS_LOWER     = "minecraft:deepslate_brick_stairs[half=bottom,facing=<FACING>]";
+	public static final String DEFAULT_BLOCK_PILLAR_STAIRS_UNDER     = "minecraft:deepslate_brick_stairs[half=top,facing=<FACING>]";
+	public static final String DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM    = "minecraft:deepslate_brick_stairs[half=top,facing=<FACING>]";
+	public static final String DEFAULT_BLOCK_SHAFT_FLOOR             = "minecraft:dark_oak_planks";
 
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
@@ -64,7 +98,39 @@ public class Gen_771 extends BackroomsGen {
 	public final AtomicDouble thresh_loot      = new AtomicDouble(DEFAULT_THRESH_LOOT     );
 
 	// blocks
-//TODO
+	public final AtomicReference<String> block_nexus_arch              = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_arch_slab_upper   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_arch_slab_lower   = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_arch_stairs_upper = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_arch_stairs_lower = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_arch_pillar       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_arch_base         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_floor_upper       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_floor_lower       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_floor_lower_slab  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_hatch             = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_flair_hot         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_flair_cool        = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_wall              = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_wall_top          = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_light_upper       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_nexus_light_lower       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_upper              = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_lower              = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_upper_center       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_lower_center       = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_upper_wall         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_lower_wall         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_upper_lamp         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_lower_lamp         = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_upper_light        = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_road_lower_light        = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_pillar                  = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_pillar_stairs_upper     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_pillar_stairs_lower     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_pillar_stairs_under     = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_pillar_stairs_bottom    = new AtomicReference<String>(null);
+	public final AtomicReference<String> block_shaft_floor             = new AtomicReference<String>(null);
 
 
 
@@ -133,23 +199,37 @@ public class Gen_771 extends BackroomsGen {
 	}
 	protected void generateCenterArches(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
+		final BlockFace facing = AxToFace(axis.charAt(2));
+		final BlockData block_nexus_arch              = StringToBlockData(this.block_nexus_arch,              DEFAULT_BLOCK_NEXUS_ARCH             );
+		final BlockData block_nexus_arch_slab_upper   = StringToBlockData(this.block_nexus_arch_slab_upper,   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
+		final BlockData block_nexus_arch_slab_lower   = StringToBlockData(this.block_nexus_arch_slab_lower,   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
+		final BlockData block_nexus_arch_stairs_upper = StringToBlockData(this.block_nexus_arch_stairs_upper, DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER, "<FACING>", FaceToAxisString(facing.getOppositeFace()) );
+		final BlockData block_nexus_arch_stairs_lower = StringToBlockData(this.block_nexus_arch_stairs_lower, DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER, "<FACING>", FaceToAxisString(facing)                   );
+		final BlockData block_nexus_arch_pillar       = StringToBlockData(this.block_nexus_arch_pillar,       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
+		final BlockData block_nexus_arch_base         = StringToBlockData(this.block_nexus_arch_base,         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
+		if (block_nexus_arch              == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch"             );
+		if (block_nexus_arch_slab_upper   == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Slab-Upper"  );
+		if (block_nexus_arch_slab_lower   == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Slab-Lower"  );
+		if (block_nexus_arch_stairs_upper == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Stairs-Upper");
+		if (block_nexus_arch_stairs_lower == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Stairs-Lower");
+		if (block_nexus_arch_pillar       == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Pillar"      );
+		if (block_nexus_arch_base         == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Base"        );
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
 			.y(this.level_y + this.level_h + 1)
 			.whd(16, 15, 16);
-		final BlockFace facing = AxToFace(axis.charAt(2));
-		plot.type('#', Material.POLISHED_BLACKSTONE_BRICKS                       );
-		plot.type('-', Material.POLISHED_BLACKSTONE_BRICK_SLAB,   "[type=top]"   );
-		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB,   "[type=bottom]");
-		plot.type('L', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing.getOppositeFace())+"]");
-		plot.type('^', Material.POLISHED_BLACKSTONE_BRICK_STAIRS, "[facing="+FaceToAxisString(facing)+",half=top]"         );
-		plot.type('|', Material.POLISHED_BLACKSTONE_BRICK_WALL);
-		plot.type('@', Material.CHISELED_POLISHED_BLACKSTONE  );
-		plot.type('!', Material.LIGHTNING_ROD                 );
-		plot.type('8', Material.CHAIN                         );
-		plot.type('G', Material.SHROOMLIGHT                   );
+		plot.type('#', block_nexus_arch             );
+		plot.type('-', block_nexus_arch_slab_upper  );
+		plot.type('_', block_nexus_arch_slab_lower  );
+		plot.type('L', block_nexus_arch_stairs_upper);
+		plot.type('^', block_nexus_arch_stairs_lower);
+		plot.type('|', block_nexus_arch_pillar      );
+		plot.type('@', block_nexus_arch_base        );
+		plot.type('!', Material.LIGHTNING_ROD );
+		plot.type('8', Material.CHAIN         );
+		plot.type('G', Material.SHROOMLIGHT   );
 		plot.type('b', Material.ACACIA_BUTTON, "[face=ceiling]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		matrix[14][ 0].append("!");
@@ -179,39 +259,60 @@ public class Gen_771 extends BackroomsGen {
 	}
 	protected void generateCenterFloor(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
+		final BlockData block_nexus_floor_upper      = StringToBlockData(this.block_nexus_floor_upper,      DEFAULT_BLOCK_NEXUS_FLOOR_UPPER     );
+		final BlockData block_nexus_floor_lower      = StringToBlockData(this.block_nexus_floor_lower,      DEFAULT_BLOCK_NEXUS_FLOOR_LOWER     );
+		final BlockData block_nexus_floor_lower_slab = StringToBlockData(this.block_nexus_floor_lower_slab, DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB);
+		final BlockData block_nexus_hatch            = StringToBlockData(this.block_nexus_hatch,            DEFAULT_BLOCK_NEXUS_HATCH           );
+		final BlockData block_nexus_flair_hot        = StringToBlockData(this.block_nexus_flair_hot,        DEFAULT_BLOCK_NEXUS_FLAIR_HOT       );
+		final BlockData block_nexus_flair_cool       = StringToBlockData(this.block_nexus_flair_cool,       DEFAULT_BLOCK_NEXUS_FLAIR_COOL      );
+		final BlockData block_nexus_wall             = StringToBlockData(this.block_nexus_wall,             DEFAULT_BLOCK_NEXUS_WALL            );
+		final BlockData block_nexus_wall_top         = StringToBlockData(this.block_nexus_wall_top,         DEFAULT_BLOCK_NEXUS_WALL_TOP        );
+		final BlockData block_nexus_light_upper      = StringToBlockData(this.block_nexus_light_upper,      DEFAULT_BLOCK_NEXUS_LIGHT_UPPER     );
+		final BlockData block_nexus_light_lower      = StringToBlockData(this.block_nexus_light_lower,      DEFAULT_BLOCK_NEXUS_LIGHT_LOWER     );
+		if (block_nexus_floor_upper      == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Floor-Upper"     );
+		if (block_nexus_floor_lower      == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Floor-Lower"     );
+		if (block_nexus_floor_lower_slab == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Floor-Lower-Slab");
+		if (block_nexus_hatch            == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Hatch"           );
+		if (block_nexus_flair_hot        == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Flair-Hot"       );
+		if (block_nexus_flair_cool       == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Flair-Cool"      );
+		if (block_nexus_wall             == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Wall"            );
+		if (block_nexus_wall_top         == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Wall-Top"        );
+		if (block_nexus_light_upper      == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Light-Upper"     );
+		if (block_nexus_light_lower      == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Light-Lower"     );
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis(axis)
 			.xz((0-chunkX)*15, (0-chunkZ)*15)
 			.y((this.level_y + this.level_h) - 3)
 			.whd(16, 6, 16);
-		plot.type('#', Material.POLISHED_BLACKSTONE         );
-		plot.type('x', Material.CHISELED_POLISHED_BLACKSTONE);
-		plot.type('X', Material.GILDED_BLACKSTONE           );
-		plot.type('*', Material.BLACKSTONE                  );
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=true,north=tall,south=tall,east=tall,west=tall]");
-		plot.type('-', Material.POLISHED_BLACKSTONE_SLAB,       "[type=top]"   );
-		plot.type('_', Material.POLISHED_BLACKSTONE_BRICK_SLAB, "[type=bottom]");
-		plot.type('.', Material.LIGHT, "[level=15]");
-		plot.type(',', Material.LIGHT, "[level=9]" );
+		plot.type('#', block_nexus_floor_upper     );
+		plot.type('%', block_nexus_floor_lower     );
+		plot.type('-', block_nexus_floor_lower_slab);
+		plot.type('/', block_nexus_hatch           );
+		plot.type('X', block_nexus_flair_hot       );
+		plot.type('*', block_nexus_flair_cool      );
+		plot.type('+', block_nexus_wall            );
+		plot.type('_', block_nexus_wall_top        );
+		plot.type('.', block_nexus_light_upper     );
+		plot.type(',', block_nexus_light_lower     );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
-		matrix[0][ 0].append("###########---"  ); matrix[1][ 0].append(" , , , , , ,  #" ); matrix[2][ 0].append("              ##");
-		matrix[0][ 1].append("###########---"  ); matrix[1][ 1].append("              #" ); matrix[2][ 1].append("              ##");
-		matrix[0][ 2].append("##########---"   ); matrix[1][ 2].append(" , , , , , , ##" ); matrix[2][ 2].append("             ###");
-		matrix[0][ 3].append("##########---"   ); matrix[1][ 3].append("             #"  ); matrix[2][ 3].append("             ##" );
-		matrix[0][ 4].append("#########---"    ); matrix[1][ 4].append(" , , , , ,  ##"  ); matrix[2][ 4].append("            ###" );
-		matrix[0][ 5].append("########----"    ); matrix[1][ 5].append("            #"   ); matrix[2][ 5].append("            ##"  );
-		matrix[0][ 6].append("#######----"     ); matrix[1][ 6].append(" , , , , , ##"   ); matrix[2][ 6].append("           ###"  );
-		matrix[0][ 7].append("######-----"     ); matrix[1][ 7].append("           #"    ); matrix[2][ 7].append("           ##"   );
-		matrix[0][ 8].append("#####-----"      ); matrix[1][ 8].append(" , , , ,  ##"    ); matrix[2][ 8].append("          ###"   );
-		matrix[0][ 9].append("####-----"       ); matrix[1][ 9].append("         ##"     ); matrix[2][ 9].append("         ###"    );
-		matrix[0][10].append("##------"        ); matrix[1][10].append(" , , ,  ##"      ); matrix[2][10].append("        ###"     );
+		matrix[0][ 0].append("%%%%%%%%%%%---"  ); matrix[1][ 0].append(" , , , , , ,  #" ); matrix[2][ 0].append("              ##");
+		matrix[0][ 1].append("%%%%%%%%%%%---"  ); matrix[1][ 1].append("              #" ); matrix[2][ 1].append("              ##");
+		matrix[0][ 2].append("%%%%%%%%%%---"   ); matrix[1][ 2].append(" , , , , , , ##" ); matrix[2][ 2].append("             ###");
+		matrix[0][ 3].append("%%%%%%%%%%---"   ); matrix[1][ 3].append("             #"  ); matrix[2][ 3].append("             ##" );
+		matrix[0][ 4].append("%%%%%%%%%---"    ); matrix[1][ 4].append(" , , , , ,  ##"  ); matrix[2][ 4].append("            ###" );
+		matrix[0][ 5].append("%%%%%%%%----"    ); matrix[1][ 5].append("            #"   ); matrix[2][ 5].append("            ##"  );
+		matrix[0][ 6].append("%%%%%%%----"     ); matrix[1][ 6].append(" , , , , , ##"   ); matrix[2][ 6].append("           ###"  );
+		matrix[0][ 7].append("%%%%%%-----"     ); matrix[1][ 7].append("           #"    ); matrix[2][ 7].append("           ##"   );
+		matrix[0][ 8].append("%%%%%-----"      ); matrix[1][ 8].append(" , , , ,  ##"    ); matrix[2][ 8].append("          ###"   );
+		matrix[0][ 9].append("%%%%-----"       ); matrix[1][ 9].append("         ##"     ); matrix[2][ 9].append("         ###"    );
+		matrix[0][10].append("%%------"        ); matrix[1][10].append(" , , ,  ##"      ); matrix[2][10].append("        ###"     );
 		matrix[0][11].append("-------"         ); matrix[1][11].append("       ##"       ); matrix[2][11].append("       ###"      );
 		matrix[0][12].append("-----"           ); matrix[1][12].append(" ,   ###"        ); matrix[2][12].append("     ####"       );
 		matrix[0][13].append("--"              ); matrix[1][13].append("  ####"          ); matrix[2][13].append("  #####"         );
 		matrix[0][14].append(""                ); matrix[1][14].append("###"             ); matrix[2][14].append("#####"           );
 		matrix[0][15].append(""                ); matrix[1][15].append(""                ); matrix[2][15].append("###"             );
-		matrix[3][ 0].append("x***************"); matrix[4][ 0].append("                "); matrix[5][ 0].append("                ");
+		matrix[3][ 0].append("/***************"); matrix[4][ 0].append("                "); matrix[5][ 0].append("                ");
 		matrix[3][ 1].append("***#############"); matrix[4][ 1].append("    .   .   .   "); matrix[5][ 1].append("                ");
 		matrix[3][ 2].append("**X##X##########"); matrix[4][ 2].append("                "); matrix[5][ 2].append("                ");
 		matrix[3][ 3].append("*##*###*#######" ); matrix[4][ 3].append("  .   .   .   . "); matrix[5][ 3].append("                ");
@@ -272,6 +373,22 @@ public class Gen_771 extends BackroomsGen {
 	protected void generateRoadTop(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
+		final String wall_dirs;
+		switch (direction) {
+		case NORTH:
+		case SOUTH: wall_dirs = "north=low,south=low"; break;
+		default:    wall_dirs = "east=low,west=low";   break;
+		}
+		final BlockData block_road_upper        = StringToBlockData(this.block_road_upper,        DEFAULT_BLOCK_ROAD_UPPER       );
+		final BlockData block_road_upper_center = StringToBlockData(this.block_road_upper_center, DEFAULT_BLOCK_ROAD_UPPER_CENTER);
+		final BlockData block_road_upper_wall   = StringToBlockData(this.block_road_upper_wall,   DEFAULT_BLOCK_ROAD_UPPER_WALL, "<DIRS>", wall_dirs);
+		final BlockData block_road_upper_lamp   = StringToBlockData(this.block_road_upper_lamp,   DEFAULT_BLOCK_ROAD_UPPER_LAMP  );
+		final BlockData block_road_upper_light  = StringToBlockData(this.block_road_upper_light,  DEFAULT_BLOCK_ROAD_UPPER_LIGHT );
+		if (block_road_upper        == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper"       );
+		if (block_road_upper_center == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Center");
+		if (block_road_upper_wall   == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Wall"  );
+		if (block_road_upper_lamp   == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Lamp"  );
+		if (block_road_upper_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Light" );
 		final double thresh_lamps = this.thresh_lamps.get();
 		final BlockPlotter plot =
 			(new BlockPlotter())
@@ -279,17 +396,11 @@ public class Gen_771 extends BackroomsGen {
 			.xz(x, z)
 			.y(this.level_y+this.level_h)
 			.whd(16, 3, 16);
-		final String wall_dirs;
-		switch (direction) {
-		case NORTH:
-		case SOUTH: wall_dirs = "north=low,south=low"; break;
-		default:    wall_dirs = "east=low,west=low";   break;
-		}
-		plot.type('#', Material.POLISHED_BLACKSTONE);
-		plot.type('*', Material.BLACKSTONE         );
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
-		plot.type('i', Material.LANTERN            );
-		plot.type('L', Material.LIGHT, "[level=15]");
+		plot.type('#', block_road_upper       );
+		plot.type('*', block_road_upper_center);
+		plot.type('+', block_road_upper_wall  );
+		plot.type('i', block_road_upper_lamp  );
+		plot.type('L', block_road_upper_light );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
@@ -309,6 +420,22 @@ public class Gen_771 extends BackroomsGen {
 	protected void generateRoadBottom(final ChunkData chunk,
 			final BlockFace direction, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
+		final String wall_dirs;
+		switch (direction) {
+		case NORTH:
+		case SOUTH: wall_dirs = "north=low,south=low"; break;
+		default:    wall_dirs = "east=low,west=low";   break;
+		}
+		final BlockData block_road_lower        = StringToBlockData(this.block_road_lower,        DEFAULT_BLOCK_ROAD_LOWER       );
+		final BlockData block_road_lower_center = StringToBlockData(this.block_road_lower_center, DEFAULT_BLOCK_ROAD_LOWER_CENTER);
+		final BlockData block_road_lower_wall   = StringToBlockData(this.block_road_lower_wall,   DEFAULT_BLOCK_ROAD_LOWER_WALL, "<DIRS>", wall_dirs);
+		final BlockData block_road_lower_lamp   = StringToBlockData(this.block_road_lower_lamp,   DEFAULT_BLOCK_ROAD_LOWER_LAMP  );
+		final BlockData block_road_lower_light  = StringToBlockData(this.block_road_lower_light,  DEFAULT_BLOCK_ROAD_LOWER_LIGHT );
+		if (block_road_lower        == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower"       );
+		if (block_road_lower_center == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Center");
+		if (block_road_lower_wall   == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Wall"  );
+		if (block_road_lower_lamp   == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Lamp"  );
+		if (block_road_lower_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Light" );
 		final double thresh_light = this.thresh_lamps.get();
 		final BlockPlotter plot =
 				(new BlockPlotter())
@@ -316,18 +443,12 @@ public class Gen_771 extends BackroomsGen {
 				.xz(x, z)
 				.y(this.level_y-3)
 				.whd(16, 6, 16);
-		final String wall_dirs;
-		switch (direction) {
-		case NORTH:
-		case SOUTH: wall_dirs = "north=low,south=low"; break;
-		default:    wall_dirs = "east=low,west=low";   break;
-		}
-		plot.type('#', Material.POLISHED_BLACKSTONE);
-		plot.type('*', Material.BLACKSTONE         );
-		plot.type('+', Material.POLISHED_BLACKSTONE_BRICK_WALL, "[up=false,"+wall_dirs+"]");
-		plot.type('i', Material.SOUL_LANTERN       );
-		plot.type('x', Material.BARRIER            );
-		plot.type('L', Material.LIGHT, "[level=15]");
+		plot.type('#', block_road_lower       );
+		plot.type('*', block_road_lower_center);
+		plot.type('+', block_road_lower_wall  );
+		plot.type('i', block_road_lower_lamp  );
+		plot.type('L', block_road_lower_light );
+		plot.type('x', Material.BARRIER       );
 		final StringBuilder[][] matrix = plot.getMatrix3D();
 		double value_light;
 		final Iab dir = FaceToIxz(direction);
@@ -418,18 +539,30 @@ public class Gen_771 extends BackroomsGen {
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace facing, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
+		final BlockData block_pillar               = StringToBlockData(this.block_pillar,               DEFAULT_BLOCK_PILLAR);
+		final BlockData block_pillar_stairs_upper  = StringToBlockData(this.block_pillar_stairs_upper,  DEFAULT_BLOCK_PILLAR_STAIRS_UPPER,  "<FACING>", FaceToAxisString(facing.getOppositeFace()) );
+		final BlockData block_pillar_stairs_lower  = StringToBlockData(this.block_pillar_stairs_lower,  DEFAULT_BLOCK_PILLAR_STAIRS_LOWER,  "<FACING>", FaceToAxisString(side  .getOppositeFace()) );
+		final BlockData block_pillar_stairs_under  = StringToBlockData(this.block_pillar_stairs_under,  DEFAULT_BLOCK_PILLAR_STAIRS_UNDER,  "<FACING>", FaceToAxisString(side                    ) );
+		final BlockData block_pillar_stairs_bottom = StringToBlockData(this.block_pillar_stairs_bottom, DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM, "<FACING>", FaceToAxisString(side  .getOppositeFace()) );
+		final BlockData block_shaft_floor          = StringToBlockData(this.block_shaft_floor,          DEFAULT_BLOCK_SHAFT_FLOOR);
+		if (block_pillar               == null) throw new RuntimeException("Invalid block type for level 771 Pillar"              );
+		if (block_pillar_stairs_upper  == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Upper" );
+		if (block_pillar_stairs_lower  == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Lower" );
+		if (block_pillar_stairs_under  == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Under" );
+		if (block_pillar_stairs_bottom == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Bottom");
+		if (block_shaft_floor          == null) throw new RuntimeException("Invalid block type for level 771 Shaft-Floor"         );
 		final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("u"+FaceToAxString(facing)+FaceToAxString(side))
 				.xz(x, z)
 				.y(this.level_y)
 				.whd(2, this.level_h+2, 5);
-		plot.type('#', Material.DEEPSLATE_BRICKS);
-		plot.type('w', Material.DARK_OAK_PLANKS);
-		plot.type('%', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(facing.getOppositeFace())+"]");
-		plot.type('<', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(side                  )+"]");
-		plot.type('$', Material.DEEPSLATE_BRICK_STAIRS, "[half=top,facing="   +FaceToAxisString(side.getOppositeFace())+"]");
-		plot.type('&', Material.DEEPSLATE_BRICK_STAIRS, "[half=bottom,facing="+FaceToAxisString(side.getOppositeFace())+"]");
+		plot.type('#', block_pillar              );
+		plot.type('w', block_shaft_floor         );
+		plot.type('%', block_pillar_stairs_upper );
+		plot.type('&', block_pillar_stairs_lower );
+		plot.type('<', block_pillar_stairs_under );
+		plot.type('$', block_pillar_stairs_bottom);
 		plot.type('H', Material.LADDER, "[facing="+FaceToAxisString(side.getOppositeFace())+"]");
 		plot.type('/', Material.SPRUCE_TRAPDOOR,  "[half=top,facing="+FaceToAxisString(side)+"]");
 		plot.type('~', Material.CRIMSON_TRAPDOOR, "[half=top,facing="+FaceToAxisString(side.getOppositeFace())+"]");
@@ -616,7 +749,40 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// block types
 		{
-//TODO
+			final ConfigurationSection cfg = this.plugin.getLevelBlocks(771);
+			this.block_nexus_arch             .set(cfg.getString("Nexus-Arch"             ));
+			this.block_nexus_arch_slab_upper  .set(cfg.getString("Nexus-Arch-Slab-Upper"  ));
+			this.block_nexus_arch_slab_lower  .set(cfg.getString("Nexus-Arch-Slab-Lower"  ));
+			this.block_nexus_arch_stairs_upper.set(cfg.getString("Nexus-Arch-Stairs-Upper"));
+			this.block_nexus_arch_stairs_lower.set(cfg.getString("Nexus-Arch-Stairs-Lower"));
+			this.block_nexus_arch_pillar      .set(cfg.getString("Nexus-Arch-Pillar"      ));
+			this.block_nexus_arch_base        .set(cfg.getString("Nexus-Arch-Base"        ));
+			this.block_nexus_floor_upper      .set(cfg.getString("Nexus-Floor-Upper"      ));
+			this.block_nexus_floor_lower      .set(cfg.getString("Nexus-Floor-Lower"      ));
+			this.block_nexus_floor_lower_slab .set(cfg.getString("Nexus-Floor-Lower-Slab" ));
+			this.block_nexus_hatch            .set(cfg.getString("Nexus-Hatch"            ));
+			this.block_nexus_flair_hot        .set(cfg.getString("Nexus-Flair-Hot"        ));
+			this.block_nexus_flair_cool       .set(cfg.getString("Nexus-Flair-Cool"       ));
+			this.block_nexus_wall             .set(cfg.getString("Nexus-Wall"             ));
+			this.block_nexus_wall_top         .set(cfg.getString("Nexus-Wall-Top"         ));
+			this.block_nexus_light_upper      .set(cfg.getString("Nexus-Light-Upper"      ));
+			this.block_nexus_light_lower      .set(cfg.getString("Nexus-Light-Lower"      ));
+			this.block_road_upper             .set(cfg.getString("Road-Upper"             ));
+			this.block_road_lower_wall        .set(cfg.getString("Road-Lower"             ));
+			this.block_road_lower             .set(cfg.getString("Road-Upper-Center"      ));
+			this.block_road_upper_lamp        .set(cfg.getString("Road-Lower-Center"      ));
+			this.block_road_upper_center      .set(cfg.getString("Road-Upper-Wall"        ));
+			this.block_road_lower_lamp        .set(cfg.getString("Road-Lower-Wall"        ));
+			this.block_road_lower_center      .set(cfg.getString("Road-Upper-Lamp"        ));
+			this.block_road_upper_light       .set(cfg.getString("Road-Lower-Lamp"        ));
+			this.block_road_upper_wall        .set(cfg.getString("Road-Upper-Light"       ));
+			this.block_road_lower_light       .set(cfg.getString("Road-Lower-Light"       ));
+			this.block_pillar                 .set(cfg.getString("Pillar"                 ));
+			this.block_pillar_stairs_upper    .set(cfg.getString("Pillar-Stairs-Upper"    ));
+			this.block_pillar_stairs_lower    .set(cfg.getString("Pillar-Stairs-Lower"    ));
+			this.block_pillar_stairs_under    .set(cfg.getString("Pillar-Stairs-Under"    ));
+			this.block_pillar_stairs_bottom   .set(cfg.getString("Pillar-Stairs-Bottom"   ));
+			this.block_shaft_floor            .set(cfg.getString("Shaft-Floor"            ));
 		}
 	}
 	public static void ConfigDefaults(final FileConfiguration cfg) {
@@ -629,7 +795,39 @@ public class Gen_771 extends BackroomsGen {
 		cfg.addDefault("Level771.Params.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
 		cfg.addDefault("Level771.Params.Thresh-Loot",      DEFAULT_THRESH_LOOT     );
 		// block types
-//TODO
+		cfg.addDefault("Level771.Blocks.Nexus-Arch",              DEFAULT_BLOCK_NEXUS_ARCH             );
+		cfg.addDefault("Level771.Blocks.Nexus-Arch-Slab-Upper",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
+		cfg.addDefault("Level771.Blocks.Nexus-Arch-Slab-Lower",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
+		cfg.addDefault("Level771.Blocks.Nexus-Arch-Stairs-Upper", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER);
+		cfg.addDefault("Level771.Blocks.Nexus-Arch-Stairs-Lower", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER);
+		cfg.addDefault("Level771.Blocks.Nexus-Arch-Pillar",       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
+		cfg.addDefault("Level771.Blocks.Nexus-Arch-Base",         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
+		cfg.addDefault("Level771.Blocks.Nexus-Floor-Upper",       DEFAULT_BLOCK_NEXUS_FLOOR_UPPER      );
+		cfg.addDefault("Level771.Blocks.Nexus-Floor-Lower",       DEFAULT_BLOCK_NEXUS_FLOOR_LOWER      );
+		cfg.addDefault("Level771.Blocks.Nexus-Floor-Lower-Slab",  DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB );
+		cfg.addDefault("Level771.Blocks.Nexus-Hatch",             DEFAULT_BLOCK_NEXUS_HATCH            );
+		cfg.addDefault("Level771.Blocks.Nexus-Flair-Hot",         DEFAULT_BLOCK_NEXUS_FLAIR_HOT        );
+		cfg.addDefault("Level771.Blocks.Nexus-Flair-Cool",        DEFAULT_BLOCK_NEXUS_FLAIR_COOL       );
+		cfg.addDefault("Level771.Blocks.Nexus-Wall",              DEFAULT_BLOCK_NEXUS_WALL             );
+		cfg.addDefault("Level771.Blocks.Nexus-Wall-Top",          DEFAULT_BLOCK_NEXUS_WALL_TOP         );
+		cfg.addDefault("Level771.Blocks.Nexus-Light-Upper",       DEFAULT_BLOCK_NEXUS_LIGHT_UPPER      );
+		cfg.addDefault("Level771.Blocks.Nexus-Light-Lower",       DEFAULT_BLOCK_NEXUS_LIGHT_LOWER      );
+		cfg.addDefault("Level771.Blocks.Road-Upper",              DEFAULT_BLOCK_ROAD_UPPER             );
+		cfg.addDefault("Level771.Blocks.Road-Lower",              DEFAULT_BLOCK_ROAD_LOWER             );
+		cfg.addDefault("Level771.Blocks.Road-Upper-Center",       DEFAULT_BLOCK_ROAD_UPPER_CENTER      );
+		cfg.addDefault("Level771.Blocks.Road-Lower-Center",       DEFAULT_BLOCK_ROAD_LOWER_CENTER      );
+		cfg.addDefault("Level771.Blocks.Road-Upper-Wall",         DEFAULT_BLOCK_ROAD_UPPER_WALL        );
+		cfg.addDefault("Level771.Blocks.Road-Lower-Wall",         DEFAULT_BLOCK_ROAD_LOWER_WALL        );
+		cfg.addDefault("Level771.Blocks.Road-Upper-Lamp",         DEFAULT_BLOCK_ROAD_UPPER_LAMP        );
+		cfg.addDefault("Level771.Blocks.Road-Lower-Lamp",         DEFAULT_BLOCK_ROAD_LOWER_LAMP        );
+		cfg.addDefault("Level771.Blocks.Road-Upper-Light",        DEFAULT_BLOCK_ROAD_UPPER_LIGHT       );
+		cfg.addDefault("Level771.Blocks.Road-Lower-Light",        DEFAULT_BLOCK_ROAD_LOWER_LIGHT       );
+		cfg.addDefault("Level771.Blocks.Pillar",                  DEFAULT_BLOCK_PILLAR                 );
+		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Upper",     DEFAULT_BLOCK_PILLAR_STAIRS_UPPER    );
+		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Lower",     DEFAULT_BLOCK_PILLAR_STAIRS_LOWER    );
+		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Under",     DEFAULT_BLOCK_PILLAR_STAIRS_UNDER    );
+		cfg.addDefault("Level771.Blocks.Pillar-Stairs-Bottom",    DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM   );
+		cfg.addDefault("Level771.Blocks.Shaft-Floor",             DEFAULT_BLOCK_SHAFT_FLOOR            );
 	}
 
 
