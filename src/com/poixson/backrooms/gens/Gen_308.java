@@ -212,22 +212,22 @@ public class Gen_308 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level308.Params.Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
-			cfg.addDefault("Level308.Params.Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
-			cfg.addDefault("Level308.Params.Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );
-			cfg.addDefault("Level308.Params.Thresh-Wall-H1",    DEFAULT_THRESH_WALL_H1   );
-			cfg.addDefault("Level308.Params.Thresh-Wall-L2",    DEFAULT_THRESH_WALL_L2   );
-			cfg.addDefault("Level308.Params.Thresh-Wall-H2",    DEFAULT_THRESH_WALL_H2   );
+			cfg.addDefault("Level308.Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
+			cfg.addDefault("Level308.Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
+			cfg.addDefault("Level308.Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );
+			cfg.addDefault("Level308.Thresh-Wall-H1",    DEFAULT_THRESH_WALL_H1   );
+			cfg.addDefault("Level308.Thresh-Wall-L2",    DEFAULT_THRESH_WALL_L2   );
+			cfg.addDefault("Level308.Thresh-Wall-H2",    DEFAULT_THRESH_WALL_H2   );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level308.Blocks.Wall",        DEFAULT_BLOCK_WALL       );
-			cfg.addDefault("Level308.Blocks.Wall-Stripe", DEFAULT_BLOCK_WALL_STRIPE);
-			cfg.addDefault("Level308.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-			cfg.addDefault("Level308.Blocks.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
-			cfg.addDefault("Level308.Blocks.Floor",       DEFAULT_BLOCK_FLOOR      );
-			cfg.addDefault("Level308.Blocks.Ceiling",     DEFAULT_BLOCK_CEILING    );
+			cfg.addDefault("Level308.Wall",        DEFAULT_BLOCK_WALL       );
+			cfg.addDefault("Level308.Wall-Stripe", DEFAULT_BLOCK_WALL_STRIPE);
+			cfg.addDefault("Level308.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+			cfg.addDefault("Level308.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
+			cfg.addDefault("Level308.Floor",       DEFAULT_BLOCK_FLOOR      );
+			cfg.addDefault("Level308.Ceiling",     DEFAULT_BLOCK_CEILING    );
 		}
 	}
 

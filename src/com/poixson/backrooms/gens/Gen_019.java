@@ -143,14 +143,14 @@ public class Gen_019 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level19.Params.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
+			cfg.addDefault("Level19.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level19.Blocks.Wall",  DEFAULT_BLOCK_WALL );
-			cfg.addDefault("Level19.Blocks.Floor", DEFAULT_BLOCK_FLOOR);
-			cfg.addDefault("Level19.Blocks.Beam",  DEFAULT_BLOCK_BEAM );
+			cfg.addDefault("Level19.Wall",  DEFAULT_BLOCK_WALL );
+			cfg.addDefault("Level19.Floor", DEFAULT_BLOCK_FLOOR);
+			cfg.addDefault("Level19.Beam",  DEFAULT_BLOCK_BEAM );
 		}
 	}
 

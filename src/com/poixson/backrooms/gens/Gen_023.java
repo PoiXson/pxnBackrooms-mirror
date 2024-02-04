@@ -215,25 +215,25 @@ public class Gen_023 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level23.Params.Grass-Modulus", DEFAULT_GRASS_MODULUS);
+			cfg.addDefault("Level23.Grass-Modulus", DEFAULT_GRASS_MODULUS);
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level23.Blocks.Wall",                 DEFAULT_BLOCK_WALL                );
-			cfg.addDefault("Level23.Blocks.Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );
-			cfg.addDefault("Level23.Blocks.Floor",                DEFAULT_BLOCK_FLOOR               );
-			cfg.addDefault("Level23.Blocks.Ceiling",              DEFAULT_BLOCK_CEILING             );
-			cfg.addDefault("Level23.Blocks.Ceiling-Grass",        DEFAULT_BLOCK_CEILING_GRASS       );
-			cfg.addDefault("Level23.Blocks.Ceiling-Flower",       DEFAULT_BLOCK_CEILING_FLOWER      );
-			cfg.addDefault("Level23.Blocks.SubFloor",             DEFAULT_BLOCK_SUBFLOOR            );
-			cfg.addDefault("Level23.Blocks.SubCeiling",           DEFAULT_BLOCK_SUBCEILING          );
-			cfg.addDefault("Level23.Blocks.Grass-Wet-Short",      DEFAULT_BLOCK_GRASS_WET_SHORT     );
-			cfg.addDefault("Level23.Blocks.Grass-Dry-Short",      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
-			cfg.addDefault("Level23.Blocks.Grass-Wet-Tall-Lower", DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);
-			cfg.addDefault("Level23.Blocks.Grass-Wet-Tall-Upper", DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
-			cfg.addDefault("Level23.Blocks.Grass-Dry-Tall-Lower", DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
-			cfg.addDefault("Level23.Blocks.Grass-Dry-Tall-Upper", DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
+			cfg.addDefault("Level23.Wall",                 DEFAULT_BLOCK_WALL                );
+			cfg.addDefault("Level23.Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );
+			cfg.addDefault("Level23.Floor",                DEFAULT_BLOCK_FLOOR               );
+			cfg.addDefault("Level23.Ceiling",              DEFAULT_BLOCK_CEILING             );
+			cfg.addDefault("Level23.Ceiling-Grass",        DEFAULT_BLOCK_CEILING_GRASS       );
+			cfg.addDefault("Level23.Ceiling-Flower",       DEFAULT_BLOCK_CEILING_FLOWER      );
+			cfg.addDefault("Level23.SubFloor",             DEFAULT_BLOCK_SUBFLOOR            );
+			cfg.addDefault("Level23.SubCeiling",           DEFAULT_BLOCK_SUBCEILING          );
+			cfg.addDefault("Level23.Grass-Wet-Short",      DEFAULT_BLOCK_GRASS_WET_SHORT     );
+			cfg.addDefault("Level23.Grass-Dry-Short",      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
+			cfg.addDefault("Level23.Grass-Wet-Tall-Lower", DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);
+			cfg.addDefault("Level23.Grass-Wet-Tall-Upper", DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
+			cfg.addDefault("Level23.Grass-Dry-Tall-Lower", DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
+			cfg.addDefault("Level23.Grass-Dry-Tall-Upper", DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
 		}
 	}
 

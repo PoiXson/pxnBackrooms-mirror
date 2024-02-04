@@ -357,17 +357,17 @@ public class Gen_188 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level188.Params.Dark-Room", DEFAULT_DARK_ROOM);
+			cfg.addDefault("Level188.Dark-Room", DEFAULT_DARK_ROOM);
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level188.Blocks.SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
-			cfg.addDefault("Level188.Blocks.Floor",            DEFAULT_BLOCK_FLOOR           );
-			cfg.addDefault("Level188.Blocks.Floor-Path-Lines", DEFAULT_BLOCK_FLOOR_PATH_LINES);
-			cfg.addDefault("Level188.Blocks.Floor-Path-Areas", DEFAULT_BLOCK_FLOOR_PATH_AREAS);
-			cfg.addDefault("Level188.Blocks.Ceiling",          DEFAULT_BLOCK_CEILING         );
-			cfg.addDefault("Level188.Blocks.Window",           DEFAULT_BLOCK_WINDOW          );
+			cfg.addDefault("Level188.SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
+			cfg.addDefault("Level188.Floor",            DEFAULT_BLOCK_FLOOR           );
+			cfg.addDefault("Level188.Floor-Path-Lines", DEFAULT_BLOCK_FLOOR_PATH_LINES);
+			cfg.addDefault("Level188.Floor-Path-Areas", DEFAULT_BLOCK_FLOOR_PATH_AREAS);
+			cfg.addDefault("Level188.Ceiling",          DEFAULT_BLOCK_CEILING         );
+			cfg.addDefault("Level188.Window",           DEFAULT_BLOCK_WINDOW          );
 		}
 	}
 

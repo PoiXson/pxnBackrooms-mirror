@@ -193,18 +193,18 @@ public class Gen_006 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Freq",   DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
-			cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Octave", DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
-			cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Gain",   DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
-			cfg.addDefault("Level6.Params.Noise-ButtonSwitch-Lac",    DEFAULT_NOISE_BUTTONSWITCH_LAC   );
-			cfg.addDefault("Level6.Params.Thresh-Button",             DEFAULT_THRESH_BUTTON            );
-			cfg.addDefault("Level6.Params.Thresh-Switch",             DEFAULT_THRESH_SWITCH            );
-			cfg.addDefault("Level6.Params.TP-Range",                  DEFAULT_TP_RANGE                 );
+			cfg.addDefault("Level6.Noise-ButtonSwitch-Freq",   DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
+			cfg.addDefault("Level6.Noise-ButtonSwitch-Octave", DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
+			cfg.addDefault("Level6.Noise-ButtonSwitch-Gain",   DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
+			cfg.addDefault("Level6.Noise-ButtonSwitch-Lac",    DEFAULT_NOISE_BUTTONSWITCH_LAC   );
+			cfg.addDefault("Level6.Thresh-Button",             DEFAULT_THRESH_BUTTON            );
+			cfg.addDefault("Level6.Thresh-Switch",             DEFAULT_THRESH_SWITCH            );
+			cfg.addDefault("Level6.TP-Range",                  DEFAULT_TP_RANGE                 );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level6.Blocks.Wall", DEFAULT_BLOCK_WALL);
+			cfg.addDefault("Level6.Wall", DEFAULT_BLOCK_WALL);
 		}
 	}
 

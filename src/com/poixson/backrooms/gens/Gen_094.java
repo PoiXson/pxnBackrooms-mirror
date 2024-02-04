@@ -400,35 +400,35 @@ public class Gen_094 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level94.Params.Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
-			cfg.addDefault("Level94.Params.Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
-			cfg.addDefault("Level94.Params.Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
-			cfg.addDefault("Level94.Params.Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
-			cfg.addDefault("Level94.Params.Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
-			cfg.addDefault("Level94.Params.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
-			cfg.addDefault("Level94.Params.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
-			cfg.addDefault("Level94.Params.Hills-Gain",           DEFAULT_HILLS_GAIN          );
-			cfg.addDefault("Level94.Params.Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
-			cfg.addDefault("Level94.Params.Water-Depth",          DEFAULT_WATER_DEPTH         );
-			cfg.addDefault("Level94.Params.House-Width",          DEFAULT_HOUSE_WIDTH         );
-			cfg.addDefault("Level94.Params.House-Height",         DEFAULT_HOUSE_HEIGHT        );
+			cfg.addDefault("Level94.Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
+			cfg.addDefault("Level94.Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
+			cfg.addDefault("Level94.Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
+			cfg.addDefault("Level94.Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
+			cfg.addDefault("Level94.Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
+			cfg.addDefault("Level94.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
+			cfg.addDefault("Level94.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
+			cfg.addDefault("Level94.Hills-Gain",           DEFAULT_HILLS_GAIN          );
+			cfg.addDefault("Level94.Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
+			cfg.addDefault("Level94.Water-Depth",          DEFAULT_WATER_DEPTH         );
+			cfg.addDefault("Level94.House-Width",          DEFAULT_HOUSE_WIDTH         );
+			cfg.addDefault("Level94.House-Height",         DEFAULT_HOUSE_HEIGHT        );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level94.Blocks.Dirt",              DEFAULT_BLOCK_DIRT             );
-			cfg.addDefault("Level94.Blocks.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
-			cfg.addDefault("Level94.Blocks.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
-			cfg.addDefault("Level94.Blocks.Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
-			cfg.addDefault("Level94.Blocks.Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
-			cfg.addDefault("Level94.Blocks.Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
-			cfg.addDefault("Level94.Blocks.Fern",              DEFAULT_BLOCK_FERN             );
-			cfg.addDefault("Level94.Blocks.Rose",              DEFAULT_BLOCK_ROSE             );
-			cfg.addDefault("Level94.Blocks.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
-			cfg.addDefault("Level94.Blocks.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
-			cfg.addDefault("Level94.Blocks.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
-			cfg.addDefault("Level94.Blocks.House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
-			cfg.addDefault("Level94.Blocks.House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
+			cfg.addDefault("Level94.Dirt",              DEFAULT_BLOCK_DIRT             );
+			cfg.addDefault("Level94.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
+			cfg.addDefault("Level94.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
+			cfg.addDefault("Level94.Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
+			cfg.addDefault("Level94.Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
+			cfg.addDefault("Level94.Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
+			cfg.addDefault("Level94.Fern",              DEFAULT_BLOCK_FERN             );
+			cfg.addDefault("Level94.Rose",              DEFAULT_BLOCK_ROSE             );
+			cfg.addDefault("Level94.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
+			cfg.addDefault("Level94.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
+			cfg.addDefault("Level94.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
+			cfg.addDefault("Level94.House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
+			cfg.addDefault("Level94.House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
 		}
 	}
 

@@ -508,25 +508,25 @@ public class Gen_000 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level0.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-			cfg.addDefault("Level0.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-			cfg.addDefault("Level0.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-			cfg.addDefault("Level0.Params.Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
-			cfg.addDefault("Level0.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-			cfg.addDefault("Level0.Params.Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
-			cfg.addDefault("Level0.Params.Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
-			cfg.addDefault("Level0.Params.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
-			cfg.addDefault("Level0.Params.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
+			cfg.addDefault("Level0.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+			cfg.addDefault("Level0.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+			cfg.addDefault("Level0.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+			cfg.addDefault("Level0.Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
+			cfg.addDefault("Level0.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+			cfg.addDefault("Level0.Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
+			cfg.addDefault("Level0.Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
+			cfg.addDefault("Level0.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
+			cfg.addDefault("Level0.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level0.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
-			cfg.addDefault("Level0.Blocks.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
-			cfg.addDefault("Level0.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-			cfg.addDefault("Level0.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
-			cfg.addDefault("Level0.Blocks.Carpet",     DEFAULT_BLOCK_CARPET    );
-			cfg.addDefault("Level0.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+			cfg.addDefault("Level0.Wall",       DEFAULT_BLOCK_WALL      );
+			cfg.addDefault("Level0.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
+			cfg.addDefault("Level0.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+			cfg.addDefault("Level0.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+			cfg.addDefault("Level0.Carpet",     DEFAULT_BLOCK_CARPET    );
+			cfg.addDefault("Level0.Ceiling",    DEFAULT_BLOCK_CEILING   );
 		}
 	}
 

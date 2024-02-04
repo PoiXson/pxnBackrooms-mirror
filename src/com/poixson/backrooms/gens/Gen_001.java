@@ -254,24 +254,24 @@ public class Gen_001 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level1.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-			cfg.addDefault("Level1.Params.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-			cfg.addDefault("Level1.Params.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-			cfg.addDefault("Level1.Params.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-			cfg.addDefault("Level1.Params.Noise-Moist-Freq",    DEFAULT_NOISE_MOIST_FREQ   );
-			cfg.addDefault("Level1.Params.Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
-			cfg.addDefault("Level1.Params.Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
-			cfg.addDefault("Level1.Params.Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
-			cfg.addDefault("Level1.Params.Thresh-Wall",         DEFAULT_THRESH_WALL        );
-			cfg.addDefault("Level1.Params.Thresh-Moist",        DEFAULT_THRESH_MOIST       );
+			cfg.addDefault("Level1.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+			cfg.addDefault("Level1.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+			cfg.addDefault("Level1.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+			cfg.addDefault("Level1.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+			cfg.addDefault("Level1.Noise-Moist-Freq",    DEFAULT_NOISE_MOIST_FREQ   );
+			cfg.addDefault("Level1.Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
+			cfg.addDefault("Level1.Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
+			cfg.addDefault("Level1.Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
+			cfg.addDefault("Level1.Thresh-Wall",         DEFAULT_THRESH_WALL        );
+			cfg.addDefault("Level1.Thresh-Moist",        DEFAULT_THRESH_MOIST       );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level1.Blocks.Wall",      DEFAULT_BLOCK_WALL     );
-			cfg.addDefault("Level1.Blocks.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
-			cfg.addDefault("Level1.Blocks.Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
-			cfg.addDefault("Level1.Blocks.Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
+			cfg.addDefault("Level1.Wall",      DEFAULT_BLOCK_WALL     );
+			cfg.addDefault("Level1.SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
+			cfg.addDefault("Level1.Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
+			cfg.addDefault("Level1.Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
 		}
 	}
 

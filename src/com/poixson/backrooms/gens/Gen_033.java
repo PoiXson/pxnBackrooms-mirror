@@ -202,23 +202,23 @@ public class Gen_033 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level33.Params.Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
-			cfg.addDefault("Level33.Params.Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
-			cfg.addDefault("Level33.Params.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
-			cfg.addDefault("Level33.Params.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
-			cfg.addDefault("Level33.Params.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
-			cfg.addDefault("Level33.Params.Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
+			cfg.addDefault("Level33.Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
+			cfg.addDefault("Level33.Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
+			cfg.addDefault("Level33.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
+			cfg.addDefault("Level33.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
+			cfg.addDefault("Level33.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
+			cfg.addDefault("Level33.Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level33.Blocks.Wall",       DEFAULT_BLOCK_WALL      );
-			cfg.addDefault("Level33.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
-			cfg.addDefault("Level33.Blocks.Floor",      DEFAULT_BLOCK_FLOOR     );
-			cfg.addDefault("Level33.Blocks.Floor-Safe", DEFAULT_BLOCK_FLOOR_SAFE);
-			cfg.addDefault("Level33.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-			cfg.addDefault("Level33.Blocks.Plate",      DEFAULT_BLOCK_PLATE     );
-			cfg.addDefault("Level33.Blocks.Hazard",     DEFAULT_BLOCK_HAZARD    );
+			cfg.addDefault("Level33.Wall",       DEFAULT_BLOCK_WALL      );
+			cfg.addDefault("Level33.Ceiling",    DEFAULT_BLOCK_CEILING   );
+			cfg.addDefault("Level33.Floor",      DEFAULT_BLOCK_FLOOR     );
+			cfg.addDefault("Level33.Floor-Safe", DEFAULT_BLOCK_FLOOR_SAFE);
+			cfg.addDefault("Level33.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+			cfg.addDefault("Level33.Plate",      DEFAULT_BLOCK_PLATE     );
+			cfg.addDefault("Level33.Hazard",     DEFAULT_BLOCK_HAZARD    );
 		}
 	}
 

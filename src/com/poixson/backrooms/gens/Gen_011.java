@@ -205,23 +205,23 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level11.Params.Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
-			cfg.addDefault("Level11.Params.Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
-			cfg.addDefault("Level11.Params.Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );
-			cfg.addDefault("Level11.Params.Noise-Alley-Jitter",         DEFAULT_NOISE_ALLEY_JITTER        );
-			cfg.addDefault("Level11.Params.Noise-Building-Freq",        DEFAULT_NOISE_BUILDING_FREQ       );
-			cfg.addDefault("Level11.Params.Noise-Building-Jitter-Freq", DEFAULT_NOISE_BUILDING_JITTER_FREQ);
-			cfg.addDefault("Level11.Params.Thresh-Road",                DEFAULT_THRESH_ROAD               );
-			cfg.addDefault("Level11.Params.Thresh-Alley",               DEFAULT_THRESH_ALLEY              );
-			cfg.addDefault("Level11.Params.Building-Height-Base",       DEFAULT_BUILDING_HEIGHT_BASE      );
-			cfg.addDefault("Level11.Params.Building-Height-Factor",     DEFAULT_BUILDING_HEIGHT_FACTOR    );
+			cfg.addDefault("Level11.Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
+			cfg.addDefault("Level11.Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
+			cfg.addDefault("Level11.Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );
+			cfg.addDefault("Level11.Noise-Alley-Jitter",         DEFAULT_NOISE_ALLEY_JITTER        );
+			cfg.addDefault("Level11.Noise-Building-Freq",        DEFAULT_NOISE_BUILDING_FREQ       );
+			cfg.addDefault("Level11.Noise-Building-Jitter-Freq", DEFAULT_NOISE_BUILDING_JITTER_FREQ);
+			cfg.addDefault("Level11.Thresh-Road",                DEFAULT_THRESH_ROAD               );
+			cfg.addDefault("Level11.Thresh-Alley",               DEFAULT_THRESH_ALLEY              );
+			cfg.addDefault("Level11.Building-Height-Base",       DEFAULT_BUILDING_HEIGHT_BASE      );
+			cfg.addDefault("Level11.Building-Height-Factor",     DEFAULT_BUILDING_HEIGHT_FACTOR    );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level11.Blocks.SubFloor", DEFAULT_BLOCK_SUBFLOOR);
-			cfg.addDefault("Level11.Blocks.Road",     DEFAULT_BLOCK_ROAD    );
-			cfg.addDefault("Level11.Blocks.Alley",    DEFAULT_BLOCK_ALLEY   );
+			cfg.addDefault("Level11.SubFloor", DEFAULT_BLOCK_SUBFLOOR);
+			cfg.addDefault("Level11.Road",     DEFAULT_BLOCK_ROAD    );
+			cfg.addDefault("Level11.Alley",    DEFAULT_BLOCK_ALLEY   );
 		}
 	}
 

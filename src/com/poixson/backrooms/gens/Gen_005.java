@@ -395,34 +395,34 @@ public class Gen_005 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level5.Params.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
-			cfg.addDefault("Level5.Params.Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
-			cfg.addDefault("Level5.Params.Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );
-			cfg.addDefault("Level5.Params.Noise-Room-Octave",   DEFAULT_NOISE_ROOM_OCTAVE);
-			cfg.addDefault("Level5.Params.Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
-			cfg.addDefault("Level5.Params.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
-			cfg.addDefault("Level5.Params.Nominal-Room-Size",   DEFAULT_NOMINAL_ROOM_SIZE);
+			cfg.addDefault("Level5.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
+			cfg.addDefault("Level5.Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
+			cfg.addDefault("Level5.Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );
+			cfg.addDefault("Level5.Noise-Room-Octave",   DEFAULT_NOISE_ROOM_OCTAVE);
+			cfg.addDefault("Level5.Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
+			cfg.addDefault("Level5.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
+			cfg.addDefault("Level5.Nominal-Room-Size",   DEFAULT_NOMINAL_ROOM_SIZE);
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level5.Blocks.SubFloor",           DEFAULT_BLOCK_SUBFLOOR          );
-			cfg.addDefault("Level5.Blocks.SubCeiling",         DEFAULT_BLOCK_SUBCEILING        );
-			cfg.addDefault("Level5.Blocks.SubWall",            DEFAULT_BLOCK_SUBWALL           );
-			cfg.addDefault("Level5.Blocks.Hall-Wall-Top-X",    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
-			cfg.addDefault("Level5.Blocks.Hall-Wall-Top-Z",    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
-			cfg.addDefault("Level5.Blocks.Hall-Wall-Center",   DEFAULT_BLOCK_HALL_WALL_CENTER  );
-			cfg.addDefault("Level5.Blocks.Hall-Wall-Bottom-X", DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
-			cfg.addDefault("Level5.Blocks.Hall-Wall-Bottom-Z", DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
-			cfg.addDefault("Level5.Blocks.Door-Border-Top-X",  DEFAULT_BLOCK_DOOR_BORDER_TOP_X );
-			cfg.addDefault("Level5.Blocks.Door-Border-Top-Z",  DEFAULT_BLOCK_DOOR_BORDER_TOP_Z );
-			cfg.addDefault("Level5.Blocks.Door-Border-Side",   DEFAULT_BLOCK_DOOR_BORDER_SIDE  );
-			cfg.addDefault("Level5.Blocks.Hall-Ceiling",       DEFAULT_BLOCK_HALL_CEILING      );
-			cfg.addDefault("Level5.Blocks.Hall-Floor-EE",      DEFAULT_BLOCK_HALL_FLOOR_EE     );
-			cfg.addDefault("Level5.Blocks.Hall-Floor-EO",      DEFAULT_BLOCK_HALL_FLOOR_EO     );
-			cfg.addDefault("Level5.Blocks.Hall-Floor-OE",      DEFAULT_BLOCK_HALL_FLOOR_OE     );
-			cfg.addDefault("Level5.Blocks.Hall-Floor-OO",      DEFAULT_BLOCK_HALL_FLOOR_OO     );
-			cfg.addDefault("Level5.Blocks.Door-Guest",         DEFAULT_DOOR_GUEST              );
+			cfg.addDefault("Level5.SubFloor",           DEFAULT_BLOCK_SUBFLOOR          );
+			cfg.addDefault("Level5.SubCeiling",         DEFAULT_BLOCK_SUBCEILING        );
+			cfg.addDefault("Level5.SubWall",            DEFAULT_BLOCK_SUBWALL           );
+			cfg.addDefault("Level5.Hall-Wall-Top-X",    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
+			cfg.addDefault("Level5.Hall-Wall-Top-Z",    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
+			cfg.addDefault("Level5.Hall-Wall-Center",   DEFAULT_BLOCK_HALL_WALL_CENTER  );
+			cfg.addDefault("Level5.Hall-Wall-Bottom-X", DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
+			cfg.addDefault("Level5.Hall-Wall-Bottom-Z", DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
+			cfg.addDefault("Level5.Door-Border-Top-X",  DEFAULT_BLOCK_DOOR_BORDER_TOP_X );
+			cfg.addDefault("Level5.Door-Border-Top-Z",  DEFAULT_BLOCK_DOOR_BORDER_TOP_Z );
+			cfg.addDefault("Level5.Door-Border-Side",   DEFAULT_BLOCK_DOOR_BORDER_SIDE  );
+			cfg.addDefault("Level5.Hall-Ceiling",       DEFAULT_BLOCK_HALL_CEILING      );
+			cfg.addDefault("Level5.Hall-Floor-EE",      DEFAULT_BLOCK_HALL_FLOOR_EE     );
+			cfg.addDefault("Level5.Hall-Floor-EO",      DEFAULT_BLOCK_HALL_FLOOR_EO     );
+			cfg.addDefault("Level5.Hall-Floor-OE",      DEFAULT_BLOCK_HALL_FLOOR_OE     );
+			cfg.addDefault("Level5.Hall-Floor-OO",      DEFAULT_BLOCK_HALL_FLOOR_OO     );
+			cfg.addDefault("Level5.Door-Guest",         DEFAULT_DOOR_GUEST              );
 		}
 	}
 

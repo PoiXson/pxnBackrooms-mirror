@@ -520,26 +520,26 @@ public class Gen_037 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level37.Params.Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
-			cfg.addDefault("Level37.Params.Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
-			cfg.addDefault("Level37.Params.Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
-			cfg.addDefault("Level37.Params.Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
-			cfg.addDefault("Level37.Params.Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
-			cfg.addDefault("Level37.Params.Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
-			cfg.addDefault("Level37.Params.Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
-			cfg.addDefault("Level37.Params.Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
-			cfg.addDefault("Level37.Params.Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
-			cfg.addDefault("Level37.Params.Thresh-Room",               DEFAULT_THRESH_ROOM              );
-			cfg.addDefault("Level37.Params.Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
+			cfg.addDefault("Level37.Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
+			cfg.addDefault("Level37.Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
+			cfg.addDefault("Level37.Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
+			cfg.addDefault("Level37.Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
+			cfg.addDefault("Level37.Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
+			cfg.addDefault("Level37.Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
+			cfg.addDefault("Level37.Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
+			cfg.addDefault("Level37.Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
+			cfg.addDefault("Level37.Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
+			cfg.addDefault("Level37.Thresh-Room",               DEFAULT_THRESH_ROOM              );
+			cfg.addDefault("Level37.Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level37.Blocks.WallA",      DEFAULT_BLOCK_WALL_A    );
-			cfg.addDefault("Level37.Blocks.WallB",      DEFAULT_BLOCK_WALL_B    );
-			cfg.addDefault("Level37.Blocks.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-			cfg.addDefault("Level37.Blocks.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
-			cfg.addDefault("Level37.Blocks.Ceiling",    DEFAULT_BLOCK_CEILING   );
+			cfg.addDefault("Level37.WallA",      DEFAULT_BLOCK_WALL_A    );
+			cfg.addDefault("Level37.WallB",      DEFAULT_BLOCK_WALL_B    );
+			cfg.addDefault("Level37.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+			cfg.addDefault("Level37.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+			cfg.addDefault("Level37.Ceiling",    DEFAULT_BLOCK_CEILING   );
 		}
 	}
 

@@ -208,6 +208,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+		this.saveConfigs();
 	}
 
 	@Override
@@ -285,7 +286,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 			this.config.set(cfg);
 			this.configDefaults(cfg);
 			cfg.options().copyDefaults(true);
-			super.saveConfig();
 		}
 		// levels-visited.yml
 		{
@@ -303,12 +303,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 		{
 			final File file = new File(this.getDataFolder(), "params.yml");
 			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+			cfg.options().copyDefaults(true);
 			this.configLevelParams.set(cfg);
 		}
 		// blocks.yml
 		{
 			final File file = new File(this.getDataFolder(), "blocks.yml");
 			final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+			cfg.options().copyDefaults(true);
 			this.configLevelBlocks.set(cfg);
 		}
 	}
@@ -333,6 +335,20 @@ public class BackroomsPlugin extends xJavaPlugin {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		// params.yml
+		try {
+			final File file = new File(this.getDataFolder(), "params.yml");
+			this.getConfigLevelParams().save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// blocks.yml
+		try {
+			final File file = new File(this.getDataFolder(), "blocks.yml");
+			this.getConfigLevelBlocks().save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -373,22 +389,22 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public ConfigurationSection getConfigLevelParams() {
+	public FileConfiguration getConfigLevelParams() {
 		return this.configLevelParams.get();
 	}
-	public ConfigurationSection getConfigLevelBlocks() {
+	public FileConfiguration getConfigLevelBlocks() {
 		return this.configLevelBlocks.get();
 	}
 
 	public ConfigurationSection getConfigLevelParams(final int level) {
 		return this.getConfigLevelParams()
 			.getConfigurationSection(
-				String.format("Level%d.Params", Integer.valueOf(level)));
+				String.format("Level%d", Integer.valueOf(level)));
 	}
 	public ConfigurationSection getConfigLevelBlocks(final int level) {
 		return this.getConfigLevelBlocks()
 			.getConfigurationSection(
-				String.format("Level%d.Blocks", Integer.valueOf(level)));
+				String.format("Level%d", Integer.valueOf(level)));
 	}
 
 

@@ -256,28 +256,28 @@ public class Gen_309 extends BackroomsGen {
 		// params
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level309.Params.Noise-Path-Freq",     DEFAULT_NOISE_PATH_FREQ    );
-			cfg.addDefault("Level309.Params.Noise-Ground-Freq",   DEFAULT_NOISE_GROUND_FREQ  );
-			cfg.addDefault("Level309.Params.Noise-Ground-Octave", DEFAULT_NOISE_GROUND_OCTAVE);
-			cfg.addDefault("Level309.Params.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
-			cfg.addDefault("Level309.Params.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
-			cfg.addDefault("Level309.Params.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
-			cfg.addDefault("Level309.Params.Noise-Prairie-Freq",  DEFAULT_NOISE_PRAIRIE_FREQ );
-			cfg.addDefault("Level309.Params.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
-			cfg.addDefault("Level309.Params.Path-Width",          DEFAULT_PATH_WIDTH         );
-			cfg.addDefault("Level309.Params.Path-Clearing",       DEFAULT_PATH_CLEARING      );
-			cfg.addDefault("Level309.Params.Special-Mod-A",       DEFAULT_SPECIAL_MOD_A      );
-			cfg.addDefault("Level309.Params.Special-Mod-B",       DEFAULT_SPECIAL_MOD_B      );
+			cfg.addDefault("Level309.Noise-Path-Freq",     DEFAULT_NOISE_PATH_FREQ    );
+			cfg.addDefault("Level309.Noise-Ground-Freq",   DEFAULT_NOISE_GROUND_FREQ  );
+			cfg.addDefault("Level309.Noise-Ground-Octave", DEFAULT_NOISE_GROUND_OCTAVE);
+			cfg.addDefault("Level309.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
+			cfg.addDefault("Level309.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
+			cfg.addDefault("Level309.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
+			cfg.addDefault("Level309.Noise-Prairie-Freq",  DEFAULT_NOISE_PRAIRIE_FREQ );
+			cfg.addDefault("Level309.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
+			cfg.addDefault("Level309.Path-Width",          DEFAULT_PATH_WIDTH         );
+			cfg.addDefault("Level309.Path-Clearing",       DEFAULT_PATH_CLEARING      );
+			cfg.addDefault("Level309.Special-Mod-A",       DEFAULT_SPECIAL_MOD_A      );
+			cfg.addDefault("Level309.Special-Mod-B",       DEFAULT_SPECIAL_MOD_B      );
 		}
 		// block types
 		{
 			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level309.Blocks.Dirt",        DEFAULT_BLOCK_DIRT       );
-			cfg.addDefault("Level309.Blocks.Path",        DEFAULT_BLOCK_PATH       );
-			cfg.addDefault("Level309.Blocks.Grass",       DEFAULT_BLOCK_GRASS      );
-			cfg.addDefault("Level309.Blocks.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-			cfg.addDefault("Level309.Blocks.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
-			cfg.addDefault("Level309.Blocks.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
+			cfg.addDefault("Level309.Dirt",        DEFAULT_BLOCK_DIRT       );
+			cfg.addDefault("Level309.Path",        DEFAULT_BLOCK_PATH       );
+			cfg.addDefault("Level309.Grass",       DEFAULT_BLOCK_GRASS      );
+			cfg.addDefault("Level309.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+			cfg.addDefault("Level309.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
+			cfg.addDefault("Level309.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
 		}
 	}
 
