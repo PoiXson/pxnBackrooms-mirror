@@ -282,8 +282,9 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
 		final int level = this.getMainLevel();
 		final String name = "level" + Integer.toString(level);
-		if (!manager.isMVWorld(name, false)) {
-			this.log().warning(String.format("%sCreating backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
+		if (this.plugin.enableAutoCreateWorlds()
+		&& !manager.isMVWorld(name, false)) {
+			this.log().warning(String.format("%sCreating world for backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
 			final Environment env;
 			switch (level) {
 			case 78: env = Environment.THE_END; break;

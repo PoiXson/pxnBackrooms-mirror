@@ -356,6 +356,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected void configDefaults(final FileConfiguration cfg) {
 		TaskReconvergence.ConfigDefaults(cfg);
 		cfg.addDefault("Seed", Integer.toString( xRand.Get(11, 9999999).nextInt() ));
+		cfg.addDefault("Enable World Creation",    Boolean.FALSE);
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
@@ -372,6 +373,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 				.getString("Seed");
 	}
 
+	public boolean enableAutoCreateWorlds() {
+		return this.config.get()
+				.getBoolean("Enable World Creation");
+	}
 	public boolean enableDynmapConfigGen() {
 		return this.config.get()
 				.getBoolean("Enable Dynmap Config Gen");
