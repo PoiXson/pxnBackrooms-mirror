@@ -69,6 +69,18 @@ fi
 	\zip -r -9  "../pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  || exit 1
 \popd >/dev/null
 
+# more foods
+\pushd  "../MoreFoods/resourcepack${NAME}/"  >/dev/null  || exit 1
+	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
+		--exclude pack.mcmeta  || exit 1
+\popd >/dev/null
+
+# redstone terminal
+\pushd  "../RedstoneTerminal/resourcepack${NAME}/"  >/dev/null  || exit 1
+	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
+		--exclude pack.mcmeta  || exit 1
+\popd >/dev/null
+
 
 
 \sha1sum  "pxnBackrooms-resourcepack${NAME}${VERSION}.zip" \
