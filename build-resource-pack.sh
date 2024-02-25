@@ -55,13 +55,15 @@ fi
 # more foods
 \pushd  "../MoreFoods/resourcepack/"  >/dev/null  || exit 1
 	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
-		--exclude pack.mcmeta  || exit 1
+		--exclude pack.mcmeta  \
+		--exclude assets/minecraft/atlases/blocks.json  || exit 1
 \popd >/dev/null
 
 # redstone terminal
 \pushd  "../RedstoneTerminal/resourcepack/"  >/dev/null  || exit 1
 	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
-		--exclude pack.mcmeta  || exit 1
+		--exclude pack.mcmeta  \
+		--exclude assets/minecraft/atlases/blocks.json  || exit 1
 \popd >/dev/null
 
 # named files
