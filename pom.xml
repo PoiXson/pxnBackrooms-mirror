@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Tue Feb 20 06:59:50 PM EST 2024 -->
+<!-- Generated: Sat Mar  2 05:27:48 PM EST 2024 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -49,7 +49,7 @@
 	</scm>
 	<issueManagement>
 		<system>pxngit</system>
-		<url>https://git.poixson.com/tickets/mc!pxnBackrooms.git</url>
+		<url>https://github.com/PoiXson/pxnBackrooms-mirror/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>pxnJenkins</system>
