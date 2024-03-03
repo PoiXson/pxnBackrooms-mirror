@@ -30,11 +30,11 @@ fi
 
 
 # remove old resource packs
-\ls "./pxnBackrooms-resourcepack${NAME}"*.zip >/dev/null 2>/dev/null
+\ls "./pxnBackrooms-resourcepack${NAME}"*.zip 2>/dev/null
 if [[ $? -eq 0 ]]; then
 	\rm -fv --preserve-root  "./pxnBackrooms-resourcepack${NAME}"*.zip  || exit 1
 fi
-\ls "./pxnBackrooms-resourcepack${NAME}"*.sha1 >/dev/null 2>/dev/null
+\ls "./pxnBackrooms-resourcepack${NAME}"*.sha1 2>/dev/null
 if [[ $? -eq 0 ]]; then
 	\rm -fv --preserve-root  "./pxnBackrooms-resourcepack${NAME}"*.sha1  || exit 1
 fi
@@ -48,6 +48,9 @@ fi
 
 
 # common files
+# ------------
+
+# backrooms
 \pushd  "resourcepack/"  >/dev/null  || exit 1
 	\zip -r -9  "../pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  || exit 1
 \popd >/dev/null
@@ -66,7 +69,12 @@ fi
 		--exclude assets/minecraft/atlases/blocks.json  || exit 1
 \popd >/dev/null
 
+
+
 # named files
+# -----------
+
+# backrooms
 \pushd  "resourcepack${NAME}/"  >/dev/null  || exit 1
 	\zip -r -9  "../pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  || exit 1
 \popd >/dev/null
@@ -87,7 +95,6 @@ fi
 
 \sha1sum  "pxnBackrooms-resourcepack${NAME}${VERSION}.zip" \
 	> "pxnBackrooms-resourcepack${NAME}${VERSION}.sha1"  || exit 1
-
 
 \cp  "pxnBackrooms-resourcepack${NAME}${VERSION}.zip"   "resources/pxnBackrooms-resourcepack${NAME}.zip"
 \cp  "pxnBackrooms-resourcepack${NAME}${VERSION}.sha1"  "resources/pxnBackrooms-resourcepack${NAME}.sha1"
