@@ -31,7 +31,7 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 	public boolean run(final CommandSender sender, final String label, final String[] args) {
 		final Player player = (sender instanceof Player ? (Player)sender : null);
 		if (player != null && !player.hasPermission("backrooms.tp")) {
-			player.sendMessage(CHAT_PREFIX + "You don't have permission to use this.");
+			player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
 			return true;
 		}
 		final int numargs = args.length;
@@ -46,7 +46,7 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 		if (numargs > 1 && NumberUtils.IsNumeric(args[1])) {
 			level = Integer.parseInt(args[1]);
 			if (!this.plugin.isValidLevel(level)) {
-				sender.sendMessage(CHAT_PREFIX + "Invalid backrooms level: " + Integer.toString(level));
+				sender.sendMessage(String.format("%sInvalid backrooms level: %d", CHAT_PREFIX, Integer.valueOf(level)));
 				return true;
 			}
 			i = 2;
@@ -54,18 +54,18 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 		// tp players
 		if (numargs > i) {
 			if (player != null && !player.hasPermission("backrooms.tp.others")) {
-				player.sendMessage(CHAT_PREFIX + "You don't have permission to use this.");
+				player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
 				return true;
 			}
 			for (; i<numargs; i++) {
 				final Player p = Bukkit.getPlayer(args[i]);
-				if (p == null) sender.sendMessage(CHAT_PREFIX + "Unknown player: " + args[i]);
+				if (p == null) sender.sendMessage(String.format("%sUnknown player: %s", CHAT_PREFIX, args[i]));
 				else           this.plugin.noclip(p, level);
 			}
 		// tp self
 		} else {
 			if (player == null) {
-				sender.sendMessage(CHAT_PREFIX + "Cannot teleport");
+				sender.sendMessage(CHAT_PREFIX+"Cannot teleport");
 			} else {
 				this.plugin.noclip(player, level);
 			}

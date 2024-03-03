@@ -464,7 +464,7 @@ public class Gen_037 extends BackroomsGen {
 					}
 					break;
 				}
-				default: throw new RuntimeException("Unknown pool room type: " + dao.type.toString());
+				default: throw new RuntimeException("Unknown pool room type: "+dao.type.toString());
 				} // end type switch
 				// water
 				for (int iz=0; iz<8; iz++) {

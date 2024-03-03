@@ -342,7 +342,7 @@ public class Gen_005 extends BackroomsGen {
 						chunk.setBlock(ix, y+iy, iz, block_subwall);
 					break;
 				}
-				default: throw new RuntimeException("Unknown hotel type: " + dao.type.toString());
+				default: throw new RuntimeException("Unknown hotel type: "+dao.type.toString());
 				}
 			} // end ix
 		} // end iz

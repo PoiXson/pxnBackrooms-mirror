@@ -91,13 +91,13 @@ public class GeneratorTemplate {
 
 	public void commit() {
 		if (!this.committed.compareAndSet(false, true)) return;
-		this.log().info("Creating dynmap template: backrooms_" + this.worldName);
+		this.log().info("Creating dynmap template: backrooms_"+this.worldName);
 		final File path = new File(this.plugin.getDataFolder(), "../dynmap/templates/");
 		if (!path.isDirectory()) {
 			this.log().warning("Path not found: plugins/dynmap/templates/");
 			return;
 		}
-		final File file = new File(path, this.worldName + ".txt");
+		final File file = new File(path, this.worldName+".txt");
 		try {
 			FileWriter writer = new FileWriter(file);
 			writer.write(this.toString());

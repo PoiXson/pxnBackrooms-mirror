@@ -125,7 +125,7 @@ public class Listener_078 extends xListener {
 				else          this.fly(player);
 				break;
 			}
-			default: throw new RuntimeException("Unknown game mode: "+player.getGameMode().toString());
+			default: throw new RuntimeException("Unknown game mode: " + player.getGameMode().toString());
 			}
 		} else {
 //			this.unfly(player);

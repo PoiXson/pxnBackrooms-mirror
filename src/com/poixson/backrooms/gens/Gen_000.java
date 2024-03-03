@@ -352,7 +352,7 @@ public class Gen_000 extends BackroomsGen {
 								case SOUTH: plot.xz(ix,   iz  ); break;
 								case EAST:  plot.xz(ix-2, iz-2); break;
 								case WEST:  plot.xz(ix-4, iz-3); break;
-								default: throw new RuntimeException("Unknown boxed walls direction: " + dao.box_dir.toString());
+								default: throw new RuntimeException("Unknown boxed walls direction: "+dao.box_dir.toString());
 								}
 								plot.type('.', Material.AIR         );
 								plot.type('=', block_wall           );

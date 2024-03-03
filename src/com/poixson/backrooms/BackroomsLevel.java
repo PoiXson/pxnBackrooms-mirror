@@ -177,7 +177,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 				}
 			}
 		}
-		this.log().warning("Failed to find a safe spawn location: " + area.toString());
+		this.log().warning("Failed to find a safe spawn location: "+area.toString());
 		return area;
 	}
 
@@ -279,10 +279,10 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	public void setup() {
 		final MVWorldManager manager = GetMVCore().getMVWorldManager();
 		final int level = this.getMainLevel();
-		final String name = "level" + Integer.toString(level);
+		final String name = "level"+Integer.toString(level);
 		if (this.plugin.enableAutoCreateWorlds()
 		&& !manager.isMVWorld(name, false)) {
-			this.log().warning("Creating world for backrooms level: " + Integer.toString(level));
+			this.log().warning("Creating world for backrooms level: "+Integer.toString(level));
 			final Environment env;
 			switch (level) {
 			case 78: env = Environment.THE_END; break;
@@ -290,7 +290,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			}
 			final String seedStr = this.plugin.getSeedString();
 			if (!manager.addWorld(name, env, seedStr, WorldType.NORMAL, Boolean.FALSE, BackroomsPlugin.GENERATOR_NAME, true))
-				throw new RuntimeException("Failed to create world: " + name);
+				throw new RuntimeException("Failed to create world: "+name);
 			final MultiverseWorld mvworld = manager.getMVWorld(name, false);
 			final World world = mvworld.getCBWorld();
 			mvworld.setAutoLoad(true);
@@ -417,7 +417,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		// not retained after restart
 		{
 			final World world = Bukkit.getWorld(name);
-			if (world == null) throw new NullPointerException("Failed to find world: " + name);
+			if (world == null) throw new NullPointerException("Failed to find world: "+name);
 			switch (level) {
 			case 33: world.setTicksPerSpawns(SpawnCategory.MONSTER,   1); break;
 			default: world.setTicksPerSpawns(SpawnCategory.MONSTER, 100); break;

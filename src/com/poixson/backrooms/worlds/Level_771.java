@@ -157,7 +157,7 @@ public class Level_771 extends BackroomsLevel {
 				}
 			}
 		}
-		this.log().warning("Failed to find a safe spawn location: " + spawn.toString());
+		this.log().warning("Failed to find a safe spawn location: "+spawn.toString());
 		return spawn;
 	}
 
