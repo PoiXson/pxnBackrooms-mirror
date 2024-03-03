@@ -1,5 +1,8 @@
 {
 	"sources": [
-		{ "type": "directory", "source": "food", "prefix": "food/" }
+		{ "type": "directory", "source": "redterm", "prefix": "redterm/" },
+		{ "type": "directory", "source": "food",    "prefix": "food/"    },
+		{ "type": "directory", "source": "vending", "prefix": "vending/" },
+		{ "type": "directory", "source": "gui",     "prefix": "gui/"     }
 	]
 }
