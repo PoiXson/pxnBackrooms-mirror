@@ -1,6 +1,5 @@
 package com.poixson.backrooms.dynmap;
 
-import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.tools.xJavaPlugin.Log;
 import static com.poixson.utils.Utils.SafeClose;
 
@@ -46,9 +45,9 @@ public class GeneratorPerspective {
 
 	public void commit(final File path) {
 		if (!this.committed.compareAndSet(false, true)) return;
-		Log().info(LOG_PREFIX + "Creating dynmap config: custom-perspectives.txt");
+		Log().info("Creating dynmap config: custom-perspectives.txt");
 		if (!path.isDirectory()) {
-			Log().warning(LOG_PREFIX + "Path not found: plugins/dynmap/");
+			Log().warning("Path not found: plugins/dynmap/");
 			return;
 		}
 		final File file = new File(path, "custom-perspectives.txt");

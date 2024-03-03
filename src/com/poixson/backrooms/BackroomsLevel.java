@@ -1,7 +1,5 @@
 package com.poixson.backrooms;
 
-import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -179,7 +177,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 				}
 			}
 		}
-		this.log().warning(String.format("%sFailed to find a safe spawn location: %s", LOG_PREFIX, area.toString()));
+		this.log().warning("Failed to find a safe spawn location: " + area.toString());
 		return area;
 	}
 
@@ -284,7 +282,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final String name = "level" + Integer.toString(level);
 		if (this.plugin.enableAutoCreateWorlds()
 		&& !manager.isMVWorld(name, false)) {
-			this.log().warning(String.format("%sCreating world for backrooms level: %d", LOG_PREFIX, Integer.valueOf(level)));
+			this.log().warning("Creating world for backrooms level: " + Integer.toString(level));
 			final Environment env;
 			switch (level) {
 			case 78: env = Environment.THE_END; break;

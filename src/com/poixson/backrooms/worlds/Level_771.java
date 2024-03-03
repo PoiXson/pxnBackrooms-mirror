@@ -1,7 +1,5 @@
 package com.poixson.backrooms.worlds;
 
-import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
-
 import java.util.LinkedList;
 
 import org.bukkit.Location;
@@ -159,7 +157,7 @@ public class Level_771 extends BackroomsLevel {
 				}
 			}
 		}
-		this.log().warning(String.format("%sFailed to find a safe spawn location: %s", LOG_PREFIX, spawn.toString()));
+		this.log().warning("Failed to find a safe spawn location: " + spawn.toString());
 		return spawn;
 	}
 

@@ -1,6 +1,5 @@
 package com.poixson.backrooms.dynmap;
 
-import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.File;
@@ -92,10 +91,10 @@ public class GeneratorTemplate {
 
 	public void commit() {
 		if (!this.committed.compareAndSet(false, true)) return;
-		this.log().info(LOG_PREFIX + "Creating dynmap template: backrooms_" + this.worldName);
+		this.log().info("Creating dynmap template: backrooms_" + this.worldName);
 		final File path = new File(this.plugin.getDataFolder(), "../dynmap/templates/");
 		if (!path.isDirectory()) {
-			this.log().warning(LOG_PREFIX + "Path not found: plugins/dynmap/templates/");
+			this.log().warning("Path not found: plugins/dynmap/templates/");
 			return;
 		}
 		final File file = new File(path, this.worldName + ".txt");

@@ -1,7 +1,6 @@
 package com.poixson.backrooms.commands;
 
 import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
-import static com.poixson.backrooms.BackroomsPlugin.LOG_PREFIX;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -66,7 +65,7 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 		// tp self
 		} else {
 			if (player == null) {
-				sender.sendMessage(LOG_PREFIX + "Cannot teleport");
+				sender.sendMessage(CHAT_PREFIX + "Cannot teleport");
 			} else {
 				this.plugin.noclip(player, level);
 			}

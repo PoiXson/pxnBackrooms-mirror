@@ -52,7 +52,6 @@ import com.poixson.tools.xRand;
 public class BackroomsPlugin extends xJavaPlugin {
 	@Override public int getSpigotPluginID() { return 108148; }
 	@Override public int getBStatsID() {       return 17231;  }
-	public static final String LOG_PREFIX  = "[pxnBackrooms] ";
 	public static final String CHAT_PREFIX = ChatColor.AQUA + "[Backrooms] " + ChatColor.WHITE;
 
 	public static final String GENERATOR_NAME = "pxnBackrooms";
@@ -104,17 +103,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		{
 			final String pack = Bukkit.getResourcePack();
 			if (pack == null || pack.isEmpty()) {
-				this.log().warning(String.format(
-					"%sResource pack not set; You can use this one: %s",
-					LOG_PREFIX,
-					DEFAULT_RESOURCE_PACK.replace("{VERSION}", this.getPluginVersion())
-				));
+				this.log().warning("Resource pack not set; You can use this one: " +
+						DEFAULT_RESOURCE_PACK.replace("{VERSION}", this.getPluginVersion()));
 			} else {
-				this.log().info(String.format(
-					"%sUsing resource pack: %s",
-					LOG_PREFIX,
-					Bukkit.getResourcePack()
-				));
+				this.log().info("Using resource pack: " + Bukkit.getResourcePack());
 			}
 		}
 		// backrooms levels
@@ -430,7 +422,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 				quotes.add(line.trim());
 		}
 		this.quotes.set(quotes.toArray(new String[0]));
-		this.log().info(String.format("%sLoaded [%d] quotes", LOG_PREFIX, Integer.valueOf(quotes.size())));
+		this.log().info(String.format("Loaded [%d] quotes", Integer.valueOf(quotes.size())));
 	}
 
 	public String[] getQuotes() {
@@ -614,16 +606,16 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public void noclip(final Player player, final int level) {
 		Location loc = this.getSpawnLocation(level);
 		if (loc == null) {
-			this.log().warning(String.format("%sFailed to find spawn for level: %d", LOG_PREFIX, Integer.valueOf(level)));
-			this.log().warning(String.format("%sFailed to find spawn for level: %d", LOG_PREFIX, Integer.valueOf(level)));
+			this.log().warning("Failed to find spawn for level: " + Integer.toString(level));
+			this.log().warning("Failed to find spawn for level: " + Integer.toString(level));
 			final World world = this.getWorldFromLevel(level);
 			if (world == null) {
-				this.log().warning(String.format("%sUnknown backrooms world for level %d", LOG_PREFIX, Integer.valueOf(level)));
+				this.log().warning("Unknown backrooms world for level " + Integer.toString(level));
 				return;
 			}
 			loc = world.getSpawnLocation();
 		}
-		this.log().info(String.format("%sNo-clip player: %s to level: %d", LOG_PREFIX, player.getName(), Integer.valueOf(level)));
+		this.log().info(String.format("No-clip player: %s to level: %d", player.getName(), Integer.valueOf(level)));
 		player.teleport(loc);
 		player.setNoDamageTicks(100);
 		player.setFallDistance(0.0f);
@@ -666,8 +658,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 //TODO: https://github.com/Multiverse/Multiverse-Core/blob/17129f68d204438f1d8e134388b72507dc8c1a63/src/main/java/com/onarandombox/MultiverseCore/commands/CreateCommand.java#L117
 		if (!worldName.startsWith("level"))
-			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
-		this.log().info(String.format("%sworld: %s", LOG_PREFIX, worldName));
+			throw new RuntimeException("Invalid world name, must be level# found: " + worldName);
+		this.log().info("world: " +  worldName);
 		return this.getMainBackroomsLevel(worldName);
 	}
 
