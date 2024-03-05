@@ -24,7 +24,7 @@ import com.poixson.tools.xTime;
 import com.poixson.tools.events.xListener;
 
 
-public class Listener_NoClip extends xListener {
+public class Listener_NoClip implements xListener {
 
 	public static final long DAMAGE_TIMEOUT = xTime.Parse("5s").ms();
 	public static final double MIN_DAMAGE = 3.0;
@@ -54,8 +54,13 @@ public class Listener_NoClip extends xListener {
 
 
 	public Listener_NoClip(final BackroomsPlugin plugin) {
-		super(plugin);
 		this.plugin = plugin;
+	}
+
+
+
+	public void register() {
+		xListener.super.register(this.plugin);
 	}
 
 

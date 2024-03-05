@@ -23,7 +23,7 @@ import com.poixson.tools.events.xListener;
 
 //   1 | Basement - lights
 // 309 | Radio Station - forest stairs
-public class Listener_MoveNormal extends xListener {
+public class Listener_MoveNormal implements xListener {
 
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 
@@ -34,15 +34,17 @@ public class Listener_MoveNormal extends xListener {
 
 
 	public Listener_MoveNormal(final BackroomsPlugin plugin) {
-		super(plugin);
 		this.plugin = plugin;
 	}
 
 
 
+	public void register() {
+		xListener.super.register(this.plugin);
+	}
 	@Override
 	public void unregister() {
-		super.unregister();
+		xListener.super.unregister();
 		synchronized (this.player_lights) {
 			Block blk;
 			for (final List<Location> list : this.player_lights.values()) {

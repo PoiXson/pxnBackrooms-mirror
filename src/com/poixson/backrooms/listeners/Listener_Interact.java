@@ -19,7 +19,7 @@ import com.poixson.tools.events.xListener;
 
 
 // 6 | Lobby <-> Lights-Out - teleports
-public class Listener_Interact extends xListener {
+public class Listener_Interact implements xListener {
 
 	protected final BackroomsPlugin plugin;
 
@@ -28,10 +28,15 @@ public class Listener_Interact extends xListener {
 
 
 	public Listener_Interact(final BackroomsPlugin plugin) {
-		super(plugin);
 		this.plugin = plugin;
 		final Level_000 level0 = (Level_000) plugin.getBackroomsLevel(0);
 		this.tp_range = level0.gen_006.tp_range.get();
+	}
+
+
+
+	public void register() {
+		xListener.super.register(this.plugin);
 	}
 
 

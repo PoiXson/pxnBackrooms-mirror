@@ -147,7 +147,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			final Commands previous = this.commands.getAndSet(listener);
 			if (previous != null)
 				previous.unregister();
-			listener.register();
+			listener.register(this);
 		}
 		// load quotes
 		this.loadQuotes();

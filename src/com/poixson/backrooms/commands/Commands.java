@@ -9,7 +9,7 @@ public class Commands extends pxnCommandsHandler<BackroomsPlugin> {
 
 
 	public Commands(final BackroomsPlugin plugin) {
-		super(plugin, "backrooms");
+		super("backrooms");
 		this.addCommand(new Command_TP(plugin));
 	}
 

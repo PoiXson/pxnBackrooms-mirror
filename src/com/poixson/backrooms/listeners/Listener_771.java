@@ -21,7 +21,7 @@ import com.poixson.tools.SeriesBlockChanger;
 import com.poixson.tools.events.xListener;
 
 
-public class Listener_771 extends xListener {
+public class Listener_771 implements xListener {
 
 	public static final long DEFAULT_TICKS_PER_BLOCK = 6L;
 
@@ -32,8 +32,13 @@ public class Listener_771 extends xListener {
 
 
 	public Listener_771(final BackroomsPlugin plugin) {
-		super(plugin);
 		this.plugin = plugin;
+	}
+
+
+
+	public void register() {
+		xListener.super.register(this.plugin);
 	}
 
 

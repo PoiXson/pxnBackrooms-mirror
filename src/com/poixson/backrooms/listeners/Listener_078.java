@@ -19,23 +19,28 @@ import com.poixson.pluginlib.tools.plugin.xListener;
 
 
 // 78 | Space
-public class Listener_078 extends xListener {
+public class Listener_078 implements xListener {
 
 	public static final int GRAVITY_REACH = 10;
+
+	protected final BackroomsPlugin plugin;
 
 	protected final CopyOnWriteArraySet<UUID> flying = new CopyOnWriteArraySet<UUID>();
 
 
 
 	public Listener_078(final BackroomsPlugin plugin) {
-		super(plugin);
+		this.plugin = plugin;
 	}
 
 
 
+	public void register() {
+		xListener.super.register(this.plugin);
+	}
 	@Override
 	public void unregister() {
-		super.unregister();
+		xListener.super.unregister();
 		for (final UUID uuid : this.flying) {
 			final Player player = Bukkit.getPlayer(uuid);
 			if (player != null)

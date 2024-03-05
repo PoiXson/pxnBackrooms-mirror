@@ -16,15 +16,20 @@ import com.poixson.tools.events.xListener;
 // void 771 >>   1 | Crossroads        (void) to Basement
 // void  33 >>   6 | Run For Your Life (void) to Lights Out
 // void  94 >> 771 | Motion            (void) to Crossroads
-public class Listener_OutOfWorld  extends xListener {
+public class Listener_OutOfWorld implements xListener {
 
 	protected final BackroomsPlugin plugin;
 
 
 
 	public Listener_OutOfWorld(final BackroomsPlugin plugin) {
-		super(plugin);
 		this.plugin = plugin;
+	}
+
+
+
+	public void register() {
+		xListener.super.register(this.plugin);
 	}
 
 
