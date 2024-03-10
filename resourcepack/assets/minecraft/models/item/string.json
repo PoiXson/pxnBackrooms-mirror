@@ -5,6 +5,7 @@
 	},
 	"overrides": [
 		{ "predicate": { "custom_model_data":  8 }, "model": "backrooms:item/mouse_hole" },
+		{ "predicate": { "custom_model_data": 55 }, "model": "backrooms:item/boom_mic"   },
 		{ "predicate": { "custom_model_data": 91 }, "model": "backrooms:item/fire_ext"   }
 	]
 }
