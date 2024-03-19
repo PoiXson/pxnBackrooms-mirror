@@ -394,14 +394,24 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 
 	public ConfigurationSection getConfigLevelParams(final int level) {
-		return this.getConfigLevelParams()
-			.getConfigurationSection(
-				String.format("Level%d", Integer.valueOf(level)));
+		final String key = String.format("Level-%03d", Integer.valueOf(level));
+		final FileConfiguration cfg = this.getConfigLevelParams();
+		if (!cfg.contains(key)) {
+			final ConfigurationSection sec = cfg.createSection(key);
+			cfg.set(key, sec);
+			return sec;
+		}
+		return cfg.getConfigurationSection(key);
 	}
 	public ConfigurationSection getConfigLevelBlocks(final int level) {
-		return this.getConfigLevelBlocks()
-			.getConfigurationSection(
-				String.format("Level%d", Integer.valueOf(level)));
+		final String key = String.format("Level-%03d", Integer.valueOf(level));
+		final FileConfiguration cfg = this.getConfigLevelBlocks();
+		if (!cfg.contains(key)) {
+			final ConfigurationSection sec = cfg.createSection(key);
+			cfg.set(key, sec);
+			return sec;
+		}
+		return cfg.getConfigurationSection(key);
 	}
 
 

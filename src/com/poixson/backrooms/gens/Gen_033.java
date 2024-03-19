@@ -46,12 +46,9 @@ public class Gen_033 extends BackroomsGen {
 	public final FastNoiseLiteD noiseFloor;
 
 	// params
-	public final AtomicDouble  noise_floor_freq   = new AtomicDouble( DEFAULT_NOISE_FLOOR_FREQ  );
-	public final AtomicInteger noise_floor_octave = new AtomicInteger(DEFAULT_NOISE_FLOOR_OCTAVE);
-	public final AtomicDouble  noise_floor_gain   = new AtomicDouble( DEFAULT_NOISE_FLOOR_GAIN  );
-	public final AtomicDouble thresh_floor        = new AtomicDouble(DEFAULT_THRESH_FLOOR       );
-	public final AtomicDouble thresh_hazard       = new AtomicDouble(DEFAULT_THRESH_HAZARD      );
-	public final AtomicInteger danger_chunks      = new AtomicInteger(DEFAULT_DANGER_CHUNKS     );
+	public final AtomicDouble thresh_floor   = new AtomicDouble(DEFAULT_THRESH_FLOOR  );
+	public final AtomicDouble thresh_hazard  = new AtomicDouble(DEFAULT_THRESH_HAZARD );
+	public final AtomicInteger danger_chunks = new AtomicInteger(DEFAULT_DANGER_CHUNKS);
 
 	// blocks
 	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
@@ -74,13 +71,8 @@ public class Gen_033 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// pool rooms
-		this.noiseFloor.setFrequency(     this.noise_floor_freq  .get());
-		this.noiseFloor.setFractalOctaves(this.noise_floor_octave.get());
-		this.noiseFloor.setFractalGain(   this.noise_floor_gain  .get());
-		this.noiseFloor.setFractalType(FastNoiseLiteD.FractalType.FBm);
+	public int getLevelNumber() {
+		return 33;
 	}
 
 
@@ -174,52 +166,49 @@ public class Gen_033 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// pool rooms
+		this.noiseFloor.setFrequency(      cfgParams.getDouble("Noise-Floor-Freq"  ) );
+		this.noiseFloor.setFractalOctaves( cfgParams.getInt(   "Noise-Floor-Octave") );
+		this.noiseFloor.setFractalGain(    cfgParams.getDouble("Noise-Floor-Gain"  ) );
+		this.noiseFloor.setFractalType(    FastNoiseLiteD.FractalType.FBm            );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(33);
-			this.noise_floor_freq  .set(cfg.getDouble("Noise-Floor-Freq"  ));
-			this.noise_floor_octave.set(cfg.getInt(   "Noise-Floor-Octave"));
-			this.noise_floor_gain  .set(cfg.getDouble("Noise-Floor-Gain"  ));
-			this.thresh_floor      .set(cfg.getDouble("Thresh-Floor"      ));
-			this.thresh_hazard     .set(cfg.getDouble("Thresh-Hazard"     ));
-			this.danger_chunks     .set(cfg.getInt(   "Danger-Chunks"     ));
-		}
+		this.thresh_floor .set(cfgParams.getDouble("Thresh-Floor" ));
+		this.thresh_hazard.set(cfgParams.getDouble("Thresh-Hazard"));
+		this.danger_chunks.set(cfgParams.getInt(   "Danger-Chunks"));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(33);
-			this.block_wall      .set(cfg.getString("Wall"      ));
-			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
-			this.block_floor     .set(cfg.getString("Floor"     ));
-			this.block_floor_safe.set(cfg.getString("Floor-Safe"));
-			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
-			this.block_plate     .set(cfg.getString("Plate"     ));
-			this.block_hazard    .set(cfg.getString("Hazard"    ));
-		}
+		this.block_wall      .set(cfgBlocks.getString("Wall"      ));
+		this.block_ceiling   .set(cfgBlocks.getString("Ceiling"   ));
+		this.block_floor     .set(cfgBlocks.getString("Floor"     ));
+		this.block_floor_safe.set(cfgBlocks.getString("Floor-Safe"));
+		this.block_subfloor  .set(cfgBlocks.getString("SubFloor"  ));
+		this.block_plate     .set(cfgBlocks.getString("Plate"     ));
+		this.block_hazard    .set(cfgBlocks.getString("Hazard"    ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level33.Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
-			cfg.addDefault("Level33.Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
-			cfg.addDefault("Level33.Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
-			cfg.addDefault("Level33.Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
-			cfg.addDefault("Level33.Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
-			cfg.addDefault("Level33.Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
-		}
+		cfgParams.addDefault("Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
+		cfgParams.addDefault("Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
+		cfgParams.addDefault("Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
+		cfgParams.addDefault("Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
+		cfgParams.addDefault("Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
+		cfgParams.addDefault("Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level33.Wall",       DEFAULT_BLOCK_WALL      );
-			cfg.addDefault("Level33.Ceiling",    DEFAULT_BLOCK_CEILING   );
-			cfg.addDefault("Level33.Floor",      DEFAULT_BLOCK_FLOOR     );
-			cfg.addDefault("Level33.Floor-Safe", DEFAULT_BLOCK_FLOOR_SAFE);
-			cfg.addDefault("Level33.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-			cfg.addDefault("Level33.Plate",      DEFAULT_BLOCK_PLATE     );
-			cfg.addDefault("Level33.Hazard",     DEFAULT_BLOCK_HAZARD    );
-		}
+		cfgBlocks.addDefault("Wall",       DEFAULT_BLOCK_WALL      );
+		cfgBlocks.addDefault("Ceiling",    DEFAULT_BLOCK_CEILING   );
+		cfgBlocks.addDefault("Floor",      DEFAULT_BLOCK_FLOOR     );
+		cfgBlocks.addDefault("Floor-Safe", DEFAULT_BLOCK_FLOOR_SAFE);
+		cfgBlocks.addDefault("SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+		cfgBlocks.addDefault("Plate",      DEFAULT_BLOCK_PLATE     );
+		cfgBlocks.addDefault("Hazard",     DEFAULT_BLOCK_HAZARD    );
 	}
 
 

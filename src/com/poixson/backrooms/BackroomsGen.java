@@ -3,11 +3,14 @@ package com.poixson.backrooms;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
+import com.poixson.utils.NumberUtils;
 
 
 public abstract class BackroomsGen {
@@ -30,7 +33,6 @@ public abstract class BackroomsGen {
 		this.seed      = seed;
 		this.level_y   = level_y;
 		this.level_h   = level_h;
-		this.configDefaults();
 	}
 
 
@@ -48,16 +50,18 @@ public abstract class BackroomsGen {
 
 
 
+	public abstract int getLevelNumber();
+
 	public int getSeed() {
 		return this.seed;
 	}
 
 
 
-	public void initNoise() {}
+	protected void initNoise(final ConfigurationSection cfgParams) {}
 
-	protected abstract void loadConfig();
-	public abstract void configDefaults();
+	protected abstract void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks);
+	protected abstract void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks);
 
 
 

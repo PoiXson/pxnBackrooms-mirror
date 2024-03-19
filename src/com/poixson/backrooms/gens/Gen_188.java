@@ -68,6 +68,13 @@ public class Gen_188 extends BackroomsGen {
 
 
 	@Override
+	public int getLevelNumber() {
+		return 188;
+	}
+
+
+
+	@Override
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
@@ -335,40 +342,28 @@ public class Gen_188 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(188);
-			this.dark_room.set(cfg.getBoolean("Dark-Room"));
-		}
+		this.dark_room.set(cfgParams.getBoolean("Dark-Room"));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(188);
-			this.block_subfloor        .set(cfg.getString("SubFloor"        ));
-			this.block_floor           .set(cfg.getString("Floor"           ));
-			this.block_floor_path_lines.set(cfg.getString("Floor-Path-Lines"));
-			this.block_floor_path_areas.set(cfg.getString("Floor-Path-Areas"));
-			this.block_ceiling         .set(cfg.getString("Ceiling"         ));
-			this.block_window          .set(cfg.getString("Window"          ));
-		}
+		this.block_subfloor        .set(cfgBlocks.getString("SubFloor"        ));
+		this.block_floor           .set(cfgBlocks.getString("Floor"           ));
+		this.block_floor_path_lines.set(cfgBlocks.getString("Floor-Path-Lines"));
+		this.block_floor_path_areas.set(cfgBlocks.getString("Floor-Path-Areas"));
+		this.block_ceiling         .set(cfgBlocks.getString("Ceiling"         ));
+		this.block_window          .set(cfgBlocks.getString("Window"          ));
 	}
 	@Override
-	public void configDefaults() {
+	public void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level188.Dark-Room", DEFAULT_DARK_ROOM);
-		}
+		cfgParams.addDefault("Dark-Room", DEFAULT_DARK_ROOM);
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level188.SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
-			cfg.addDefault("Level188.Floor",            DEFAULT_BLOCK_FLOOR           );
-			cfg.addDefault("Level188.Floor-Path-Lines", DEFAULT_BLOCK_FLOOR_PATH_LINES);
-			cfg.addDefault("Level188.Floor-Path-Areas", DEFAULT_BLOCK_FLOOR_PATH_AREAS);
-			cfg.addDefault("Level188.Ceiling",          DEFAULT_BLOCK_CEILING         );
-			cfg.addDefault("Level188.Window",           DEFAULT_BLOCK_WINDOW          );
-		}
+		cfgBlocks.addDefault("SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
+		cfgBlocks.addDefault("Floor",            DEFAULT_BLOCK_FLOOR           );
+		cfgBlocks.addDefault("Floor-Path-Lines", DEFAULT_BLOCK_FLOOR_PATH_LINES);
+		cfgBlocks.addDefault("Floor-Path-Areas", DEFAULT_BLOCK_FLOOR_PATH_AREAS);
+		cfgBlocks.addDefault("Ceiling",          DEFAULT_BLOCK_CEILING         );
+		cfgBlocks.addDefault("Window",           DEFAULT_BLOCK_WINDOW          );
 	}
 
 

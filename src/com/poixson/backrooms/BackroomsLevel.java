@@ -18,6 +18,7 @@ import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.SpawnCategory;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
@@ -68,9 +69,12 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 	protected <T extends BackroomsGen> T register(final T gen) {
+		final int level_number = gen.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
+		gen.loadConfig(cfgParams, cfgBlocks);
+		gen.initNoise(cfgParams);
 		this.gens.add(gen);
-		gen.loadConfig();
-		gen.initNoise();
 		return gen;
 	}
 	protected <T extends BackroomsPop> T register(final T pop) {

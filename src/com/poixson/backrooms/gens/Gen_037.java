@@ -8,7 +8,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -65,17 +64,8 @@ public class Gen_037 extends BackroomsGen {
 	public final FastNoiseLiteD noisePortalHotel;
 
 	// params
-	public final AtomicDouble  noise_room_freq           = new AtomicDouble( DEFAULT_NOISE_ROOM_FREQ          );
-	public final AtomicInteger noise_room_octave         = new AtomicInteger(DEFAULT_NOISE_ROOM_OCTAVE        );
-	public final AtomicDouble  noise_room_gain           = new AtomicDouble( DEFAULT_NOISE_ROOM_GAIN          );
-	public final AtomicDouble  noise_room_strength       = new AtomicDouble( DEFAULT_NOISE_ROOM_STRENGTH      );
-	public final AtomicDouble  noise_tunnel_freq         = new AtomicDouble( DEFAULT_NOISE_TUNNEL_FREQ        );
-	public final AtomicDouble  noise_tunnel_strength     = new AtomicDouble( DEFAULT_NOISE_TUNNEL_STRENGTH    );
-	public final AtomicDouble  noise_portal_lobby_freq   = new AtomicDouble( DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
-	public final AtomicInteger noise_portal_lobby_octave = new AtomicInteger(DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
-	public final AtomicDouble  noise_portal_hotel_freq   = new AtomicDouble( DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
-	public final AtomicDouble  thresh_room               = new AtomicDouble( DEFAULT_THRESH_ROOM              );
-	public final AtomicDouble  thresh_portal             = new AtomicDouble( DEFAULT_THRESH_PORTAL            );
+	public final AtomicDouble  thresh_room   = new AtomicDouble( DEFAULT_THRESH_ROOM  );
+	public final AtomicDouble  thresh_portal = new AtomicDouble( DEFAULT_THRESH_PORTAL);
 
 	// blocks
 	public final AtomicReference<String> block_wall_a     = new AtomicReference<String>(null);
@@ -99,27 +89,8 @@ public class Gen_037 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// pool rooms
-		this.noisePoolRooms.setFrequency(              this.noise_room_freq    .get());
-		this.noisePoolRooms.setFractalOctaves(         this.noise_room_octave  .get());
-		this.noisePoolRooms.setFractalGain(            this.noise_room_gain    .get());
-		this.noisePoolRooms.setFractalPingPongStrength(this.noise_room_strength.get());
-		this.noisePoolRooms.setNoiseType(NoiseType.OpenSimplex2);
-		this.noisePoolRooms.setFractalType(FractalType.PingPong);
-		// tunnels
-		this.noiseTunnels.setFrequency(              this.noise_tunnel_freq    .get());
-		this.noiseTunnels.setFractalPingPongStrength(this.noise_tunnel_strength.get());
-		this.noiseTunnels.setNoiseType(NoiseType.Cellular);
-		this.noiseTunnels.setFractalType(FractalType.PingPong);
-		this.noiseTunnels.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		// portal to lobby
-		this.noisePortalLobby.setFrequency(     this.noise_portal_lobby_freq  .get());
-		this.noisePortalLobby.setFractalOctaves(this.noise_portal_lobby_octave.get());
-		this.noisePortalLobby.setFractalType(FractalType.FBm);
-		// portal to hotel
-		this.noisePortalHotel.setFrequency(this.noise_portal_hotel_freq.get());
+	public int getLevelNumber() {
+		return 37;
 	}
 
 
@@ -489,58 +460,63 @@ public class Gen_037 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// pool rooms
+		this.noisePoolRooms.setFrequency(               cfgParams.getDouble("Noise-Room-Freq"    ) );
+		this.noisePoolRooms.setFractalOctaves(          cfgParams.getInt(   "Noise-Room-Octave"  ) );
+		this.noisePoolRooms.setFractalGain(             cfgParams.getDouble("Noise-Room-Gain"    ) );
+		this.noisePoolRooms.setFractalPingPongStrength( cfgParams.getDouble("Noise-Room-Strength") );
+		this.noisePoolRooms.setNoiseType(               NoiseType.OpenSimplex2                     );
+		this.noisePoolRooms.setFractalType(             FractalType.PingPong                       );
+		// tunnels
+		this.noiseTunnels.setFrequency(               cfgParams.getDouble("Noise-Tunnel-Freq"    ) );
+		this.noiseTunnels.setFractalPingPongStrength( cfgParams.getDouble("Noise-Tunnel-Strength") );
+		this.noiseTunnels.setNoiseType(               NoiseType.Cellular                           );
+		this.noiseTunnels.setFractalType(             FractalType.PingPong                         );
+		this.noiseTunnels.setCellularDistanceFunction( CellularDistanceFunction.Manhattan          );
+		// portal to lobby
+		this.noisePortalLobby.setFrequency(      cfgParams.getDouble("Noise-Portal-Lobby-Freq"  ) );
+		this.noisePortalLobby.setFractalOctaves( cfgParams.getInt(   "Noise-Portal-Lobby-Octave") );
+		this.noisePortalLobby.setFractalType(    FractalType.FBm                                  );
+		// portal to hotel
+		this.noisePortalHotel.setFrequency( cfgParams.getDouble("Noise-Portal-Hotel-Freq") );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(37);
-			this.noise_room_freq          .set(cfg.getDouble("Noise-Room-Freq"          ));
-			this.noise_room_octave        .set(cfg.getInt(   "Noise-Room-Octave"        ));
-			this.noise_room_gain          .set(cfg.getDouble("Noise-Room-Gain"          ));
-			this.noise_room_strength      .set(cfg.getDouble("Noise-Room-Strength"      ));
-			this.noise_tunnel_freq        .set(cfg.getDouble("Noise-Tunnel-Freq"        ));
-			this.noise_tunnel_strength    .set(cfg.getDouble("Noise-Tunnel-Strength"    ));
-			this.noise_portal_lobby_freq  .set(cfg.getDouble("Noise-Portal-Lobby-Freq"  ));
-			this.noise_portal_lobby_octave.set(cfg.getInt(   "Noise-Portal-Lobby-Octave"));
-			this.noise_portal_hotel_freq  .set(cfg.getDouble("Noise-Portal-Hotel-Freq"  ));
-			this.thresh_room              .set(cfg.getDouble("Thresh-Room"              ));
-			this.thresh_portal            .set(cfg.getDouble("Thresh-Portal"            ));
-		}
+		this.thresh_room  .set(cfgParams.getDouble("Thresh-Room"  ));
+		this.thresh_portal.set(cfgParams.getDouble("Thresh-Portal"));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(37);
-			this.block_wall_a    .set(cfg.getString("WallA"     ));
-			this.block_wall_b    .set(cfg.getString("WallB"     ));
-			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
-			this.block_subceiling.set(cfg.getString("SubCeiling"));
-			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
-		}
+		this.block_wall_a    .set(cfgBlocks.getString("WallA"     ));
+		this.block_wall_b    .set(cfgBlocks.getString("WallB"     ));
+		this.block_subfloor  .set(cfgBlocks.getString("SubFloor"  ));
+		this.block_subceiling.set(cfgBlocks.getString("SubCeiling"));
+		this.block_ceiling   .set(cfgBlocks.getString("Ceiling"   ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level37.Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
-			cfg.addDefault("Level37.Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
-			cfg.addDefault("Level37.Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
-			cfg.addDefault("Level37.Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
-			cfg.addDefault("Level37.Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
-			cfg.addDefault("Level37.Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
-			cfg.addDefault("Level37.Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
-			cfg.addDefault("Level37.Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
-			cfg.addDefault("Level37.Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
-			cfg.addDefault("Level37.Thresh-Room",               DEFAULT_THRESH_ROOM              );
-			cfg.addDefault("Level37.Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
-		}
+		cfgParams.addDefault("Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
+		cfgParams.addDefault("Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
+		cfgParams.addDefault("Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
+		cfgParams.addDefault("Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
+		cfgParams.addDefault("Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
+		cfgParams.addDefault("Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
+		cfgParams.addDefault("Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
+		cfgParams.addDefault("Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
+		cfgParams.addDefault("Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
+		cfgParams.addDefault("Thresh-Room",               DEFAULT_THRESH_ROOM              );
+		cfgParams.addDefault("Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level37.WallA",      DEFAULT_BLOCK_WALL_A    );
-			cfg.addDefault("Level37.WallB",      DEFAULT_BLOCK_WALL_B    );
-			cfg.addDefault("Level37.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-			cfg.addDefault("Level37.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
-			cfg.addDefault("Level37.Ceiling",    DEFAULT_BLOCK_CEILING   );
-		}
+		cfgBlocks.addDefault("WallA",      DEFAULT_BLOCK_WALL_A    );
+		cfgBlocks.addDefault("WallB",      DEFAULT_BLOCK_WALL_B    );
+		cfgBlocks.addDefault("SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+		cfgBlocks.addDefault("SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+		cfgBlocks.addDefault("Ceiling",    DEFAULT_BLOCK_CEILING   );
 	}
 
 

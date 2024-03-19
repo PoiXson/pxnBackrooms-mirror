@@ -15,6 +15,13 @@ public class Gen_079 extends BackroomsGen {
 
 
 	@Override
+	public int getLevelNumber() {
+		return 79;
+	}
+
+
+
+	@Override
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
@@ -29,10 +36,10 @@ public class Gen_079 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 	}
 
 

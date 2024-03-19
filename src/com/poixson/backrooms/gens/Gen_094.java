@@ -68,18 +68,13 @@ public class Gen_094 extends BackroomsGen {
 	public final FastNoiseLiteD noiseHouse;
 
 	// params
-	public final AtomicDouble  noise_hills_freq     = new AtomicDouble( DEFAULT_NOISE_HILLS_FREQ    );
-	public final AtomicInteger noise_hills_octave   = new AtomicInteger(DEFAULT_NOISE_HILLS_OCTAVE  );
-	public final AtomicDouble  noise_hills_strength = new AtomicDouble( DEFAULT_NOISE_HILLS_STRENGTH);
-	public final AtomicDouble  noise_hills_lacun    = new AtomicDouble( DEFAULT_NOISE_HILLS_LACUN   );
-	public final AtomicDouble  noise_house_freq     = new AtomicDouble( DEFAULT_NOISE_HOUSE_FREQ    );
-	public final AtomicDouble  valley_depth         = new AtomicDouble( DEFAULT_VALLEY_DEPTH        );
-	public final AtomicDouble  valley_gain          = new AtomicDouble( DEFAULT_VALLEY_GAIN         );
-	public final AtomicDouble  hills_gain           = new AtomicDouble( DEFAULT_HILLS_GAIN          );
-	public final AtomicInteger grass_rose_chance    = new AtomicInteger(DEFAULT_GRASS_ROSE_CHANCE   );
-	public final AtomicInteger water_depth          = new AtomicInteger(DEFAULT_WATER_DEPTH         );
-	public final AtomicInteger house_width          = new AtomicInteger(DEFAULT_HOUSE_WIDTH         );
-	public final AtomicInteger house_height         = new AtomicInteger(DEFAULT_HOUSE_HEIGHT        );
+	public final AtomicDouble  valley_depth      = new AtomicDouble( DEFAULT_VALLEY_DEPTH     );
+	public final AtomicDouble  valley_gain       = new AtomicDouble( DEFAULT_VALLEY_GAIN      );
+	public final AtomicDouble  hills_gain        = new AtomicDouble( DEFAULT_HILLS_GAIN       );
+	public final AtomicInteger grass_rose_chance = new AtomicInteger(DEFAULT_GRASS_ROSE_CHANCE);
+	public final AtomicInteger water_depth       = new AtomicInteger(DEFAULT_WATER_DEPTH      );
+	public final AtomicInteger house_width       = new AtomicInteger(DEFAULT_HOUSE_WIDTH      );
+	public final AtomicInteger house_height      = new AtomicInteger(DEFAULT_HOUSE_HEIGHT     );
 
 	// blocks
 	public final AtomicReference<String> block_dirt              = new AtomicReference<String>(null);
@@ -109,17 +104,8 @@ public class Gen_094 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// hills noise
-		this.noiseHills.setFrequency(              this.noise_hills_freq    .get());
-		this.noiseHills.setFractalOctaves(         this.noise_hills_octave  .get());
-		this.noiseHills.setFractalPingPongStrength(this.noise_hills_strength.get());
-		this.noiseHills.setFractalLacunarity(      this.noise_hills_lacun   .get());
-		this.noiseHills.setNoiseType(NoiseType.Cellular);
-		this.noiseHills.setFractalType(FractalType.PingPong);
-		// house noise
-		this.noiseHouse.setFrequency(this.noise_house_freq.get());
+	public int getLevelNumber() {
+		return 94;
 	}
 
 
@@ -360,76 +346,75 @@ public class Gen_094 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// hills noise
+		this.noiseHills.setFrequency(               cfgParams.getDouble("Noise-Hills-Freq"    ) );
+		this.noiseHills.setFractalOctaves(          cfgParams.getInt(   "Noise-Hills-Octave"  ) );
+		this.noiseHills.setFractalPingPongStrength( cfgParams.getDouble("Noise-Hills-Strength") );
+		this.noiseHills.setFractalLacunarity(       cfgParams.getDouble("Noise-Hills-Lacun"   ) );
+		this.noiseHills.setNoiseType(               NoiseType.Cellular                          );
+		this.noiseHills.setFractalType(             FractalType.PingPong                        );
+		// house noise
+		this.noiseHouse.setFrequency( cfgParams.getDouble("Noise-House-Freq") );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(94);
-			this.noise_hills_freq    .set(cfg.getDouble("Noise-Hills-Freq"    ));
-			this.noise_hills_octave  .set(cfg.getInt(   "Noise-Hills-Octave"  ));
-			this.noise_hills_strength.set(cfg.getDouble("Noise-Hills-Strength"));
-			this.noise_hills_lacun   .set(cfg.getDouble("Noise-Hills-Lacun"   ));
-			this.noise_house_freq    .set(cfg.getDouble("Noise-House-Freq"    ));
-			this.valley_depth        .set(cfg.getDouble("Valley-Depth"        ));
-			this.valley_gain         .set(cfg.getDouble("Valley-Gain"         ));
-			this.hills_gain          .set(cfg.getDouble("Hills-Gain"          ));
-			this.grass_rose_chance   .set(cfg.getInt(   "Grass-Rose-Chance"   ));
-			this.water_depth         .set(cfg.getInt(   "Water-Depth"         ));
-			this.house_width         .set(cfg.getInt(   "House-Width"         ));
-			this.house_height        .set(cfg.getInt(   "House-Height"        ));
-		}
+		this.valley_depth     .set(cfgParams.getDouble("Valley-Depth"     ));
+		this.valley_gain      .set(cfgParams.getDouble("Valley-Gain"      ));
+		this.hills_gain       .set(cfgParams.getDouble("Hills-Gain"       ));
+		this.grass_rose_chance.set(cfgParams.getInt(   "Grass-Rose-Chance"));
+		this.water_depth      .set(cfgParams.getInt(   "Water-Depth"      ));
+		this.house_width      .set(cfgParams.getInt(   "House-Width"      ));
+		this.house_height     .set(cfgParams.getInt(   "House-Height"     ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(94);
-			this.block_dirt             .set(cfg.getString("Dirt"             ));
-			this.block_grass_block      .set(cfg.getString("Grass-Block"      ));
-			this.block_grass_slab       .set(cfg.getString("Grass-Slab"       ));
-			this.block_grass_short      .set(cfg.getString("Grass-Short"      ));
-			this.block_grass_tall_upper .set(cfg.getString("Grass-Tall-Top"   ));
-			this.block_grass_tall_lower .set(cfg.getString("Grass-Tall-Bottom"));
-			this.block_fern             .set(cfg.getString("Fern"             ));
-			this.block_rose             .set(cfg.getString("Rose"             ));
-			this.block_house_wall       .set(cfg.getString("House-Wall"       ));
-			this.block_house_roof_stairs.set(cfg.getString("House-Roof-Stairs"));
-			this.block_house_roof_solid .set(cfg.getString("House-Roof-Solid" ));
-			this.block_house_window     .set(cfg.getString("House-Window"     ));
-			this.block_house_floor      .set(cfg.getString("House-Floor"      ));
-		}
+		this.block_dirt             .set(cfgBlocks.getString("Dirt"             ));
+		this.block_grass_block      .set(cfgBlocks.getString("Grass-Block"      ));
+		this.block_grass_slab       .set(cfgBlocks.getString("Grass-Slab"       ));
+		this.block_grass_short      .set(cfgBlocks.getString("Grass-Short"      ));
+		this.block_grass_tall_upper .set(cfgBlocks.getString("Grass-Tall-Top"   ));
+		this.block_grass_tall_lower .set(cfgBlocks.getString("Grass-Tall-Bottom"));
+		this.block_fern             .set(cfgBlocks.getString("Fern"             ));
+		this.block_rose             .set(cfgBlocks.getString("Rose"             ));
+		this.block_house_wall       .set(cfgBlocks.getString("House-Wall"       ));
+		this.block_house_roof_stairs.set(cfgBlocks.getString("House-Roof-Stairs"));
+		this.block_house_roof_solid .set(cfgBlocks.getString("House-Roof-Solid" ));
+		this.block_house_window     .set(cfgBlocks.getString("House-Window"     ));
+		this.block_house_floor      .set(cfgBlocks.getString("House-Floor"      ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level94.Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
-			cfg.addDefault("Level94.Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
-			cfg.addDefault("Level94.Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
-			cfg.addDefault("Level94.Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
-			cfg.addDefault("Level94.Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
-			cfg.addDefault("Level94.Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
-			cfg.addDefault("Level94.Valley-Gain",          DEFAULT_VALLEY_GAIN         );
-			cfg.addDefault("Level94.Hills-Gain",           DEFAULT_HILLS_GAIN          );
-			cfg.addDefault("Level94.Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
-			cfg.addDefault("Level94.Water-Depth",          DEFAULT_WATER_DEPTH         );
-			cfg.addDefault("Level94.House-Width",          DEFAULT_HOUSE_WIDTH         );
-			cfg.addDefault("Level94.House-Height",         DEFAULT_HOUSE_HEIGHT        );
-		}
+		cfgParams.addDefault("Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
+		cfgParams.addDefault("Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
+		cfgParams.addDefault("Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
+		cfgParams.addDefault("Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
+		cfgParams.addDefault("Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
+		cfgParams.addDefault("Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
+		cfgParams.addDefault("Valley-Gain",          DEFAULT_VALLEY_GAIN         );
+		cfgParams.addDefault("Hills-Gain",           DEFAULT_HILLS_GAIN          );
+		cfgParams.addDefault("Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
+		cfgParams.addDefault("Water-Depth",          DEFAULT_WATER_DEPTH         );
+		cfgParams.addDefault("House-Width",          DEFAULT_HOUSE_WIDTH         );
+		cfgParams.addDefault("House-Height",         DEFAULT_HOUSE_HEIGHT        );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level94.Dirt",              DEFAULT_BLOCK_DIRT             );
-			cfg.addDefault("Level94.Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
-			cfg.addDefault("Level94.Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
-			cfg.addDefault("Level94.Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
-			cfg.addDefault("Level94.Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
-			cfg.addDefault("Level94.Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
-			cfg.addDefault("Level94.Fern",              DEFAULT_BLOCK_FERN             );
-			cfg.addDefault("Level94.Rose",              DEFAULT_BLOCK_ROSE             );
-			cfg.addDefault("Level94.House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
-			cfg.addDefault("Level94.House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
-			cfg.addDefault("Level94.House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
-			cfg.addDefault("Level94.House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
-			cfg.addDefault("Level94.House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
-		}
+		cfgBlocks.addDefault("Dirt",              DEFAULT_BLOCK_DIRT             );
+		cfgBlocks.addDefault("Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );
+		cfgBlocks.addDefault("Grass-Slab",        DEFAULT_BLOCK_GRASS_SLAB       );
+		cfgBlocks.addDefault("Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT      );
+		cfgBlocks.addDefault("Grass-Tall-Top",    DEFAULT_BLOCK_GRASS_TALL_UPPER );
+		cfgBlocks.addDefault("Grass-Tall-Bottom", DEFAULT_BLOCK_GRASS_TALL_LOWER );
+		cfgBlocks.addDefault("Fern",              DEFAULT_BLOCK_FERN             );
+		cfgBlocks.addDefault("Rose",              DEFAULT_BLOCK_ROSE             );
+		cfgBlocks.addDefault("House-Wall",        DEFAULT_BLOCK_HOUSE_WALL       );
+		cfgBlocks.addDefault("House-Roof-Stairs", DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
+		cfgBlocks.addDefault("House-Roof-Solid",  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
+		cfgBlocks.addDefault("House-Window",      DEFAULT_BLOCK_HOUSE_WINDOW     );
+		cfgBlocks.addDefault("House-Floor",       DEFAULT_BLOCK_HOUSE_FLOOR      );
 	}
 
 

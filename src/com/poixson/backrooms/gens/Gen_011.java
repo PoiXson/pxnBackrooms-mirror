@@ -55,14 +55,8 @@ public class Gen_011 extends BackroomsGen {
 	public final FastNoiseLiteD noiseBuildingJitter;
 
 	// params
-	public final AtomicDouble noise_road_freq            = new AtomicDouble(DEFAULT_NOISE_ROAD_FREQ           );
-	public final AtomicDouble noise_road_jitter          = new AtomicDouble(DEFAULT_NOISE_ROAD_JITTER         );
-	public final AtomicDouble noise_alley_freq           = new AtomicDouble(DEFAULT_NOISE_ALLEY_FREQ          );
-	public final AtomicDouble noise_alley_jitter         = new AtomicDouble(DEFAULT_NOISE_ALLEY_JITTER        );
-	public final AtomicDouble noise_building_freq        = new AtomicDouble(DEFAULT_NOISE_BUILDING_FREQ       );
-	public final AtomicDouble noise_building_jitter_freq = new AtomicDouble(DEFAULT_NOISE_BUILDING_JITTER_FREQ);
-	public final AtomicDouble thresh_road                = new AtomicDouble(DEFAULT_THRESH_ROAD               );
-	public final AtomicDouble thresh_alley               = new AtomicDouble(DEFAULT_THRESH_ALLEY              );
+	public final AtomicDouble thresh_road            = new AtomicDouble(DEFAULT_THRESH_ROAD           );
+	public final AtomicDouble thresh_alley           = new AtomicDouble(DEFAULT_THRESH_ALLEY          );
 	public final AtomicDouble building_height_base       = new AtomicDouble(DEFAULT_BUILDING_HEIGHT_BASE      );
 	public final AtomicDouble building_height_factor     = new AtomicDouble(DEFAULT_BUILDING_HEIGHT_FACTOR    );
 
@@ -86,26 +80,8 @@ public class Gen_011 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// roads
-		this.noiseRoad.setFrequency(     this.noise_road_freq  .get());
-		this.noiseRoad.setCellularJitter(this.noise_road_jitter.get());
-		this.noiseRoad.setNoiseType(NoiseType.Cellular);
-		this.noiseRoad.setFractalType(FractalType.PingPong);
-		this.noiseRoad.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		// alleys
-		this.noiseAlley.setFrequency(     this.noise_alley_freq  .get());
-		this.noiseAlley.setCellularJitter(this.noise_alley_jitter.get());
-		this.noiseAlley.setNoiseType(NoiseType.Cellular);
-		this.noiseAlley.setFractalType(FractalType.PingPong);
-		this.noiseAlley.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		// building height
-		this.noiseHeight.setFrequency(this.noise_building_freq.get());
-		this.noiseHeight.setNoiseType(NoiseType.Cellular);
-		this.noiseHeight.setCellularReturnType(CellularReturnType.CellValue);
-		// building height jitter
-		this.noiseBuildingJitter.setFrequency(this.noise_building_jitter_freq.get());
+	public int getLevelNumber() {
+		return 11;
 	}
 
 
@@ -178,51 +154,57 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// roads
+		this.noiseRoad.setFrequency(                cfgParams.getDouble("Noise-Road-Freq"  ) );
+		this.noiseRoad.setCellularJitter(           cfgParams.getDouble("Noise-Road-Jitter") );
+		this.noiseRoad.setNoiseType(                NoiseType.Cellular                       );
+		this.noiseRoad.setFractalType(              FractalType.PingPong                     );
+		this.noiseRoad.setCellularDistanceFunction( CellularDistanceFunction.Manhattan       );
+		// alleys
+		this.noiseAlley.setFrequency(                cfgParams.getDouble("Noise-Alley-Freq"  ) );
+		this.noiseAlley.setCellularJitter(           cfgParams.getDouble("Noise-Alley-Jitter") );
+		this.noiseAlley.setNoiseType(                NoiseType.Cellular                        );
+		this.noiseAlley.setFractalType(              FractalType.PingPong                      );
+		this.noiseAlley.setCellularDistanceFunction( CellularDistanceFunction.Manhattan        );
+		// building height
+		this.noiseHeight.setFrequency(          cfgParams.getDouble("Noise-Building-Freq") );
+		this.noiseHeight.setNoiseType(          NoiseType.Cellular                         );
+		this.noiseHeight.setCellularReturnType( CellularReturnType.CellValue               );
+		// building height jitter
+		this.noiseBuildingJitter.setFrequency( cfgParams.getDouble("Noise-Building-Jitter-Freq") );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(11);
-			this.noise_road_freq       .set(cfg.getDouble("Noise-Road-Freq"       ));
-			this.noise_road_jitter     .set(cfg.getDouble("Noise-Road-Jitter"     ));
-			this.noise_alley_freq      .set(cfg.getDouble("Noise-Alley-Freq"      ));
-			this.noise_alley_jitter    .set(cfg.getDouble("Noise-Alley-Jitter"    ));
-			this.noise_building_freq   .set(cfg.getDouble("Noise-Building-Freq"   ));
-			this.thresh_road           .set(cfg.getDouble("Thresh-Road"           ));
-			this.thresh_alley          .set(cfg.getDouble("Thresh-Alley"          ));
 			this.building_height_base  .set(cfg.getDouble("Building-Height-Base"  ));
 			this.building_height_factor.set(cfg.getDouble("Building-Height-Factor"));
-		}
+		this.thresh_road           .set(cfgParams.getDouble("Thresh-Road"           ));
+		this.thresh_alley          .set(cfgParams.getDouble("Thresh-Alley"          ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(11);
-			this.block_subfloor.set(cfg.getString("SubFloor"));
-			this.block_road    .set(cfg.getString("Road"    ));
-			this.block_alley   .set(cfg.getString("Alley"   ));
-		}
+		this.block_subfloor.set(cfgBlocks.getString("SubFloor"));
+		this.block_road    .set(cfgBlocks.getString("Road"    ));
+		this.block_alley   .set(cfgBlocks.getString("Alley"   ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level11.Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
-			cfg.addDefault("Level11.Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
-			cfg.addDefault("Level11.Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );
-			cfg.addDefault("Level11.Noise-Alley-Jitter",         DEFAULT_NOISE_ALLEY_JITTER        );
-			cfg.addDefault("Level11.Noise-Building-Freq",        DEFAULT_NOISE_BUILDING_FREQ       );
-			cfg.addDefault("Level11.Noise-Building-Jitter-Freq", DEFAULT_NOISE_BUILDING_JITTER_FREQ);
-			cfg.addDefault("Level11.Thresh-Road",                DEFAULT_THRESH_ROAD               );
-			cfg.addDefault("Level11.Thresh-Alley",               DEFAULT_THRESH_ALLEY              );
-			cfg.addDefault("Level11.Building-Height-Base",       DEFAULT_BUILDING_HEIGHT_BASE      );
-			cfg.addDefault("Level11.Building-Height-Factor",     DEFAULT_BUILDING_HEIGHT_FACTOR    );
-		}
+		cfgParams.addDefault("Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
+		cfgParams.addDefault("Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
+		cfgParams.addDefault("Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );
+		cfgParams.addDefault("Noise-Alley-Jitter",         DEFAULT_NOISE_ALLEY_JITTER        );
+		cfgParams.addDefault("Noise-Building-Freq",        DEFAULT_NOISE_BUILDING_FREQ       );
+		cfgParams.addDefault("Noise-Building-Jitter-Freq", DEFAULT_NOISE_BUILDING_JITTER_FREQ);
+		cfgParams.addDefault("Thresh-Road",                DEFAULT_THRESH_ROAD               );
+		cfgParams.addDefault("Thresh-Alley",               DEFAULT_THRESH_ALLEY              );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level11.SubFloor", DEFAULT_BLOCK_SUBFLOOR);
-			cfg.addDefault("Level11.Road",     DEFAULT_BLOCK_ROAD    );
-			cfg.addDefault("Level11.Alley",    DEFAULT_BLOCK_ALLEY   );
-		}
+		cfgBlocks.addDefault("SubFloor", DEFAULT_BLOCK_SUBFLOOR);
+		cfgBlocks.addDefault("Road",     DEFAULT_BLOCK_ROAD    );
+		cfgBlocks.addDefault("Alley",    DEFAULT_BLOCK_ALLEY   );
 	}
 
 

@@ -59,18 +59,11 @@ public class Gen_309 extends BackroomsGen {
 	public final FastNoiseLiteD noisePrairie;
 
 	// params
-	public final AtomicDouble  noise_path_freq     = new AtomicDouble( DEFAULT_NOISE_PATH_FREQ    );
-	public final AtomicDouble  noise_ground_freq   = new AtomicDouble( DEFAULT_NOISE_GROUND_FREQ  );
-	public final AtomicInteger noise_ground_octave = new AtomicInteger(DEFAULT_NOISE_GROUND_OCTAVE);
-	public final AtomicDouble  noise_ground_gain   = new AtomicDouble( DEFAULT_NOISE_GROUND_GAIN  );
-	public final AtomicDouble  noise_ground_lacun  = new AtomicDouble( DEFAULT_NOISE_GROUND_LACUN );
-	public final AtomicDouble  noise_trees_freq    = new AtomicDouble( DEFAULT_NOISE_TREES_FREQ   );
-	public final AtomicDouble  noise_prairie_freq  = new AtomicDouble( DEFAULT_NOISE_PRAIRIE_FREQ );
-	public final AtomicDouble  thresh_prairie      = new AtomicDouble( DEFAULT_THRESH_PRAIRIE     );
-	public final AtomicInteger path_width          = new AtomicInteger(DEFAULT_PATH_WIDTH         );
-	public final AtomicInteger path_clearing       = new AtomicInteger(DEFAULT_PATH_CLEARING      );
-	public final AtomicInteger special_mod_a       = new AtomicInteger(DEFAULT_SPECIAL_MOD_A      );
-	public final AtomicInteger special_mod_b       = new AtomicInteger(DEFAULT_SPECIAL_MOD_B      );
+	public final AtomicDouble  thresh_prairie = new AtomicDouble( DEFAULT_THRESH_PRAIRIE);
+	public final AtomicInteger path_width     = new AtomicInteger(DEFAULT_PATH_WIDTH    );
+	public final AtomicInteger path_clearing  = new AtomicInteger(DEFAULT_PATH_CLEARING );
+	public final AtomicInteger special_mod_a  = new AtomicInteger(DEFAULT_SPECIAL_MOD_A );
+	public final AtomicInteger special_mod_b  = new AtomicInteger(DEFAULT_SPECIAL_MOD_B );
 
 	// path locations
 	protected final PathTracer pathTrace;
@@ -102,24 +95,8 @@ public class Gen_309 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// path
-		this.noisePath.setFrequency(this.noise_path_freq.get());
-		// path ground
-		this.noiseGround.setFrequency(        this.noise_ground_freq  .get());
-		this.noiseGround.setFractalOctaves(   this.noise_ground_octave.get());
-		this.noiseGround.setFractalGain(      this.noise_ground_gain  .get());
-		this.noiseGround.setFractalLacunarity(this.noise_ground_lacun .get());
-		this.noiseGround.setFractalType(FractalType.Ridged);
-		// tree noise
-		this.noiseTrees.setFrequency(this.noise_trees_freq.get());
-		// prairie noise (doors, stairs, hatches)
-		this.noisePrairie.setFrequency(this.noise_prairie_freq.get());
-		this.noisePrairie.setFractalOctaves(2);
-		this.noisePrairie.setFractalType(FractalType.Ridged);
-		this.noisePrairie.setFractalWeightedStrength(2.0);
-		this.noisePrairie.setFractalLacunarity(5.0);
+	public int getLevelNumber() {
+		return 309;
 	}
 
 
@@ -227,58 +204,65 @@ public class Gen_309 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// path
+		this.noisePath.setFrequency( cfgParams.getDouble("Noise-Path-Freq") );
+		// path ground
+		this.noiseGround.setFrequency(         cfgParams.getDouble("Noise-Ground-Freq"  ) );
+		this.noiseGround.setFractalOctaves(    cfgParams.getInt(   "Noise-Ground-Octave") );
+		this.noiseGround.setFractalGain(       cfgParams.getDouble("Noise-Ground-Gain"  ) );
+		this.noiseGround.setFractalLacunarity( cfgParams.getDouble("Noise-Ground-Lacun" ) );
+		this.noiseGround.setFractalType(       FractalType.Ridged                         );
+		// tree noise
+		this.noiseTrees.setFrequency( cfgParams.getDouble("Noise-Trees-Freq") );
+		// prairie noise (doors, stairs, hatches)
+		this.noisePrairie.setFrequency(               cfgParams.getDouble("Noise-Prairie-Freq"  ) );
+		this.noisePrairie.setFractalOctaves(          cfgParams.getInt(   "Noise-Prairie-Octave") );
+		this.noisePrairie.setFractalType(             FractalType.Ridged                          );
+		this.noisePrairie.setFractalWeightedStrength( cfgParams.getDouble("Noise-Prairie-Weight") );
+		this.noisePrairie.setFractalLacunarity(       cfgParams.getDouble("Noise-Prairie-Lac"   ) );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(309);
-			this.noise_path_freq    .set(cfg.getDouble("Noise-Path-Freq"    ));
-			this.noise_ground_freq  .set(cfg.getDouble("Noise-Ground-Freq"  ));
-			this.noise_ground_octave.set(cfg.getInt(   "Noise-Ground-Octave"));
-			this.noise_ground_gain  .set(cfg.getDouble("Noise-Ground-Gain"  ));
-			this.noise_ground_lacun .set(cfg.getDouble("Noise-Ground-Lacun" ));
-			this.noise_trees_freq   .set(cfg.getDouble("Noise-Trees-Freq"   ));
-			this.noise_prairie_freq .set(cfg.getDouble("Noise-Prairie-Freq" ));
-			this.thresh_prairie     .set(cfg.getDouble("Thresh-Prairie"     ));
-			this.path_width         .set(cfg.getInt(   "Path-Width"         ));
-			this.path_clearing      .set(cfg.getInt(   "Path-Clearing"      ));
-			this.special_mod_a      .set(cfg.getInt(   "Special-Mod-A"      ));
-			this.special_mod_b      .set(cfg.getInt(   "Special-Mod-B"      ));
-		}
+		this.thresh_prairie.set(cfgParams.getDouble("Thresh-Prairie"));
+		this.path_width    .set(cfgParams.getInt(   "Path-Width"    ));
+		this.path_clearing .set(cfgParams.getInt(   "Path-Clearing" ));
+		this.special_mod_a .set(cfgParams.getInt(   "Special-Mod-A" ));
+		this.special_mod_b .set(cfgParams.getInt(   "Special-Mod-B" ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(309);
-			this.block_tree_trunk .set(cfg.getString("Tree-Trunk" ));
-			this.block_tree_leaves.set(cfg.getString("Tree-Leaves"));
-		}
+		this.block_tree_trunk .set(cfgBlocks.getString("Tree-Trunk" ));
+		this.block_tree_leaves.set(cfgBlocks.getString("Tree-Leaves"));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level309.Noise-Path-Freq",     DEFAULT_NOISE_PATH_FREQ    );
-			cfg.addDefault("Level309.Noise-Ground-Freq",   DEFAULT_NOISE_GROUND_FREQ  );
-			cfg.addDefault("Level309.Noise-Ground-Octave", DEFAULT_NOISE_GROUND_OCTAVE);
-			cfg.addDefault("Level309.Noise-Ground-Gain",   DEFAULT_NOISE_GROUND_GAIN  );
-			cfg.addDefault("Level309.Noise-Ground-Lacun",  DEFAULT_NOISE_GROUND_LACUN );
-			cfg.addDefault("Level309.Noise-Trees-Freq",    DEFAULT_NOISE_TREES_FREQ   );
-			cfg.addDefault("Level309.Noise-Prairie-Freq",  DEFAULT_NOISE_PRAIRIE_FREQ );
-			cfg.addDefault("Level309.Thresh-Prairie",      DEFAULT_THRESH_PRAIRIE     );
-			cfg.addDefault("Level309.Path-Width",          DEFAULT_PATH_WIDTH         );
-			cfg.addDefault("Level309.Path-Clearing",       DEFAULT_PATH_CLEARING      );
-			cfg.addDefault("Level309.Special-Mod-A",       DEFAULT_SPECIAL_MOD_A      );
-			cfg.addDefault("Level309.Special-Mod-B",       DEFAULT_SPECIAL_MOD_B      );
-		}
+		cfgParams.addDefault("Noise-Path-Freq",      DEFAULT_NOISE_PATH_FREQ      );
+		cfgParams.addDefault("Noise-Ground-Freq",    DEFAULT_NOISE_GROUND_FREQ    );
+		cfgParams.addDefault("Noise-Ground-Octave",  DEFAULT_NOISE_GROUND_OCTAVE  );
+		cfgParams.addDefault("Noise-Ground-Gain",    DEFAULT_NOISE_GROUND_GAIN    );
+		cfgParams.addDefault("Noise-Ground-Lacun",   DEFAULT_NOISE_GROUND_LACUN   );
+		cfgParams.addDefault("Noise-Trees-Freq",     DEFAULT_NOISE_TREES_FREQ     );
+		cfgParams.addDefault("Noise-Prairie-Freq",   DEFAULT_NOISE_PRAIRIE_FREQ   );
+		cfgParams.addDefault("Noise-Prairie-Octave", DEFAULT_NOISE_PRAIRIE_OCTAVE );
+		cfgParams.addDefault("Noise-Prairie-Weight", DEFAULT_NOISE_PRAIRIE_WEIGHT );
+		cfgParams.addDefault("Noise-Prairie-Lac",    DEFAULT_NOISE_PRAIRIE_LAC    );
+		cfgParams.addDefault("Thresh-Prairie",       DEFAULT_THRESH_PRAIRIE       );
+		cfgParams.addDefault("Path-Width",           DEFAULT_PATH_WIDTH           );
+		cfgParams.addDefault("Path-Clearing",        DEFAULT_PATH_CLEARING        );
+		cfgParams.addDefault("Special-Mod-A",        DEFAULT_SPECIAL_MOD_A        );
+		cfgParams.addDefault("Special-Mod-B",        DEFAULT_SPECIAL_MOD_B        );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level309.Dirt",        DEFAULT_BLOCK_DIRT       );
-			cfg.addDefault("Level309.Path",        DEFAULT_BLOCK_PATH       );
-			cfg.addDefault("Level309.Grass",       DEFAULT_BLOCK_GRASS      );
-			cfg.addDefault("Level309.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-			cfg.addDefault("Level309.Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
-			cfg.addDefault("Level309.Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
-		}
+		cfgBlocks.addDefault("Dirt",        DEFAULT_BLOCK_DIRT       );
+		cfgBlocks.addDefault("Path",        DEFAULT_BLOCK_PATH       );
+		cfgBlocks.addDefault("Grass",       DEFAULT_BLOCK_GRASS      );
+		cfgBlocks.addDefault("SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+		cfgBlocks.addDefault("Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
+		cfgBlocks.addDefault("Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
 	}
 
 

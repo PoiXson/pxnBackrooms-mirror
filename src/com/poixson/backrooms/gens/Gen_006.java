@@ -6,7 +6,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
@@ -49,13 +48,9 @@ public class Gen_006 extends BackroomsGen {
 	public final FastNoiseLiteD noiseButtonSwitch;
 
 	// params
-	public final AtomicDouble  noise_buttonswitch_freq   = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
-	public final AtomicInteger noise_buttonswitch_octave = new AtomicInteger(DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
-	public final AtomicDouble  noise_buttonswitch_gain   = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
-	public final AtomicDouble  noise_buttonswitch_lac    = new AtomicDouble( DEFAULT_NOISE_BUTTONSWITCH_LAC   );
-	public final AtomicDouble  thresh_button             = new AtomicDouble( DEFAULT_THRESH_BUTTON            );
-	public final AtomicDouble  thresh_switch             = new AtomicDouble( DEFAULT_THRESH_SWITCH            );
-	public final AtomicDouble  tp_range                  = new AtomicDouble( DEFAULT_TP_RANGE                 );
+	public final AtomicDouble thresh_button = new AtomicDouble( DEFAULT_THRESH_BUTTON);
+	public final AtomicDouble thresh_switch = new AtomicDouble( DEFAULT_THRESH_SWITCH);
+	public final AtomicDouble tp_range      = new AtomicDouble( DEFAULT_TP_RANGE     );
 
 	// blocks
 	public final AtomicReference<String> block_wall = new AtomicReference<String>(null);
@@ -72,14 +67,8 @@ public class Gen_006 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// light switch
-		this.noiseButtonSwitch.setFrequency(        this.noise_buttonswitch_freq  .get());
-		this.noiseButtonSwitch.setFractalType(FractalType.FBm);
-		this.noiseButtonSwitch.setFractalOctaves(   this.noise_buttonswitch_octave.get());
-		this.noiseButtonSwitch.setFractalGain(      this.noise_buttonswitch_gain  .get());
-		this.noiseButtonSwitch.setFractalLacunarity(this.noise_buttonswitch_lac   .get());
+	public int getLevelNumber() {
+		return 6;
 	}
 
 
@@ -170,42 +159,39 @@ public class Gen_006 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// light switch
+		this.noiseButtonSwitch.setFrequency(         cfgParams.getDouble("Noise-ButtonSwitch-Freq"  ) );
+		this.noiseButtonSwitch.setFractalType(       FractalType.FBm                                  );
+		this.noiseButtonSwitch.setFractalOctaves(    cfgParams.getInt(   "Noise-ButtonSwitch-Octave") );
+		this.noiseButtonSwitch.setFractalGain(       cfgParams.getDouble("Noise-ButtonSwitch-Gain"  ) );
+		this.noiseButtonSwitch.setFractalLacunarity( cfgParams.getDouble("Noise-ButtonSwitch-Lac"   ) );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(6);
-			this.noise_buttonswitch_freq  .set(cfg.getDouble("Noise-ButtonSwitch-Freq"  ));
-			this.noise_buttonswitch_octave.set(cfg.getInt(   "Noise-ButtonSwitch-Octave"));
-			this.noise_buttonswitch_gain  .set(cfg.getDouble("Noise-ButtonSwitch-Gain"  ));
-			this.noise_buttonswitch_lac   .set(cfg.getDouble("Noise-ButtonSwitch-Lac"   ));
-			this.thresh_button            .set(cfg.getDouble("Thresh-Button"            ));
-			this.thresh_switch            .set(cfg.getDouble("Thresh-Switch"            ));
-			this.tp_range                 .set(cfg.getDouble("TP-Range"                 ));
-		}
+		this.thresh_button.set(cfgParams.getDouble("Thresh-Button"));
+		this.thresh_switch.set(cfgParams.getDouble("Thresh-Switch"));
+		this.tp_range     .set(cfgParams.getDouble("TP-Range"     ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(6);
-			this.block_wall.set(cfg.getString("Wall"));
-		}
+		this.block_wall.set(cfgBlocks.getString("Wall"));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level6.Noise-ButtonSwitch-Freq",   DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
-			cfg.addDefault("Level6.Noise-ButtonSwitch-Octave", DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
-			cfg.addDefault("Level6.Noise-ButtonSwitch-Gain",   DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
-			cfg.addDefault("Level6.Noise-ButtonSwitch-Lac",    DEFAULT_NOISE_BUTTONSWITCH_LAC   );
-			cfg.addDefault("Level6.Thresh-Button",             DEFAULT_THRESH_BUTTON            );
-			cfg.addDefault("Level6.Thresh-Switch",             DEFAULT_THRESH_SWITCH            );
-			cfg.addDefault("Level6.TP-Range",                  DEFAULT_TP_RANGE                 );
-		}
+		cfgParams.addDefault("Noise-ButtonSwitch-Freq",   DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
+		cfgParams.addDefault("Noise-ButtonSwitch-Octave", DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
+		cfgParams.addDefault("Noise-ButtonSwitch-Gain",   DEFAULT_NOISE_BUTTONSWITCH_GAIN  );
+		cfgParams.addDefault("Noise-ButtonSwitch-Lac",    DEFAULT_NOISE_BUTTONSWITCH_LAC   );
+		cfgParams.addDefault("Thresh-Button",             DEFAULT_THRESH_BUTTON            );
+		cfgParams.addDefault("Thresh-Switch",             DEFAULT_THRESH_SWITCH            );
+		cfgParams.addDefault("TP-Range",                  DEFAULT_TP_RANGE                 );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level6.Wall", DEFAULT_BLOCK_WALL);
-		}
+		cfgBlocks.addDefault("Wall", DEFAULT_BLOCK_WALL);
 	}
 
 

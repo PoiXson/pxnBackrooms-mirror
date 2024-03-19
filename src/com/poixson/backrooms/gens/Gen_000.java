@@ -9,7 +9,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
@@ -71,15 +70,9 @@ public class Gen_000 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLoot;
 
 	// params
-	public final AtomicDouble  noise_wall_freq     = new AtomicDouble( DEFAULT_NOISE_WALL_FREQ    );
-	public final AtomicInteger noise_wall_octave   = new AtomicInteger(DEFAULT_NOISE_WALL_OCTAVE  );
-	public final AtomicDouble  noise_wall_gain     = new AtomicDouble( DEFAULT_NOISE_WALL_GAIN    );
-	public final AtomicDouble  noise_wall_lacun    = new AtomicDouble( DEFAULT_NOISE_WALL_LACUN   );
-	public final AtomicDouble  noise_wall_strength = new AtomicDouble( DEFAULT_NOISE_WALL_STRENGTH);
-	public final AtomicDouble  noise_loot_freq     = new AtomicDouble( DEFAULT_NOISE_LOOT_FREQ    );
-	public final AtomicDouble  thresh_wall_L       = new AtomicDouble( DEFAULT_THRESH_WALL_L      );
-	public final AtomicDouble  thresh_wall_H       = new AtomicDouble( DEFAULT_THRESH_WALL_H      );
-	public final AtomicDouble  thresh_loot         = new AtomicDouble( DEFAULT_THRESH_LOOT        );
+	public final AtomicDouble thresh_wall_L = new AtomicDouble( DEFAULT_THRESH_WALL_L);
+	public final AtomicDouble thresh_wall_H = new AtomicDouble( DEFAULT_THRESH_WALL_H);
+	public final AtomicDouble thresh_loot   = new AtomicDouble( DEFAULT_THRESH_LOOT  );
 
 	// blocks
 	public final AtomicReference<String> block_wall        = new AtomicReference<String>(null);
@@ -102,20 +95,8 @@ public class Gen_000 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// lobby walls
-		this.noiseLobbyWalls.setFrequency(              this.noise_wall_freq    .get());
-		this.noiseLobbyWalls.setFractalOctaves(         this.noise_wall_octave  .get());
-		this.noiseLobbyWalls.setFractalGain(            this.noise_wall_gain    .get());
-		this.noiseLobbyWalls.setFractalLacunarity(      this.noise_wall_lacun   .get());
-		this.noiseLobbyWalls.setFractalPingPongStrength(this.noise_wall_strength.get());
-		this.noiseLobbyWalls.setNoiseType(NoiseType.Cellular);
-		this.noiseLobbyWalls.setFractalType(FractalType.PingPong);
-		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		this.noiseLobbyWalls.setCellularReturnType(CellularReturnType.Distance);
-		// chest loot
-		this.noiseLoot.setFrequency(this.noise_loot_freq.get());
+	public int getLevelNumber() {
+		return 0;
 	}
 
 
@@ -478,56 +459,57 @@ public class Gen_000 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// lobby walls
+		this.noiseLobbyWalls.setFrequency(                cfgParams.getDouble("Noise-Wall-Freq"    ) );
+		this.noiseLobbyWalls.setFractalOctaves(           cfgParams.getInt(   "Noise-Wall-Octave"  ) );
+		this.noiseLobbyWalls.setFractalGain(              cfgParams.getDouble("Noise-Wall-Gain"    ) );
+		this.noiseLobbyWalls.setFractalLacunarity(        cfgParams.getDouble("Noise-Wall-Lacun"   ) );
+		this.noiseLobbyWalls.setFractalPingPongStrength(  cfgParams.getDouble("Noise-Wall-Strength") );
+		this.noiseLobbyWalls.setNoiseType(                NoiseType.Cellular                         );
+		this.noiseLobbyWalls.setFractalType(              FractalType.PingPong                       );
+		this.noiseLobbyWalls.setCellularDistanceFunction( CellularDistanceFunction.Manhattan         );
+		this.noiseLobbyWalls.setCellularReturnType(       CellularReturnType.Distance                );
+		// chest loot
+		this.noiseLoot.setFrequency( cfgParams.getDouble("Noise-Loot-Freq") );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(0);
-			this.noise_wall_freq    .set(cfg.getDouble("Noise-Wall-Freq"    ));
-			this.noise_wall_octave  .set(cfg.getInt(   "Noise-Wall-Octave"  ));
-			this.noise_wall_gain    .set(cfg.getDouble("Noise-Wall-Gain"    ));
-			this.noise_wall_lacun   .set(cfg.getDouble("Noise-Wall-Lacun"   ));
-			this.noise_wall_strength.set(cfg.getDouble("Noise-Wall-Strength"));
-			this.noise_loot_freq    .set(cfg.getDouble("Noise-Loot-Freq"    ));
-			this.thresh_wall_L      .set(cfg.getDouble("Thresh-Wall-L"      ));
-			this.thresh_wall_H      .set(cfg.getDouble("Thresh-Wall-H"      ));
-			this.thresh_loot        .set(cfg.getDouble("Thresh-Loot"        ));
-		}
+		this.thresh_wall_L.set(cfgParams.getDouble("Thresh-Wall-L"));
+		this.thresh_wall_H.set(cfgParams.getDouble("Thresh-Wall-H"));
+		this.thresh_loot  .set(cfgParams.getDouble("Thresh-Loot"  ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(0);
-			this.block_wall      .set(cfg.getString("Wall"      ));
-			this.block_wall_base .set(cfg.getString("Wall-Base" ));
-			this.block_subfloor  .set(cfg.getString("SubFloor"  ));
-			this.block_subceiling.set(cfg.getString("SubCeiling"));
-			this.block_carpet    .set(cfg.getString("Carpet"    ));
-			this.block_ceiling   .set(cfg.getString("Ceiling"   ));
-		}
+		this.block_wall      .set(cfgBlocks.getString("Wall"      ));
+		this.block_wall_base .set(cfgBlocks.getString("Wall-Base" ));
+		this.block_subfloor  .set(cfgBlocks.getString("SubFloor"  ));
+		this.block_subceiling.set(cfgBlocks.getString("SubCeiling"));
+		this.block_carpet    .set(cfgBlocks.getString("Carpet"    ));
+		this.block_ceiling   .set(cfgBlocks.getString("Ceiling"   ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level0.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-			cfg.addDefault("Level0.Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-			cfg.addDefault("Level0.Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-			cfg.addDefault("Level0.Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
-			cfg.addDefault("Level0.Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-			cfg.addDefault("Level0.Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
-			cfg.addDefault("Level0.Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
-			cfg.addDefault("Level0.Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
-			cfg.addDefault("Level0.Thresh-Loot",         DEFAULT_THRESH_LOOT        );
-		}
+		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
+		cfgParams.addDefault("Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
+		cfgParams.addDefault("Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
+		cfgParams.addDefault("Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
+		cfgParams.addDefault("Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
+		cfgParams.addDefault("Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
+		cfgParams.addDefault("Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
+		cfgParams.addDefault("Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
+		cfgParams.addDefault("Thresh-Loot",         DEFAULT_THRESH_LOOT        );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level0.Wall",       DEFAULT_BLOCK_WALL      );
-			cfg.addDefault("Level0.Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
-			cfg.addDefault("Level0.SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
-			cfg.addDefault("Level0.SubCeiling", DEFAULT_BLOCK_SUBCEILING);
-			cfg.addDefault("Level0.Carpet",     DEFAULT_BLOCK_CARPET    );
-			cfg.addDefault("Level0.Ceiling",    DEFAULT_BLOCK_CEILING   );
-		}
+		cfgBlocks.addDefault("Wall",       DEFAULT_BLOCK_WALL      );
+		cfgBlocks.addDefault("Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
+		cfgBlocks.addDefault("SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
+		cfgBlocks.addDefault("SubCeiling", DEFAULT_BLOCK_SUBCEILING);
+		cfgBlocks.addDefault("Carpet",     DEFAULT_BLOCK_CARPET    );
+		cfgBlocks.addDefault("Ceiling",    DEFAULT_BLOCK_CEILING   );
 	}
 
 

@@ -88,13 +88,10 @@ public class Gen_771 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLoot;
 
 	// params
-	public final AtomicDouble noise_lamps_freq = new AtomicDouble(DEFAULT_NOISE_LAMPS_FREQ);
-	public final AtomicDouble noise_exits_freq = new AtomicDouble(DEFAULT_NOISE_EXITS_FREQ);
-	public final AtomicDouble noise_loot_freq  = new AtomicDouble(DEFAULT_NOISE_LOOT_FREQ );
-	public final AtomicDouble thresh_lamps     = new AtomicDouble(DEFAULT_THRESH_LAMPS    );
-	public final AtomicDouble thresh_void      = new AtomicDouble(DEFAULT_THRESH_VOID     );
-	public final AtomicDouble thresh_ladder    = new AtomicDouble(DEFAULT_THRESH_LADDER   );
-	public final AtomicDouble thresh_loot      = new AtomicDouble(DEFAULT_THRESH_LOOT     );
+	public final AtomicDouble thresh_lamps  = new AtomicDouble(DEFAULT_THRESH_LAMPS );
+	public final AtomicDouble thresh_void   = new AtomicDouble(DEFAULT_THRESH_VOID  );
+	public final AtomicDouble thresh_ladder = new AtomicDouble(DEFAULT_THRESH_LADDER);
+	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT  );
 
 	// blocks
 	public final AtomicReference<String> block_nexus_arch              = new AtomicReference<String>(null);
@@ -156,11 +153,8 @@ public class Gen_771 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		this.noiseRoadLights.setFrequency(this.noise_lamps_freq.get()); // road lanterns
-		this.noiseExits     .setFrequency(this.noise_exits_freq.get()); // special exits
-		this.noiseLoot      .setFrequency(this.noise_loot_freq .get()); // chest loot
+	public int getLevelNumber() {
+		return 771;
 	}
 
 
@@ -734,106 +728,101 @@ public class Gen_771 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	public void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		this.noiseRoadLights.setFrequency( cfgParams.getDouble("Noise-Lamps-Freq") ); // road lanterns
+		this.noiseExits     .setFrequency( cfgParams.getDouble("Noise-Exits-Freq") ); // special exits
+		this.noiseLoot      .setFrequency( cfgParams.getDouble("Noise-Loot-Freq" ) ); // chest loot
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(771);
-			this.noise_lamps_freq.set(cfg.getDouble("Noise-Lamps-Freq"));
-			this.noise_exits_freq.set(cfg.getDouble("Noise-Exits-Freq"));
-			this.noise_loot_freq .set(cfg.getDouble("Noise-Loot-Freq" ));
-			this.thresh_lamps    .set(cfg.getDouble("Thresh-Lamps"    ));
-			this.thresh_void     .set(cfg.getDouble("Thresh-Void"     ));
-			this.thresh_ladder   .set(cfg.getDouble("Thresh-Ladder"   ));
-			this.thresh_loot     .set(cfg.getDouble("Thresh-Loot"     ));
-		}
+		this.thresh_lamps .set(cfgParams.getDouble("Thresh-Lamps" ));
+		this.thresh_void  .set(cfgParams.getDouble("Thresh-Void"  ));
+		this.thresh_ladder.set(cfgParams.getDouble("Thresh-Ladder"));
+		this.thresh_loot  .set(cfgParams.getDouble("Thresh-Loot"  ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(771);
-			this.block_nexus_arch             .set(cfg.getString("Nexus-Arch"             ));
-			this.block_nexus_arch_slab_upper  .set(cfg.getString("Nexus-Arch-Slab-Upper"  ));
-			this.block_nexus_arch_slab_lower  .set(cfg.getString("Nexus-Arch-Slab-Lower"  ));
-			this.block_nexus_arch_stairs_upper.set(cfg.getString("Nexus-Arch-Stairs-Upper"));
-			this.block_nexus_arch_stairs_lower.set(cfg.getString("Nexus-Arch-Stairs-Lower"));
-			this.block_nexus_arch_pillar      .set(cfg.getString("Nexus-Arch-Pillar"      ));
-			this.block_nexus_arch_base        .set(cfg.getString("Nexus-Arch-Base"        ));
-			this.block_nexus_floor_upper      .set(cfg.getString("Nexus-Floor-Upper"      ));
-			this.block_nexus_floor_lower      .set(cfg.getString("Nexus-Floor-Lower"      ));
-			this.block_nexus_floor_lower_slab .set(cfg.getString("Nexus-Floor-Lower-Slab" ));
-			this.block_nexus_hatch            .set(cfg.getString("Nexus-Hatch"            ));
-			this.block_nexus_flair_hot        .set(cfg.getString("Nexus-Flair-Hot"        ));
-			this.block_nexus_flair_cool       .set(cfg.getString("Nexus-Flair-Cool"       ));
-			this.block_nexus_wall             .set(cfg.getString("Nexus-Wall"             ));
-			this.block_nexus_wall_top         .set(cfg.getString("Nexus-Wall-Top"         ));
-			this.block_nexus_light_upper      .set(cfg.getString("Nexus-Light-Upper"      ));
-			this.block_nexus_light_lower      .set(cfg.getString("Nexus-Light-Lower"      ));
-			this.block_road_upper             .set(cfg.getString("Road-Upper"             ));
-			this.block_road_lower             .set(cfg.getString("Road-Lower"             ));
-			this.block_road_upper_center      .set(cfg.getString("Road-Upper-Center"      ));
-			this.block_road_lower_center      .set(cfg.getString("Road-Lower-Center"      ));
-			this.block_road_upper_wall        .set(cfg.getString("Road-Upper-Wall"        ));
-			this.block_road_lower_wall        .set(cfg.getString("Road-Lower-Wall"        ));
-			this.block_road_upper_lamp        .set(cfg.getString("Road-Upper-Lamp"        ));
-			this.block_road_lower_lamp        .set(cfg.getString("Road-Lower-Lamp"        ));
-			this.block_road_upper_light       .set(cfg.getString("Road-Upper-Light"       ));
-			this.block_road_lower_light       .set(cfg.getString("Road-Lower-Light"       ));
-			this.block_pillar                 .set(cfg.getString("Pillar"                 ));
-			this.block_pillar_stairs_upper    .set(cfg.getString("Pillar-Stairs-Upper"    ));
-			this.block_pillar_stairs_lower    .set(cfg.getString("Pillar-Stairs-Lower"    ));
-			this.block_pillar_stairs_under    .set(cfg.getString("Pillar-Stairs-Under"    ));
-			this.block_pillar_stairs_bottom   .set(cfg.getString("Pillar-Stairs-Bottom"   ));
-			this.block_shaft_floor            .set(cfg.getString("Shaft-Floor"            ));
-		}
+		this.block_nexus_arch             .set(cfgBlocks.getString("Nexus-Arch"             ));
+		this.block_nexus_arch_slab_upper  .set(cfgBlocks.getString("Nexus-Arch-Slab-Upper"  ));
+		this.block_nexus_arch_slab_lower  .set(cfgBlocks.getString("Nexus-Arch-Slab-Lower"  ));
+		this.block_nexus_arch_stairs_upper.set(cfgBlocks.getString("Nexus-Arch-Stairs-Upper"));
+		this.block_nexus_arch_stairs_lower.set(cfgBlocks.getString("Nexus-Arch-Stairs-Lower"));
+		this.block_nexus_arch_pillar      .set(cfgBlocks.getString("Nexus-Arch-Pillar"      ));
+		this.block_nexus_arch_base        .set(cfgBlocks.getString("Nexus-Arch-Base"        ));
+		this.block_nexus_floor_upper      .set(cfgBlocks.getString("Nexus-Floor-Upper"      ));
+		this.block_nexus_floor_lower      .set(cfgBlocks.getString("Nexus-Floor-Lower"      ));
+		this.block_nexus_floor_lower_slab .set(cfgBlocks.getString("Nexus-Floor-Lower-Slab" ));
+		this.block_nexus_hatch            .set(cfgBlocks.getString("Nexus-Hatch"            ));
+		this.block_nexus_flair_hot        .set(cfgBlocks.getString("Nexus-Flair-Hot"        ));
+		this.block_nexus_flair_cool       .set(cfgBlocks.getString("Nexus-Flair-Cool"       ));
+		this.block_nexus_wall             .set(cfgBlocks.getString("Nexus-Wall"             ));
+		this.block_nexus_wall_top         .set(cfgBlocks.getString("Nexus-Wall-Top"         ));
+		this.block_nexus_light_upper      .set(cfgBlocks.getString("Nexus-Light-Upper"      ));
+		this.block_nexus_light_lower      .set(cfgBlocks.getString("Nexus-Light-Lower"      ));
+		this.block_road_upper             .set(cfgBlocks.getString("Road-Upper"             ));
+		this.block_road_lower             .set(cfgBlocks.getString("Road-Lower"             ));
+		this.block_road_upper_center      .set(cfgBlocks.getString("Road-Upper-Center"      ));
+		this.block_road_lower_center      .set(cfgBlocks.getString("Road-Lower-Center"      ));
+		this.block_road_upper_wall        .set(cfgBlocks.getString("Road-Upper-Wall"        ));
+		this.block_road_lower_wall        .set(cfgBlocks.getString("Road-Lower-Wall"        ));
+		this.block_road_upper_lamp        .set(cfgBlocks.getString("Road-Upper-Lamp"        ));
+		this.block_road_lower_lamp        .set(cfgBlocks.getString("Road-Lower-Lamp"        ));
+		this.block_road_upper_light       .set(cfgBlocks.getString("Road-Upper-Light"       ));
+		this.block_road_lower_light       .set(cfgBlocks.getString("Road-Lower-Light"       ));
+		this.block_pillar                 .set(cfgBlocks.getString("Pillar"                 ));
+		this.block_pillar_stairs_upper    .set(cfgBlocks.getString("Pillar-Stairs-Upper"    ));
+		this.block_pillar_stairs_lower    .set(cfgBlocks.getString("Pillar-Stairs-Lower"    ));
+		this.block_pillar_stairs_under    .set(cfgBlocks.getString("Pillar-Stairs-Under"    ));
+		this.block_pillar_stairs_bottom   .set(cfgBlocks.getString("Pillar-Stairs-Bottom"   ));
+		this.block_shaft_floor            .set(cfgBlocks.getString("Shaft-Floor"            ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level771.Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
-			cfg.addDefault("Level771.Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
-			cfg.addDefault("Level771.Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );
-			cfg.addDefault("Level771.Thresh-Lamps",     DEFAULT_THRESH_LAMPS    );
-			cfg.addDefault("Level771.Thresh-Void",      DEFAULT_THRESH_VOID     );
-			cfg.addDefault("Level771.Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
-			cfg.addDefault("Level771.Thresh-Loot",      DEFAULT_THRESH_LOOT     );
-		}
+		cfgParams.addDefault("Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
+		cfgParams.addDefault("Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
+		cfgParams.addDefault("Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );
+		cfgParams.addDefault("Thresh-Lamps",     DEFAULT_THRESH_LAMPS    );
+		cfgParams.addDefault("Thresh-Void",      DEFAULT_THRESH_VOID     );
+		cfgParams.addDefault("Thresh-Ladder",    DEFAULT_THRESH_LADDER   );
+		cfgParams.addDefault("Thresh-Loot",      DEFAULT_THRESH_LOOT     );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level771.Nexus-Arch",              DEFAULT_BLOCK_NEXUS_ARCH             );
-			cfg.addDefault("Level771.Nexus-Arch-Slab-Upper",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
-			cfg.addDefault("Level771.Nexus-Arch-Slab-Lower",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
-			cfg.addDefault("Level771.Nexus-Arch-Stairs-Upper", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER);
-			cfg.addDefault("Level771.Nexus-Arch-Stairs-Lower", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER);
-			cfg.addDefault("Level771.Nexus-Arch-Pillar",       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
-			cfg.addDefault("Level771.Nexus-Arch-Base",         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
-			cfg.addDefault("Level771.Nexus-Floor-Upper",       DEFAULT_BLOCK_NEXUS_FLOOR_UPPER      );
-			cfg.addDefault("Level771.Nexus-Floor-Lower",       DEFAULT_BLOCK_NEXUS_FLOOR_LOWER      );
-			cfg.addDefault("Level771.Nexus-Floor-Lower-Slab",  DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB );
-			cfg.addDefault("Level771.Nexus-Hatch",             DEFAULT_BLOCK_NEXUS_HATCH            );
-			cfg.addDefault("Level771.Nexus-Flair-Hot",         DEFAULT_BLOCK_NEXUS_FLAIR_HOT        );
-			cfg.addDefault("Level771.Nexus-Flair-Cool",        DEFAULT_BLOCK_NEXUS_FLAIR_COOL       );
-			cfg.addDefault("Level771.Nexus-Wall",              DEFAULT_BLOCK_NEXUS_WALL             );
-			cfg.addDefault("Level771.Nexus-Wall-Top",          DEFAULT_BLOCK_NEXUS_WALL_TOP         );
-			cfg.addDefault("Level771.Nexus-Light-Upper",       DEFAULT_BLOCK_NEXUS_LIGHT_UPPER      );
-			cfg.addDefault("Level771.Nexus-Light-Lower",       DEFAULT_BLOCK_NEXUS_LIGHT_LOWER      );
-			cfg.addDefault("Level771.Road-Upper",              DEFAULT_BLOCK_ROAD_UPPER             );
-			cfg.addDefault("Level771.Road-Lower",              DEFAULT_BLOCK_ROAD_LOWER             );
-			cfg.addDefault("Level771.Road-Upper-Center",       DEFAULT_BLOCK_ROAD_UPPER_CENTER      );
-			cfg.addDefault("Level771.Road-Lower-Center",       DEFAULT_BLOCK_ROAD_LOWER_CENTER      );
-			cfg.addDefault("Level771.Road-Upper-Wall",         DEFAULT_BLOCK_ROAD_UPPER_WALL        );
-			cfg.addDefault("Level771.Road-Lower-Wall",         DEFAULT_BLOCK_ROAD_LOWER_WALL        );
-			cfg.addDefault("Level771.Road-Upper-Lamp",         DEFAULT_BLOCK_ROAD_UPPER_LAMP        );
-			cfg.addDefault("Level771.Road-Lower-Lamp",         DEFAULT_BLOCK_ROAD_LOWER_LAMP        );
-			cfg.addDefault("Level771.Road-Upper-Light",        DEFAULT_BLOCK_ROAD_UPPER_LIGHT       );
-			cfg.addDefault("Level771.Road-Lower-Light",        DEFAULT_BLOCK_ROAD_LOWER_LIGHT       );
-			cfg.addDefault("Level771.Pillar",                  DEFAULT_BLOCK_PILLAR                 );
-			cfg.addDefault("Level771.Pillar-Stairs-Upper",     DEFAULT_BLOCK_PILLAR_STAIRS_UPPER    );
-			cfg.addDefault("Level771.Pillar-Stairs-Lower",     DEFAULT_BLOCK_PILLAR_STAIRS_LOWER    );
-			cfg.addDefault("Level771.Pillar-Stairs-Under",     DEFAULT_BLOCK_PILLAR_STAIRS_UNDER    );
-			cfg.addDefault("Level771.Pillar-Stairs-Bottom",    DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM   );
-			cfg.addDefault("Level771.Shaft-Floor",             DEFAULT_BLOCK_SHAFT_FLOOR            );
-		}
+		cfgBlocks.addDefault("Nexus-Arch",              DEFAULT_BLOCK_NEXUS_ARCH             );
+		cfgBlocks.addDefault("Nexus-Arch-Slab-Upper",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
+		cfgBlocks.addDefault("Nexus-Arch-Slab-Lower",   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
+		cfgBlocks.addDefault("Nexus-Arch-Stairs-Upper", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER);
+		cfgBlocks.addDefault("Nexus-Arch-Stairs-Lower", DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER);
+		cfgBlocks.addDefault("Nexus-Arch-Pillar",       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
+		cfgBlocks.addDefault("Nexus-Arch-Base",         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
+		cfgBlocks.addDefault("Nexus-Floor-Upper",       DEFAULT_BLOCK_NEXUS_FLOOR_UPPER      );
+		cfgBlocks.addDefault("Nexus-Floor-Lower",       DEFAULT_BLOCK_NEXUS_FLOOR_LOWER      );
+		cfgBlocks.addDefault("Nexus-Floor-Lower-Slab",  DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB );
+		cfgBlocks.addDefault("Nexus-Hatch",             DEFAULT_BLOCK_NEXUS_HATCH            );
+		cfgBlocks.addDefault("Nexus-Flair-Hot",         DEFAULT_BLOCK_NEXUS_FLAIR_HOT        );
+		cfgBlocks.addDefault("Nexus-Flair-Cool",        DEFAULT_BLOCK_NEXUS_FLAIR_COOL       );
+		cfgBlocks.addDefault("Nexus-Wall",              DEFAULT_BLOCK_NEXUS_WALL             );
+		cfgBlocks.addDefault("Nexus-Wall-Top",          DEFAULT_BLOCK_NEXUS_WALL_TOP         );
+		cfgBlocks.addDefault("Nexus-Light-Upper",       DEFAULT_BLOCK_NEXUS_LIGHT_UPPER      );
+		cfgBlocks.addDefault("Nexus-Light-Lower",       DEFAULT_BLOCK_NEXUS_LIGHT_LOWER      );
+		cfgBlocks.addDefault("Road-Upper",              DEFAULT_BLOCK_ROAD_UPPER             );
+		cfgBlocks.addDefault("Road-Lower",              DEFAULT_BLOCK_ROAD_LOWER             );
+		cfgBlocks.addDefault("Road-Upper-Center",       DEFAULT_BLOCK_ROAD_UPPER_CENTER      );
+		cfgBlocks.addDefault("Road-Lower-Center",       DEFAULT_BLOCK_ROAD_LOWER_CENTER      );
+		cfgBlocks.addDefault("Road-Upper-Wall",         DEFAULT_BLOCK_ROAD_UPPER_WALL        );
+		cfgBlocks.addDefault("Road-Lower-Wall",         DEFAULT_BLOCK_ROAD_LOWER_WALL        );
+		cfgBlocks.addDefault("Road-Upper-Lamp",         DEFAULT_BLOCK_ROAD_UPPER_LAMP        );
+		cfgBlocks.addDefault("Road-Lower-Lamp",         DEFAULT_BLOCK_ROAD_LOWER_LAMP        );
+		cfgBlocks.addDefault("Road-Upper-Light",        DEFAULT_BLOCK_ROAD_UPPER_LIGHT       );
+		cfgBlocks.addDefault("Road-Lower-Light",        DEFAULT_BLOCK_ROAD_LOWER_LIGHT       );
+		cfgBlocks.addDefault("Pillar",                  DEFAULT_BLOCK_PILLAR                 );
+		cfgBlocks.addDefault("Pillar-Stairs-Upper",     DEFAULT_BLOCK_PILLAR_STAIRS_UPPER    );
+		cfgBlocks.addDefault("Pillar-Stairs-Lower",     DEFAULT_BLOCK_PILLAR_STAIRS_LOWER    );
+		cfgBlocks.addDefault("Pillar-Stairs-Under",     DEFAULT_BLOCK_PILLAR_STAIRS_UNDER    );
+		cfgBlocks.addDefault("Pillar-Stairs-Bottom",    DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM   );
+		cfgBlocks.addDefault("Shaft-Floor",             DEFAULT_BLOCK_SHAFT_FLOOR            );
 	}
 
 

@@ -49,12 +49,10 @@ public class Gen_308 extends BackroomsGen {
 	public final FastNoiseLiteD noiseIkeaWalls;
 
 	// params
-	public final AtomicDouble noise_wall_freq   = new AtomicDouble(DEFAULT_NOISE_WALL_FREQ  );
-	public final AtomicDouble noise_wall_jitter = new AtomicDouble(DEFAULT_NOISE_WALL_JITTER);
-	public final AtomicDouble thresh_wall_L1    = new AtomicDouble(DEFAULT_THRESH_WALL_L1   );
-	public final AtomicDouble thresh_wall_H1    = new AtomicDouble(DEFAULT_THRESH_WALL_H1   );
-	public final AtomicDouble thresh_wall_L2    = new AtomicDouble(DEFAULT_THRESH_WALL_L2   );
-	public final AtomicDouble thresh_wall_H2    = new AtomicDouble(DEFAULT_THRESH_WALL_H2   );
+	public final AtomicDouble thresh_wall_L1 = new AtomicDouble(DEFAULT_THRESH_WALL_L1);
+	public final AtomicDouble thresh_wall_H1 = new AtomicDouble(DEFAULT_THRESH_WALL_H1);
+	public final AtomicDouble thresh_wall_L2 = new AtomicDouble(DEFAULT_THRESH_WALL_L2);
+	public final AtomicDouble thresh_wall_H2 = new AtomicDouble(DEFAULT_THRESH_WALL_H2);
 
 	// blocks
 	public final AtomicReference<String> block_wall        = new AtomicReference<String>(null);
@@ -76,14 +74,8 @@ public class Gen_308 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// ikea walls
-		this.noiseIkeaWalls.setFrequency(     this.noise_wall_freq  .get());
-		this.noiseIkeaWalls.setCellularJitter(this.noise_wall_jitter.get());
-		this.noiseIkeaWalls.setNoiseType(NoiseType.Cellular);
-		this.noiseIkeaWalls.setFractalType(FractalType.PingPong);
-		this.noiseIkeaWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
+	public int getLevelNumber() {
+		return 308;
 	}
 
 
@@ -185,50 +177,49 @@ public class Gen_308 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// ikea walls
+		this.noiseIkeaWalls.setFrequency(                cfgParams.getDouble("Noise-Wall-Freq"  ) );
+		this.noiseIkeaWalls.setCellularJitter(           cfgParams.getDouble("Noise-Wall-Jitter") );
+		this.noiseIkeaWalls.setNoiseType(                NoiseType.Cellular                       );
+		this.noiseIkeaWalls.setFractalType(              FractalType.PingPong                     );
+		this.noiseIkeaWalls.setCellularDistanceFunction( CellularDistanceFunction.Manhattan       );
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(308);
-			this.noise_wall_freq  .set(cfg.getDouble("Noise-Wall-Freq"  ));
-			this.noise_wall_jitter.set(cfg.getDouble("Noise-Wall-Jitter"));
-			this.thresh_wall_L1   .set(cfg.getDouble("Thresh-Wall-L1"   ));
-			this.thresh_wall_H1   .set(cfg.getDouble("Thresh-Wall-H1"   ));
-			this.thresh_wall_L2   .set(cfg.getDouble("Thresh-Wall-L2"   ));
-			this.thresh_wall_H2   .set(cfg.getDouble("Thresh-Wall-H2"   ));
-		}
+		this.thresh_wall_L1.set(cfgParams.getDouble("Thresh-Wall-L1"));
+		this.thresh_wall_H1.set(cfgParams.getDouble("Thresh-Wall-H1"));
+		this.thresh_wall_L2.set(cfgParams.getDouble("Thresh-Wall-L2"));
+		this.thresh_wall_H2.set(cfgParams.getDouble("Thresh-Wall-H2"));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(308);
-			this.block_wall       .set(cfg.getString("Wall"       ));
-			this.block_wall_stripe.set(cfg.getString("Wall-Stripe"));
-			this.block_subfloor   .set(cfg.getString("SubFloor"   ));
-			this.block_subceiling .set(cfg.getString("SubCeiling" ));
-			this.block_floor      .set(cfg.getString("Floor"      ));
-			this.block_ceiling    .set(cfg.getString("Ceiling"    ));
-		}
+		this.block_wall       .set(cfgBlocks.getString("Wall"       ));
+		this.block_wall_stripe.set(cfgBlocks.getString("Wall-Stripe"));
+		this.block_subfloor   .set(cfgBlocks.getString("SubFloor"   ));
+		this.block_subceiling .set(cfgBlocks.getString("SubCeiling" ));
+		this.block_floor      .set(cfgBlocks.getString("Floor"      ));
+		this.block_ceiling    .set(cfgBlocks.getString("Ceiling"    ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level308.Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
-			cfg.addDefault("Level308.Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
-			cfg.addDefault("Level308.Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );
-			cfg.addDefault("Level308.Thresh-Wall-H1",    DEFAULT_THRESH_WALL_H1   );
-			cfg.addDefault("Level308.Thresh-Wall-L2",    DEFAULT_THRESH_WALL_L2   );
-			cfg.addDefault("Level308.Thresh-Wall-H2",    DEFAULT_THRESH_WALL_H2   );
-		}
+		cfgParams.addDefault("Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
+		cfgParams.addDefault("Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
+		cfgParams.addDefault("Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );
+		cfgParams.addDefault("Thresh-Wall-H1",    DEFAULT_THRESH_WALL_H1   );
+		cfgParams.addDefault("Thresh-Wall-L2",    DEFAULT_THRESH_WALL_L2   );
+		cfgParams.addDefault("Thresh-Wall-H2",    DEFAULT_THRESH_WALL_H2   );
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level308.Wall",        DEFAULT_BLOCK_WALL       );
-			cfg.addDefault("Level308.Wall-Stripe", DEFAULT_BLOCK_WALL_STRIPE);
-			cfg.addDefault("Level308.SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-			cfg.addDefault("Level308.SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
-			cfg.addDefault("Level308.Floor",       DEFAULT_BLOCK_FLOOR      );
-			cfg.addDefault("Level308.Ceiling",     DEFAULT_BLOCK_CEILING    );
-		}
+		cfgBlocks.addDefault("Wall",        DEFAULT_BLOCK_WALL       );
+		cfgBlocks.addDefault("Wall-Stripe", DEFAULT_BLOCK_WALL_STRIPE);
+		cfgBlocks.addDefault("SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
+		cfgBlocks.addDefault("SubCeiling",  DEFAULT_BLOCK_SUBCEILING );
+		cfgBlocks.addDefault("Floor",       DEFAULT_BLOCK_FLOOR      );
+		cfgBlocks.addDefault("Ceiling",     DEFAULT_BLOCK_CEILING    );
 	}
 
 

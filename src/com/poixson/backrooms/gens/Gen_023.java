@@ -80,6 +80,13 @@ public class Gen_023 extends BackroomsGen {
 
 
 	@Override
+	public int getLevelNumber() {
+		return 23;
+	}
+
+
+
+	@Override
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
@@ -185,56 +192,44 @@ public class Gen_023 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(23);
-			this.grass_modulus.set(cfg.getInt("Grass-Modulus"));
-		}
+		this.grass_modulus.set(cfgParams.getInt("Grass-Modulus"));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(23);
-			this.block_wall                .set(cfg.getString("Wall"                ));
-			this.block_wall_grassy         .set(cfg.getString("Wall-Grassy"         ));
-			this.block_floor               .set(cfg.getString("Floor"               ));
-			this.block_ceiling             .set(cfg.getString("Ceiling"             ));
-			this.block_ceiling_grass       .set(cfg.getString("Ceiling-Grass"       ));
-			this.block_ceiling_flower      .set(cfg.getString("Ceiling-Flower"      ));
-			this.block_subfloor            .set(cfg.getString("SubFloor"            ));
-			this.block_subceiling          .set(cfg.getString("SubCeiling"          ));
-			this.block_grass_wet_short     .set(cfg.getString("Grass-Wet-Short"     ));
-			this.block_grass_dry_short     .set(cfg.getString("Grass-Dry-Short"     ));
-			this.block_grass_wet_tall_lower.set(cfg.getString("Grass-Wet-Tall-Lower"));
-			this.block_grass_wet_tall_upper.set(cfg.getString("Grass-Wet-Tall-Upper"));
-			this.block_grass_dry_tall_lower.set(cfg.getString("Grass-Dry-Tall-Lower"));
-			this.block_grass_dry_tall_upper.set(cfg.getString("Grass-Dry-Tall-Upper"));
-		}
+		this.block_wall                .set(cfgBlocks.getString("Wall"                ));
+		this.block_wall_grassy         .set(cfgBlocks.getString("Wall-Grassy"         ));
+		this.block_floor               .set(cfgBlocks.getString("Floor"               ));
+		this.block_ceiling             .set(cfgBlocks.getString("Ceiling"             ));
+		this.block_ceiling_grass       .set(cfgBlocks.getString("Ceiling-Grass"       ));
+		this.block_ceiling_flower      .set(cfgBlocks.getString("Ceiling-Flower"      ));
+		this.block_subfloor            .set(cfgBlocks.getString("SubFloor"            ));
+		this.block_subceiling          .set(cfgBlocks.getString("SubCeiling"          ));
+		this.block_grass_wet_short     .set(cfgBlocks.getString("Grass-Wet-Short"     ));
+		this.block_grass_dry_short     .set(cfgBlocks.getString("Grass-Dry-Short"     ));
+		this.block_grass_wet_tall_lower.set(cfgBlocks.getString("Grass-Wet-Tall-Lower"));
+		this.block_grass_wet_tall_upper.set(cfgBlocks.getString("Grass-Wet-Tall-Upper"));
+		this.block_grass_dry_tall_lower.set(cfgBlocks.getString("Grass-Dry-Tall-Lower"));
+		this.block_grass_dry_tall_upper.set(cfgBlocks.getString("Grass-Dry-Tall-Upper"));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level23.Grass-Modulus", DEFAULT_GRASS_MODULUS);
-		}
+		cfgParams.addDefault("Grass-Modulus", DEFAULT_GRASS_MODULUS);
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level23.Wall",                 DEFAULT_BLOCK_WALL                );
-			cfg.addDefault("Level23.Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );
-			cfg.addDefault("Level23.Floor",                DEFAULT_BLOCK_FLOOR               );
-			cfg.addDefault("Level23.Ceiling",              DEFAULT_BLOCK_CEILING             );
-			cfg.addDefault("Level23.Ceiling-Grass",        DEFAULT_BLOCK_CEILING_GRASS       );
-			cfg.addDefault("Level23.Ceiling-Flower",       DEFAULT_BLOCK_CEILING_FLOWER      );
-			cfg.addDefault("Level23.SubFloor",             DEFAULT_BLOCK_SUBFLOOR            );
-			cfg.addDefault("Level23.SubCeiling",           DEFAULT_BLOCK_SUBCEILING          );
-			cfg.addDefault("Level23.Grass-Wet-Short",      DEFAULT_BLOCK_GRASS_WET_SHORT     );
-			cfg.addDefault("Level23.Grass-Dry-Short",      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
-			cfg.addDefault("Level23.Grass-Wet-Tall-Lower", DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);
-			cfg.addDefault("Level23.Grass-Wet-Tall-Upper", DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
-			cfg.addDefault("Level23.Grass-Dry-Tall-Lower", DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
-			cfg.addDefault("Level23.Grass-Dry-Tall-Upper", DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
-		}
+		cfgBlocks.addDefault("Wall",                 DEFAULT_BLOCK_WALL                );
+		cfgBlocks.addDefault("Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );
+		cfgBlocks.addDefault("Floor",                DEFAULT_BLOCK_FLOOR               );
+		cfgBlocks.addDefault("Ceiling",              DEFAULT_BLOCK_CEILING             );
+		cfgBlocks.addDefault("Ceiling-Grass",        DEFAULT_BLOCK_CEILING_GRASS       );
+		cfgBlocks.addDefault("Ceiling-Flower",       DEFAULT_BLOCK_CEILING_FLOWER      );
+		cfgBlocks.addDefault("SubFloor",             DEFAULT_BLOCK_SUBFLOOR            );
+		cfgBlocks.addDefault("SubCeiling",           DEFAULT_BLOCK_SUBCEILING          );
+		cfgBlocks.addDefault("Grass-Wet-Short",      DEFAULT_BLOCK_GRASS_WET_SHORT     );
+		cfgBlocks.addDefault("Grass-Dry-Short",      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
+		cfgBlocks.addDefault("Grass-Wet-Tall-Lower", DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);
+		cfgBlocks.addDefault("Grass-Wet-Tall-Upper", DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
+		cfgBlocks.addDefault("Grass-Dry-Tall-Lower", DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
+		cfgBlocks.addDefault("Grass-Dry-Tall-Upper", DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
 	}
 
 

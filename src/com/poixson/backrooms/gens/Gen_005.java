@@ -69,11 +69,6 @@ public class Gen_005 extends BackroomsGen {
 	public final FastNoiseLiteD noiseHotelStairs;
 
 	// params
-	public final AtomicDouble  noise_wall_freq   = new AtomicDouble( DEFAULT_NOISE_WALL_FREQ  );
-	public final AtomicDouble  noise_wall_jitter = new AtomicDouble( DEFAULT_NOISE_WALL_JITTER);
-	public final AtomicDouble  noise_room_freq   = new AtomicDouble( DEFAULT_NOISE_ROOM_FREQ  );
-	public final AtomicInteger noise_room_octave = new AtomicInteger(DEFAULT_NOISE_ROOM_OCTAVE);
-	public final AtomicDouble  noise_room_gain   = new AtomicDouble( DEFAULT_NOISE_ROOM_GAIN  );
 	public final AtomicDouble  thresh_room_hall  = new AtomicDouble( DEFAULT_THRESH_ROOM_HALL );
 	public final AtomicInteger nominal_room_size = new AtomicInteger(DEFAULT_NOMINAL_ROOM_SIZE);
 
@@ -110,21 +105,8 @@ public class Gen_005 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise() {
-		super.initNoise();
-		// hotel walls
-		this.noiseHotelWalls.setFrequency(     this.noise_wall_freq  .get());
-		this.noiseHotelWalls.setCellularJitter(this.noise_wall_jitter.get());
-		this.noiseHotelWalls.setNoiseType(NoiseType.Cellular);
-		this.noiseHotelWalls.setFractalType(FractalType.PingPong);
-		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan);
-		// hotel rooms
-		this.noiseHotelRooms.setFrequency(     this.noise_room_freq  .get());
-		this.noiseHotelRooms.setFractalOctaves(this.noise_room_octave.get());
-		this.noiseHotelRooms.setFractalGain(   this.noise_room_gain  .get());
-		this.noiseHotelRooms.setFractalType(FractalType.FBm);
-		// hotel stairs to attic
-		this.noiseHotelStairs.setFrequency(0.03);
+	public int getLevelNumber() {
+		return 5;
 	}
 
 
@@ -356,74 +338,77 @@ public class Gen_005 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig() {
+	protected void initNoise(final ConfigurationSection cfgParams) {
+		super.initNoise(cfgParams);
+		// hotel walls
+		this.noiseHotelWalls.setFrequency(                cfgParams.getDouble("Noise-Wall-Freq"    ) );
+		this.noiseHotelWalls.setCellularJitter(           cfgParams.getDouble("Noise-Wall-Jitter"  ) );
+		this.noiseHotelWalls.setNoiseType(                NoiseType.Cellular                         );
+		this.noiseHotelWalls.setFractalType(              FractalType.PingPong                       );
+		this.noiseHotelWalls.setCellularDistanceFunction( CellularDistanceFunction.Manhattan         );
+		// hotel rooms
+		this.noiseHotelRooms.setFrequency(      cfgParams.getDouble("Noise-Room-Freq"    ) );
+		this.noiseHotelRooms.setFractalOctaves( cfgParams.getInt(   "Noise-Room-Octave"  ) );
+		this.noiseHotelRooms.setFractalGain(    cfgParams.getDouble("Noise-Room-Gain"    ) );
+		this.noiseHotelRooms.setFractalType(    FractalType.FBm                            );
+		// hotel stairs to attic
+		this.noiseHotelStairs.setFrequency(0.03);
+	}
+
+
+
+	@Override
+	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams(5);
-			this.noise_wall_freq  .set(cfg.getDouble("Noise-Wall-Freq"    ));
-			this.noise_wall_jitter.set(cfg.getDouble("Noise-Wall-Jitter"  ));
-			this.noise_room_freq  .set(cfg.getDouble("Noise-Room-Freq"    ));
-			this.noise_room_octave.set(cfg.getInt(   "Noise-Room-Octave"  ));
-			this.noise_room_gain  .set(cfg.getDouble("Noise-Room-Gain"    ));
-			this.thresh_room_hall .set(cfg.getDouble("Thresh-Room-Or-Hall"));
-			this.nominal_room_size.set(cfg.getInt(   "Nominal-Room-Size"  ));
-		}
+		this.thresh_room_hall .set(cfgParams.getDouble("Thresh-Room-Or-Hall"));
+		this.nominal_room_size.set(cfgParams.getInt(   "Nominal-Room-Size"  ));
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks(5);
-			this.block_subfloor          .set(cfg.getString("SubFloor"          ));
-			this.block_subceiling        .set(cfg.getString("SubCeiling"        ));
-			this.block_subwall           .set(cfg.getString("SubWall"           ));
-			this.block_hall_wall_top_x   .set(cfg.getString("Hall-Wall-Top-X"   ));
-			this.block_hall_wall_top_z   .set(cfg.getString("Hall-Wall-Top-Z"   ));
-			this.block_hall_wall_center  .set(cfg.getString("Hall-Wall-Center"  ));
-			this.block_hall_wall_bottom_x.set(cfg.getString("Hall-Wall-Bottom-X"));
-			this.block_hall_wall_bottom_z.set(cfg.getString("Hall-Wall-Bottom-Z"));
-			this.block_door_border_top_x .set(cfg.getString("Door-Border-Top-X" ));
-			this.block_door_border_top_z .set(cfg.getString("Door-Border-Top-Z" ));
-			this.block_door_border_side  .set(cfg.getString("Door-Border-Side"  ));
-			this.block_hall_ceiling      .set(cfg.getString("Hall-Ceiling"      ));
-			this.block_hall_floor_ee     .set(cfg.getString("Hall-Floor-EE"     ));
-			this.block_hall_floor_eo     .set(cfg.getString("Hall-Floor-EO"     ));
-			this.block_hall_floor_oe     .set(cfg.getString("Hall-Floor-OE"     ));
-			this.block_hall_floor_oo     .set(cfg.getString("Hall-Floor-OO"     ));
-			this.door_guest              .set(cfg.getString("Door-Guest"        ));
-		}
+		this.block_subfloor          .set(cfgBlocks.getString("SubFloor"          ));
+		this.block_subceiling        .set(cfgBlocks.getString("SubCeiling"        ));
+		this.block_subwall           .set(cfgBlocks.getString("SubWall"           ));
+		this.block_hall_wall_top_x   .set(cfgBlocks.getString("Hall-Wall-Top-X"   ));
+		this.block_hall_wall_top_z   .set(cfgBlocks.getString("Hall-Wall-Top-Z"   ));
+		this.block_hall_wall_center  .set(cfgBlocks.getString("Hall-Wall-Center"  ));
+		this.block_hall_wall_bottom_x.set(cfgBlocks.getString("Hall-Wall-Bottom-X"));
+		this.block_hall_wall_bottom_z.set(cfgBlocks.getString("Hall-Wall-Bottom-Z"));
+		this.block_door_border_top_x .set(cfgBlocks.getString("Door-Border-Top-X" ));
+		this.block_door_border_top_z .set(cfgBlocks.getString("Door-Border-Top-Z" ));
+		this.block_door_border_side  .set(cfgBlocks.getString("Door-Border-Side"  ));
+		this.block_hall_ceiling      .set(cfgBlocks.getString("Hall-Ceiling"      ));
+		this.block_hall_floor_ee     .set(cfgBlocks.getString("Hall-Floor-EE"     ));
+		this.block_hall_floor_eo     .set(cfgBlocks.getString("Hall-Floor-EO"     ));
+		this.block_hall_floor_oe     .set(cfgBlocks.getString("Hall-Floor-OE"     ));
+		this.block_hall_floor_oo     .set(cfgBlocks.getString("Hall-Floor-OO"     ));
+		this.door_guest              .set(cfgBlocks.getString("Door-Guest"        ));
 	}
 	@Override
-	public void configDefaults() {
+	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelParams();
-			cfg.addDefault("Level5.Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
-			cfg.addDefault("Level5.Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
-			cfg.addDefault("Level5.Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );
-			cfg.addDefault("Level5.Noise-Room-Octave",   DEFAULT_NOISE_ROOM_OCTAVE);
-			cfg.addDefault("Level5.Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
-			cfg.addDefault("Level5.Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
-			cfg.addDefault("Level5.Nominal-Room-Size",   DEFAULT_NOMINAL_ROOM_SIZE);
-		}
+		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
+		cfgParams.addDefault("Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
+		cfgParams.addDefault("Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );
+		cfgParams.addDefault("Noise-Room-Octave",   DEFAULT_NOISE_ROOM_OCTAVE);
+		cfgParams.addDefault("Noise-Room-Gain",     DEFAULT_NOISE_ROOM_GAIN  );
+		cfgParams.addDefault("Thresh-Room-Or-Hall", DEFAULT_THRESH_ROOM_HALL );
+		cfgParams.addDefault("Nominal-Room-Size",   DEFAULT_NOMINAL_ROOM_SIZE);
 		// block types
-		{
-			final ConfigurationSection cfg = this.plugin.getConfigLevelBlocks();
-			cfg.addDefault("Level5.SubFloor",           DEFAULT_BLOCK_SUBFLOOR          );
-			cfg.addDefault("Level5.SubCeiling",         DEFAULT_BLOCK_SUBCEILING        );
-			cfg.addDefault("Level5.SubWall",            DEFAULT_BLOCK_SUBWALL           );
-			cfg.addDefault("Level5.Hall-Wall-Top-X",    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
-			cfg.addDefault("Level5.Hall-Wall-Top-Z",    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
-			cfg.addDefault("Level5.Hall-Wall-Center",   DEFAULT_BLOCK_HALL_WALL_CENTER  );
-			cfg.addDefault("Level5.Hall-Wall-Bottom-X", DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
-			cfg.addDefault("Level5.Hall-Wall-Bottom-Z", DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
-			cfg.addDefault("Level5.Door-Border-Top-X",  DEFAULT_BLOCK_DOOR_BORDER_TOP_X );
-			cfg.addDefault("Level5.Door-Border-Top-Z",  DEFAULT_BLOCK_DOOR_BORDER_TOP_Z );
-			cfg.addDefault("Level5.Door-Border-Side",   DEFAULT_BLOCK_DOOR_BORDER_SIDE  );
-			cfg.addDefault("Level5.Hall-Ceiling",       DEFAULT_BLOCK_HALL_CEILING      );
-			cfg.addDefault("Level5.Hall-Floor-EE",      DEFAULT_BLOCK_HALL_FLOOR_EE     );
-			cfg.addDefault("Level5.Hall-Floor-EO",      DEFAULT_BLOCK_HALL_FLOOR_EO     );
-			cfg.addDefault("Level5.Hall-Floor-OE",      DEFAULT_BLOCK_HALL_FLOOR_OE     );
-			cfg.addDefault("Level5.Hall-Floor-OO",      DEFAULT_BLOCK_HALL_FLOOR_OO     );
-			cfg.addDefault("Level5.Door-Guest",         DEFAULT_DOOR_GUEST              );
-		}
+		cfgBlocks.addDefault("SubFloor",           DEFAULT_BLOCK_SUBFLOOR          );
+		cfgBlocks.addDefault("SubCeiling",         DEFAULT_BLOCK_SUBCEILING        );
+		cfgBlocks.addDefault("SubWall",            DEFAULT_BLOCK_SUBWALL           );
+		cfgBlocks.addDefault("Hall-Wall-Top-X",    DEFAULT_BLOCK_HALL_WALL_TOP_X   );
+		cfgBlocks.addDefault("Hall-Wall-Top-Z",    DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
+		cfgBlocks.addDefault("Hall-Wall-Center",   DEFAULT_BLOCK_HALL_WALL_CENTER  );
+		cfgBlocks.addDefault("Hall-Wall-Bottom-X", DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
+		cfgBlocks.addDefault("Hall-Wall-Bottom-Z", DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
+		cfgBlocks.addDefault("Door-Border-Top-X",  DEFAULT_BLOCK_DOOR_BORDER_TOP_X );
+		cfgBlocks.addDefault("Door-Border-Top-Z",  DEFAULT_BLOCK_DOOR_BORDER_TOP_Z );
+		cfgBlocks.addDefault("Door-Border-Side",   DEFAULT_BLOCK_DOOR_BORDER_SIDE  );
+		cfgBlocks.addDefault("Hall-Ceiling",       DEFAULT_BLOCK_HALL_CEILING      );
+		cfgBlocks.addDefault("Hall-Floor-EE",      DEFAULT_BLOCK_HALL_FLOOR_EE     );
+		cfgBlocks.addDefault("Hall-Floor-EO",      DEFAULT_BLOCK_HALL_FLOOR_EO     );
+		cfgBlocks.addDefault("Hall-Floor-OE",      DEFAULT_BLOCK_HALL_FLOOR_OE     );
+		cfgBlocks.addDefault("Hall-Floor-OO",      DEFAULT_BLOCK_HALL_FLOOR_OO     );
+		cfgBlocks.addDefault("Door-Guest",         DEFAULT_DOOR_GUEST              );
 	}
 
 
