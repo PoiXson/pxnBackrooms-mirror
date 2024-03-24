@@ -1,7 +1,10 @@
+JUSTICE FOR FRANK
 Hello
 Goodbye
 I'm sorry
 I love you
+WAKE UP
+You need to wake up
 Keep out
 Enter here
 Restricted area
@@ -163,3 +166,4 @@ I'll get you
 I have a question for you
 Unprotected Area!
 I would love to go in the forest with you
+Do you ever feel like a plastic bag
