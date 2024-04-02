@@ -33,6 +33,8 @@ public class Listener_NoClip implements xListener {
 
 	protected final AtomicInteger cleanup = new AtomicInteger(0);
 
+	protected final xRand random = new xRand();
+
 
 
 	public class PlayerDamageDAO {
@@ -107,7 +109,7 @@ public class Listener_NoClip implements xListener {
 				}
 				default: return;
 				}
-				final int rnd = xRand.Get(0, 9999).nextInt();
+				final int rnd = this.random.nextInt(0, 9999);
 				if (rnd % 10 < 5)
 					return;
 				// noclip into the backrooms

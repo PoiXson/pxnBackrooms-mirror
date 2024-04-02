@@ -347,7 +347,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	protected void configDefaults(final FileConfiguration cfg) {
 		TaskReconvergence.ConfigDefaults(cfg);
-		cfg.addDefault("Seed", Integer.toString( xRand.Get(11, 9999999).nextInt() ));
+		cfg.addDefault("Seed", (new xRand()).nextInt(11, 9999999));
 		cfg.addDefault("Enable World Creation",    Boolean.FALSE);
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );

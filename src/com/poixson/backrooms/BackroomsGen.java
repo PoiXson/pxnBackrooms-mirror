@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -23,6 +24,8 @@ public abstract class BackroomsGen {
 
 	public final int level_y;
 	public final int level_h;
+
+	protected final xRand random = new xRand();
 
 
 

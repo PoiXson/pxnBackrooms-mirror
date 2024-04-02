@@ -47,6 +47,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	protected final ConcurrentHashMap<Integer, Location> spawns = new ConcurrentHashMap<Integer, Location>();
 
+	protected final xRand random = new xRand();
+
 
 
 	public BackroomsLevel(final BackroomsPlugin plugin) {
@@ -151,9 +153,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 	}
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
-		final xRand rnd = xRand.Get(0-distance, distance);
-		final int x = rnd.nextInt();
-		final int z = rnd.nextInt();
+		final int x = this.random.nextInt(0-distance, distance);
+		final int z = this.random.nextInt(0-distance, distance);
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		return world.getBlockAt(x, 0, z).getLocation();
@@ -162,8 +163,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		final int max_y         = this.getMaxY(level);
 		final int distance_near = this.getSpawnDistanceNear(level);
 		final int distance_min  = Math.floorDiv(distance_near, 3);
-		final xRand rnd = xRand.Get(distance_min, distance_near);
-		final float yaw = (float) xRand.Get(0, 360).nextInt();
+		final float yaw = (float) this.random.nextDbl(0.0, 360.0);
 		final World world = area.getWorld();
 		final int y = this.getY(level);
 		final int h = max_y - y;
@@ -171,8 +171,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 		Location near, valid;
 		for (int tries=0; tries<20; tries++) {
 			for (int iy=0; iy<h; iy++) {
-				x = area.getBlockX() + rnd.nextInt();
-				z = area.getBlockZ() + rnd.nextInt();
+				x = area.getBlockX() + this.random.nextInt(distance_min, distance_near);
+				z = area.getBlockZ() + this.random.nextInt(distance_min, distance_near);
 				near = world.getBlockAt(x, y+iy, z).getLocation();
 				valid = this.validSpawn(near);
 				if (valid != null) {
