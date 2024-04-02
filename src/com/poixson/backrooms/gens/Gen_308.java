@@ -1,8 +1,6 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-import static com.poixson.backrooms.worlds.Level_011.ENABLE_GEN_308;
-import static com.poixson.backrooms.worlds.Level_011.ENABLE_TOP_308;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
@@ -49,6 +47,8 @@ public class Gen_308 extends BackroomsGen {
 	public final FastNoiseLiteD noiseIkeaWalls;
 
 	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	public final AtomicDouble thresh_wall_L1 = new AtomicDouble(DEFAULT_THRESH_WALL_L1);
 	public final AtomicDouble thresh_wall_H1 = new AtomicDouble(DEFAULT_THRESH_WALL_H1);
 	public final AtomicDouble thresh_wall_L2 = new AtomicDouble(DEFAULT_THRESH_WALL_L2);
@@ -67,6 +67,9 @@ public class Gen_308 extends BackroomsGen {
 	public Gen_308(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen     = cfgParams.getBoolean("Enable-Gen"    );
+		this.enable_top     = cfgParams.getBoolean("Enable-Top"    );
 		// noise
 		this.noiseIkeaWalls = this.register(new FastNoiseLiteD());
 	}
@@ -84,7 +87,7 @@ public class Gen_308 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_308) return;
+		if (!this.enable_gen) return;
 		final BlockData block_wall        = StringToBlockData(this.block_wall,        DEFAULT_BLOCK_WALL       );
 		final BlockData block_wall_stripe = StringToBlockData(this.block_wall_stripe, DEFAULT_BLOCK_WALL_STRIPE);
 		final BlockData block_subfloor    = StringToBlockData(this.block_subfloor,    DEFAULT_BLOCK_SUBFLOOR   );
@@ -135,7 +138,7 @@ public class Gen_308 extends BackroomsGen {
 				for (int iy=0; iy<SUBFLOOR; iy++)
 					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
 				// subceiling
-				if (ENABLE_TOP_308)
+				if (this.enable_top)
 					chunk.setBlock(ix, cy+1, iz, block_subceiling);
 				// wall
 				if (isWall) {
@@ -147,7 +150,7 @@ public class Gen_308 extends BackroomsGen {
 					// floor
 					chunk.setBlock(ix, y, iz, block_floor);
 					// ceiling
-					if (ENABLE_TOP_308) {
+					if (this.enable_top) {
 						// ceiling
 						chunk.setBlock(ix, cy,   iz, block_ceiling   );
 						chunk.setBlock(ix, cy+1, iz, block_subceiling);
@@ -207,6 +210,8 @@ public class Gen_308 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",        Boolean.TRUE                              );
+		cfgParams.addDefault("Enable-Top",        Boolean.TRUE                              );
 		cfgParams.addDefault("Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
 		cfgParams.addDefault("Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
 		cfgParams.addDefault("Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );

@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_006;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
@@ -48,6 +47,8 @@ public class Gen_006 extends BackroomsGen {
 	public final FastNoiseLiteD noiseButtonSwitch;
 
 	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	public final AtomicDouble thresh_button = new AtomicDouble( DEFAULT_THRESH_BUTTON);
 	public final AtomicDouble thresh_switch = new AtomicDouble( DEFAULT_THRESH_SWITCH);
 	public final AtomicDouble tp_range      = new AtomicDouble( DEFAULT_TP_RANGE     );
@@ -77,7 +78,7 @@ public class Gen_006 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_006) return;
+		if (!this.enable_gen) return;
 		final BlockData block_wall = StringToBlockData(this.block_wall, DEFAULT_BLOCK_WALL);
 		if (block_wall == null) throw new RuntimeException("Invalid block type for level 6 Wall");
 		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
@@ -105,6 +106,11 @@ public class Gen_006 extends BackroomsGen {
 						if (!daoE.isWall) this.generateLightSwitch(BlockFace.EAST,  chunk, chunkX, chunkZ, ix+1, iz); else
 						if (!daoW.isWall) this.generateLightSwitch(BlockFace.WEST,  chunk, chunkX, chunkZ, ix-1, iz);
 					}
+				// floor/ceiling
+				} else {
+					if (this.enable_top)
+					if (block_ceiling != null) chunk.setBlock(ix, y_ceil, iz, block_ceiling);
+					if (block_floor   != null) chunk.setBlock(ix, y_base, iz, block_floor  );
 				}
 			} // end ix
 		} // end iz
@@ -183,6 +189,8 @@ public class Gen_006 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",                Boolean.TRUE                                      );
+		cfgParams.addDefault("Enable-Top",                Boolean.TRUE                                      );
 		cfgParams.addDefault("Noise-ButtonSwitch-Freq",   DEFAULT_NOISE_BUTTONSWITCH_FREQ  );
 		cfgParams.addDefault("Noise-ButtonSwitch-Octave", DEFAULT_NOISE_BUTTONSWITCH_OCTAVE);
 		cfgParams.addDefault("Noise-ButtonSwitch-Gain",   DEFAULT_NOISE_BUTTONSWITCH_GAIN  );

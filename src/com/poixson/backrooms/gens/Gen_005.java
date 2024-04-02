@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_005;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_005;
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
@@ -63,6 +61,9 @@ public class Gen_005 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_HALL_FLOOR_OO      = "minecraft:black_glazed_terracotta[facing=south]";
 	public static final String DEFAULT_DOOR_GUEST               = "minecraft:dark_oak_door";
 
+	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
 	public final FastNoiseLiteD noiseHotelRooms;
@@ -96,6 +97,9 @@ public class Gen_005 extends BackroomsGen {
 	public Gen_005(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen        = cfgParams.getBoolean("Enable-Gen"         );
+		this.enable_top        = cfgParams.getBoolean("Enable-Top"         );
 		// noise
 		this.noiseHotelWalls = this.register(new FastNoiseLiteD());
 		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
@@ -230,7 +234,7 @@ public class Gen_005 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_005) return;
+		if (!this.enable_gen) return;
 		final BlockData block_subfloor           = StringToBlockData(this.block_subfloor,           DEFAULT_BLOCK_SUBFLOOR          );
 		final BlockData block_subceiling         = StringToBlockData(this.block_subceiling,         DEFAULT_BLOCK_SUBCEILING        );
 		final BlockData block_subwall            = StringToBlockData(this.block_subwall,            DEFAULT_BLOCK_SUBWALL           );
@@ -296,7 +300,8 @@ public class Gen_005 extends BackroomsGen {
 						if (ix % 2 == 0) chunk.setBlock(ix, y, iz, block_hall_floor_eo); // even x, odd z
 						else             chunk.setBlock(ix, y, iz, block_hall_floor_oo); // odd x,  odd z
 					}
-					if (ENABLE_TOP_005) {
+					// hall ceiling
+					if (this.enable_top) {
 						// ceiling light
 						mod_x = xx % 5;
 						mod_z = zz % 5;
@@ -384,6 +389,8 @@ public class Gen_005 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",          Boolean.TRUE                              );
+		cfgParams.addDefault("Enable-Top",          Boolean.TRUE                              );
 		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
 		cfgParams.addDefault("Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
 		cfgParams.addDefault("Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );

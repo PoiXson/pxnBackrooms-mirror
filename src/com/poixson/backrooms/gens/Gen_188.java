@@ -47,6 +47,7 @@ public class Gen_188 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_WINDOW           = "minecraft:black_stained_glass";
 
 	// params
+	public final boolean enable_gen;
 	public final AtomicBoolean dark_room = new AtomicBoolean(DEFAULT_DARK_ROOM);
 
 	// blocks
@@ -63,6 +64,8 @@ public class Gen_188 extends BackroomsGen {
 	public Gen_188(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
 	}
 
 
@@ -78,6 +81,7 @@ public class Gen_188 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!this.enable_gen) return;
 		final Level_000 level0 = (Level_000) this.backlevel;
 		final BlockData block_subfloor            = StringToBlockData(this.block_subfloor,                     DEFAULT_BLOCK_SUBFLOOR        );
 		final BlockData block_floor               = StringToBlockData(this.block_floor,                        DEFAULT_BLOCK_FLOOR           );
@@ -356,6 +360,7 @@ public class Gen_188 extends BackroomsGen {
 	@Override
 	public void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen", Boolean.TRUE     );
 		cfgParams.addDefault("Dark-Room", DEFAULT_DARK_ROOM);
 		// block types
 		cfgBlocks.addDefault("SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );

@@ -21,6 +21,12 @@ public class Gen_264 extends BackroomsGen {
 	public Gen_264(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
+		// params
+		this.enable_gen = cfgParams.getBoolean("Enable-Gen"  );
+		this.enable_top = cfgParams.getBoolean("Enable-Top"  );
 	}
 
 
@@ -36,6 +42,7 @@ public class Gen_264 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!this.enable_gen) return;
 //TODO
 		final int y = Level_011.Y_264;
 		for (int iz=0; iz<16; iz++) {
@@ -56,6 +63,9 @@ public class Gen_264 extends BackroomsGen {
 	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
+		// params
+		cfgParams.addDefault("Enable-Gen",   Boolean.TRUE                       );
+		cfgParams.addDefault("Enable-Top",   Boolean.TRUE                       );
 	}
 
 

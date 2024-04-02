@@ -2,8 +2,6 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_X;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_Z;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
 import static com.poixson.backrooms.worlds.Level_000.H_019;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.backrooms.worlds.Level_000.Y_019;
@@ -57,16 +55,16 @@ public class Pop_309 implements BackroomsPop {
 	@Override
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_309) return;
+		if (!this.gen_309.enable_gen) return;
 		// trees
 		final int count_trees;
-		if (ENABLE_TOP_309) count_trees = this.treePop.populate(chunkX, chunkZ, region);
-		else                count_trees = 0;
+		if (this.gen_309.enable_top) count_trees = this.treePop.populate(chunkX, chunkZ, region);
+		else                     count_trees = 0;
 		// radio station
 		if (chunkX == 0 && chunkZ == 0) {
 			this.populate0x0(region);
 		} else
-		if (ENABLE_TOP_309) {
+		if (this.gen_309.enable_top) {
 			// fence around clearing
 			if (Math.abs(chunkX) < 8
 			&&  Math.abs(chunkZ) < 8) {
@@ -108,7 +106,7 @@ public class Pop_309 implements BackroomsPop {
 			} else {
 				// prairie
 				if (count_trees == 0
-				&&  ENABLE_TOP_309) {
+				&&  this.gen_309.enable_top) {
 					final int path_clearing = this.gen.path_clearing.get() * 3;
 					final int xx = chunkX * 16;
 					final int zz = chunkZ * 16;

@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_033.ENABLE_GEN_033;
-import static com.poixson.backrooms.worlds.Level_033.ENABLE_TOP_033;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
@@ -46,6 +44,8 @@ public class Gen_033 extends BackroomsGen {
 	public final FastNoiseLiteD noiseFloor;
 
 	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	public final AtomicDouble thresh_floor   = new AtomicDouble(DEFAULT_THRESH_FLOOR  );
 	public final AtomicDouble thresh_hazard  = new AtomicDouble(DEFAULT_THRESH_HAZARD );
 	public final AtomicInteger danger_chunks = new AtomicInteger(DEFAULT_DANGER_CHUNKS);
@@ -81,7 +81,7 @@ public class Gen_033 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_033) return;
+		if (!this.enable_gen) return;
 		final BlockData block_wall       = StringToBlockData(this.block_wall,       DEFAULT_BLOCK_WALL      );
 		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
 		final BlockData block_floor      = StringToBlockData(this.block_floor,      DEFAULT_BLOCK_FLOOR     );
@@ -107,7 +107,7 @@ public class Gen_033 extends BackroomsGen {
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
 				// fill bedrock sky
-				if (ENABLE_TOP_033) {
+				if (this.enable_top) {
 					for (int iy=this.level_y+this.level_h; iy<320; iy++)
 						chunk.setBlock(ix, iy, iz, Material.BEDROCK);
 				}
@@ -115,7 +115,7 @@ public class Gen_033 extends BackroomsGen {
 				// bedrock wall
 				case  0: case  1:
 				case 14: case 15:
-					for (int iy=(ENABLE_TOP_033?-64:-2); iy<this.level_h; iy++)
+					for (int iy=(this.enable_top?-64:-2); iy<this.level_h; iy++)
 						chunk.setBlock(ix, iy+this.level_y, iz, Material.BEDROCK);
 					break;
 				// inside wall
@@ -128,7 +128,7 @@ public class Gen_033 extends BackroomsGen {
 					valueFloor = 0.0 - this.noiseFloor.getNoise(xx, zz*2);
 					safe = (chunkZ % danger_chunks == 0);
 					// ceiling
-					if (ENABLE_TOP_033)
+					if (this.enable_top)
 						chunk.setBlock(ix, this.level_y+this.level_h-1, iz, block_ceiling);
 					// floor
 					if (safe) {
@@ -195,6 +195,8 @@ public class Gen_033 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",         Boolean.TRUE                               );
+		cfgParams.addDefault("Enable-Top",         Boolean.TRUE                               );
 		cfgParams.addDefault("Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
 		cfgParams.addDefault("Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
 		cfgParams.addDefault("Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );

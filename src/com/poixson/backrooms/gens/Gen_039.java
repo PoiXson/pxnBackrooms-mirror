@@ -19,6 +19,8 @@ public class Gen_039 extends BackroomsGen {
 	public Gen_039(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	}
 
 
@@ -34,6 +36,7 @@ public class Gen_039 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!this.enable_gen) return;
 //TODO
 	}
 
@@ -49,6 +52,8 @@ public class Gen_039 extends BackroomsGen {
 	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
+		cfgParams.addDefault("Enable-Gen",   Boolean.TRUE                       );
+		cfgParams.addDefault("Enable-Top",   Boolean.TRUE                       );
 	}
 
 

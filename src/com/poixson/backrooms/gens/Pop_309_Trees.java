@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_309;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 
 import org.bukkit.Material;
@@ -34,8 +32,8 @@ public class Pop_309_Trees extends TreePopulator {
 
 	@Override
 	public boolean isTree(final int x, final int z) {
-		if (!ENABLE_GEN_309)     return false;
-		if (!ENABLE_TOP_309)     return false;
+		if (!this.gen_309.enable_gen) return false;
+		if (!this.gen_309.enable_top) return false;
 		if (!super.isTree(x, z)) return false;
 		if (this.gen.getCenterClearingDistance(x, z, 8.0) < 80.0) return false;
 		if (this.gen.pathTrace.isPath(x, z, this.path_clearing))  return false;

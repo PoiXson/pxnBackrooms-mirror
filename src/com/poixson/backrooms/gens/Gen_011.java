@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_011.ENABLE_GEN_011;
-import static com.poixson.backrooms.worlds.Level_011.ENABLE_TOP_011;
 import static com.poixson.backrooms.worlds.Level_011.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
@@ -48,6 +46,9 @@ public class Gen_011 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_ROAD     = "minecraft:blackstone";
 	public static final String DEFAULT_BLOCK_ALLEY    = "minecraft:cobbled_deepslate";
 
+	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	// noise
 	public final FastNoiseLiteD noiseRoad;
 	public final FastNoiseLiteD noiseAlley;
@@ -70,6 +71,9 @@ public class Gen_011 extends BackroomsGen {
 	public Gen_011(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen             = cfgParams.getBoolean("Enable-Gen"  );
+		this.enable_top             = cfgParams.getBoolean("Enable-Top"  );
 		// noise
 		this.noiseRoad           = this.register(new FastNoiseLiteD());
 		this.noiseAlley          = this.register(new FastNoiseLiteD());
@@ -90,7 +94,7 @@ public class Gen_011 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_011) return;
+		if (!this.enable_gen) return;
 		final BlockData block_subfloor = StringToBlockData(this.block_subfloor, DEFAULT_BLOCK_SUBFLOOR);
 		final BlockData block_road     = StringToBlockData(this.block_road,     DEFAULT_BLOCK_ROAD    );
 		final BlockData block_alley    = StringToBlockData(this.block_alley,    DEFAULT_BLOCK_ALLEY   );
@@ -133,7 +137,7 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 						}
 						final int h = data.building_height_int;
 						// building roof
-						if (ENABLE_TOP_011)
+						if (this.enable_top)
 							chunk.setBlock(ix, y+h, iz, Material.STONE_SLAB);
 						// building walls
 						if (data.isEdge()) {
@@ -193,6 +197,8 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",                 Boolean.TRUE                                       );
+		cfgParams.addDefault("Enable-Top",                 Boolean.TRUE                                       );
 		cfgParams.addDefault("Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
 		cfgParams.addDefault("Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
 		cfgParams.addDefault("Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );

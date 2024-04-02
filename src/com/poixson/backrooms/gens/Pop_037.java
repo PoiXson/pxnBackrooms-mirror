@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_037;
-
 import java.util.LinkedList;
 
 import org.bukkit.Material;
@@ -115,7 +113,7 @@ public class Pop_037 implements BackroomsPop {
 	@Override
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_037) return;
+		if (!this.gen_037.enable_gen) return;
 		final Material block_wall_a = Material.matchMaterial(this.gen.block_wall_a.get());
 		final Material block_wall_b = Material.matchMaterial(this.gen.block_wall_b.get());
 		if (block_wall_a == null) throw new RuntimeException("Invalid block type for level 37 WallA");

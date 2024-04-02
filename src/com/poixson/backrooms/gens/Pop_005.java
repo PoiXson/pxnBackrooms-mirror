@@ -1,7 +1,6 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_SUBWALL;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_005;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToMaterial;
 
@@ -39,7 +38,7 @@ public class Pop_005 implements BackroomsPop {
 	@Override
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_005) return;
+		if (!this.gen_005.enable_gen) return;
 		final int x = (chunkX * 16) + 7;
 		final int z = (chunkZ * 16) + 7;
 		final int y = this.gen.level_y + SUBFLOOR + 1;

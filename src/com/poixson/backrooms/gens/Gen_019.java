@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_019;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
@@ -35,6 +34,8 @@ public class Gen_019 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_FLOOR = "minecraft:spruce_planks";
 	public static final String DEFAULT_BLOCK_BEAM  = "minecraft:spruce_wood";
 
+	// params
+	public final boolean enable_gen;
 	// noise
 	public final FastNoiseLiteD noiseLamps;
 
@@ -48,6 +49,7 @@ public class Gen_019 extends BackroomsGen {
 	public Gen_019(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		this.enable_gen = cfgParams.getBoolean("Enable-Gen"  );
 		// noise
 		this.noiseLamps = this.register(new FastNoiseLiteD());
 	}
@@ -65,7 +67,7 @@ public class Gen_019 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_019) return;
+		if (!this.enable_gen) return;
 		final BlockData block_wall  = StringToBlockData(this.block_wall,  DEFAULT_BLOCK_WALL );
 		final BlockData block_floor = StringToBlockData(this.block_floor, DEFAULT_BLOCK_FLOOR);
 		final BlockData block_beam  = StringToBlockData(this.block_beam,  DEFAULT_BLOCK_BEAM );
@@ -136,6 +138,7 @@ public class Gen_019 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",       Boolean.TRUE                             );
 		cfgParams.addDefault("Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
 		// block types
 		cfgBlocks.addDefault("Wall",  DEFAULT_BLOCK_WALL );

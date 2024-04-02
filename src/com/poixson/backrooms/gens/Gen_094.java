@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_094.ENABLE_GEN_094;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
@@ -63,6 +62,9 @@ public class Gen_094 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_HOUSE_WINDOW      = "minecraft:black_stained_glass";
 	public static final String DEFAULT_BLOCK_HOUSE_FLOOR       = "minecraft:stripped_spruce_wood";
 
+	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	// noise
 	public final FastNoiseLiteD noiseHills;
 	public final FastNoiseLiteD noiseHouse;
@@ -191,7 +193,7 @@ public class Gen_094 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_094) return;
+		if (!this.enable_gen) return;
 		final BlockData block_dirt             = StringToBlockData(this.block_dirt,              DEFAULT_BLOCK_DIRT             );
 		final BlockData block_grass_block      = StringToBlockData(this.block_grass_block,       DEFAULT_BLOCK_GRASS_BLOCK      );
 		final BlockData block_grass_slab       = StringToBlockData(this.block_grass_slab,        DEFAULT_BLOCK_GRASS_SLAB       );
@@ -307,6 +309,7 @@ public class Gen_094 extends BackroomsGen {
 				}
 			}
 			// roof
+			if (this.enable_top) {
 			int yy, fill;
 			for (int iy=0; iy<house_half; iy++) {
 				for (int iz=0; iz<house_width; iz++) {
@@ -389,6 +392,8 @@ public class Gen_094 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",           Boolean.TRUE                                 );
+		cfgParams.addDefault("Enable-Top",           Boolean.TRUE                                 );
 		cfgParams.addDefault("Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
 		cfgParams.addDefault("Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
 		cfgParams.addDefault("Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);

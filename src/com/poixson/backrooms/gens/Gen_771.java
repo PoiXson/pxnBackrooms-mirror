@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_771.ENABLE_GEN_771;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 import static com.poixson.utils.LocationUtils.AxToFace;
 import static com.poixson.utils.LocationUtils.FaceToAxString;
@@ -82,6 +81,7 @@ public class Gen_771 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM    = "minecraft:deepslate_brick_stairs[half=top,facing=<FACING>]";
 	public static final String DEFAULT_BLOCK_SHAFT_FLOOR             = "minecraft:dark_oak_planks";
 
+	public final boolean enable_gen;
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
 	public final FastNoiseLiteD noiseExits;
@@ -144,6 +144,8 @@ public class Gen_771 extends BackroomsGen {
 	public Gen_771(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
 		// noise
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseExits      = this.register(new FastNoiseLiteD());
@@ -163,7 +165,7 @@ public class Gen_771 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_771) return;
+		if (!this.enable_gen) return;
 		final boolean centerX = (chunkX == 0 || chunkX == -1);
 		final boolean centerZ = (chunkZ == 0 || chunkZ == -1);
 		// world center
@@ -782,6 +784,7 @@ public class Gen_771 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",       Boolean.TRUE            );
 		cfgParams.addDefault("Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
 		cfgParams.addDefault("Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
 		cfgParams.addDefault("Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );

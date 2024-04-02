@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_023;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_023;
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
@@ -50,6 +48,8 @@ public class Gen_023 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER = "minecraft:tall_grass[half=upper]";
 
 	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	public final AtomicInteger grass_modulus = new AtomicInteger(DEFAULT_GRASS_MODULUS);
 
 	// blocks
@@ -75,6 +75,9 @@ public class Gen_023 extends BackroomsGen {
 	public Gen_023(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
+		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
 	}
 
 
@@ -90,7 +93,7 @@ public class Gen_023 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_023) return;
+		if (!this.enable_gen) return;
 		final int grass_modulus = this.grass_modulus.get();
 		final BlockData block_wall                 = StringToBlockData(this.block_wall,                 DEFAULT_BLOCK_WALL                );
 		final BlockData block_wall_grassy          = StringToBlockData(this.block_wall_grassy,          DEFAULT_BLOCK_WALL_GRASSY         );
@@ -161,7 +164,7 @@ public class Gen_023 extends BackroomsGen {
 						if (blk_grass != null) chunk.setBlock(ix, this.level_y+SUBFLOOR+2, iz, blk_grass);
 					}
 					// ceiling
-					if (ENABLE_TOP_023) {
+					if (this.enable_top) {
 						if (modZ == 0 && modX < 2
 						&& dao_lobby.wall_dist > 1) {
 							// ceiling lights
@@ -176,7 +179,7 @@ public class Gen_023 extends BackroomsGen {
 					}
 				}
 				// subceiling
-				if (ENABLE_TOP_023) {
+				if (this.enable_top) {
 					for (int iy=0; iy<SUBCEILING; iy++)
 						chunk.setBlock(ix, cy+iy+1, iz, block_subceiling);
 				}
@@ -214,6 +217,8 @@ public class Gen_023 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",    Boolean.TRUE                          );
+		cfgParams.addDefault("Enable-Top",    Boolean.TRUE                          );
 		cfgParams.addDefault("Grass-Modulus", DEFAULT_GRASS_MODULUS);
 		// block types
 		cfgBlocks.addDefault("Wall",                 DEFAULT_BLOCK_WALL                );

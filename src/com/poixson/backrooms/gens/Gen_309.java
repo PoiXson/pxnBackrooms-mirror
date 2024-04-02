@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_309;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
@@ -52,6 +51,9 @@ public class Gen_309 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_TREE_TRUNK  = "minecraft:birch_log";
 	public static final String DEFAULT_BLOCK_TREE_LEAVES = "minecraft:birch_leaves";
 
+	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	// noise
 	public final FastNoiseLiteD noisePath;
 	public final FastNoiseLiteD noiseGround;
@@ -83,6 +85,9 @@ public class Gen_309 extends BackroomsGen {
 	public Gen_309(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen      = cfgParams.getBoolean("Enable-Gen"     );
+		this.enable_top      = cfgParams.getBoolean("Enable-Top"     );
 		// noise
 		this.noisePath    = this.register(new FastNoiseLiteD());
 		this.noiseGround  = this.register(new FastNoiseLiteD());
@@ -122,7 +127,7 @@ public class Gen_309 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_309) return;
+		if (!this.enable_gen) return;
 		final int path_width = this.path_width.get();
 		final BlockData block_dirt     = StringToBlockData(this.block_dirt,     DEFAULT_BLOCK_DIRT    );
 		final BlockData block_path     = StringToBlockData(this.block_path,     DEFAULT_BLOCK_PATH    );
@@ -241,6 +246,8 @@ public class Gen_309 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",           Boolean.TRUE                                 );
+		cfgParams.addDefault("Enable-Top",           Boolean.TRUE                                 );
 		cfgParams.addDefault("Noise-Path-Freq",      DEFAULT_NOISE_PATH_FREQ      );
 		cfgParams.addDefault("Noise-Ground-Freq",    DEFAULT_NOISE_GROUND_FREQ    );
 		cfgParams.addDefault("Noise-Ground-Octave",  DEFAULT_NOISE_GROUND_OCTAVE  );

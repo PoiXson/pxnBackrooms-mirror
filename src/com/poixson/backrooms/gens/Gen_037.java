@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_037;
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_TOP_037;
 import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
@@ -57,6 +55,10 @@ public class Gen_037 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_SUBCEILING = "minecraft:dark_prismarine";
 	public static final String DEFAULT_BLOCK_CEILING    = "minecraft:glowstone";
 
+	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
+
 	// noise
 	public final FastNoiseLiteD noisePoolRooms;
 	public final FastNoiseLiteD noiseTunnels;
@@ -79,6 +81,9 @@ public class Gen_037 extends BackroomsGen {
 	public Gen_037(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		// params
+		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
+		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
 		// noise
 		this.noisePoolRooms   = this.register(new FastNoiseLiteD());
 		this.noiseTunnels     = this.register(new FastNoiseLiteD());
@@ -157,7 +162,7 @@ public class Gen_037 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_037) return;
+		if (!this.enable_gen) return;
 		final BlockData block_wall_a     = StringToBlockData(this.block_wall_a,     DEFAULT_BLOCK_WALL_A    );
 		final BlockData block_wall_b     = StringToBlockData(this.block_wall_b,     DEFAULT_BLOCK_WALL_B    );
 		final BlockData block_subfloor   = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
@@ -443,7 +448,7 @@ public class Gen_037 extends BackroomsGen {
 						StringUtils.ReplaceWith(matrix[iy][iz], ' ', 'w');
 				}
 				// ceiling
-				if (ENABLE_TOP_037) {
+				if (this.enable_top) {
 					for (int iz=0; iz<8; iz++)
 						StringUtils.ReplaceWith(matrix[h-1][iz], ' ', 'g');
 				}
@@ -500,6 +505,8 @@ public class Gen_037 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",                Boolean.TRUE                                      );
+		cfgParams.addDefault("Enable-Top",                Boolean.TRUE                                      );
 		cfgParams.addDefault("Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
 		cfgParams.addDefault("Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
 		cfgParams.addDefault("Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );

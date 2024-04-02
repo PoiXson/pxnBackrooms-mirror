@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.ENABLE_GEN_001;
 import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
@@ -58,6 +57,8 @@ public class Gen_001 extends BackroomsGen {
 	public final FastNoiseLiteD noiseWell;
 
 	// params
+	public final boolean enable_gen;
+	public final boolean enable_top;
 	public final AtomicDouble thresh_wall  = new AtomicDouble( DEFAULT_THRESH_WALL );
 	public final AtomicDouble thresh_moist = new AtomicDouble( DEFAULT_THRESH_MOIST);
 
@@ -72,6 +73,8 @@ public class Gen_001 extends BackroomsGen {
 	public Gen_001(final BackroomsLevel backlevel, final int seed,
 			final int level_y, final int level_h) {
 		super(backlevel, seed, level_y, level_h);
+		this.enable_gen   = cfgParams.getBoolean("Enable-Gen"  );
+		this.enable_top   = cfgParams.getBoolean("Enable-Top"  );
 		// noise
 		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
 		this.noiseMoist         = this.register(new FastNoiseLiteD());
@@ -135,7 +138,7 @@ public class Gen_001 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_001) return;
+		if (!this.enable_gen) return;
 		final BlockData block_wall      = StringToBlockData(this.block_wall,      DEFAULT_BLOCK_WALL     );
 		final BlockData block_subfloor  = StringToBlockData(this.block_subfloor,  DEFAULT_BLOCK_SUBFLOOR );
 		final BlockData block_floor_dry = StringToBlockData(this.block_floor_dry, DEFAULT_BLOCK_FLOOR_DRY);
@@ -189,6 +192,12 @@ public class Gen_001 extends BackroomsGen {
 						}
 					}
 				} // end wall/room
+				// ceiling
+				if (this.enable_top) {
+					chunk.setBlock(ix, y_ceil-1, iz, Material.BEDROCK);
+					if (dao_basement.isWet) chunk.setBlock(ix, y_ceil, iz, Material.WATER  );
+					else                    chunk.setBlock(ix, y_ceil, iz, Material.BEDROCK);
+				}
 			} // end ix
 		} // end iz
 	}
@@ -236,6 +245,8 @@ public class Gen_001 extends BackroomsGen {
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
+		cfgParams.addDefault("Enable-Gen",          Boolean.TRUE                                );
+		cfgParams.addDefault("Enable-Top",          Boolean.TRUE                                );
 		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
 		cfgParams.addDefault("Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
 		cfgParams.addDefault("Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
