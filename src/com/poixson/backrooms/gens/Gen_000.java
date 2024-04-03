@@ -417,7 +417,7 @@ public class Gen_000 extends BackroomsGen {
 		} // end iz
 		if (!chests.isEmpty()) {
 			for (final Iabc loc : chests) {
-				(new ChestFiller_000(this.plugin, "level0", loc.a, loc.b, loc.c))
+				(new ChestFiller_000(this.plugin, "level_000", loc.a, loc.b, loc.c))
 					.start();
 			}
 		}

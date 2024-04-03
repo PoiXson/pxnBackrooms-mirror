@@ -394,7 +394,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 
 	public ConfigurationSection getConfigLevelParams(final int level) {
-		final String key = String.format("Level-%03d", Integer.valueOf(level));
+		final String key = String.format("Level_%03d", Integer.valueOf(level));
 		final FileConfiguration cfg = this.getConfigLevelParams();
 		if (!cfg.contains(key)) {
 			final ConfigurationSection sec = cfg.createSection(key);
@@ -404,7 +404,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		return cfg.getConfigurationSection(key);
 	}
 	public ConfigurationSection getConfigLevelBlocks(final int level) {
-		final String key = String.format("Level-%03d", Integer.valueOf(level));
+		final String key = String.format("Level_%03d", Integer.valueOf(level));
 		final FileConfiguration cfg = this.getConfigLevelBlocks();
 		if (!cfg.contains(key)) {
 			final ConfigurationSection sec = cfg.createSection(key);
@@ -537,8 +537,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 	public int getWorldLevel(final String worldName) {
 		if (!IsEmpty(worldName)) {
-			if (worldName.startsWith("level")) {
-				final String str = worldName.substring(5);
+			if (worldName.length() == 9
+			&&  worldName.startsWith("level_")) {
+				final String str = worldName.substring(6);
 				if (!IsEmpty(str)) {
 					try {
 						final int level = Integer.parseInt(str);
@@ -552,7 +553,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public World getWorldFromLevel(final int level) {
 		final int lvl = this.getMainLevel(level);
 		if (lvl < 0) return null;
-		return Bukkit.getWorld("level"+Integer.toString(lvl));
+		final String name = String.format("level_%03d", Integer.valueOf(lvl));
+		return Bukkit.getWorld(name);
 	}
 
 
@@ -667,8 +669,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 	@Override
 	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
 //TODO: https://github.com/Multiverse/Multiverse-Core/blob/17129f68d204438f1d8e134388b72507dc8c1a63/src/main/java/com/onarandombox/MultiverseCore/commands/CreateCommand.java#L117
-		if (!worldName.startsWith("level"))
-			throw new RuntimeException("Invalid world name, must be level# found: "+worldName);
+		if (worldName.length() != 9
+		|| !worldName.startsWith("level_"))
+			throw new RuntimeException("Invalid world name, must be level_### found: "+worldName);
 		this.log().info("world: "+worldName);
 		return this.getMainBackroomsLevel(worldName);
 	}

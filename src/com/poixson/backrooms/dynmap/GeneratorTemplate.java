@@ -27,7 +27,7 @@ public class GeneratorTemplate {
 	public GeneratorTemplate(final BackroomsPlugin plugin, final int level) {
 		this.plugin = plugin;
 		this.level = level;
-		this.worldName = "backrooms"+Integer.toString(level);
+		this.world_name = String.format("backrooms_%03d", Integer.valueOf(level));
 		this.gen_persp = plugin.getDynmapPerspective();
 		this.out
 			.append("version: 0.20\n"           )
