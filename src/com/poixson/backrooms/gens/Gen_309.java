@@ -1,11 +1,9 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -17,7 +15,6 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.tools.PathTracer;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -35,13 +32,18 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_GROUND_LACUN  = 2.0;
 	public static final double DEFAULT_NOISE_TREES_FREQ    = 0.2;
 	public static final double DEFAULT_NOISE_PRAIRIE_FREQ  = 0.004;
-	public static final double DEFAULT_THRESH_PRAIRIE      = 0.35;
-	public static final int    DEFAULT_PATH_WIDTH          = 3;
-	public static final int    DEFAULT_PATH_CLEARING       = 15;
-	public static final int    PATH_START_X                = 14;
-	public static final int    PATH_START_Z                = 32;
-	public static final int    DEFAULT_SPECIAL_MOD_A       = 19;
-	public static final int    DEFAULT_SPECIAL_MOD_B       = 15;
+	public static final int    DEFAULT_LEVEL_H              = 8;
+	public static final int    DEFAULT_SUBFLOOR             = 3;
+	public static final double DEFAULT_THRESH_PRAIRIE       = 0.35;
+	public static final int    DEFAULT_PATH_WIDTH           = 3;
+	public static final int    DEFAULT_PATH_CLEARING        = 15;
+	public static final double DEFAULT_FENCE_RADIUS         = 65.0;
+	public static final double DEFAULT_FENCE_STRENGTH       = 2.0;
+	public static final double DEFAULT_FENCE_THICKNESS      = 1.3;
+	public static final int    PATH_START_X                 = 14;
+	public static final int    PATH_START_Z                 = 32;
+	public static final int    DEFAULT_SPECIAL_MOD_A        = 19;
+	public static final int    DEFAULT_SPECIAL_MOD_B        = 15;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
@@ -54,18 +56,23 @@ public class Gen_309 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final double  thresh_prairie;
+	public final int     path_width;
+	public final int     path_clearing;
+	public final double  fence_radius;
+	public final double  fence_strength;
+	public final double  fence_thickness;
+	public final int     special_mod_a;
+	public final int     special_mod_b;
+
 	// noise
 	public final FastNoiseLiteD noisePath;
 	public final FastNoiseLiteD noiseGround;
 	public final FastNoiseLiteD noiseTrees;
 	public final FastNoiseLiteD noisePrairie;
-
-	// params
-	public final AtomicDouble  thresh_prairie = new AtomicDouble( DEFAULT_THRESH_PRAIRIE);
-	public final AtomicInteger path_width     = new AtomicInteger(DEFAULT_PATH_WIDTH    );
-	public final AtomicInteger path_clearing  = new AtomicInteger(DEFAULT_PATH_CLEARING );
-	public final AtomicInteger special_mod_a  = new AtomicInteger(DEFAULT_SPECIAL_MOD_A );
-	public final AtomicInteger special_mod_b  = new AtomicInteger(DEFAULT_SPECIAL_MOD_B );
 
 	// path locations
 	protected final PathTracer pathTrace;
@@ -82,12 +89,25 @@ public class Gen_309 extends BackroomsGen {
 
 
 
-	public Gen_309(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_309(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen      = cfgParams.getBoolean("Enable-Gen"     );
 		this.enable_top      = cfgParams.getBoolean("Enable-Top"     );
+		this.level_y         = cfgParams.getInt(    "Level-Y"        );
+		this.level_h         = cfgParams.getInt(    "Level-Height"   );
+		this.subfloor        = cfgParams.getInt(    "SubFloor"       );
+		this.thresh_prairie  = cfgParams.getDouble( "Thresh-Prairie" );
+		this.path_width      = cfgParams.getInt(    "Path-Width"     );
+		this.path_clearing   = cfgParams.getInt(    "Path-Clearing"  );
+		this.fence_radius    = cfgParams.getDouble( "Fence-Radius"   );
+		this.fence_strength  = cfgParams.getDouble( "Fence-Strength" );
+		this.fence_thickness = cfgParams.getDouble( "Fence-Thickness");
+		this.special_mod_a  = cfgParams.getInt(    "Special-Mod-A" );
+		this.special_mod_b  = cfgParams.getInt(    "Special-Mod-B" );
 		// noise
 		this.noisePath    = this.register(new FastNoiseLiteD());
 		this.noiseGround  = this.register(new FastNoiseLiteD());
@@ -102,6 +122,11 @@ public class Gen_309 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 309;
+	}
+
+	@Override
+	public int getNextY() {
+		return 320;
 	}
 
 
@@ -128,7 +153,6 @@ public class Gen_309 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final int path_width = this.path_width.get();
 		final BlockData block_dirt     = StringToBlockData(this.block_dirt,     DEFAULT_BLOCK_DIRT    );
 		final BlockData block_path     = StringToBlockData(this.block_path,     DEFAULT_BLOCK_PATH    );
 		final BlockData block_grass    = StringToBlockData(this.block_grass,    DEFAULT_BLOCK_GRASS   );
@@ -137,30 +161,31 @@ public class Gen_309 extends BackroomsGen {
 		if (block_path     == null) throw new RuntimeException("Invalid block type for level 309 Path"    );
 		if (block_grass    == null) throw new RuntimeException("Invalid block type for level 309 Grass"   );
 		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 309 SubFloor");
-		final int y = this.level_y + SUBFLOOR + 1;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
 		for (int iz=0; iz<16; iz++) {
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final int zz = (chunkZ * 16) + iz;
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int iy=0; iy<SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
-				final double ground;
-				{
-					final double g = this.noiseGround.getNoise(xx, zz);
-					ground = 1.0f + (g < 0.0f ? g * 0.6f : g);
-				}
-				// dirt
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
+				// subfloor
+				for (int iy=0; iy<this.subfloor; iy++)
+					chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
+				// dirt/grass/path
+				final double g = this.noiseGround.getNoise(xx, zz);
+				final double ground = 1.0f + (g < 0.0f ? g * 0.6f : g);
 				final int elevation = (int) (ground * 2.5f); // 0 to 5
-				for (int i=0; i<elevation; i++) {
-					if (i >= elevation-1) {
-						if (this.pathTrace.isPath(xx, zz, path_width)) {
-							chunk.setBlock(ix, y+i, iz, block_path);
+				for (int iy=0; iy<elevation; iy++) {
+					if (iy >= elevation-1) {
+						if (this.pathTrace.isPath(xx, zz, this.path_width)) {
+							chunk.setBlock(ix, y_floor+iy, iz, block_path);
 						} else {
-							chunk.setBlock(ix, y+i, iz, block_grass);
+							chunk.setBlock(ix, y_floor+iy, iz, block_grass);
 						}
 					} else {
-						chunk.setBlock(ix, y+i, iz, block_dirt);
+						chunk.setBlock(ix, y_floor+iy, iz, block_dirt);
 					}
 				}
 			} // end ix
@@ -233,12 +258,6 @@ public class Gen_309 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.thresh_prairie.set(cfgParams.getDouble("Thresh-Prairie"));
-		this.path_width    .set(cfgParams.getInt(   "Path-Width"    ));
-		this.path_clearing .set(cfgParams.getInt(   "Path-Clearing" ));
-		this.special_mod_a .set(cfgParams.getInt(   "Special-Mod-A" ));
-		this.special_mod_b .set(cfgParams.getInt(   "Special-Mod-B" ));
 		// block types
 		this.block_tree_trunk .set(cfgBlocks.getString("Tree-Trunk" ));
 		this.block_tree_leaves.set(cfgBlocks.getString("Tree-Leaves"));
@@ -258,11 +277,17 @@ public class Gen_309 extends BackroomsGen {
 		cfgParams.addDefault("Noise-Prairie-Octave", DEFAULT_NOISE_PRAIRIE_OCTAVE );
 		cfgParams.addDefault("Noise-Prairie-Weight", DEFAULT_NOISE_PRAIRIE_WEIGHT );
 		cfgParams.addDefault("Noise-Prairie-Lac",    DEFAULT_NOISE_PRAIRIE_LAC    );
-		cfgParams.addDefault("Thresh-Prairie",       DEFAULT_THRESH_PRAIRIE       );
-		cfgParams.addDefault("Path-Width",           DEFAULT_PATH_WIDTH           );
-		cfgParams.addDefault("Path-Clearing",        DEFAULT_PATH_CLEARING        );
-		cfgParams.addDefault("Special-Mod-A",        DEFAULT_SPECIAL_MOD_A        );
-		cfgParams.addDefault("Special-Mod-B",        DEFAULT_SPECIAL_MOD_B        );
+		cfgParams.addDefault("Level-Y",              Integer.valueOf(this.getDefaultY()          ));
+		cfgParams.addDefault("Level-Height",         Integer.valueOf(DEFAULT_LEVEL_H             ));
+		cfgParams.addDefault("SubFloor",             Integer.valueOf(DEFAULT_SUBFLOOR            ));
+		cfgParams.addDefault("Thresh-Prairie",       Double .valueOf(DEFAULT_THRESH_PRAIRIE      ));
+		cfgParams.addDefault("Path-Width",           Integer.valueOf(DEFAULT_PATH_WIDTH          ));
+		cfgParams.addDefault("Path-Clearing",        Integer.valueOf(DEFAULT_PATH_CLEARING       ));
+		cfgParams.addDefault("Fence-Radius",         Double .valueOf(DEFAULT_FENCE_RADIUS        ));
+		cfgParams.addDefault("Fence-Strength",       Double .valueOf(DEFAULT_FENCE_STRENGTH      ));
+		cfgParams.addDefault("Fence-Thickness",      Double .valueOf(DEFAULT_FENCE_THICKNESS     ));
+		cfgParams.addDefault("Special-Mod-A",        Integer.valueOf(DEFAULT_SPECIAL_MOD_A       ));
+		cfgParams.addDefault("Special-Mod-B",        Integer.valueOf(DEFAULT_SPECIAL_MOD_B       ));
 		// block types
 		cfgBlocks.addDefault("Dirt",        DEFAULT_BLOCK_DIRT       );
 		cfgBlocks.addDefault("Path",        DEFAULT_BLOCK_PATH       );

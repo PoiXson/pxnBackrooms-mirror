@@ -1,20 +1,8 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.H_019;
-import static com.poixson.backrooms.worlds.Level_000.H_188;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-import static com.poixson.backrooms.worlds.Level_000.Y_000;
-import static com.poixson.backrooms.worlds.Level_000.Y_001;
-import static com.poixson.backrooms.worlds.Level_000.Y_005;
-import static com.poixson.backrooms.worlds.Level_000.Y_006;
-import static com.poixson.backrooms.worlds.Level_000.Y_019;
-import static com.poixson.backrooms.worlds.Level_000.Y_023;
-import static com.poixson.backrooms.worlds.Level_000.Y_037;
-import static com.poixson.backrooms.worlds.Level_000.Y_188;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
@@ -48,7 +36,10 @@ public class Gen_188 extends BackroomsGen {
 
 	// params
 	public final boolean enable_gen;
-	public final AtomicBoolean dark_room = new AtomicBoolean(DEFAULT_DARK_ROOM);
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final boolean dark_room;
 
 	// blocks
 	public final AtomicReference<String> block_subfloor         = new AtomicReference<String>(null);
@@ -61,11 +52,25 @@ public class Gen_188 extends BackroomsGen {
 
 
 
-	public Gen_188(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_188(final BackroomsLevel backlevel, final int seed, final int level_y) {
+		super(backlevel, null, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
+		final Level_000 level_000 = (Level_000) backlevel;
 		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
+		this.level_y    = level_000.gen_001.level_y;
+		this.level_h =
+			level_000.gen_001.level_h +
+			level_000.gen_023.level_h +
+			level_000.gen_000.level_h +
+			level_000.gen_006.level_h +
+			level_000.gen_037.level_h +
+			level_000.gen_005.level_h +
+			level_000.gen_019.level_h;
+		this.subfloor  = level_000.gen_001.subfloor;
+		this.dark_room = cfgParams.getBoolean("Dark-Room");
 	}
 
 
@@ -73,6 +78,11 @@ public class Gen_188 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 188;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.level_h;
 	}
 
 
@@ -118,11 +128,8 @@ public class Gen_188 extends BackroomsGen {
 		if (block_lobby_wall          == null) throw new RuntimeException("Invalid block type for level 0 Lobby-Wall"        );
 		if (block_overgrowth_wall     == null) throw new RuntimeException("Invalid block type for level 23 Overgrowth-Wall"  );
 		final BlockData block_water = Bukkit.createBlockData("minecraft:water[level=0]");
-		final boolean dark_room = this.dark_room.get();
 		final BlockData light = Bukkit.createBlockData("light[level=15]");
-		final int y  = Y_188;
-		final int cy =(Y_188 + H_188) - 1;
-		final int h  = H_188;
+		final int cy = (this.level_y + this.level_h) - 1;
 		for (int iz=0; iz<16; iz++) {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
@@ -141,11 +148,12 @@ public class Gen_188 extends BackroomsGen {
 					}
 				}
 				// floor
-				chunk.setBlock(ix, y, iz, Material.BEDROCK);
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
 				if (outer == 0 && inner == 0) {
-					final int yy = y + SUBFLOOR + 1;
-					for (int iy=0; iy<SUBFLOOR; iy++)
-						chunk.setBlock(ix, y+iy+1, iz, block_subfloor);
+					final int yy = this.level_y + this.subfloor + this.bedrock_barrier;
+					for (int iy=0; iy<this.subfloor; iy++)
+						chunk.setBlock(ix, this.level_y+iy+this.bedrock_barrier, iz, block_subfloor);
 					// border path
 					if (xx < -43 || xx > 58
 					||  zz < -43 || zz > 58) {
@@ -184,7 +192,7 @@ public class Gen_188 extends BackroomsGen {
 					if ((xx+zz+500) % 3 == 0)
 						chunk.setBlock(ix, yy+4, iz, light);
 					// ceiling
-					chunk.setBlock(ix, y+cy, iz, block_ceiling);
+					chunk.setBlock(ix, cy, iz, block_ceiling);
 				}
 				// walls
 				BlockData block_hotel_wall_top    = null;
@@ -194,8 +202,8 @@ public class Gen_188 extends BackroomsGen {
 					block_hotel_wall_bottom = (xx==-48 || xx==63 ? block_hotel_wall_bottom_x : block_hotel_wall_bottom_z);
 				}
 				Y_LOOP:
-				for (int iy=1; iy<h; iy++) {
-					final int yy = y + iy;
+				for (int iy=0; iy<this.level_h; iy++) {
+					final int yy = this.level_y + this.subfloor + iy;
 					boolean isWindow = false;
 					if (outer == 1 || inner == 1) {
 						final int mod9;
@@ -247,7 +255,7 @@ public class Gen_188 extends BackroomsGen {
 						} else {
 							// window
 							if (isWindow) {
-								if (yy < Y_037+SUBFLOOR+5 && yy > Y_037 )
+								if (yy < level_037_y+this.subfloor+5 && yy > level_037_y)
 									chunk.setBlock(ix, yy, iz, block_water); // poolrooms
 							// wall
 							} else {
@@ -265,13 +273,13 @@ public class Gen_188 extends BackroomsGen {
 					} else
 					// inner wall
 					if (inner > 0) {
-						if (isWindow) chunk.setBlock(ix, y+iy, iz, block_window);
-						else          chunk.setBlock(ix, y+iy, iz, block_wall  );
+						if (isWindow) chunk.setBlock(ix, yy, iz, block_window);
+						else          chunk.setBlock(ix, yy, iz, block_wall  );
 					} else
 					// light inside wall
 					if (inside == 1) {
-						if (!dark_room) {
-							if (iy > SUBFLOOR+4 && iy < cy-1)
+						if (!this.dark_room) {
+							if (iy > this.subfloor+4 && iy < cy-1)
 								chunk.setBlock(ix, yy, iz, light);
 						}
 					}
@@ -283,7 +291,7 @@ public class Gen_188 extends BackroomsGen {
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("eus")
-				.xyz(13, y+SUBFLOOR+1, 0)
+				.xyz(13, this.level_y+this.subfloor+1, 0)
 				.whd(3, 4, 8);
 			plot.type('.', Material.AIR    );
 			plot.type('x', Material.BEDROCK);
@@ -312,7 +320,7 @@ public class Gen_188 extends BackroomsGen {
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("suw")
-				.xyz(10, y+SUBFLOOR+1, 13)
+				.xyz(10, this.level_y+this.subfloor+1, 13)
 				.whd(9, 4, 3);
 			plot.type('.', Material.AIR    );
 			plot.type('x', Material.BEDROCK);
@@ -347,8 +355,6 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.dark_room.set(cfgParams.getBoolean("Dark-Room"));
 		// block types
 		this.block_subfloor        .set(cfgBlocks.getString("SubFloor"        ));
 		this.block_floor           .set(cfgBlocks.getString("Floor"           ));
@@ -361,7 +367,7 @@ public class Gen_188 extends BackroomsGen {
 	public void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
 		cfgParams.addDefault("Enable-Gen", Boolean.TRUE     );
-		cfgParams.addDefault("Dark-Room", DEFAULT_DARK_ROOM);
+		cfgParams.addDefault("Dark-Room",  DEFAULT_DARK_ROOM);
 		// block types
 		cfgBlocks.addDefault("SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
 		cfgBlocks.addDefault("Floor",            DEFAULT_BLOCK_FLOOR           );

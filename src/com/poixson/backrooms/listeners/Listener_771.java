@@ -1,7 +1,5 @@
 package com.poixson.backrooms.listeners;
 
-import static com.poixson.backrooms.worlds.Level_771.LEVEL_H;
-import static com.poixson.backrooms.worlds.Level_771.LEVEL_Y;
 import static com.poixson.utils.BlockUtils.IsButton;
 
 import java.util.LinkedList;
@@ -17,6 +15,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.gens.Gen_771;
+import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.SeriesBlockChanger;
 import com.poixson.tools.events.xListener;
 
@@ -45,11 +45,15 @@ public class Listener_771 implements xListener {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
+		final Level_771 level_771 = (Level_771) this.plugin.getBackroomsLevel(771);
+		final Gen_771 gen_771 = level_771.gen_771;
+		final int level_771_y = gen_771.level_y;
+		final int level_771_h = gen_771.level_h;
 		final Block block = event.getClickedBlock();
 		final int x = block.getX();
 		final int y = block.getY();
 		final int z = block.getZ();
-		if (y == LEVEL_Y + LEVEL_H + 7
+		if (y == level_771_y + level_771_h + 7
 		&& (x == 0 || x == -1)
 		&& (z == 0 || z == -1)) {
 			if (IsButton(block.getType())) {
@@ -64,7 +68,10 @@ public class Listener_771 implements xListener {
 
 	public void triggerSecretDoor() {
 		if (this.block_changer.get() == null) {
-			final int y = LEVEL_Y + LEVEL_H;
+			final Level_771 backlevel = (Level_771) this.plugin.getBackroomsLevel(771);
+			final int level_771_y = backlevel.gen_771.level_y;
+			final int level_771_h = backlevel.gen_771.level_h;
+			final int y = level_771_y + level_771_h;
 			final BlockData block_air   = Bukkit.createBlockData("minecraft:air"                         );
 			final BlockData block_solid = Bukkit.createBlockData("minecraft:chiseled_polished_blackstone");
 			final BlockData block_slab  = Bukkit.createBlockData("minecraft:polished_blackstone_slab"    );

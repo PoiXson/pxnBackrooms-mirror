@@ -51,12 +51,15 @@ public class Listener_Interact implements xListener {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
+		final Level_000 level_000 = (Level_000) this.plugin.getBackroomsLevel(0);
+		final int level_000_y = level_000.gen_000.level_y;
+		final int level_006_y = level_000.gen_006.level_y;
 		final Block block = event.getClickedBlock();
 		final int y = block.getY();
-		if (y == Level_000.Y_000+6
-		||  y == Level_000.Y_006+2) {
+		if (y == level_000_y+6
+		||  y == level_006_y+2) {
 			final Player player = event.getPlayer();
-			final int diff_y = (Level_000.Y_006 - Level_000.Y_000) - 4;
+			final int diff_y = (level_006_y - level_000_y) - 4;
 			final int level = this.plugin.getLevel(block.getLocation());
 			TYPE_SWITCH:
 			switch (block.getType()) {

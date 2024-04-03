@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
@@ -27,7 +25,6 @@ import com.poixson.backrooms.gens.Gen_001.BasementData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
 import com.poixson.tools.DelayedChestFiller;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabc;
@@ -43,6 +40,9 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_000 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_H             = 5;
+	public static final int    DEFAULT_SUBFLOOR            = 3;
+	public static final int    DEFAULT_SUBCEILING          = 3;
 	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.022;
 	public static final int    DEFAULT_NOISE_WALL_OCTAVE   = 2;
 	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.1;
@@ -68,9 +68,15 @@ public class Gen_000 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLoot;
 
 	// params
-	public final AtomicDouble thresh_wall_L = new AtomicDouble( DEFAULT_THRESH_WALL_L);
-	public final AtomicDouble thresh_wall_H = new AtomicDouble( DEFAULT_THRESH_WALL_H);
-	public final AtomicDouble thresh_loot   = new AtomicDouble( DEFAULT_THRESH_LOOT  );
+	public final boolean enable_gen;
+	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final int     subceiling;
+	public final double  thresh_wall_L;
+	public final double  thresh_wall_H;
+	public final double  thresh_loot;
 
 	// blocks
 	public final AtomicReference<String> block_wall        = new AtomicReference<String>(null);
@@ -82,15 +88,25 @@ public class Gen_000 extends BackroomsGen {
 
 
 
-	public Gen_000(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_000(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
 		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
+		this.level_y       = cfgParams.getInt(    "Level-Y"      );
+		this.level_h       = cfgParams.getInt(    "Level-Height" );
+		this.subfloor      = cfgParams.getInt(    "SubFloor"     );
+		this.subceiling    = cfgParams.getInt(    "SubCeiling"   );
+		this.thresh_wall_L = cfgParams.getDouble( "Thresh-Wall-L");
+		this.thresh_wall_H = cfgParams.getDouble( "Thresh-Wall-H");
+		this.thresh_loot   = cfgParams.getDouble( "Thresh-Loot"  );
 		// noise
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLoot       = this.register(new FastNoiseLiteD());
+		if (this.subceiling < 1) throw new RuntimeException("Invalid SubCeiling value for level 0, must be >=1");
 	}
 
 
@@ -98,6 +114,11 @@ public class Gen_000 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 0;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.bedrock_barrier + this.level_y + this.subfloor + this.level_h + this.subceiling + 2;
 	}
 
 
@@ -117,8 +138,8 @@ public class Gen_000 extends BackroomsGen {
 		public LobbyData(final double valueWall) {
 			this.valueWall = valueWall;
 			this.isWall = (
-				valueWall > Gen_000.this.thresh_wall_L.get() &&
-				valueWall < Gen_000.this.thresh_wall_H.get()
+				valueWall > Gen_000.this.thresh_wall_L &&
+				valueWall < Gen_000.this.thresh_wall_H
 			);
 		}
 
@@ -246,33 +267,33 @@ public class Gen_000 extends BackroomsGen {
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
-		LobbyData dao;
-		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_h + y + 1;
-		int xx, zz;
-		int modX, modZ;
+		final int h_walls = this.level_h + 3;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
+		final int y_ceil  = (y_floor + h_walls) - 2;
 //		int outlets = 0;
 //		int outlet_rnd;
 		for (int iz=0; iz<16; iz++) {
-			zz = (chunkZ * 16) + iz;
-			modZ = (zz < 0 ? 0-zz : zz) % 7;
+			final int zz = (chunkZ * 16) + iz;
+			final int mod_z = (zz < 0 ? 0-zz : zz) % 7;
 			for (int ix=0; ix<16; ix++) {
-				xx = (chunkX * 16) + ix;
-				modX = (xx < 0 ? 1-xx : xx) % 7;
+				final int xx = (chunkX * 16) + ix;
+				final int mod_x = (xx < 0 ? 1-xx : xx) % 7;
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
 				// subfloor
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int iy=0; iy<SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
-				dao = lobbyData.get(new Iab(ix, iz));
-				if (dao == null) continue;
+				for (int iy=0; iy<this.subfloor; iy++)
+					chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
+				final LobbyData dao_lobby = data_lobby.get(new Iab(ix, iz));
+				if (dao_lobby == null) continue;
 				// wall
-				if (dao.isWall) {
+				if (dao_lobby.isWall) {
 					// lobby walls
-					final int h = this.level_h + 3;
-					chunk.setBlock(ix, y,   iz, block_subfloor );
-					chunk.setBlock(ix, y+1, iz, block_wall_base);
-					for (int iy=2; iy<h; iy++)
-						chunk.setBlock(ix, y+iy, iz, block_wall);
+					chunk.setBlock(ix, y_floor,   iz, block_subfloor );
+					chunk.setBlock(ix, y_floor+1, iz, block_wall_base);
+					for (int iy=0; iy<h_walls; iy++)
+						chunk.setBlock(ix, y_floor+iy, iz, block_wall);
 //TODO
 //					// outlet
 //					outlet_rnd = xRand.Get(0, 100+(int)Math.pow(10.0, outlets)).nextInt();
@@ -281,65 +302,68 @@ public class Gen_000 extends BackroomsGen {
 				// room
 				} else {
 					// floor
-					chunk.setBlock(ix, y, iz, block_carpet);
-					if (ENABLE_TOP_000) {
-						if (modZ == 0 && modX < 2
-						&& dao.wall_dist > 2) {
+					chunk.setBlock(ix, y_floor, iz, block_carpet);
+					// ceiling
+					if (this.enable_top) {
+						if (mod_z == 0 && mod_x < 2
+						&& dao_lobby.wall_dist > 2) {
 							// ceiling lights
-							chunk.setBlock(ix, cy,   iz, lamp                   );
-							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
+							chunk.setBlock(ix, y_ceil,   iz, lamp                   );
+							chunk.setBlock(ix, y_ceil+1, iz, Material.REDSTONE_BLOCK);
 						} else {
 							// ceiling
-							chunk.setBlock(ix, cy,   iz, block_ceiling   );
-							chunk.setBlock(ix, cy+1, iz, block_subceiling);
+							chunk.setBlock(ix, y_ceil,   iz, block_ceiling   );
+							chunk.setBlock(ix, y_ceil+1, iz, block_subceiling);
 						}
 					}
-					// special
-					if (dao.boxed > 4) {
+				}
 				// subceiling
 				if (this.enable_top) {
 					for (int iy=1; iy<this.subceiling; iy++)
 						chunk.setBlock(ix, y_ceil+iy+1, iz, block_subceiling);
 				}
+				// special
+				if (!dao_lobby.isWall) {
+					if (dao_lobby.boxed > 4) {
 						// loot
-						if (dao.wall_dist == 1) {
+						if (dao_lobby.wall_dist == 1) {
 //TODO
-							((Level_000)this.backlevel).loot_chests_0.add(xx, zz);
+							level_000.loot_chests_0.add(xx, zz);
 							final BlockData barrel = Bukkit.createBlockData("minecraft:barrel[facing=up]");
-							chunk.setBlock(ix, y+1, iz, barrel);
-							chests.add(new Iabc(xx, y+1, zz));
+							chunk.setBlock(ix, y_floor+1, iz, barrel);
+							chests.add(new Iabc(xx, y_floor+1, zz));
 						} else
 						// portal to basement
-						if (dao.boxed     == 7
-						&&  dao.wall_dist == 2
-						&&  dao.box_dir != null) {
+						if (dao_lobby.boxed     == 7
+						&&  dao_lobby.wall_dist == 2
+						&&  dao_lobby.box_dir != null) {
 							boolean found_basement_wall = false;
-							BasementData base;
 							for (int izb=-2; izb<3; izb++) {
 								for (int ixb=-2; ixb<3; ixb++) {
-									base = basementData.get(new Iab(ixb+ix, izb+iz));
-									if (base != null
-									&&  base.isWall) {
+									final BasementData dao_basement = data_basement.get(new Iab(ixb+ix, izb+iz));
+									if (dao_basement != null
+									&&  dao_basement.isWall) {
 										found_basement_wall = true;
 										break;
 									}
 								}
 							}
 							if (!found_basement_wall) {
-								((Level_000)this.backlevel).portal_0_to_1.add(xx, zz);
-								final int h = Level_000.H_023 + this.level_h + (SUBFLOOR*3) + (SUBCEILING*2);
+								level_000.portal_0_to_1.add(xx, zz);
+								final int y_exit = gen_001.getNextY() - 2;
+								final int h_exit = (y_ceil - gen_001.getNextY()) + 3;
 								final BlockPlotter plot =
 									(new BlockPlotter())
 									.axis("use")
-									.rotate(dao.box_dir)
-									.y((cy - h) + 1)
-									.whd(5, h, 6);
-								switch (dao.box_dir) {
+									.rotate(dao_lobby.box_dir)
+									.y(y_exit)
+									.whd(5, h_exit, 6);
+								switch (dao_lobby.box_dir) {
 								case NORTH: plot.xz(ix-3, iz-4); break;
 								case SOUTH: plot.xz(ix,   iz  ); break;
 								case EAST:  plot.xz(ix-2, iz-2); break;
 								case WEST:  plot.xz(ix-4, iz-3); break;
-								default: throw new RuntimeException("Unknown boxed walls direction: "+dao.box_dir.toString());
+								default: throw new RuntimeException("Unknown boxed walls direction: "+dao_lobby.box_dir.toString());
 								}
 								plot.type('.', Material.AIR         );
 								plot.type('=', block_wall           );
@@ -355,8 +379,9 @@ public class Gen_000 extends BackroomsGen {
 								matrix[0][4].append("xg.gx");
 								matrix[0][5].append("xxgxx");
 								int iy = 0;
-								// lower area
-								for (int i=1; i<3; i++) {
+								// basement subceiling
+								final int h_exit_subceil = this.bedrock_barrier + 1;
+								for (int i=1; i<h_exit_subceil; i++) {
 									iy++;
 									matrix[iy][1].append(" xxx");
 									matrix[iy][2].append(" x.x");
@@ -371,12 +396,16 @@ public class Gen_000 extends BackroomsGen {
 								matrix[iy][3].append(" xxx");
 								matrix[iy][4].append(" xxx");
 								matrix[iy][5].append(" xxx");
-								iy++;
-								matrix[iy][1].append(" xxx");
-								matrix[iy][2].append(" x.x");
-								matrix[iy][3].append(" xxx");
+								// overgrowth subfloor
+								for (int i=0; i<gen_023.subfloor; i++) {
+									iy++;
+									matrix[iy][1].append(" xxx");
+									matrix[iy][2].append(" x.x");
+									matrix[iy][3].append(" xxx");
+								}
 								// shaft through overgrowth
-								for (int i=-1; i<Level_000.H_023; i++) {
+								final int level_023_h = gen_023.level_h + 2;
+								for (int i=0; i<level_023_h; i++) {
 									iy++;
 									matrix[iy][0].append("mmmmm");
 									matrix[iy][1].append("mxxxm");
@@ -384,16 +413,16 @@ public class Gen_000 extends BackroomsGen {
 									matrix[iy][3].append("mxxxm");
 									matrix[iy][4].append("mmmmm");
 								}
-								// shaft between overgrowth and lobby
-								final int hh = SUBCEILING + SUBFLOOR + 2;
-								for (int i=0; i<hh; i++) {
+								// overgrowth subceiling
+								final int h_exit_closed = gen_023.subceiling + this.bedrock_barrier + this.subfloor + 1;
+								for (int i=0; i<h_exit_closed; i++) {
 									iy++;
 									matrix[iy][1].append(" xxx");
 									matrix[iy][2].append(" x.x");
 									matrix[iy][3].append(" xxx");
 								}
 								// opening in lobby
-								for (int i=0; i<Level_000.H_000; i++) {
+								for (int i=0; i<this.level_h; i++) {
 									iy++;
 									matrix[iy][0].append("=====");
 									matrix[iy][1].append("=xxx=");
@@ -409,7 +438,7 @@ public class Gen_000 extends BackroomsGen {
 								matrix[iy][3].append("=xxx=");
 								matrix[iy][4].append("== ==");
 								plots.add(new Tuple<BlockPlotter, StringBuilder[][]>(plot, matrix));
-							}
+							} // end no basement walls
 						} // end portal to basement
 					} // end special
 				} // end wall/room
@@ -445,7 +474,7 @@ public class Gen_000 extends BackroomsGen {
 				x = xx + (i % 9);
 				y = zz + Math.floorDiv(i, 9);
 				value = Gen_000.this.noiseLoot.getNoise(x, y);
-				if (value > Gen_000.this.thresh_loot.get())
+				if (value > Gen_000.this.thresh_loot)
 					chest.setItem(i, item);
 			}
 		}
@@ -480,10 +509,6 @@ public class Gen_000 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.thresh_wall_L.set(cfgParams.getDouble("Thresh-Wall-L"));
-		this.thresh_wall_H.set(cfgParams.getDouble("Thresh-Wall-H"));
-		this.thresh_loot  .set(cfgParams.getDouble("Thresh-Loot"  ));
 		// block types
 		this.block_wall      .set(cfgBlocks.getString("Wall"      ));
 		this.block_wall_base .set(cfgBlocks.getString("Wall-Base" ));
@@ -497,6 +522,10 @@ public class Gen_000 extends BackroomsGen {
 		// params
 		cfgParams.addDefault("Enable-Gen",          Boolean.TRUE                                );
 		cfgParams.addDefault("Enable-Top",          Boolean.TRUE                                );
+		cfgParams.addDefault("Level-Y",             Integer.valueOf(this.getDefaultY()         ));
+		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H            ));
+		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR           ));
+		cfgParams.addDefault("SubCeiling",          Integer.valueOf(DEFAULT_SUBCEILING         ));
 		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
 		cfgParams.addDefault("Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
 		cfgParams.addDefault("Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );

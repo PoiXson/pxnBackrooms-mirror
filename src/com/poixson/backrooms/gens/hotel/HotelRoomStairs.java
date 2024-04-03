@@ -3,8 +3,6 @@ package com.poixson.backrooms.gens.hotel;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_SIDE;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_X;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_Z;
-import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
@@ -28,8 +26,6 @@ import com.poixson.utils.StringUtils;
 
 
 public class HotelRoomStairs implements HotelRoom {
-
-	protected static final double THRESH_ATTIC_STAIRS = 0.8;
 
 	protected final Level_000 level0;
 
@@ -65,13 +61,14 @@ public class HotelRoomStairs implements HotelRoom {
 		final int z = area.b;
 		final int w = area.c;
 		final int d = area.d;
-		final int h = Level_000.H_005 + 2;
+		final int h_stairs = this.gen_005.level_h + this.gen_005.subceiling + 1;
+		final int door_x = Math.floorDiv(w, 2) - 2;
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("use")
 			.rotate(facing.getOppositeFace())
-			.xyz(x, y, z)
-			.whd(w, h, d);
+			.xyz(x, y_stairs, z)
+			.whd(w, h_stairs, d);
 		plot.type('.', Material.AIR);
 		plot.type('#', Material.BEDROCK);
 		plot.type('=', Material.DARK_OAK_PLANKS);
@@ -82,14 +79,14 @@ public class HotelRoomStairs implements HotelRoom {
 		plot.type('_', Material.DARK_OAK_PRESSURE_PLATE);
 		plot.type('L', Material.DARK_OAK_STAIRS, "[half=bottom,facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
-		final int door_x = Math.floorDiv(w, 2) - 2;
 		char fill;
-		for (int iy=0; iy<h; iy++) {
+		for (int iy=0; iy<h_stairs; iy++) {
 			for (int iz=2; iz<d-1; iz++) {
 				if (iy == 0   ) fill = '='; else // floor
 				if (iy == iz-2) fill = 'L'; else // stairs
 				if (iy >  iz-2) fill = '.'; else // air above stairs
 					fill = '#';                  // fill under stairs
+				// tall side wall
 				matrix[iy][iz]
 					.append(StringUtils.Repeat(door_x+1,   '#'))
 					.append(StringUtils.Repeat(3,         fill))
@@ -100,7 +97,7 @@ public class HotelRoomStairs implements HotelRoom {
 			// front wall
 			else         matrix[iy][1].append(StringUtils.Repeat(w, '#'));
 			// back wall
-			if (iy < h-1) {
+			if (iy < h_stairs-1) {
 				matrix[iy][d-1].append(StringUtils.Repeat(w, '#'));
 			// top steps at hotel level
 			} else {
@@ -125,36 +122,38 @@ public class HotelRoomStairs implements HotelRoom {
 
 
 
+	// attic stairs
 	protected void buildAtticStairs(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
-			final LimitedRegion region, final Iabcd area, final int y, final BlockFace facing) {
-		final int offset = 9;
-		final int x = area.a + (BlockFace.EAST.equals( facing) ? -5 : 0);
-		final int z = area.b + (BlockFace.SOUTH.equals(facing) ? -5 : 0);
+			final LimitedRegion region, final Iabcd area, final int y_stairs, final BlockFace facing) {
+		final int x = area.a + (BlockFace.EAST .equals(facing) ? -3 : 0);
+		final int z = area.b + (BlockFace.SOUTH.equals(facing) ? -3 : 0);
+		final int y_attic  = (this.gen_019.level_y - this.gen_019.bedrock_barrier) - 2;
+		final int h_stairs = this.gen_005.subceiling + this.gen_019.bedrock_barrier + this.gen_019.subfloor + 2;
 		final int w = area.c;
-		final int d = (area.d + offset) - 4;
-		final int yy = Level_000.Y_019 - 1;
-		final int h = (SUBCEILING + SUBFLOOR) - 1;
+		final int d = (area.d + h_stairs) - 3;
+		final int door_x = Math.floorDiv(w, 2) - 2;
+		final int offset = (this.gen_005.subceiling + this.gen_019.bedrock_barrier) - h_stairs - 1;
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("use")
 			.rotate(facing.getOppositeFace())
-			.xyz(x, yy, z)
-			.whd(w, h, d);
-		plot.type('.', Material.AIR);
+			.xyz(x, y_attic,  z)
+			.whd(w, h_stairs, d+2);
+		plot.type('.', Material.AIR    );
 		plot.type('#', Material.BEDROCK);
 		plot.type('L', Material.DARK_OAK_STAIRS, "[half=bottom,facing="+FaceToAxisString(facing.getOppositeFace())+"]");
 		final StringBuilder[][] matrix = plot.getMatrix3D();
-		final int door_x = Math.floorDiv(w, 2) - 2;
-		char fill;
-		for (int iy=0; iy<h; iy++) {
+		for (int iy=0; iy<h_stairs; iy++) {
+			// tall side wall
 			matrix[iy][1]
 				.append(StringUtils.Repeat(door_x, ' '))
 				.append(StringUtils.Repeat(5,      '#'));
-			for (int iz=2; iz<d; iz++) {
-				if (iy == iz-offset) fill = 'L'; else // stairs
-				if (iy >  iz-offset) fill = '.'; else // air above stairs
-					fill = '#';                       // fill under stairs
-				matrix[iy][iz]
+			for (int iz=0; iz<d; iz++) {
+				final char fill;
+				if      (iy == iz+offset) fill = 'L'; // stairs
+				else if (iy >  iz+offset) fill = '.'; // air above stairs
+				else                            fill = '#'; // fill under stairs
+				matrix[iy][iz+2]
 					.append(StringUtils.Repeat(door_x, ' ')).append('#')
 					.append(StringUtils.Repeat(3,     fill)).append('#');
 			}
@@ -183,7 +182,7 @@ public class HotelRoomStairs implements HotelRoom {
 			final Iab ab = FaceToIxz(direction);
 			final int xx = (room_area.a + room_area.c) - (8 * ab.a);
 			final int zz = (room_area.b + room_area.d) - (8 * ab.b);
-			final int yy = Level_000.Y_019 + SUBFLOOR + 1;
+			final int yy = this.gen_019.level_y + this.gen_019.subfloor + 1;
 			if (region.isInRegion(xx,             0, zz            )
 			&&  region.isInRegion(xx-room_area.c, 0, zz-room_area.d)) {
 				Material type;

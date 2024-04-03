@@ -7,9 +7,8 @@ public class Gen_010 extends BackroomsGen {
 
 
 
-	public Gen_010(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_010(final BackroomsLevel backlevel, final int seed, final int level_y) {
+		super(backlevel, seed, level_y);
 	}
 
 
@@ -35,9 +34,6 @@ public class Gen_010 extends BackroomsGen {
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 	}

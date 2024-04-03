@@ -16,10 +16,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 37 | Poolrooms
 public class Pop_037 implements BackroomsPop {
 
-	public static final int SUBFLOOR = Level_000.SUBFLOOR;
-
-	public static final double THRESH_TUNNEL = 0.95;
-
 	protected final Gen_037 gen;
 
 	protected final Iab[] starting_points;
@@ -103,7 +99,7 @@ public class Pop_037 implements BackroomsPop {
 		@Override
 		public boolean isValidPoint(final int x, final int y) {
 			final double value = Pop_037.this.gen.noiseTunnels.getNoiseRot(x, y, 0.25);
-			return (value > THRESH_TUNNEL);
+			return (value > Pop_037.this.gen_037.thresh_tunnel);
 		}
 
 	}

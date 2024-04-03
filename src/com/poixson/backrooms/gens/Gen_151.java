@@ -13,10 +13,8 @@ public class Gen_151 extends BackroomsGen {
 
 
 
-	public Gen_151(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h,
-			final int subfloor, final int subceiling) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_151(final BackroomsLevel backlevel, final int seed, final int level_y) {
+		super(backlevel, seed, level_y);
 / *
 		// attic walls
 		this.noiseHouseWalls = this.register(new FastNoiseLiteD());
@@ -40,8 +38,8 @@ public class Gen_151 extends BackroomsGen {
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		if (!this.enable_gen) return;
 / *
-		if (!ENABLE_GEN_151) return;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
 //TODO
@@ -64,8 +62,8 @@ public class Gen_151 extends BackroomsGen {
 				}
 				if (ENABLE_TOP_151) {
 					cy++;
-					for (int i=0; i<SUBCEILING; i++)
-						chunk.setBlock(ix, cy+i, iz, HOUSE_FLOOR);
+					for (int iy=0; iy<SUBCEILING; iy++)
+						chunk.setBlock(ix, cy+iy, iz, HOUSE_FLOOR);
 				}
 			} // end ix
 		} // end iz
@@ -79,9 +77,6 @@ public class Gen_151 extends BackroomsGen {
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 	}

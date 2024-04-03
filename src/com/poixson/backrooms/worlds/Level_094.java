@@ -17,10 +17,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 94 | Motion
 public class Level_094 extends BackroomsLevel {
 
-	public static final boolean ENABLE_GEN_094 = true;
-
-	public static final int LEVEL_Y = 0;
-
 	// generators
 	public final Gen_094 gen;
 
@@ -58,7 +54,7 @@ public class Level_094 extends BackroomsLevel {
 
 	@Override
 	public int getY(final int level) {
-		return 255;
+		return this.gen_094.level_y;
 	}
 	@Override
 	public int getMaxY(final int level) {

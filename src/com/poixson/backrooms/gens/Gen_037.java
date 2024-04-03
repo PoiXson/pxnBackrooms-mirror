@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
@@ -19,7 +17,6 @@ import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -34,6 +31,10 @@ import com.poixson.utils.StringUtils;
 public class Gen_037 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_H                   = 14;
+	public static final int    DEFAULT_WATER_DEPTH               = 4;
+	public static final int    DEFAULT_SUBFLOOR                  = 3;
+	public static final int    DEFAULT_SUBCEILING                = 3;
 	public static final double DEFAULT_NOISE_ROOM_FREQ           = 0.004;
 	public static final int    DEFAULT_NOISE_ROOM_OCTAVE         = 2;
 	public static final double DEFAULT_NOISE_ROOM_GAIN           = 0.1;
@@ -46,8 +47,6 @@ public class Gen_037 extends BackroomsGen {
 	public static final double DEFAULT_THRESH_ROOM               = 0.2;
 	public static final double DEFAULT_THRESH_PORTAL             = 0.5;
 
-	public static final int WATER_DEPTH = 3;
-
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL_A     = "minecraft:prismarine_bricks";
 	public static final String DEFAULT_BLOCK_WALL_B     = "minecraft:prismarine";
@@ -58,16 +57,18 @@ public class Gen_037 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     water_depth;
+	public final int     subfloor;
+	public final int     subceiling;
+
 
 	// noise
 	public final FastNoiseLiteD noisePoolRooms;
 	public final FastNoiseLiteD noiseTunnels;
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
-
-	// params
-	public final AtomicDouble  thresh_room   = new AtomicDouble( DEFAULT_THRESH_ROOM  );
-	public final AtomicDouble  thresh_portal = new AtomicDouble( DEFAULT_THRESH_PORTAL);
 
 	// blocks
 	public final AtomicReference<String> block_wall_a     = new AtomicReference<String>(null);
@@ -78,12 +79,19 @@ public class Gen_037 extends BackroomsGen {
 
 
 
-	public Gen_037(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_037(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
 		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
+		this.level_y       = cfgParams.getInt(    "Level-Y"      );
+		this.level_h       = cfgParams.getInt(    "Level-Height" );
+		this.water_depth   = cfgParams.getInt(    "Water-Depth"  );
+		this.subfloor      = cfgParams.getInt(    "SubFloor"     );
+		this.subceiling    = cfgParams.getInt(    "SubCeiling"   );
 		// noise
 		this.noisePoolRooms   = this.register(new FastNoiseLiteD());
 		this.noiseTunnels     = this.register(new FastNoiseLiteD());
@@ -96,6 +104,11 @@ public class Gen_037 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 37;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.bedrock_barrier + this.subfloor + this.level_h + this.subceiling + 2;
 	}
 
 
@@ -175,50 +188,50 @@ public class Gen_037 extends BackroomsGen {
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
 		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
-		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_h + y + 1;
-		final int h  = this.level_h + 2;
+		final int h_walls = this.level_h + 2;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
+		final int y_ceil  = y_floor + this.level_h + 2;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
 				// subfloor
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int iy=0; iy<SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
+				for (int iy=0; iy<this.subfloor; iy++)
+					chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
 				// subceiling
-				if (ENABLE_TOP_037) {
-					for (int iy=0; iy<SUBCEILING; iy++)
-						chunk.setBlock(ix, cy+iy+1, iz, block_subceiling);
+				if (this.enable_top) {
+					for (int iy=0; iy<this.subceiling; iy++)
+						chunk.setBlock(ix, y_ceil+iy, iz, block_subceiling);
 				}
 			}
 		}
-		PoolData dao;
-		boolean solid_n,  solid_s,  solid_e,  solid_w;
-		boolean solid_ne, solid_nw, solid_se, solid_sw;
 		for (int rz=0; rz<2; rz++) {
 			for (int rx=0; rx<2; rx++) {
 				final BlockPlotter plot =
 					(new BlockPlotter())
 					.axis("use")
-					.xyz(rx*8, y, rz*8)
-					.whd(8, h, 8);
+					.xyz(rx*8, y_floor, rz*8)
+					.whd(8, h_walls, 8);
 				plot.type('#', block_wall_a);
 				plot.type('@', block_wall_b);
 				plot.type('w', "minecraft:water[level=0]");
 				plot.type('g', block_ceiling);
-				dao = poolData.get(new Iab(rx, rz));
-				solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
-				solid_s  = poolData.get(new Iab(rx,   rz+1)).isSolid();
-				solid_e  = poolData.get(new Iab(rx+1, rz  )).isSolid();
-				solid_w  = poolData.get(new Iab(rx-1, rz  )).isSolid();
-				solid_ne = poolData.get(new Iab(rx+1, rz-1)).isSolid();
-				solid_nw = poolData.get(new Iab(rx-1, rz-1)).isSolid();
-				solid_se = poolData.get(new Iab(rx+1, rz+1)).isSolid();
-				solid_sw = poolData.get(new Iab(rx-1, rz+1)).isSolid();
+				final PoolData dao_pool = poolData.get(new Iab(rx, rz));
+				final boolean solid_n  = poolData.get(new Iab(rx,   rz-1)).isSolid();
+				final boolean solid_s  = poolData.get(new Iab(rx,   rz+1)).isSolid();
+				final boolean solid_e  = poolData.get(new Iab(rx+1, rz  )).isSolid();
+				final boolean solid_w  = poolData.get(new Iab(rx-1, rz  )).isSolid();
+				final boolean solid_ne = poolData.get(new Iab(rx+1, rz-1)).isSolid();
+				final boolean solid_nw = poolData.get(new Iab(rx-1, rz-1)).isSolid();
+				final boolean solid_se = poolData.get(new Iab(rx+1, rz+1)).isSolid();
+				final boolean solid_sw = poolData.get(new Iab(rx-1, rz+1)).isSolid();
 				final StringBuilder[][] matrix = plot.getMatrix3D();
-				switch (dao.type) {
+				switch (dao_pool.type) {
 				case SOLID: {
 					for (int iz=0; iz<8; iz++) {
-						for (int iy=0; iy<h; iy++)
+						for (int iy=0; iy<h_walls; iy++)
 							matrix[iy][iz].append(StringUtils.Repeat(8, '@'));
 					}
 					// outside-corner
@@ -228,7 +241,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][0], "####", 4);
 							StringUtils.ReplaceInString(matrix[0][1], "##",   6);
 							StringUtils.ReplaceInString(matrix[0][2], "#",    7);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][0], "    ", 4);
 								StringUtils.ReplaceInString(matrix[iy][1], "  ",   6);
 								StringUtils.ReplaceInString(matrix[iy][2], " ",    7);
@@ -239,7 +252,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][0], "####", 0);
 							StringUtils.ReplaceInString(matrix[0][1], "##",   0);
 							StringUtils.ReplaceInString(matrix[0][2], "#",    0);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][0], "    ", 0);
 								StringUtils.ReplaceInString(matrix[iy][1], "  ",   0);
 								StringUtils.ReplaceInString(matrix[iy][2], " ",    0);
@@ -250,7 +263,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][7], "####", 4);
 							StringUtils.ReplaceInString(matrix[0][6], "##",   6);
 							StringUtils.ReplaceInString(matrix[0][5], "#",    7);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][7], "    ", 4);
 								StringUtils.ReplaceInString(matrix[iy][6], "  ",   6);
 								StringUtils.ReplaceInString(matrix[iy][5], " ",    7);
@@ -261,7 +274,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][7], "####", 0);
 							StringUtils.ReplaceInString(matrix[0][6], "##",   0);
 							StringUtils.ReplaceInString(matrix[0][5], "#",    0);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][7], "    ", 0);
 								StringUtils.ReplaceInString(matrix[iy][6], "  ",   0);
 								StringUtils.ReplaceInString(matrix[iy][5], " ",    0);
@@ -277,7 +290,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][2], "##",    6);
 							StringUtils.ReplaceInString(matrix[0][3], "#",     7);
 							StringUtils.ReplaceInString(matrix[0][4], "#",     7);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][0], "     ", 3);
 								StringUtils.ReplaceInString(matrix[iy][1], "   ",   5);
 								StringUtils.ReplaceInString(matrix[iy][2], "  ",    6);
@@ -292,7 +305,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][2], "##",    0);
 							StringUtils.ReplaceInString(matrix[0][3], "#",     0);
 							StringUtils.ReplaceInString(matrix[0][4], "#",     0);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][0], "     ", 0);
 								StringUtils.ReplaceInString(matrix[iy][1], "   ",   0);
 								StringUtils.ReplaceInString(matrix[iy][2], "  ",    0);
@@ -307,7 +320,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][5], "##",    6);
 							StringUtils.ReplaceInString(matrix[0][4], "#",     7);
 							StringUtils.ReplaceInString(matrix[0][3], "#",     7);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][7], "     ", 3);
 								StringUtils.ReplaceInString(matrix[iy][6], "   ",   5);
 								StringUtils.ReplaceInString(matrix[iy][5], "  ",    6);
@@ -322,7 +335,7 @@ public class Gen_037 extends BackroomsGen {
 							StringUtils.ReplaceInString(matrix[0][5], "##",    0);
 							StringUtils.ReplaceInString(matrix[0][4], "#",     0);
 							StringUtils.ReplaceInString(matrix[0][3], "#",     0);
-							for (int iy=1; iy<h; iy++) {
+							for (int iy=1; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][7], "     ", 0);
 								StringUtils.ReplaceInString(matrix[iy][6], "   ",   0);
 								StringUtils.ReplaceInString(matrix[iy][5], "  ",    0);
@@ -336,50 +349,49 @@ public class Gen_037 extends BackroomsGen {
 				case OPEN: {
 					for (int iz=0; iz<8; iz++) {
 						matrix[0][iz].append(StringUtils.Repeat(8, '#'));
-						for (int iy=1; iy<h; iy++)
+						for (int iy=1; iy<h_walls; iy++)
 							matrix[iy][iz].append(StringUtils.Repeat(8, ' '));
 					}
 					// inside corner
 					{
 						// north/east inside corner
 						if (solid_n && solid_e && solid_ne) {
-							for (int iy=0; iy<h; iy++) {
+							for (int iy=0; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][0], "@@", 6);
 								StringUtils.ReplaceInString(matrix[iy][1], "@",  7);
 							}
 						}
 						// north/west inside corner
 						if (solid_n && solid_w && solid_nw) {
-							for (int iy=0; iy<h; iy++) {
+							for (int iy=0; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][0], "@@", 0);
 								StringUtils.ReplaceInString(matrix[iy][1], "@",  0);
 							}
 						}
 						// south/east inside corner
 						if (solid_s && solid_e && solid_se) {
-							for (int iy=0; iy<h; iy++) {
+							for (int iy=0; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][7], "@@", 6);
 								StringUtils.ReplaceInString(matrix[iy][6], "@",  7);
 							}
 						}
 						// south/west inside corner
 						if (solid_s && solid_w && solid_sw) {
-							for (int iy=0; iy<h; iy++) {
+							for (int iy=0; iy<h_walls; iy++) {
 								StringUtils.ReplaceInString(matrix[iy][7], "@@", 0);
 								StringUtils.ReplaceInString(matrix[iy][6], "@",  0);
 							}
 						}
 					}
 					// portal to lobby
-					if (dao.possiblePortalLobby) {
-						int xx, zz;
+					if (dao_pool.possiblePortalLobby) {
 						LobbyData lobby;
 						boolean foundWall = false;
 						Z_LOOP:
 						for (int iz=0; iz<8; iz++) {
-							zz = (rz * 8) + iz;
+							final int zz = (rz * 8) + iz;
 							for (int ix=0; ix<8; ix++) {
-								xx = (rx * 8) + ix;
+								final int xx = (rx * 8) + ix;
 								lobby = lobbyData.get(new Iab(xx, zz));
 								if (lobby.isWall) {
 									foundWall = true;
@@ -388,15 +400,15 @@ public class Gen_037 extends BackroomsGen {
 							}
 						}
 						if (!foundWall) {
-							xx = (chunkX * 16) + (rx * 8);
-							zz = (chunkZ * 16) + (rz * 8);
+							final int xx = (chunkX * 16) + (rx * 8);
+							final int zz = (chunkZ * 16) + (rz * 8);
 							((Level_000)this.backlevel).portal_0_to_37.add(xx, zz);
-							final int hh = Level_000.H_000 + SUBCEILING + Level_000.H_006 + SUBFLOOR + 5;
+							final int hh = level_000_h + this.subceiling + level_006_h + this.subfloor + 5;
 							final BlockPlotter pp =
 								(new BlockPlotter())
 								.axis("use")
 								.xz(rx*8, rz*8)
-								.y(Level_000.Y_000+SUBFLOOR)
+								.y(level_000_y+this.subfloor)
 								.whd(6, hh+1, 6);
 							pp.type('#', Material.BEDROCK  );
 							pp.type('g', Material.GLOWSTONE);
@@ -410,7 +422,7 @@ public class Gen_037 extends BackroomsGen {
 							mtx[0][3].append("#gggg#"); mtx[1][3].append("#,,,,#");
 							mtx[0][4].append("##gg##"); mtx[1][4].append("##,,##");
 							mtx[0][5].append(" #### "); mtx[1][5].append(" #### ");
-							final int hhh = Level_000.H_000 + 3;
+							final int hhh = level_000_h + 3;
 							for (int yi=2; yi<hhh; yi++) {
 								mtx[yi][0].append(" .... ");
 								mtx[yi][1].append("..,,..");
@@ -440,17 +452,17 @@ public class Gen_037 extends BackroomsGen {
 					}
 					break;
 				}
-				default: throw new RuntimeException("Unknown pool room type: "+dao.type.toString());
+				default: throw new RuntimeException("Unknown pool room type: "+dao_pool.type.toString());
 				} // end type switch
 				// water
 				for (int iz=0; iz<8; iz++) {
-					for (int iy=0; iy<=WATER_DEPTH; iy++)
+					for (int iy=0; iy<=this.water_depth; iy++)
 						StringUtils.ReplaceWith(matrix[iy][iz], ' ', 'w');
 				}
 				// ceiling
 				if (this.enable_top) {
 					for (int iz=0; iz<8; iz++)
-						StringUtils.ReplaceWith(matrix[h-1][iz], ' ', 'g');
+						StringUtils.ReplaceWith(matrix[h_walls-1][iz], ' ', 'g');
 				}
 				plot.run(chunk, matrix);
 			} // end room x
@@ -507,6 +519,11 @@ public class Gen_037 extends BackroomsGen {
 		// params
 		cfgParams.addDefault("Enable-Gen",                Boolean.TRUE                                      );
 		cfgParams.addDefault("Enable-Top",                Boolean.TRUE                                      );
+		cfgParams.addDefault("Level-Y",                   Integer.valueOf(this.getDefaultY()               ));
+		cfgParams.addDefault("Level-Height",              Integer.valueOf(DEFAULT_LEVEL_H                  ));
+		cfgParams.addDefault("Water-Depth",               Integer.valueOf(DEFAULT_WATER_DEPTH              ));
+		cfgParams.addDefault("SubFloor",                  Integer.valueOf(DEFAULT_SUBFLOOR                 ));
+		cfgParams.addDefault("SubCeiling",                Integer.valueOf(DEFAULT_SUBCEILING               ));
 		cfgParams.addDefault("Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
 		cfgParams.addDefault("Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
 		cfgParams.addDefault("Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );

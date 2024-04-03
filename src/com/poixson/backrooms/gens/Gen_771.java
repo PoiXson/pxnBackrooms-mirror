@@ -27,7 +27,6 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -38,6 +37,8 @@ import com.poixson.utils.FastNoiseLiteD;
 public class Gen_771 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_Y          = -61;
+	public static final int    DEFAULT_LEVEL_H          = 360;
 	public static final double DEFAULT_NOISE_LAMPS_FREQ = 0.3;
 	public static final double DEFAULT_NOISE_EXITS_FREQ = 0.08;
 	public static final double DEFAULT_NOISE_LOOT_FREQ  = 0.08;
@@ -81,17 +82,18 @@ public class Gen_771 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM    = "minecraft:deepslate_brick_stairs[half=top,facing=<FACING>]";
 	public static final String DEFAULT_BLOCK_SHAFT_FLOOR             = "minecraft:dark_oak_planks";
 
+	// params
 	public final boolean enable_gen;
+	public final int     level_y;
+	public final int     level_h;
+	public final double  thresh_lamps;
+	public final double  thresh_void;
+	public final double  thresh_ladder;
+	public final double  thresh_loot;
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
 	public final FastNoiseLiteD noiseExits;
 	public final FastNoiseLiteD noiseLoot;
-
-	// params
-	public final AtomicDouble thresh_lamps  = new AtomicDouble(DEFAULT_THRESH_LAMPS );
-	public final AtomicDouble thresh_void   = new AtomicDouble(DEFAULT_THRESH_VOID  );
-	public final AtomicDouble thresh_ladder = new AtomicDouble(DEFAULT_THRESH_LADDER);
-	public final AtomicDouble thresh_loot   = new AtomicDouble(DEFAULT_THRESH_LOOT  );
 
 	// blocks
 	public final AtomicReference<String> block_nexus_arch              = new AtomicReference<String>(null);
@@ -141,11 +143,19 @@ public class Gen_771 extends BackroomsGen {
 
 
 
-	public Gen_771(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_771(final BackroomsLevel backlevel, final int seed) {
+		super(backlevel, null, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
+		this.level_y       = cfgParams.getInt(    "Level-Y"      );
+		this.level_h       = cfgParams.getInt(    "Level-Height" );
+		this.thresh_lamps  = cfgParams.getDouble( "Thresh-Lamps" );
+		this.thresh_void   = cfgParams.getDouble( "Thresh-Void"  );
+		this.thresh_ladder = cfgParams.getDouble( "Thresh-Ladder");
+		this.thresh_loot   = cfgParams.getDouble( "Thresh-Loot"  );
 		// noise
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseExits      = this.register(new FastNoiseLiteD());
@@ -157,6 +167,11 @@ public class Gen_771 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 771;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.level_h;
 	}
 
 
@@ -238,8 +253,8 @@ public class Gen_771 extends BackroomsGen {
 		matrix[ 7][12].append("#"); matrix[ 7][11].append("-"); matrix[ 7][13].append("_");
 		matrix[ 6][14].append("#"); matrix[ 6][13].append("-");
 		// center lamp
-		for (int i=8; i<13; i++)
-			matrix[i][0].append("8");
+		for (int iy=8; iy<13; iy++)
+			matrix[iy][0].append("8");
 		matrix[7][0].append("G");
 		matrix[6][0].append("b");
 		// gateway arch
@@ -384,7 +399,6 @@ public class Gen_771 extends BackroomsGen {
 		if (block_road_upper_wall   == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Wall"  );
 		if (block_road_upper_lamp   == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Lamp"  );
 		if (block_road_upper_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Light" );
-		final double thresh_lamps = this.thresh_lamps.get();
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
@@ -405,7 +419,7 @@ public class Gen_771 extends BackroomsGen {
 			matrix[1][i].append("   +");
 			matrix[0][i].append("*##" );
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
-			if (value_light > thresh_lamps) {
+			if (value_light > this.thresh_lamps) {
 				matrix[2][i].append("   i");
 				ReplaceInString(matrix[1][i], "L", 2);
 			}
@@ -431,7 +445,6 @@ public class Gen_771 extends BackroomsGen {
 		if (block_road_lower_wall   == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Wall"  );
 		if (block_road_lower_lamp   == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Lamp"  );
 		if (block_road_lower_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Light" );
-		final double thresh_light = this.thresh_lamps.get();
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
@@ -456,7 +469,7 @@ public class Gen_771 extends BackroomsGen {
 			matrix[1][i].append("   x");
 			matrix[0][i].append("   x");
 			value_light = this.noiseRoadLights.getNoise(cx+(dir.a*i), cz+(dir.b*i)) % 0.5;
-			if (value_light > thresh_light) {
+			if (value_light > this.thresh_lamps) {
 				matrix[5][i].append("   i");
 				ReplaceInString(matrix[4][i], "L", 2);
 			}
@@ -476,23 +489,20 @@ public class Gen_771 extends BackroomsGen {
 		if (Math.abs(chunkX) < 30
 		&&  Math.abs(chunkZ) < 30)
 			return PillarType.PILLAR_NORM;
-		final double thresh_void   = this.thresh_void.get();
-		final double thresh_ladder = this.thresh_ladder.get();
-		final double thresh_loot   = this.thresh_loot.get();
 		// round to nearest chunk group and convert to block location
 		final int px = Math.floorDiv(chunkX+1, 4) * 64;
 		final int pz = Math.floorDiv(chunkZ+1, 4) * 64;
 		final double val = this.noiseExits.getNoise(px, pz);
-		if (val > thresh_void)
+		if (val > this.thresh_void)
 			return PillarType.PILLAR_VOID; // void shaft
-		if (val > thresh_ladder) {
+		if (val > this.thresh_ladder) {
 			return (
 				((int)Math.floor(val*10000.0)) % 5 < 2
 				? PillarType.PILLAR_DROP   // drop shaft
 				: PillarType.PILLAR_LADDER // ladder shaft
 			);
 		}
-		if (val > thresh_loot) {
+		if (val > this.thresh_loot) {
 			return (
 				((int)Math.floor(val*10000.0)) % 2 == 0
 				? PillarType.PILLAR_LOOT_UPPER
@@ -703,19 +713,16 @@ public class Gen_771 extends BackroomsGen {
 
 		@Override
 		public void fill(final Inventory chest) {
-			final double thresh_loot = Gen_771.this.thresh_loot.get();
 //TODO
 			final ItemStack item = new ItemStack(Material.BREAD);
 			final Location loc = chest.getLocation();
 			final int xx = loc.getBlockX();
 			final int zz = loc.getBlockZ();
-			int x, y;
-			double value;
 			for (int i=0; i<27; i++) {
-				x = xx + (i % 9);
-				y = zz + Math.floorDiv(i, 9);
-				value = Gen_771.this.noiseLoot.getNoise(x, y);
-				if (value > thresh_loot)
+				final int x = xx + (i % 9);
+				final int y = zz + Math.floorDiv(i, 9);
+				final double value = Gen_771.this.noiseLoot.getNoise(x, y);
+				if (value > Gen_771.this.thresh_loot)
 					chest.setItem(i, item);
 			}
 		}
@@ -741,11 +748,6 @@ public class Gen_771 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.thresh_lamps .set(cfgParams.getDouble("Thresh-Lamps" ));
-		this.thresh_void  .set(cfgParams.getDouble("Thresh-Void"  ));
-		this.thresh_ladder.set(cfgParams.getDouble("Thresh-Ladder"));
-		this.thresh_loot  .set(cfgParams.getDouble("Thresh-Loot"  ));
 		// block types
 		this.block_nexus_arch             .set(cfgBlocks.getString("Nexus-Arch"             ));
 		this.block_nexus_arch_slab_upper  .set(cfgBlocks.getString("Nexus-Arch-Slab-Upper"  ));
@@ -785,6 +787,8 @@ public class Gen_771 extends BackroomsGen {
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
 		cfgParams.addDefault("Enable-Gen",       Boolean.TRUE            );
+		cfgParams.addDefault("Level-Y",          DEFAULT_LEVEL_Y         );
+		cfgParams.addDefault("Level-Height",     DEFAULT_LEVEL_H         );
 		cfgParams.addDefault("Noise-Lamps-Freq", DEFAULT_NOISE_LAMPS_FREQ);
 		cfgParams.addDefault("Noise-Exits-Freq", DEFAULT_NOISE_EXITS_FREQ);
 		cfgParams.addDefault("Noise-Loot-Freq",  DEFAULT_NOISE_LOOT_FREQ );

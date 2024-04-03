@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
@@ -57,7 +58,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public static final String GENERATOR_NAME = "pxnBackrooms";
 	protected static final String DEFAULT_RESOURCE_PACK = "https://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-{VERSION}.zip";
 //	protected static final String DEFAULT_RESOURCE_PACK = "https://backrooms.poixson.com/pxnBackrooms-resourcepack.zip";
-	protected static final int DEFAULT_SPAWN_DISTANCE = 10000;
+	protected static final int DEFAULT_SPAWN_DISTANCE  = 10000;
+	protected static final int DEFAULT_BEDROCK_BARRIER = 3;
 
 	// backrooms levels
 	protected final HashMap<Integer, BackroomsLevel> backlevels = new HashMap<Integer, BackroomsLevel>();
@@ -70,6 +72,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<TaskInvisiblePlayers> task_invisible = new AtomicReference<TaskInvisiblePlayers>(null);
 	// freakout on stairs - level 309
 	protected final HashMap<Player, FreakOut> freakouts = new HashMap<Player, FreakOut>();
+
+	protected final AtomicInteger bedrock_barrier = new AtomicInteger(DEFAULT_BEDROCK_BARRIER);
 
 	// quotes
 	protected final AtomicReference<String[]> quotes = new AtomicReference<String[]>(null);
@@ -278,6 +282,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 			this.config.set(cfg);
 			this.configDefaults(cfg);
 			cfg.options().copyDefaults(true);
+			this.bedrock_barrier.set(cfg.getInt("Bedrock-Barrier"));
 		}
 		// levels-visited.yml
 		{
@@ -352,6 +357,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
 		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );
 		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
+		cfg.addDefault("Bedrock-Barrier", DEFAULT_BEDROCK_BARRIER);
 	}
 
 
@@ -382,6 +388,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int getSpawnDistance() {
 		return this.config.get()
 				.getInt("Spawn Distance");
+	}
+
+	public int getBedrockBarrier() {
+		return this.bedrock_barrier.get();
 	}
 
 

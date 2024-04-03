@@ -3,9 +3,6 @@ package com.poixson.backrooms.gens.hotel;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_SIDE;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_X;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_Z;
-import static com.poixson.backrooms.gens.Gen_037.WATER_DEPTH;
-import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
@@ -45,7 +42,7 @@ public class HotelRoomPool implements HotelRoom {
 		final int d = area.d;
 		final int wh = Math.floorDiv(w, 2);
 		final int dh = Math.floorDiv(d, 2);
-		final int y = Level_000.Y_037 + Level_000.H_037 + SUBFLOOR;
+		final int y = this.gen_037.level_y + this.gen_037.level_h + this.gen_000.subfloor;
 		// check for pool wall
 		if (!region.isInRegion(x+w-1, y, z    ) || Material.AIR.equals(region.getType(x+w-1, y, z    ))) return null; // north-east
 		if (!region.isInRegion(x,     y, z    ) || Material.AIR.equals(region.getType(x,     y, z    ))) return null; // north-west
@@ -79,14 +76,16 @@ public class HotelRoomPool implements HotelRoom {
 		final int z = area.b;
 		final int w = area.c;
 		final int d = area.d;
-		final int yy = Level_000.Y_037 + SUBFLOOR + 1;
-		final int th = Level_000.H_037 + Level_000.H_005 + SUBCEILING + SUBFLOOR + 5;
+		final int y_tunnel = this.gen_037.level_y + this.gen_037.bedrock_barrier + this.gen_037.subfloor;
+		final int y_hotel  = this.gen_037.level_h + this.gen_037.subceiling + this.gen_037.bedrock_barrier + this.gen_005.subfloor + 2;
+		final int h_tunnel = y_hotel + this.gen_005.level_h + 2;
+		final int water_depth = this.gen_037.water_depth;
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("use")
 			.rotate(facing.getOppositeFace())
-			.xyz(x, yy, z)
-			.whd(w, th, d);
+			.xyz(x, y_tunnel, z)
+			.whd(w, h_tunnel, d);
 		plot.type('#', block_pool_wall_a);
 		plot.type('@', block_pool_wall_b);
 		plot.type('.', Material.AIR               );
@@ -100,9 +99,8 @@ public class HotelRoomPool implements HotelRoom {
 		plot.type('D', Material.ACACIA_DOOR, "[half=lower,hinge=right,facing="+FaceToAxisString(facing)+"]");
 		plot.type('_', Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
 		final StringBuilder[][] matrix = plot.getMatrix3D();
-		final int hy = Level_000.H_037 + SUBCEILING + SUBFLOOR + 3;
 		LOOP_Y:
-		for (int iy=0; iy<th; iy++) {
+		for (int iy=0; iy<h_tunnel; iy++) {
 			// poolrooms exit
 			if (iy == 0) {
 				matrix[iy][0  ].append(StringUtils.Repeat(w, 'g'));
@@ -111,14 +109,14 @@ public class HotelRoomPool implements HotelRoom {
 					matrix[iy][iz].append('g').append(StringUtils.Repeat(w-2, '#')).append('g');
 				continue LOOP_Y;
 			}
-			if (iy < WATER_DEPTH) {
+			if (iy < water_depth) {
 				matrix[iy][0  ].append('#').append(StringUtils.Repeat(w-2, ',')).append('#');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				for (int iz=1; iz<d-1; iz++)
 					matrix[iy][iz].append(StringUtils.Repeat(w, ','));
 				continue LOOP_Y;
 			}
-			if (iy == WATER_DEPTH) {
+			if (iy == water_depth) {
 				matrix[iy][0  ].append("#-").append(StringUtils.Repeat(w-4, ',')).append("-#");
 				matrix[iy][1  ].append('-' ).append(StringUtils.Repeat(w-2, ',')).append( '-');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
@@ -127,7 +125,7 @@ public class HotelRoomPool implements HotelRoom {
 					matrix[iy][iz].append(StringUtils.Repeat(w, ','));
 				continue LOOP_Y;
 			}
-			if (iy == WATER_DEPTH+1) {
+			if (iy == water_depth+1) {
 				matrix[iy][0  ].append('@').append(StringUtils.Repeat(w-2, '#')).append('@');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				for (int iz=1; iz<d-1; iz++)
@@ -135,7 +133,7 @@ public class HotelRoomPool implements HotelRoom {
 				continue LOOP_Y;
 			}
 			// tunnel between levels
-			if (iy < hy) {
+			if (iy < y_hotel) {
 				matrix[iy][0  ].append(StringUtils.Repeat(w, '@'));
 				matrix[iy][1  ].append('@').append(StringUtils.Repeat(w-2, 'X')).append('@');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
@@ -145,7 +143,7 @@ public class HotelRoomPool implements HotelRoom {
 				continue LOOP_Y;
 			}
 			// hotel pool floor
-			if (iy == hy) {
+			if (iy == y_hotel) {
 				matrix[iy][0  ].append(StringUtils.Repeat(w, '@'));
 				matrix[iy][1  ].append('@').append(StringUtils.Repeat(w-2, '#')).append('@');
 				matrix[iy][2  ].append(matrix[iy][1].toString());
@@ -156,7 +154,7 @@ public class HotelRoomPool implements HotelRoom {
 				continue LOOP_Y;
 			}
 			// hotel room ceiling
-			if (iy == th-1) {
+			if (iy == h_tunnel-1) {
 				matrix[iy][d-1].append(StringUtils.Repeat(w, '@'));
 				for (int iz=1; iz<d-1; iz++)
 					matrix[iy][iz].append('@').append(StringUtils.Repeat(w-2, 'g')).append('@');
@@ -172,15 +170,15 @@ public class HotelRoomPool implements HotelRoom {
 		} // end LOOP_Y
 		// door
 		final int door_x = Math.floorDiv(w, 2) - 2;
-		StringUtils.ReplaceInString(matrix[hy+4][0], "&&&&&", door_x);
-		StringUtils.ReplaceInString(matrix[hy+3][0], "$...$", door_x);
-		StringUtils.ReplaceInString(matrix[hy+2][0], "$.d.$", door_x);
-		StringUtils.ReplaceInString(matrix[hy+1][0], "$.D.$", door_x);
-		StringUtils.ReplaceInString(matrix[hy  ][0], "$&&&$", door_x);
+		StringUtils.ReplaceInString(matrix[y_hotel+4][0], "&&&&&", door_x);
+		StringUtils.ReplaceInString(matrix[y_hotel+3][0], "$...$", door_x);
+		StringUtils.ReplaceInString(matrix[y_hotel+2][0], "$.d.$", door_x);
+		StringUtils.ReplaceInString(matrix[y_hotel+1][0], "$.D.$", door_x);
+		StringUtils.ReplaceInString(matrix[y_hotel  ][0], "$&&&$", door_x);
 		// front wall
-		StringUtils.ReplaceInString(matrix[hy+3][1], "&&&", door_x+1);
-		StringUtils.ReplaceInString(matrix[hy+2][1], "$.$", door_x+1);
-		StringUtils.ReplaceInString(matrix[hy+1][1], "$_$", door_x+1);
+		StringUtils.ReplaceInString(matrix[y_hotel+3][1], "&&&", door_x+1);
+		StringUtils.ReplaceInString(matrix[y_hotel+2][1], "$.$", door_x+1);
+		StringUtils.ReplaceInString(matrix[y_hotel+1][1], "$_$", door_x+1);
 		plot.run(region, matrix);
 	}
 

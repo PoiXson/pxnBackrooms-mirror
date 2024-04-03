@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
@@ -15,7 +14,6 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -28,6 +26,9 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_308 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_H           = 9;
+	public static final int    DEFAULT_SUBFLOOR          = 3;
+	public static final int    DEFAULT_SUBCEILING        = 3;
 	public static final double DEFAULT_NOISE_WALL_FREQ   = 0.025;
 	public static final double DEFAULT_NOISE_WALL_JITTER = 0.7;
 	public static final double DEFAULT_THRESH_WALL_L1    = 0.85;
@@ -49,6 +50,10 @@ public class Gen_308 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final int     subceiling;
 	public final AtomicDouble thresh_wall_L1 = new AtomicDouble(DEFAULT_THRESH_WALL_L1);
 	public final AtomicDouble thresh_wall_H1 = new AtomicDouble(DEFAULT_THRESH_WALL_H1);
 	public final AtomicDouble thresh_wall_L2 = new AtomicDouble(DEFAULT_THRESH_WALL_L2);
@@ -64,12 +69,18 @@ public class Gen_308 extends BackroomsGen {
 
 
 
-	public Gen_308(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_308(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen     = cfgParams.getBoolean("Enable-Gen"    );
 		this.enable_top     = cfgParams.getBoolean("Enable-Top"    );
+		this.level_y        = cfgParams.getInt(    "Level-Y"       );
+		this.level_h        = cfgParams.getInt(    "Level-Height"  );
+		this.subfloor       = cfgParams.getInt(    "SubFloor"      );
+		this.subceiling     = cfgParams.getInt(    "SubCeiling"    );
 		// noise
 		this.noiseIkeaWalls = this.register(new FastNoiseLiteD());
 	}
@@ -79,6 +90,11 @@ public class Gen_308 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 308;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.level_h;
 	}
 
 
@@ -117,7 +133,7 @@ public class Gen_308 extends BackroomsGen {
 				values[iz][ix] = this.noiseIkeaWalls.getNoise(xx-1, zz-1);
 			}
 		}
-		final int y  = this.level_y + SUBFLOOR + 1;
+		final int y  = this.level_y + this.subfloor + 1;
 		final int cy = this.level_h + y;
 		int xx, zz;
 		int modX, modZ;
@@ -131,11 +147,11 @@ public class Gen_308 extends BackroomsGen {
 				modX = (xx < 0 ? 1-xx : xx) % 7;
 				value = this.noiseIkeaWalls.getNoiseRot(xx, zz, 0.25);
 				isWall =
-					(value > thresh_wall_L1 && value < thresh_wall_H1) ||
-					(value > thresh_wall_L2 && value < thresh_wall_H2);
+					(value > this.thresh_wall_L1 && value < this.thresh_wall_H1) ||
+					(value > this.thresh_wall_L2 && value < this.thresh_wall_H2);
 				// subfloor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int iy=0; iy<SUBFLOOR; iy++)
+				for (int iy=0; iy<this.subfloor; iy++)
 					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
 				// subceiling
 				if (this.enable_top)
@@ -212,6 +228,10 @@ public class Gen_308 extends BackroomsGen {
 		// params
 		cfgParams.addDefault("Enable-Gen",        Boolean.TRUE                              );
 		cfgParams.addDefault("Enable-Top",        Boolean.TRUE                              );
+		cfgParams.addDefault("Level-Y",           Integer.valueOf(this.getDefaultY()       ));
+		cfgParams.addDefault("Level-Height",      Integer.valueOf(DEFAULT_LEVEL_H          ));
+		cfgParams.addDefault("SubFloor",          Integer.valueOf(DEFAULT_SUBFLOOR         ));
+		cfgParams.addDefault("SubCeiling",        Integer.valueOf(DEFAULT_SUBCEILING       ));
 		cfgParams.addDefault("Noise-Wall-Freq",   DEFAULT_NOISE_WALL_FREQ  );
 		cfgParams.addDefault("Noise-Wall-Jitter", DEFAULT_NOISE_WALL_JITTER);
 		cfgParams.addDefault("Thresh-Wall-L1",    DEFAULT_THRESH_WALL_L1   );

@@ -3,7 +3,6 @@ package com.poixson.backrooms.gens;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -14,7 +13,6 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -24,6 +22,8 @@ import com.poixson.utils.FastNoiseLiteD;
 public class Gen_033 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_Y            = 50;
+	public static final int    DEFAULT_LEVEL_H            = 10;
 	public static final double DEFAULT_NOISE_FLOOR_FREQ   = 0.1;
 	public static final int    DEFAULT_NOISE_FLOOR_OCTAVE = 2;
 	public static final double DEFAULT_NOISE_FLOOR_GAIN   = 2.0;
@@ -49,6 +49,8 @@ public class Gen_033 extends BackroomsGen {
 	public final AtomicDouble thresh_floor   = new AtomicDouble(DEFAULT_THRESH_FLOOR  );
 	public final AtomicDouble thresh_hazard  = new AtomicDouble(DEFAULT_THRESH_HAZARD );
 	public final AtomicInteger danger_chunks = new AtomicInteger(DEFAULT_DANGER_CHUNKS);
+	public final int     level_y;
+	public final int     level_h;
 
 	// blocks
 	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
@@ -61,9 +63,16 @@ public class Gen_033 extends BackroomsGen {
 
 
 
-	public Gen_033(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_033(final BackroomsLevel backlevel, final int seed) {
+		super(backlevel, null, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
+		// params
+		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
+		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
+		this.level_y       = cfgParams.getInt(    "Level-Y"      );
+		this.level_h       = cfgParams.getInt(    "Level-Height" );
 		// noise
 		this.noiseFloor = this.register(new FastNoiseLiteD());
 	}
@@ -73,6 +82,11 @@ public class Gen_033 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 33;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.level_h;
 	}
 
 
@@ -99,13 +113,11 @@ public class Gen_033 extends BackroomsGen {
 		final double thresh_floor  = this.thresh_floor .get();
 		final double thresh_hazard = this.thresh_hazard.get();
 		final int danger_chunks    = this.danger_chunks.get() + 1;
-		double valueFloor;
-		int xx, zz;
-		boolean safe;
+		final int danger_chunks = this.danger_chunks + 1;
 		for (int iz=0; iz<16; iz++) {
-			zz = (chunkZ * 16) + iz;
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
-				xx = (chunkX * 16) + ix;
+				final int xx = (chunkX * 16) + ix;
 				// fill bedrock sky
 				if (this.enable_top) {
 					for (int iy=this.level_y+this.level_h; iy<320; iy++)
@@ -125,27 +137,27 @@ public class Gen_033 extends BackroomsGen {
 						chunk.setBlock(ix, iy+this.level_y, iz, block_wall);
 					break;
 				default: {
-					valueFloor = 0.0 - this.noiseFloor.getNoise(xx, zz*2);
-					safe = (chunkZ % danger_chunks == 0);
+					final double valueFloor = 0.0 - this.noiseFloor.getNoise(xx, zz*2);
+					final boolean safe = (chunkZ % danger_chunks == 0);
 					// ceiling
 					if (this.enable_top)
 						chunk.setBlock(ix, this.level_y+this.level_h-1, iz, block_ceiling);
 					// floor
 					if (safe) {
 						if (chunkZ == 0
-						||  valueFloor > thresh_floor) {
+						||  valueFloor > this.thresh_floor) {
 							chunk.setBlock(ix, this.level_y,   iz, block_floor_safe);
 							chunk.setBlock(ix, this.level_y-1, iz, block_floor_safe);
 						}
 					} else {
-						if (valueFloor > thresh_floor) {
+						if (valueFloor > this.thresh_floor) {
 							chunk.setBlock(ix, this.level_y+1, iz, block_plate );
 							chunk.setBlock(ix, this.level_y,   iz, block_floor );
 							final long mod_tnt = (ix+iz) % 5;
 							if (mod_tnt == 0 || mod_tnt == 2) chunk.setBlock(ix, this.level_y-1, iz, Material.GLOWSTONE);
 							else                              chunk.setBlock(ix, this.level_y-1, iz, Material.TNT);
 							chunk.setBlock(ix, this.level_y-2, iz, block_subfloor);
-							if (valueFloor > thresh_hazard) {
+							if (valueFloor > this.thresh_hazard) {
 								chunk.setBlock(ix, this.level_y+2, iz, block_hazard);
 								chunk.setBlock(ix, this.level_y+1, iz, block_hazard);
 							}
@@ -197,6 +209,8 @@ public class Gen_033 extends BackroomsGen {
 		// params
 		cfgParams.addDefault("Enable-Gen",         Boolean.TRUE                               );
 		cfgParams.addDefault("Enable-Top",         Boolean.TRUE                               );
+		cfgParams.addDefault("Level-Y",            Integer.valueOf(DEFAULT_LEVEL_Y           ));
+		cfgParams.addDefault("Level-Height",       Integer.valueOf(DEFAULT_LEVEL_H           ));
 		cfgParams.addDefault("Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
 		cfgParams.addDefault("Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
 		cfgParams.addDefault("Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );

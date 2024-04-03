@@ -19,11 +19,6 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 // 771 | Crossroads
 public class Level_771 extends BackroomsLevel {
 
-	public static final boolean ENABLE_GEN_771 = true;
-
-	public static final int LEVEL_Y = -61;
-	public static final int LEVEL_H = 360;
-
 	// generators
 	public final Gen_771 gen;
 
@@ -104,7 +99,7 @@ public class Level_771 extends BackroomsLevel {
 
 	@Override
 	public int getY(final int level) {
-		return LEVEL_Y + LEVEL_H + 1;
+		return this.gen_771.level_y + this.gen_771.level_h + 1;
 	}
 	@Override
 	public int getMaxY(final int level) {

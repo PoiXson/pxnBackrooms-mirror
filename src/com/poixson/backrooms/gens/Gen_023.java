@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
@@ -29,6 +27,9 @@ import com.poixson.tools.plotter.BlockPlotter;
 public class Gen_023 extends BackroomsGen {
 
 	// default params
+	public static final int DEFAULT_LEVEL_H       = 9;
+	public static final int DEFAULT_SUBFLOOR      = 3;
+	public static final int DEFAULT_SUBCEILING    = 3;
 	public static final int DEFAULT_GRASS_MODULUS = 25;
 
 	// default blocks
@@ -50,6 +51,11 @@ public class Gen_023 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final int     subceiling;
+	public final int     grass_modulus;
 	public final AtomicInteger grass_modulus = new AtomicInteger(DEFAULT_GRASS_MODULUS);
 
 	// blocks
@@ -72,12 +78,19 @@ public class Gen_023 extends BackroomsGen {
 
 
 
-	public Gen_023(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_023(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen    = cfgParams.getBoolean("Enable-Gen"   );
 		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
+		this.level_y       = cfgParams.getInt(    "Level-Y"      );
+		this.level_h       = cfgParams.getInt(    "Level-Height" );
+		this.subfloor      = cfgParams.getInt(    "SubFloor"     );
+		this.subceiling    = cfgParams.getInt(    "SubCeiling"   );
+		this.grass_modulus = cfgParams.getInt(    "Grass-Modulus");
 	}
 
 
@@ -87,6 +100,11 @@ public class Gen_023 extends BackroomsGen {
 		return 23;
 	}
 
+	@Override
+	public int getNextY() {
+		return this.bedrock_barrier + this.level_y + this.subfloor + this.level_h + this.subceiling + 2;
+	}
+
 
 
 	@Override
@@ -94,7 +112,6 @@ public class Gen_023 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final int grass_modulus = this.grass_modulus.get();
 		final BlockData block_wall                 = StringToBlockData(this.block_wall,                 DEFAULT_BLOCK_WALL                );
 		final BlockData block_wall_grassy          = StringToBlockData(this.block_wall_grassy,          DEFAULT_BLOCK_WALL_GRASSY         );
 		final BlockData block_floor                = StringToBlockData(this.block_floor,                DEFAULT_BLOCK_FLOOR               );
@@ -109,7 +126,6 @@ public class Gen_023 extends BackroomsGen {
 		final BlockData block_grass_wet_tall_upper = StringToBlockData(this.block_grass_wet_tall_upper, DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
 		final BlockData block_grass_dry_tall_lower = StringToBlockData(this.block_grass_dry_tall_lower, DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
 		final BlockData block_grass_dry_tall_upper = StringToBlockData(this.block_grass_dry_tall_upper, DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
-		if (grass_modulus       <= 0   ) throw new RuntimeException("Invalid param for level 23 Grass-Modulus"     );
 		if (block_wall          == null) throw new RuntimeException("Invalid block type for level 23 Wall"         );
 		if (block_wall_grassy   == null) throw new RuntimeException("Invalid block type for level 23 Wall-Grassy"  );
 		if (block_floor         == null) throw new RuntimeException("Invalid block type for level 23 Floor"        );
@@ -122,66 +138,75 @@ public class Gen_023 extends BackroomsGen {
 		final HashMap<Iab, BasementData> basementData = pregen0.basement;
 		LobbyData    dao_lobby;
 		BasementData dao_basement;
-		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
-		int xx, zz;
-		int modX, modZ;
+		final int h_walls = this.level_h + 2;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
+		final int y_ceil  = y_floor + this.level_h + 1;
 		for (int iz=0; iz<16; iz++) {
-			zz = (chunkZ * 16) + iz;
-			modZ = (zz < 0 ? 1-zz : zz) % 7;
+			final int zz = (chunkZ * 16) + iz;
+			final int modZ = (zz < 0 ? 1-zz : zz) % 7;
 			for (int ix=0; ix<16; ix++) {
-				xx = (chunkX * 16) + ix;
-				modX = (xx < 0 ? 1-xx : xx) % 7;
-				dao_lobby = lobbyData.get(new Iab(ix, iz));
-				dao_basement = basementData.get(new Iab(ix, iz));
-				// floor
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				if (dao_basement.isWet) chunk.setBlock(ix, this.level_y+1, iz, Material.WATER);
-				else                    chunk.setBlock(ix, this.level_y+1, iz, block_subfloor);
-				for (int iy=1; iy<SUBFLOOR; iy++)
-					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
+				final int xx = (chunkX * 16) + ix;
+				final int mod_x = (xx < 0 ? 1-xx : xx) % 7;
+				final LobbyData    dao_lobby    = data_lobby   .get(new Iab(ix, iz));
+				final BasementData dao_basement = data_basement.get(new Iab(ix, iz));
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
+				// subfloor
+				if (this.subfloor > 0) {
+					if (dao_basement.isWet) {
+						chunk.setBlock(ix, y_base, iz, Material.WATER);
+						for (int iy=1; iy<this.subfloor; iy++)
+							chunk.setBlock(ix, y_base+iy, iz, block_subfloor_wet);
+					} else {
+						for (int iy=0; iy<this.subfloor; iy++)
+							chunk.setBlock(ix, y_base+iy, iz, block_subfloor_dry);
+					}
+				}
 				// wall
 				if (dao_lobby.isWall) {
 					final BlockData blk_wall = (dao_basement.isWet ? block_wall_grassy : block_wall);
-					final int h = this.level_h + 2;
-					for (int yi=0; yi<h; yi++)
-						chunk.setBlock(ix, y+yi, iz, blk_wall);
+					for (int yi=0; yi<h_walls; yi++)
+						chunk.setBlock(ix, y_floor+yi, iz, blk_wall);
 				// room
 				} else {
-					chunk.setBlock(ix, this.level_y+SUBFLOOR+1, iz, block_floor);
+					// floor
+					if (dao_basement.isWet) chunk.setBlock(ix, y_floor, iz, block_floor_wet);
+					else                    chunk.setBlock(ix, y_floor, iz, block_floor_dry);
 					// grass
 					final int rnd = this.rnd_grass.getAndIncrement();
-					final int mod_grass = rnd % grass_modulus;
+					final int mod_grass = rnd % this.grass_modulus;
 					// tall grass
 					if (mod_grass == 0 || mod_grass == 5) {
 						final BlockData blk_lower = (dao_basement.isWet ? block_grass_wet_tall_lower : block_grass_dry_tall_lower);
 						final BlockData blk_upper = (dao_basement.isWet ? block_grass_wet_tall_upper : block_grass_dry_tall_upper);
-						if (blk_lower != null) chunk.setBlock(ix, this.level_y+SUBFLOOR+2, iz, blk_lower);
-						if (blk_upper != null) chunk.setBlock(ix, this.level_y+SUBFLOOR+3, iz, blk_upper);
+						if (blk_lower != null) chunk.setBlock(ix, y_floor+1, iz, blk_lower);
+						if (blk_upper != null) chunk.setBlock(ix, y_floor+2, iz, blk_upper);
 					// short grass
 					} else {
 						final BlockData blk_grass = (dao_basement.isWet ? block_grass_wet_short : block_grass_dry_short);
-						if (blk_grass != null) chunk.setBlock(ix, this.level_y+SUBFLOOR+2, iz, blk_grass);
+						if (blk_grass != null) chunk.setBlock(ix, y_floor+1, iz, blk_grass);
 					}
 					// ceiling
 					if (this.enable_top) {
-						if (modZ == 0 && modX < 2
+						if (modZ == 0 && mod_x < 2
 						&& dao_lobby.wall_dist > 1) {
 							// ceiling lights
-							chunk.setBlock(ix, cy,   iz, Material.VERDANT_FROGLIGHT);
-							chunk.setBlock(ix, cy-1, iz, Material.WEEPING_VINES);
+							chunk.setBlock(ix, y_ceil,   iz, Material.VERDANT_FROGLIGHT);
+							chunk.setBlock(ix, y_ceil-1, iz, Material.WEEPING_VINES    );
 						} else {
 							// ceiling
-							chunk.setBlock(ix, cy, iz, block_ceiling );
-							if (mod_grass == 7 && block_ceiling_flower != null) chunk.setBlock(ix, cy-1, iz, block_ceiling_flower);
-							else                                                chunk.setBlock(ix, cy-1, iz, block_ceiling_grass );
+							chunk.setBlock(ix, y_ceil, iz, block_ceiling );
+							if (mod_grass == 7 && block_ceiling_flower != null) chunk.setBlock(ix, y_ceil-1, iz, block_ceiling_flower);
+							else                                                chunk.setBlock(ix, y_ceil-1, iz, block_ceiling_grass );
 						}
 					}
 				}
 				// subceiling
 				if (this.enable_top) {
-					for (int iy=0; iy<SUBCEILING; iy++)
-						chunk.setBlock(ix, cy+iy+1, iz, block_subceiling);
+					for (int iy=0; iy<this.subceiling; iy++)
+						chunk.setBlock(ix, y_ceil+iy+1, iz, block_subceiling);
 				}
 			} // end ix
 		} // end iz
@@ -196,8 +221,6 @@ public class Gen_023 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.grass_modulus.set(cfgParams.getInt("Grass-Modulus"));
 		// block types
 		this.block_wall                .set(cfgBlocks.getString("Wall"                ));
 		this.block_wall_grassy         .set(cfgBlocks.getString("Wall-Grassy"         ));
@@ -219,7 +242,11 @@ public class Gen_023 extends BackroomsGen {
 		// params
 		cfgParams.addDefault("Enable-Gen",    Boolean.TRUE                          );
 		cfgParams.addDefault("Enable-Top",    Boolean.TRUE                          );
-		cfgParams.addDefault("Grass-Modulus", DEFAULT_GRASS_MODULUS);
+		cfgParams.addDefault("Level-Y",       Integer.valueOf(this.getDefaultY()   ));
+		cfgParams.addDefault("Level-Height",  Integer.valueOf(DEFAULT_LEVEL_H      ));
+		cfgParams.addDefault("SubFloor",      Integer.valueOf(DEFAULT_SUBFLOOR     ));
+		cfgParams.addDefault("SubCeiling",    Integer.valueOf(DEFAULT_SUBCEILING   ));
+		cfgParams.addDefault("Grass-Modulus", Integer.valueOf(DEFAULT_GRASS_MODULUS));
 		// block types
 		cfgBlocks.addDefault("Wall",                 DEFAULT_BLOCK_WALL                );
 		cfgBlocks.addDefault("Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );

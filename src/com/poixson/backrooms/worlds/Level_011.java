@@ -32,46 +32,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 //   4 | Abandoned Office
 public class Level_011 extends BackroomsLevel {
 
-	public static final boolean ENABLE_GEN_011 = true;
-	public static final boolean ENABLE_GEN_039 = true;
-	public static final boolean ENABLE_GEN_122 = true;
-	public static final boolean ENABLE_GEN_040 = true;
-	public static final boolean ENABLE_GEN_308 = true;
-	public static final boolean ENABLE_GEN_264 = true;
-	public static final boolean ENABLE_GEN_004 = true;
-
-	public static final boolean ENABLE_TOP_011 = true;
-	public static final boolean ENABLE_TOP_039 = true;
-	public static final boolean ENABLE_TOP_122 = true;
-	public static final boolean ENABLE_TOP_040 = true;
-	public static final boolean ENABLE_TOP_308 = true;
-	public static final boolean ENABLE_TOP_264 = true;
-	public static final boolean ENABLE_TOP_004 = true;
-
-	public static final int SUBFLOOR   = 3;
-	public static final int SUBCEILING = 3;
-
-	// office
-	public static final int Y_004 = 70;
-	public static final int H_004 =  8;
-	// museum
-	public static final int Y_264 = Y_004 + H_004 + SUBFLOOR + 3;
-	public static final int H_264 = 8;
-	// ikea
-	public static final int Y_308 = Y_264 + H_264 + SUBFLOOR + 3;
-	public static final int H_308 = 9;
-	// mall
-	public static final int Y_122 = Y_308 + H_308 + SUBFLOOR + 3;
-	public static final int H_122 = 8;
-	// metro
-	public static final int Y_039 = Y_122 + H_122 + SUBFLOOR + 3;
-	public static final int H_039 = 8;
-	// city
-	public static final int Y_011 = Y_039 + H_039 + SUBFLOOR + 3;
-	// arcade
-	public static final int Y_040 = Y_122;
-	public static final int H_040 = H_122;
-
 	// generators
 	public final Gen_011 gen_011;
 	public final Gen_039 gen_039;
@@ -88,28 +48,28 @@ public class Level_011 extends BackroomsLevel {
 
 	public Level_011(final BackroomsPlugin plugin) {
 		super(plugin);
+		// generators
+		this.gen_004 = this.register(new Gen_004(this, this.seed                      )); // office
+		this.gen_264 = this.register(new Gen_264(this, this.seed, this.gen_004        )); // museum
+		this.gen_308 = this.register(new Gen_308(this, this.seed, this.gen_264        )); // ikea
+		this.gen_122 = this.register(new Gen_122(this, this.seed, this.gen_308        )); // mall
+		this.gen_040 = this.register(new Gen_040(this, this.seed, this.gen_122.level_y)); // arcade
+		this.gen_039 = this.register(new Gen_039(this, this.seed, this.gen_122        )); // metro
+		this.gen_011 = this.register(new Gen_011(this, this.seed, this.gen_039        )); // city
+		// populators
+		this.pop_308 = this.register(new Pop_308(this)); // ikea
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(  4, "office", "Abandoned Office", Y_004+SUBFLOOR+1);
-			gen_tpl.add(264, "museum", "Museum",           Y_264+SUBFLOOR+1);
-			gen_tpl.add(308, "ikea",   "Ikea",             Y_308+SUBFLOOR+1);
-			gen_tpl.add( 40, "arcade", "Arcade",           Y_040+SUBFLOOR+1);
-			gen_tpl.add(122, "mall",   "Mall",             Y_122+SUBFLOOR+1);
-			gen_tpl.add( 39, "metro",  "Metro",            Y_039+SUBFLOOR+1);
-			gen_tpl.add( 11, "city",   "Concrete Jungle"                   );
+			gen_tpl.add(  4, "office", "Office", this.gen_004.level_y+this.gen_004.bedrock_barrier+this.gen_004.subfloor+1);
+			gen_tpl.add(264, "museum", "Museum", this.gen_264.level_y+this.gen_264.bedrock_barrier+this.gen_264.subfloor+1);
+			gen_tpl.add(308, "ikea",   "Ikea",   this.gen_308.level_y+this.gen_308.bedrock_barrier+this.gen_308.subfloor+1);
+			gen_tpl.add( 40, "arcade", "Arcade", this.gen_040.level_y+this.gen_040.bedrock_barrier+this.gen_040.subfloor+1);
+			gen_tpl.add(122, "mall",   "Mall",   this.gen_122.level_y+this.gen_122.bedrock_barrier+this.gen_122.subfloor+1);
+			gen_tpl.add( 39, "metro",  "Metro",  this.gen_039.level_y+this.gen_039.bedrock_barrier+this.gen_039.subfloor+1);
+			gen_tpl.add( 11, "city",   "Concrete Jungle"                                                                            );
 			gen_tpl.commit();
 		}
-		// generators
-		this.gen_004 = this.register(new Gen_004(this, this.seed, Y_004, H_004)); // office
-		this.gen_264 = this.register(new Gen_264(this, this.seed, Y_264, H_264)); // museum
-		this.gen_308 = this.register(new Gen_308(this, this.seed, Y_308, H_308)); // ikea
-		this.gen_040 = this.register(new Gen_040(this, this.seed, Y_040, H_040)); // arcade
-		this.gen_122 = this.register(new Gen_122(this, this.seed, Y_122, H_122)); // mall
-		this.gen_039 = this.register(new Gen_039(this, this.seed, Y_039, H_039)); // metro
-		this.gen_011 = this.register(new Gen_011(this, this.seed, Y_011,     0)); // city
-		// populators
-		this.pop_308 = this.register(new Pop_308(this)); // ikea
 	}
 
 
@@ -153,26 +113,26 @@ public class Level_011 extends BackroomsLevel {
 	@Override
 	public int getY(final int level) {
 		switch (level) {
-		case   4: return Y_004; // office
-		case 264: return Y_264; // museum
-		case 308: return Y_308; // ikea
-		case  40: return Y_040; // arcade
-		case 122: return Y_122; // mall
-		case  39: return Y_039; // metro
-		case  11: return Y_011; // city
+		case   4: return this.gen_004.level_y; // office
+		case 264: return this.gen_264.level_y; // museum
+		case 308: return this.gen_308.level_y; // ikea
+		case  40: return this.gen_040.level_y; // arcade
+		case 122: return this.gen_122.level_y; // mall
+		case  39: return this.gen_039.level_y; // metro
+		case  11: return this.gen_011.level_y; // city
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
 	@Override
 	public int getMaxY(final int level) {
 		switch (level) {
-		case   4: return Y_264 - 1; // office
-		case 264: return Y_122 - 1; // museum
-		case 308: return Y_011 - 1; // ikea
+		case   4: return this.gen_004.getNextY(); // office
+		case 264: return this.gen_264.getNextY(); // museum
+		case 308: return this.gen_308.getNextY(); // ikea
 		case 122:                   // mall
-		case  40: return Y_308 - 1; // arcade
-		case  39: return Y_011 - 1; // metro
-		case  11: return 320;       // city
+		case  40: return this.gen_040.getNextY(); // arcade
+		case  39: return this.gen_039.getNextY(); // metro
+		case  11: return 320;                     // city
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}

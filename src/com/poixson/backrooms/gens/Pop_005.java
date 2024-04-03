@@ -1,7 +1,6 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_SUBWALL;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToMaterial;
 
 import java.util.LinkedList;
@@ -41,7 +40,7 @@ public class Pop_005 implements BackroomsPop {
 		if (!this.gen_005.enable_gen) return;
 		final int x = (chunkX * 16) + 7;
 		final int z = (chunkZ * 16) + 7;
-		final int y = this.gen.level_y + SUBFLOOR + 1;
+		final int y = this.gen_005.level_y + this.gen_005.bedrock_barrier + this.gen_005.subfloor;
 		// returns x z w d
 		final Iabcd area = this.findRoomWalls(region, x, y, z);
 		if (area == null) return;
@@ -103,7 +102,7 @@ public class Pop_005 implements BackroomsPop {
 	// group of rooms
 	public void buildHotelRooms(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final Iabcd area, final int y) {
-		final int room_size = this.gen.nominal_room_size.get();
+		final int room_size = this.gen_005.nominal_room_size;
 		if (room_size < 4 || room_size > 20) throw new RuntimeException("Invalid nominal room size: "+Integer.toString(room_size));
 		final Material door_guest = Material.matchMaterial(this.gen.door_guest.get());
 		if (door_guest == null) throw new RuntimeException("Invalid block type for level 5 Door-Guest");
@@ -121,11 +120,9 @@ public class Pop_005 implements BackroomsPop {
 		final int rooms_mid_d = Math.floorDiv(num_rooms_deep, 2);
 		final int extra_x = (area.c - (num_rooms_wide * room_width)) + 1;
 		final int extra_z = (area.d - (num_rooms_deep * room_depth)) + 1;
-		int x, z, w, d;
-		BlockFace direction;
 		for (int room_z=0; room_z<num_rooms_deep; room_z++) {
-			d = room_depth;
-			z = area.b + (room_z * d);
+			int d = room_depth;
+			int z = area.b + (room_z * d);
 			if (room_z == rooms_mid_d) d += extra_z; else
 			if (room_z >  rooms_mid_d) z += extra_z;
 			LOOP_ROOM_X:
@@ -134,11 +131,12 @@ public class Pop_005 implements BackroomsPop {
 				if (room_x != 0 && room_x != num_rooms_wide-1
 				&&  room_z != 0 && room_z != num_rooms_deep-1)
 					continue LOOP_ROOM_X;
-				w = room_width;
-				x = area.a + (room_x * w);
+				int w = room_width;
+				int x = area.a + (room_x * w);
 				if (room_x == rooms_mid_w) w += extra_x; else
 				if (room_x >  rooms_mid_w) x += extra_x;
 				// find room direction
+				final BlockFace direction;
 				// north
 				if (room_z == 0) {
 					// north-west

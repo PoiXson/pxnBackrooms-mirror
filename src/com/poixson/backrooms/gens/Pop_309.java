@@ -2,10 +2,6 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_X;
 import static com.poixson.backrooms.gens.Gen_309.PATH_START_Z;
-import static com.poixson.backrooms.worlds.Level_000.H_019;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-import static com.poixson.backrooms.worlds.Level_000.Y_019;
-import static com.poixson.backrooms.worlds.Level_000.Y_309;
 import static com.poixson.utils.NumberUtils.MinMax;
 
 import java.util.LinkedList;
@@ -30,10 +26,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 
 // 309 | Radio Station
 public class Pop_309 implements BackroomsPop {
-
-	public static final double FENCE_NOISE_STRENGTH =  2.0;
-	public static final double FENCE_RADIUS         = 65.0;
-	public static final double FENCE_THICKNESS      =  1.3;
 
 	protected final BackroomsPlugin plugin;
 	protected final Gen_309 gen;
@@ -68,67 +60,69 @@ public class Pop_309 implements BackroomsPop {
 			// fence around clearing
 			if (Math.abs(chunkX) < 8
 			&&  Math.abs(chunkZ) < 8) {
-				double distance;
-				int xx, zz;
+				final double fence_radius    = this.gen_309.fence_radius;
+				final double fence_strength  = this.gen_309.fence_strength;
+				final double fence_thickness = this.gen_309.fence_thickness;
+				final int y_floor = this.gen_309.level_y + this.gen_309.bedrock_barrier + this.gen_309.subfloor;
 				for (int iz=0; iz<16; iz++) {
-					zz = (chunkZ * 16) + iz;
+					final int zz = (chunkZ * 16) + iz;
 					LOOP_X:
-						for (int ix=0; ix<16; ix++) {
-							xx = (chunkX * 16) + ix;
-							distance = this.gen.getCenterClearingDistance(xx, zz, FENCE_NOISE_STRENGTH);
-							if (distance >= FENCE_RADIUS
-							&&  distance <= FENCE_RADIUS + FENCE_THICKNESS) {
-								boolean found = false;
-								int sy = this.gen.level_y;
-								LOOP_SURFACE:
-									for (int i=0; i<10; i++) {
-										final Material type = region.getType(xx, sy+i, zz);
-										if (Material.AIR.equals(type)) {
-											found = true;
-											sy += i;
-											break LOOP_SURFACE;
-										}
-									}
-								if (found) {
-									final int path_x = this.gen.getPathX(zz);
-									if (zz > 0
-									&&  xx < path_x+5
-									&&  xx > path_x-5)
-										continue LOOP_X;
-									final BlockData bars = Bukkit.createBlockData("iron_bars[north=true,south=true,east=true,west=true]");
-									for (int iy=0; iy<5; iy++)
-										region.setBlockData(xx, sy+iy, zz, bars);
-									region.setType(xx, sy+5, zz, Material.CUT_COPPER_SLAB);
+					for (int ix=0; ix<16; ix++) {
+						final int xx = (chunkX * 16) + ix;
+						final double distance = this.gen_309.getCenterClearingDistance(xx, zz, fence_strength);
+						if (distance >= fence_radius
+						&&  distance <= fence_radius + fence_thickness) {
+							boolean found = false;
+							int sy = y_floor;
+							LOOP_SURFACE:
+							for (int iy=0; iy<10; iy++) {
+								final Material type = region.getType(xx, sy+iy, zz);
+								if (Material.AIR.equals(type)) {
+									found = true;
+									sy += iy;
+									break LOOP_SURFACE;
 								}
 							}
-						} // end ix
+							if (found) {
+								final int path_x = this.gen_309.getPathX(zz);
+								if (zz > 0
+								&&  xx < path_x+5
+								&&  xx > path_x-5)
+									continue LOOP_X;
+								final BlockData bars = Bukkit.createBlockData("iron_bars[north=true,south=true,east=true,west=true]");
+								for (int iy=0; iy<5; iy++)
+									region.setBlockData(xx, sy+iy, zz, bars);
+								region.setType(xx, sy+5, zz, Material.CUT_COPPER_SLAB);
+							}
+						}
+					} // end ix
 				} // end iz
 			} else {
 				// prairie
 				if (count_trees == 0
 				&&  this.gen_309.enable_top) {
-					final int path_clearing = this.gen.path_clearing.get() * 3;
+					final int path_clearing = this.gen_309.path_clearing * 3;
 					final int xx = chunkX * 16;
 					final int zz = chunkZ * 16;
-					if (!this.gen.pathTrace.isPath(xx, zz, path_clearing)) {
+					if (!this.gen_309.pathTrace.isPath(xx, zz, path_clearing)) {
 						// find surface
 						int surface_y = 0;
 						SURFACE_LOOP:
 						for (int iy=0; iy<12; iy++) {
-							if (Material.AIR.equals(region.getType(xx+2, Y_309+iy, zz+2))) {
-								surface_y = Y_309 + iy;
+							if (Material.AIR.equals(region.getType(xx+2, this.gen_309.level_y+iy, zz+2))) {
+								surface_y = this.gen_309.level_y + iy;
 								break SURFACE_LOOP;
 							}
 						}
 						if (surface_y != 0) {
 							final int special = this.special_index.incrementAndGet();
-							final int mod_a = special % MinMax(this.gen.special_mod_a.get(), 5, 100);
+							final int mod_a = special % MinMax(this.gen_309.special_mod_a, 5, 100);
 							SWITCH_MOD_A:
 							switch (mod_a) {
 							case 1: this.populate_stairs(xx, surface_y, zz, region); break SWITCH_MOD_A; // stairs
 							case 4: this.populate_door(  xx, surface_y, zz, region); break SWITCH_MOD_A; // door
 							default:
-								final int mod_b = special % MinMax(this.gen.special_mod_b.get(), 5, 100);
+								final int mod_b = special % MinMax(this.gen_309.special_mod_b, 5, 100);
 								SWITCH_MOD_B:
 								switch (mod_b) {
 								case 1: this.populate_hatch(xx, surface_y, zz, region); break SWITCH_MOD_B; // hatch
@@ -250,6 +244,8 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest hatch
 	public void populate_hatch(final int x, final int y, final int z, final LimitedRegion region) {
+		final int level_019_y = this.backlevel.gen_019.level_y;
+		final int level_019_h = this.backlevel.gen_019.level_h;
 		// top half
 		{
 			final BlockPlotter plot =
@@ -288,14 +284,14 @@ public class Pop_309 implements BackroomsPop {
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("use")
-				.xyz(x+7, Y_019+SUBFLOOR, z+7)
+				.xyz(x+7, level_019_y+this.gen_309.subfloor, z+7)
 				.whd(3, 15, 3);
 			plot.type('#', Material.STONE_BRICKS      );
 			plot.type('$', Material.MOSSY_STONE_BRICKS);
 			plot.type('H', Material.LADDER            );
 			plot.type('.', Material.AIR               );
 			final StringBuilder[][] matrix = plot.getMatrix3D();
-			for (int iy=4; iy<H_019+2; iy++) {
+			for (int iy=4; iy<level_019_h+2; iy++) {
 				matrix[iy][0].append("###");
 				matrix[iy][1].append("#H#");
 				matrix[iy][2].append("###");

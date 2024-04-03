@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
-
 import java.util.LinkedList;
 
 import org.bukkit.Material;
@@ -15,9 +13,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 
 // 1 | Basement
 public class Pop_001 implements BackroomsPop {
-
-	public static final int WELL_SIZE   = 5;
-	public static final int WELL_HEIGHT = 2;
 
 	protected final Level_000 level0;
 	protected final Gen_001   gen;
@@ -57,11 +52,15 @@ public class Pop_001 implements BackroomsPop {
 
 	protected void generateWell(final LimitedRegion region,
 			final int x, final int z) {
+		final int level_y     = this.gen_001.level_y;
+		final int subfloor    = this.gen_001.subfloor;
+		final int well_size   = this.gen_001.well_size;
+		final int well_height = this.gen_001.well_height;
 		// check for walls
 		{
-			final int y = this.gen.level_y + SUBFLOOR + 2;
-			final int halfL = (int) Math.floor((double)WELL_SIZE / 2);
-			final int halfH = (int) Math.ceil( (double)WELL_SIZE / 2);
+			final int y = level_y + subfloor + 2;
+			final int halfL = (int) Math.floor((double)well_size / 2);
+			final int halfH = (int) Math.ceil( (double)well_size / 2);
 			for (int iz=0-halfL; iz<halfH; iz++) {
 				for (int ix=0-halfL; ix<halfH; ix++) {
 					if (!Material.AIR.equals( region.getType(x+ix, y+1, z+iz) ))
@@ -75,9 +74,9 @@ public class Pop_001 implements BackroomsPop {
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("use")
-				.xyz(x, this.gen.level_y, z)
-				.wd(WELL_SIZE, WELL_SIZE)
-				.h(SUBFLOOR+WELL_HEIGHT+5);
+				.xyz(x, level_y, z)
+				.wd(well_size, well_size)
+				.h(subfloor+well_height+5);
 			plot.type('#', Material.BEDROCK);
 			plot.type('x', Material.MOSSY_STONE_BRICKS);
 			plot.type('.', Material.AIR  );
@@ -87,23 +86,23 @@ public class Pop_001 implements BackroomsPop {
 			matrix[0][3].append(" ...");
 			int iy = 1;
 			// well below floor
-			for (int i=0; i<SUBFLOOR+1; i++) {
+			for (int i=0; i<subfloor+1; i++) {
 				matrix[iy+i][0].append(" ###" );
 				matrix[iy+i][1].append("#...#");
 				matrix[iy+i][2].append("#...#");
 				matrix[iy+i][3].append("#...#");
 				matrix[iy+i][4].append(" ###" );
 			}
-			iy += SUBFLOOR + 1;
+			iy += subfloor + 1;
 			// well above floor
-			for (int i=0; i<WELL_HEIGHT; i++) {
+			for (int i=0; i<well_height; i++) {
 				matrix[iy+i][0].append(" xxx" );
 				matrix[iy+i][1].append("x...x");
 				matrix[iy+i][2].append("x...x");
 				matrix[iy+i][3].append("x...x");
 				matrix[iy+i][4].append(" xxx" );
 			}
-			iy += WELL_HEIGHT;
+			iy += well_height;
 			// clear above well
 			for (int i=0; i<3; i++) {
 				for (int iz=0; iz<5; iz++)

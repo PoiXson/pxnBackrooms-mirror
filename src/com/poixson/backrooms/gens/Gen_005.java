@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBCEILING;
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
@@ -20,7 +18,6 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -34,6 +31,9 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_005 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_H             = 6;
+	public static final int    DEFAULT_SUBFLOOR            = 3;
+	public static final int    DEFAULT_SUBCEILING          = 3;
 	public static final double DEFAULT_NOISE_WALL_FREQ   = 0.02;
 	public static final double DEFAULT_NOISE_WALL_JITTER = 0.3;
 	public static final double DEFAULT_NOISE_ROOM_FREQ   = 0.01;
@@ -64,14 +64,18 @@ public class Gen_005 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final int     subceiling;
+	public final double  thresh_room_hall;
+	public final int     nominal_room_size;
+
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
 	public final FastNoiseLiteD noiseHotelRooms;
 	public final FastNoiseLiteD noiseHotelStairs;
 
-	// params
-	public final AtomicDouble  thresh_room_hall  = new AtomicDouble( DEFAULT_THRESH_ROOM_HALL );
-	public final AtomicInteger nominal_room_size = new AtomicInteger(DEFAULT_NOMINAL_ROOM_SIZE);
 
 	// blocks
 	public final AtomicReference<String> block_subfloor           = new AtomicReference<String>(null);
@@ -94,12 +98,21 @@ public class Gen_005 extends BackroomsGen {
 
 
 
-	public Gen_005(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+
+	public Gen_005(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen        = cfgParams.getBoolean("Enable-Gen"         );
 		this.enable_top        = cfgParams.getBoolean("Enable-Top"         );
+		this.level_y           = cfgParams.getInt(    "Level-Y"            );
+		this.level_h           = cfgParams.getInt(    "Level-Height"       );
+		this.subfloor          = cfgParams.getInt(    "SubFloor"           );
+		this.subceiling        = cfgParams.getInt(    "SubCeiling"         );
+		this.thresh_room_hall  = cfgParams.getDouble( "Thresh-Room-Or-Hall");
+		this.nominal_room_size = cfgParams.getInt(    "Nominal-Room-Size"  );
 		// noise
 		this.noiseHotelWalls = this.register(new FastNoiseLiteD());
 		this.noiseHotelRooms = this.register(new FastNoiseLiteD());
@@ -262,74 +275,85 @@ public class Gen_005 extends BackroomsGen {
 		if (block_hall_floor_oo      == null) throw new RuntimeException("Invalid block type for level 5 Hall-Floor-OO"     );
 		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
 		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
-		final int y  = this.level_y + SUBFLOOR + 1;
-		final int cy = this.level_y + SUBFLOOR + this.level_h + 2;
-		final int h  = this.level_h + 2;
-		int xx, zz;
-		int mod_x, mod_z;
-		HotelData dao;
+		final int h_walls = this.level_h + 2;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
+		final int y_ceil  = (y_floor + h_walls) - 1;
 		for (int iz=0; iz<16; iz++) {
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
-				xx = (chunkX * 16) + ix;
-				zz = (chunkZ * 16) + iz;
-				// hotel floor
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(ix, this.level_y+yy+1, iz,block_subfloor);
-				dao = hotelData.get(new Iab(ix, iz));
-				if (dao == null) continue;
-				if (ENABLE_TOP_005) {
-					for (int i=0; i<SUBCEILING; i++)
-						chunk.setBlock(ix, cy+i+1, iz, block_subceiling);
+				final int xx = (chunkX * 16) + ix;
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
+				// subfloor
+				for (int iy=0; iy<this.subfloor; iy++)
+					chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
+				final HotelData dao_hotel   = data_hotel.get(new Iab(ix, iz  ));
+				final HotelData dao_hotel_n = data_hotel.get(new Iab(ix, iz-1));
+				final HotelData dao_hotel_s = data_hotel.get(new Iab(ix, iz+1));
+				final HotelData dao_hotel_e = data_hotel.get(new Iab(ix+1, iz));
+				final HotelData dao_hotel_w = data_hotel.get(new Iab(ix-1, iz));
+				if (dao_hotel == null) continue;
+				if (this.enable_top) {
+					for (int iy=0; iy<this.subceiling; iy++)
+						chunk.setBlock(ix, y_ceil+iy+1, iz, block_subceiling);
 				}
-				switch (dao.type) {
-				case WALL:
-//TODO: use block_hall_wall_top_z and block_hall_wall_bottom_z
-					chunk.setBlock(ix, y+6, iz, block_hall_wall_top_x);
-					chunk.setBlock(ix, y+5, iz, block_hall_wall_top_x);
-					for (int iy=2; iy<5; iy++)
-						chunk.setBlock(ix, y+iy, iz, block_hall_wall_center);
-					chunk.setBlock(ix, y+1, iz, block_hall_wall_bottom_x);
-					chunk.setBlock(ix, y,   iz, block_hall_wall_bottom_x);
+				switch (dao_hotel.type) {
+				case WALL: {
+					final boolean ns = (
+						NodeType.HALL.equals(dao_hotel_e.type) ||
+						NodeType.HALL.equals(dao_hotel_w.type)
+					);
+					for (int iy=2; iy<h_walls-2; iy++)
+						chunk.setBlock(ix, y_floor+iy, iz, block_hall_wall_center);
+					for (int iy=0; iy<2; iy++) {
+						if (ns) {
+							chunk.setBlock(ix,  y_floor         +iy,   iz, block_hall_wall_bottom_z);
+							chunk.setBlock(ix, (y_floor+h_walls)-iy-1, iz, block_hall_wall_top_z   );
+						} else {
+							chunk.setBlock(ix,  y_floor         +iy,   iz, block_hall_wall_bottom_x);
+							chunk.setBlock(ix, (y_floor+h_walls)-iy-1, iz, block_hall_wall_top_x   );
+						}
+					}
 					break;
+				}
 				case HALL: {
+					// hall floors
 					if (iz % 2 == 0) {
-						if (ix % 2 == 0) chunk.setBlock(ix, y, iz, block_hall_floor_ee); // even x, even z
-						else             chunk.setBlock(ix, y, iz, block_hall_floor_oe); // odd x,  even z
+						if (ix % 2 == 0) chunk.setBlock(ix, y_floor, iz, block_hall_floor_ee); // even x, even z
+						else             chunk.setBlock(ix, y_floor, iz, block_hall_floor_oe); // odd x,  even z
 					} else {
-						if (ix % 2 == 0) chunk.setBlock(ix, y, iz, block_hall_floor_eo); // even x, odd z
-						else             chunk.setBlock(ix, y, iz, block_hall_floor_oo); // odd x,  odd z
+						if (ix % 2 == 0) chunk.setBlock(ix, y_floor, iz, block_hall_floor_eo); // even x, odd z
+						else             chunk.setBlock(ix, y_floor, iz, block_hall_floor_oo); // odd x,  odd z
 					}
 					// hall ceiling
 					if (this.enable_top) {
 						// ceiling light
-						mod_x = xx % 5;
-						mod_z = zz % 5;
-						if (dao.hall_center && (
-						(mod_x >= 0 && mod_x < 2) ||
-						(mod_z >= 1 && mod_z < 4) )) {
-							chunk.setBlock(ix, cy+1, iz, Material.REDSTONE_BLOCK);
-							chunk.setBlock(ix, cy,   iz, lamp);
+						if (dao_hotel.hall_center &&
+						(Math.floorDiv(xx, 2) + Math.floorDiv(zz, 2)) % 3 == 0) {
+							chunk.setBlock(ix, y_ceil+1, iz, Material.REDSTONE_BLOCK);
+							chunk.setBlock(ix, y_ceil,   iz, lamp                   );
 						// ceiling
 						} else {
-							if (NodeType.WALL.equals(hotelData.get(new Iab(ix, iz-1)).type) // north
-							||  NodeType.WALL.equals(hotelData.get(new Iab(ix, iz+1)).type) // south
-							||  NodeType.WALL.equals(hotelData.get(new Iab(ix+1, iz)).type) // east
-							||  NodeType.WALL.equals(hotelData.get(new Iab(ix-1, iz)).type))// west
-								chunk.setBlock(ix, cy, iz, block_subceiling);
-							else {
-								chunk.setBlock(ix, cy, iz, block_hall_ceiling);
-							}
+							final boolean isNearWall = (
+								NodeType.WALL.equals(dao_hotel_n.type) || // north
+								NodeType.WALL.equals(dao_hotel_s.type) || // south
+								NodeType.WALL.equals(dao_hotel_e.type) || // east
+								NodeType.WALL.equals(dao_hotel_w.type)    // west
+							);
+							if (isNearWall) chunk.setBlock(ix, y_ceil, iz, block_hall_ceiling     );
+							else            chunk.setBlock(ix, y_ceil, iz, block_hall_ceiling_slab);
 						}
 					}
 					break;
 				}
 				case ROOM: {
-					for (int iy=0; iy<h; iy++)
-						chunk.setBlock(ix, y+iy, iz, block_subwall);
+					for (int iy=0; iy<h_walls; iy++)
+						chunk.setBlock(ix, y_floor+iy, iz, block_subwall);
 					break;
 				}
-				default: throw new RuntimeException("Unknown hotel type: "+dao.type.toString());
+				default: throw new RuntimeException("Unknown hotel type: "+dao_hotel.type.toString());
 				}
 			} // end ix
 		} // end iz
@@ -364,9 +388,6 @@ public class Gen_005 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.thresh_room_hall .set(cfgParams.getDouble("Thresh-Room-Or-Hall"));
-		this.nominal_room_size.set(cfgParams.getInt(   "Nominal-Room-Size"  ));
 		// block types
 		this.block_subfloor          .set(cfgBlocks.getString("SubFloor"          ));
 		this.block_subceiling        .set(cfgBlocks.getString("SubCeiling"        ));
@@ -391,6 +412,10 @@ public class Gen_005 extends BackroomsGen {
 		// params
 		cfgParams.addDefault("Enable-Gen",          Boolean.TRUE                              );
 		cfgParams.addDefault("Enable-Top",          Boolean.TRUE                              );
+		cfgParams.addDefault("Level-Y",             Integer.valueOf(this.getDefaultY()       ));
+		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H          ));
+		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR         ));
+		cfgParams.addDefault("SubCeiling",          Integer.valueOf(DEFAULT_SUBCEILING       ));
 		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ  );
 		cfgParams.addDefault("Noise-Wall-Jitter",   DEFAULT_NOISE_WALL_JITTER);
 		cfgParams.addDefault("Noise-Room-Freq",     DEFAULT_NOISE_ROOM_FREQ  );

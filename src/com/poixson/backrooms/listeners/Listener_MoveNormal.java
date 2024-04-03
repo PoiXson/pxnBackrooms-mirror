@@ -31,10 +31,13 @@ public class Listener_MoveNormal implements xListener {
 
 	protected final HashMap<UUID, List<Location>> player_lights = new HashMap<UUID, List<Location>>();
 
+	protected final int bedrock_barrier;
+
 
 
 	public Listener_MoveNormal(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
+		this.bedrock_barrier = plugin.getBedrockBarrier();
 	}
 
 
@@ -66,6 +69,8 @@ public class Listener_MoveNormal implements xListener {
 		final int level = this.plugin.getLevel(player);
 		// basement lights
 		if (level == 1) {
+			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsLevel(0);
+			final Gen_001 gen_001 = level_000.gen_001;
 			final Location to = event.getTo();
 			final World world = to.getWorld();
 			final List<Location> lights = this.getPlayerLightsList(player.getUniqueId());
@@ -86,7 +91,7 @@ public class Listener_MoveNormal implements xListener {
 					}
 				}
 			}
-			final int y = Level_000.Y_001 + Gen_001.LAMP_Y + 5;
+			final int y = gen_001.level_y + gen_001.subfloor + gen_001.lamp_y + this.bedrock_barrier + 1;
 			final int r = BASEMENT_LIGHT_RADIUS;
 			int xx, zz;
 			for (int iz=0-r-1; iz<r; iz+=10) {

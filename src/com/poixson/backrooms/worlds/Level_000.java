@@ -47,52 +47,6 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 //   1 | Basement
 public class Level_000 extends BackroomsLevel {
 
-	public static final boolean ENABLE_GEN_309 = true;
-	public static final boolean ENABLE_GEN_019 = true;
-	public static final boolean ENABLE_GEN_005 = true;
-	public static final boolean ENABLE_GEN_037 = true;
-	public static final boolean ENABLE_GEN_006 = true;
-	public static final boolean ENABLE_GEN_000 = true;
-	public static final boolean ENABLE_GEN_023 = true;
-	public static final boolean ENABLE_GEN_001 = true;
-
-	public static final boolean ENABLE_TOP_309 = true;
-	public static final boolean ENABLE_TOP_005 = true;
-	public static final boolean ENABLE_TOP_037 = true;
-	public static final boolean ENABLE_TOP_000 = true;
-	public static final boolean ENABLE_TOP_023 = true;
-	public static final boolean ENABLE_TOP_001 = true;
-
-	public static final int SUBFLOOR   = 3;
-	public static final int SUBCEILING = 3;
-
-	// basement
-	public static final int Y_001 = 0;
-	public static final int H_001 = 20;
-	// overgrowth
-	public static final int Y_023 = Y_001 + H_001 + SUBFLOOR + 2;
-	public static final int H_023 = 5;
-	// lobby
-	public static final int Y_000 = Y_023 + H_023 + SUBFLOOR + SUBCEILING + 3;
-	public static final int H_000 = 5;
-	// lights out
-	public static final int Y_006 = Y_000 + H_000 + SUBFLOOR + SUBCEILING + 3;
-	public static final int H_006 = 5;
-	// pools
-	public static final int Y_037 = Y_006 + H_006 + 1;
-	public static final int H_037 = 10;
-	// hotel
-	public static final int Y_005 = Y_037 + H_037 + SUBFLOOR + SUBCEILING + 3;
-	public static final int H_005 = 5;
-	// attic
-	public static final int Y_019 = Y_005 + H_005 + SUBFLOOR + SUBCEILING + 1;
-	public static final int H_019 = 10;
-	// radio station
-	public static final int Y_309 = Y_019 + H_019 + SUBFLOOR + 1;
-	// the windows
-	public static final int Y_188 = Y_001;
-	public static final int H_188 = Y_309;
-
 	// generators
 	public final Gen_001 gen_001;
 	public final Gen_023 gen_023;
@@ -132,29 +86,16 @@ public class Level_000 extends BackroomsLevel {
 
 	public Level_000(final BackroomsPlugin plugin) {
 		super(plugin);
-		// dynmap
-		if (plugin.enableDynmapConfigGen()) {
-			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(  1, "basement",  "Basement",   Y_001              +10);
-			gen_tpl.add( 23, "overgrow",  "Overgrowth", Y_023               +8);
-			gen_tpl.add(  0, "lobby",     "Lobby",      Y_000+H_000+SUBFLOOR+1);
-			gen_tpl.add(  6, "lightsout", "Lights Out", Y_006+H_006           );
-			gen_tpl.add( 37, "poolrooms", "Poolrooms",  Y_037+H_037         +1);
-			gen_tpl.add( 05, "hotel",     "Hotel",      Y_005+H_005+SUBFLOOR+1);
-			gen_tpl.add( 19, "attic",     "Attic",      Y_019      +SUBFLOOR+1);
-			gen_tpl.add(309, "radio",     "Radio Station"                     );
-			gen_tpl.commit();
-		}
 		// generators
-		this.gen_001 = this.register(new Gen_001(this, this.seed, Y_001, H_001)); // basement
-		this.gen_023 = this.register(new Gen_023(this, this.seed, Y_023, H_023)); // overgrowth
-		this.gen_000 = this.register(new Gen_000(this, this.seed, Y_000, H_000)); // lobby
-		this.gen_006 = this.register(new Gen_006(this, this.seed, Y_006, H_006)); // lights out
-		this.gen_037 = this.register(new Gen_037(this, this.seed, Y_037, H_037)); // pools
-		this.gen_005 = this.register(new Gen_005(this, this.seed, Y_005, H_005)); // hotel
-		this.gen_019 = this.register(new Gen_019(this, this.seed, Y_019, H_019)); // attic
-		this.gen_188 = this.register(new Gen_188(this, this.seed, Y_188, H_188)); // the windows
-		this.gen_309 = this.register(new Gen_309(this, this.seed, Y_309,     0)); // radio station
+		this.gen_001 = this.register(new Gen_001(this, this.seed                      )); // basement
+		this.gen_023 = this.register(new Gen_023(this, this.seed, this.gen_001        )); // overgrowth
+		this.gen_000 = this.register(new Gen_000(this, this.seed, this.gen_023        )); // lobby
+		this.gen_006 = this.register(new Gen_006(this, this.seed, this.gen_000        )); // lights out
+		this.gen_037 = this.register(new Gen_037(this, this.seed, this.gen_006        )); // pools
+		this.gen_005 = this.register(new Gen_005(this, this.seed, this.gen_037        )); // hotel
+		this.gen_019 = this.register(new Gen_019(this, this.seed, this.gen_005        )); // attic
+		this.gen_188 = this.register(new Gen_188(this, this.seed, this.gen_001.level_y)); // the windows
+		this.gen_309 = this.register(new Gen_309(this, this.seed, this.gen_019        )); // radio station
 		// populators
 		this.pop_001 = this.register(new Pop_001(this)); // basement
 		this.pop_005 = this.register(new Pop_005(this)); // hotel
@@ -163,19 +104,32 @@ public class Level_000 extends BackroomsLevel {
 		// listeners
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
-		this.portal_0_to_1     = new LocationStoreManager(plugin, "level0", "portal_0_to_1"    ); // lobby to basement
-		this.portal_0_to_6     = new LocationStoreManager(plugin, "level0", "portal_0_to_6"    ); // lobby to lights out
-		this.portal_6_to_33    = new LocationStoreManager(plugin, "level0", "portal_6_to_33"   ); // run for your life button
-		this.portal_0_to_37    = new LocationStoreManager(plugin, "level0", "portal_0_to_37"   ); // lobby to pools
-		this.portal_1_well     = new LocationStoreManager(plugin, "level0", "portal_1_well"    ); // basement well
-		this.portal_5_to_19    = new LocationStoreManager(plugin, "level0", "portal_5_to_19"   ); // hotel to attic
-		this.portal_5_to_37    = new LocationStoreManager(plugin, "level0", "portal_5_to_37"   ); // hotel to pools
-		this.portal_19_to_309  = new LocationStoreManager(plugin, "level0", "portal_19_to_309" ); // attic to forest
-		this.portal_309_stairs = new LocationStoreManager(plugin, "level0", "portal_309_stairs"); // stairs in the forest
-		this.portal_309_doors  = new LocationStoreManager(plugin, "level0", "portal_309_doors" ); // doors in the forest
-		this.cheese_rooms      = new LocationStoreManager(plugin, "level0", "cheese_rooms"     ); // cheese hotel room
+		this.portal_0_to_1     = new LocationStoreManager(plugin, "level_000", "portal_000_to_001"); // lobby to basement
+		this.portal_0_to_6     = new LocationStoreManager(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
+		this.portal_6_to_33    = new LocationStoreManager(plugin, "level_000", "portal_006_to_033"); // run for your life button
+		this.portal_0_to_37    = new LocationStoreManager(plugin, "level_000", "portal_000_to_037"); // lobby to pools
+		this.portal_1_well     = new LocationStoreManager(plugin, "level_000", "portal_001_well"  ); // basement well
+		this.portal_5_to_19    = new LocationStoreManager(plugin, "level_000", "portal_005_to_019"); // hotel to attic
+		this.portal_5_to_37    = new LocationStoreManager(plugin, "level_000", "portal_005_to_037"); // hotel to pools
+		this.portal_19_to_309  = new LocationStoreManager(plugin, "level_000", "portal_019_to_309"); // attic to forest
+		this.portal_309_stairs = new LocationStoreManager(plugin, "level_000", "portal_309_stairs"); // stairs in the forest
+		this.portal_309_doors  = new LocationStoreManager(plugin, "level_000", "portal_309_doors" ); // doors in the forest
+		this.cheese_rooms      = new LocationStoreManager(plugin, "level_000", "cheese_rooms"     ); // cheese hotel room
 		// loot
-		this.loot_chests_0     = new LocationStoreManager(plugin, "level0", "loot_0"           ); // loot chests
+		this.loot_chests_0     = new LocationStoreManager(plugin, "level_000", "loot_000"         ); // loot chests
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
+			gen_tpl.add(  1, "basement",  "Basement",   this.gen_001.level_y+this.gen_001.bedrock_barrier+this.gen_001.level_h                        );
+			gen_tpl.add( 23, "overgrow",  "Overgrowth", this.gen_023.level_y+this.gen_023.bedrock_barrier                                           +8);
+			gen_tpl.add(  0, "lobby",     "Lobby",      this.gen_000.level_y+this.gen_000.bedrock_barrier+this.gen_000.level_h+this.gen_000.subfloor+1);
+			gen_tpl.add(  6, "lightsout", "Lights Out", this.gen_006.level_y+this.gen_006.bedrock_barrier+this.gen_006.level_h                        );
+			gen_tpl.add( 37, "poolrooms", "Poolrooms",  this.gen_037.level_y+this.gen_037.bedrock_barrier+this.gen_037.level_h                      +1);
+			gen_tpl.add( 05, "hotel",     "Hotel",      this.gen_005.level_y+this.gen_005.bedrock_barrier+this.gen_005.level_h+this.gen_005.subfloor+1);
+			gen_tpl.add( 19, "attic",     "Attic",      this.gen_019.level_y+this.gen_019.bedrock_barrier                     +this.gen_019.subfloor+1);
+			gen_tpl.add(309, "radio",     "Radio Station"                                                                                             );
+			gen_tpl.commit();
+		}
 	}
 
 
@@ -232,7 +186,7 @@ public class Level_000 extends BackroomsLevel {
 		final int y = loc.getBlockY();
 		final int z = loc.getBlockZ();
 		// the windows
-		if (y < Y_309
+		if (y < this.gen_309.level_y
 		&&  x >= -46 && x <= 62
 		&&  z >= -46 && z <= 62)
 			return 188;
@@ -267,30 +221,30 @@ public class Level_000 extends BackroomsLevel {
 	@Override
 	public int getY(final int level) {
 		switch (level) {
-		case   1: return Y_001; // basement
-		case  23: return Y_023; // overgrowth
-		case   0: return Y_000; // lobby
-		case   6: return Y_006; // lights out
-		case  37: return Y_037; // pools
-		case   5: return Y_005; // hotel
-		case  19: return Y_019; // attic
-		case 309: return Y_309; // radio station
-		case 188: return Y_188; // the windows
+		case   1: return this.gen_001.level_y; // basement
+		case  23: return this.gen_023.level_y; // overgrowth
+		case   0: return this.gen_000.level_y; // lobby
+		case   6: return this.gen_006.level_y; // lights out
+		case  37: return this.gen_037.level_y; // pools
+		case   5: return this.gen_005.level_y; // hotel
+		case  19: return this.gen_019.level_y; // attic
+		case 309: return this.gen_309.level_y; // radio station
+		case 188: return this.gen_188.level_y; // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
 	@Override
 	public int getMaxY(final int level) {
 		switch (level) {
-		case   1: return Y_023 - 1; // basement
-		case  23: return Y_000 - 1; // overgrowth
-		case   0: return Y_006 - 1; // lobby
-		case   6: return Y_037 - 1; // lights out
-		case  37: return Y_005 - 1; // pools
-		case   5: return Y_019 - 1; // hotel
-		case  19: return Y_309 - 1; // attic
-		case 309: return 320;       // radio station
-		case 188: return Y_309 - 1; // the windows
+		case   1: return this.gen_001.getNextY(); // basement
+		case  23: return this.gen_023.getNextY(); // overgrowth
+		case   0: return this.gen_000.getNextY(); // lobby
+		case   6: return this.gen_006.getNextY(); // lights out
+		case  37: return this.gen_037.getNextY(); // pools
+		case   5: return this.gen_005.getNextY(); // hotel
+		case  19: return this.gen_019.getNextY(); // attic
+		case 309: return 320;                     // radio station
+		case 188: return this.gen_188.getNextY(); // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}

@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_011.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
@@ -16,7 +15,6 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.DataHolder_City.CityData;
 import com.poixson.backrooms.worlds.Level_011.PregenLevel11;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
@@ -30,6 +28,8 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_011 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_H                    = 50;
+	public static final int    DEFAULT_SUBFLOOR                   = 3;
 	public static final double DEFAULT_NOISE_ROAD_FREQ            = 0.004;
 	public static final double DEFAULT_NOISE_ROAD_JITTER          = 0.3;
 	public static final double DEFAULT_NOISE_ALLEY_FREQ           = 0.016;
@@ -49,6 +49,11 @@ public class Gen_011 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final double  thresh_road;
+	public final double  thresh_alley;
 	// noise
 	public final FastNoiseLiteD noiseRoad;
 	public final FastNoiseLiteD noiseAlley;
@@ -68,12 +73,17 @@ public class Gen_011 extends BackroomsGen {
 
 
 
-	public Gen_011(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_011(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
+		super(backlevel, gen_below, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
 		this.enable_gen             = cfgParams.getBoolean("Enable-Gen"  );
 		this.enable_top             = cfgParams.getBoolean("Enable-Top"  );
+		this.level_y                = cfgParams.getInt(    "Level-Y"     );
+		this.level_h                = cfgParams.getInt(    "Level-Height");
+		this.subfloor               = cfgParams.getInt(    "SubFloor"    );
 		// noise
 		this.noiseRoad           = this.register(new FastNoiseLiteD());
 		this.noiseAlley          = this.register(new FastNoiseLiteD());
@@ -86,6 +96,11 @@ public class Gen_011 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 11;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.level_h;
 	}
 
 
@@ -102,24 +117,25 @@ public class Gen_011 extends BackroomsGen {
 		if (block_road     == null) throw new RuntimeException("Invalid block type for level 11 Road"    );
 		if (block_alley    == null) throw new RuntimeException("Invalid block type for level 11 Alley"   );
 		final DataHolder_City city = ((PregenLevel11) pregen).city;
-		final int y = this.level_y + SUBFLOOR + 1;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
-				final CityData data = city.data[iz+16][ix+16];
+				final CityData dao_city = data_city.data[iz+16][ix+16];
 				// subfloor
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int iy=0; iy<SUBFLOOR; iy++)
+				for (int iy=0; iy<this.subfloor; iy++)
 					chunk.setBlock(ix, this.level_y+iy+1, iz, block_subfloor);
 				// road
-				if (data.isRoad) {
-					chunk.setBlock(ix, y, iz, block_road);
+				if (dao_city.isRoad) {
+					chunk.setBlock(ix, y_floor, iz, block_road);
 					// sidewalk
-					if (data.edge_road < 5)
-						chunk.setBlock(ix, y+1, iz, Material.POLISHED_DIORITE_SLAB);
+					if (dao_city.edge_road < 5)
+						chunk.setBlock(ix, y_floor+1, iz, Material.POLISHED_DIORITE_SLAB);
 				} else
 				// alley
-				if (data.isAlley) {
-					chunk.setBlock(ix, y,   iz, block_alley     );
+				if (dao_city.isAlley) {
+					chunk.setBlock(ix, y_floor,   iz, block_alley     );
 				// building
 				} else {
 //TODO
@@ -127,7 +143,7 @@ if (data.isEdgeMain) chunk.setBlock(ix, y+3, iz, Material.BLUE_WOOL );
 if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 					if (!data.isRoadOrAlley()) {
 						final Material block_building;
-						final int mod = data.building_height_int % 5;
+						final int mod = dao_city.building_height_int % 5;
 						switch (mod) {
 						case 0:  block_building = Material.OAK_PLANKS;      break;
 						case 1:  block_building = Material.DARK_OAK_PLANKS; break;
@@ -135,14 +151,14 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 						case 3:  block_building = Material.STONE_BRICKS;    break;
 						default: block_building = Material.STONE;           break;
 						}
-						final int h = data.building_height_int;
+						final int h_building = dao_city.building_height_int;
 						// building roof
 						if (this.enable_top)
-							chunk.setBlock(ix, y+h, iz, Material.STONE_SLAB);
+							chunk.setBlock(ix, y_floor+h_building, iz, Material.STONE_SLAB);
 						// building walls
-						if (data.isEdge()) {
-							for (int iy=0; iy<h+1; iy++)
-								chunk.setBlock(ix, y+iy, iz, block_building);
+						if (dao_city.isEdge()) {
+							for (int iy=0; iy<h_building+1; iy++)
+								chunk.setBlock(ix, y_floor+iy, iz, block_building);
 						}
 					}
 				}
@@ -184,11 +200,6 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-			this.building_height_base  .set(cfg.getDouble("Building-Height-Base"  ));
-			this.building_height_factor.set(cfg.getDouble("Building-Height-Factor"));
-		this.thresh_road           .set(cfgParams.getDouble("Thresh-Road"           ));
-		this.thresh_alley          .set(cfgParams.getDouble("Thresh-Alley"          ));
 		// block types
 		this.block_subfloor.set(cfgBlocks.getString("SubFloor"));
 		this.block_road    .set(cfgBlocks.getString("Road"    ));
@@ -199,6 +210,9 @@ if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
 		// params
 		cfgParams.addDefault("Enable-Gen",                 Boolean.TRUE                                       );
 		cfgParams.addDefault("Enable-Top",                 Boolean.TRUE                                       );
+		cfgParams.addDefault("Level-Y",                    Integer.valueOf(this.getDefaultY()                ));
+		cfgParams.addDefault("Level-Height",               Integer.valueOf(DEFAULT_LEVEL_H                   ));
+		cfgParams.addDefault("SubFloor",                   Integer.valueOf(DEFAULT_SUBFLOOR                  ));
 		cfgParams.addDefault("Noise-Road-Freq",            DEFAULT_NOISE_ROAD_FREQ           );
 		cfgParams.addDefault("Noise-Road-Jitter",          DEFAULT_NOISE_ROAD_JITTER         );
 		cfgParams.addDefault("Noise-Alley-Freq",           DEFAULT_NOISE_ALLEY_FREQ          );

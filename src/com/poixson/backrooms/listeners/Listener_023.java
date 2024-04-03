@@ -42,6 +42,9 @@ public class Listener_023 implements xListener {
 		if (level == 0
 		||  level == 1
 		||  level == 23) {
+			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsLevel(0);
+			final int level_000_y = level_000.gen_000.level_y;
+			final int level_023_y = level_000.gen_023.level_y;
 			final ItemStack stack = event.getItem();
 			final Material type = stack.getType();
 			final MoreFoodsAPI morefoods = MoreFoodsAPI.GetAPI();
@@ -56,7 +59,7 @@ public class Listener_023 implements xListener {
 			case 1: {
 				if (Material.APPLE.equals(type)) {
 					if (aged) {
-						final int delta_y = Level_000.Y_023 - Level_000.Y_000;
+						final int delta_y = level_023_y - level_000_y;
 						final Location loc = player.getLocation();
 						loc.add(0.0, (double)delta_y, 0.0);
 						player.teleport(loc);
@@ -71,7 +74,7 @@ public class Listener_023 implements xListener {
 			case 23: {
 				if (Material.CARROT.equals(type)) {
 					if (aged) {
-						final int delta_y = Level_000.Y_000 - Level_000.Y_023;
+						final int delta_y = level_000_y - level_023_y;
 						final Location loc = player.getLocation();
 						loc.add(0.0, (double)delta_y, 0.0);
 						player.teleport(loc);

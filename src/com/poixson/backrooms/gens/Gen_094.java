@@ -5,7 +5,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
@@ -19,8 +18,6 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_094.PregenLevel94;
-import com.poixson.tools.xRand;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -34,6 +31,9 @@ import com.poixson.utils.StringUtils;
 public class Gen_094 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_Y              = 0;
+	public static final int    DEFAULT_LEVEL_H              = 8;
+	public static final int    DEFAULT_SUBFLOOR             = 3;
 	public static final double DEFAULT_NOISE_HILLS_FREQ     = 0.015;
 	public static final int    DEFAULT_NOISE_HILLS_OCTAVE   = 2;
 	public static final double DEFAULT_NOISE_HILLS_STRENGTH = 1.8;
@@ -65,18 +65,20 @@ public class Gen_094 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final double  valley_depth;
+	public final double  valley_gain;
+	public final double  hills_gain;
+	public final int     grass_rose_chance;
+	public final int     water_depth;
+	public final int     house_width;
+	public final int     house_height;
 	// noise
 	public final FastNoiseLiteD noiseHills;
 	public final FastNoiseLiteD noiseHouse;
 
-	// params
-	public final AtomicDouble  valley_depth      = new AtomicDouble( DEFAULT_VALLEY_DEPTH     );
-	public final AtomicDouble  valley_gain       = new AtomicDouble( DEFAULT_VALLEY_GAIN      );
-	public final AtomicDouble  hills_gain        = new AtomicDouble( DEFAULT_HILLS_GAIN       );
-	public final AtomicInteger grass_rose_chance = new AtomicInteger(DEFAULT_GRASS_ROSE_CHANCE);
-	public final AtomicInteger water_depth       = new AtomicInteger(DEFAULT_WATER_DEPTH      );
-	public final AtomicInteger house_width       = new AtomicInteger(DEFAULT_HOUSE_WIDTH      );
-	public final AtomicInteger house_height      = new AtomicInteger(DEFAULT_HOUSE_HEIGHT     );
 
 	// blocks
 	public final AtomicReference<String> block_dirt              = new AtomicReference<String>(null);
@@ -95,9 +97,24 @@ public class Gen_094 extends BackroomsGen {
 
 
 
-	public Gen_094(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_094(final BackroomsLevel backlevel, final int seed) {
+		super(backlevel, null, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
+		// params
+		this.enable_gen        = cfgParams.getBoolean("Enable-Gen"       );
+		this.enable_top        = cfgParams.getBoolean("Enable-Top"       );
+		this.level_y           = cfgParams.getInt(    "Level-Y"          );
+		this.level_h           = cfgParams.getInt(    "Level-Height"     );
+		this.subfloor          = cfgParams.getInt(    "SubFloor"         );
+		this.valley_depth      = cfgParams.getDouble( "Valley-Depth"     );
+		this.valley_gain       = cfgParams.getDouble( "Valley-Gain"      );
+		this.hills_gain        = cfgParams.getDouble( "Hills-Gain"       );
+		this.grass_rose_chance = cfgParams.getInt(    "Grass-Rose-Chance");
+		this.water_depth       = cfgParams.getInt(    "Water-Depth"      );
+		this.house_width       = cfgParams.getInt(    "House-Width"      );
+		this.house_height      = cfgParams.getInt(    "House-Height"     );
 		// noise
 		this.noiseHills = this.register(new FastNoiseLiteD());
 		this.noiseHouse = this.register(new FastNoiseLiteD());
@@ -108,6 +125,11 @@ public class Gen_094 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 94;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.level_h;
 	}
 
 
@@ -138,31 +160,24 @@ public class Gen_094 extends BackroomsGen {
 
 	public void pregenerate(final Map<Iab, HillsData> data,
 			final int chunkX, final int chunkZ) {
-		final double valley_depth = this.valley_depth.get();
-		final double valley_gain  = this.valley_gain.get();
-		final double hills_gain   = this.hills_gain.get();
-		final int    house_width  = this.house_width.get();
 		final int house_lowest_y = 7;
-		HillsData dao;
-		int xx, zz;
-		double valueHill, valueHouse;
 		for (int iz=-1; iz<17; iz++) {
-			zz = (chunkZ * 16) + iz;
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
-				xx = (chunkX * 16) + ix;
-				valueHill  = this.noiseHills.getNoise(xx, zz);
-				valueHouse = this.noiseHouse.getNoise(xx, zz);
-				dao = new HillsData(valueHill, valueHouse, valley_depth, valley_gain, hills_gain);
-				data.put(new Iab(ix, iz), dao);
+				final int xx = (chunkX * 16) + ix;
+				final double valueHill  = this.noiseHills.getNoise(xx, zz);
+				final double valueHouse = this.noiseHouse.getNoise(xx, zz);
+				HillsData dao_hills = new HillsData(valueHill, valueHouse, this.valley_depth, this.valley_gain, this.hills_gain);
+				data.put(new Iab(ix, iz), dao_hills);
 			}
 		}
 		// find house y
-		final int search_width = 16 - house_width;
+		final int search_width = 16 - this.house_width;
 		LOOP_Z:
 		for (int iz=0; iz<search_width; iz++) {
 			for (int ix=0; ix<search_width; ix++) {
-				dao = data.get(new Iab(ix, iz));
-				valueHouse = dao.valueHouse;
+				final HillsData dao_hills = data.get(new Iab(ix, iz));
+				final double valueHouse = dao_hills.valueHouse;
 				if (valueHouse > data.get(new Iab(ix, iz-1)).valueHouse
 				&&  valueHouse > data.get(new Iab(ix, iz+1)).valueHouse
 				&&  valueHouse > data.get(new Iab(ix+1, iz)).valueHouse
@@ -178,8 +193,8 @@ public class Gen_094 extends BackroomsGen {
 					}
 					if (lowest != Integer.MAX_VALUE
 					&&  lowest > house_lowest_y) {
-						dao.house_y = lowest;
-						dao.isHouse = true;
+						dao_hills.house_y = lowest;
+						dao_hills.isHouse = true;
 					}
 					break LOOP_Z;
 				}
@@ -222,60 +237,51 @@ public class Gen_094 extends BackroomsGen {
 		if (block_house_roof_solid == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Solid" );
 		if (block_house_window     == null) throw new RuntimeException("Invalid block type for level 94 House-Window"     );
 		if (block_house_floor      == null) throw new RuntimeException("Invalid block type for level 94 House-Floor"      );
-		final int depth_water       = this.water_depth.get();;
-		final int grass_rose_chance = this.grass_rose_chance.get();
-		final int house_width       = this.house_width.get();
-		final int house_height      = this.house_height.get();
 		final HashMap<Iab, HillsData> hillsData = ((PregenLevel94)pregen).hills;
-		final xRand rnd = xRand.Get(0, grass_rose_chance);
-		HillsData dao;
-		final int y = this.level_y + 1;
-		int depth_dirt;
-		int mod_grass, rnd_grass;
 		Iab house_loc = null;
 		int house_y   = 0;
 		boolean house_dir = false;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
 				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				dao = hillsData.get(new Iab(ix, iz));
-				depth_dirt = (int) Math.floor(dao.depth);
+				final HillsData dao_hills = data_hills.get(new Iab(ix, iz));
+				int depth_dirt = (int) Math.floor(dao_hills.depth);
 				if (depth_dirt < 0) depth_dirt = 0;
 				// water
-				if (depth_dirt <= depth_water) {
-					for (int iy=-1; iy<depth_water; iy++)
-						chunk.setBlock(ix, y+iy, iz, Material.WATER);
+				if (depth_dirt <= this.water_depth) {
+					for (int iy=-1; iy<this.water_depth; iy++)
+						chunk.setBlock(ix, this.level_y+iy, iz, Material.WATER);
 				// land
 				} else {
 					// fill dirt
 					for (int iy=2; iy<depth_dirt; iy++)
-						chunk.setBlock(ix, (y+iy)-2, iz, block_dirt);
-					chunk.setBlock(ix, (y+depth_dirt)-2, iz, block_grass_block);
+						chunk.setBlock(ix, (this.level_y+iy)-2, iz, block_dirt);
+					chunk.setBlock(ix, (this.level_y+depth_dirt)-2, iz, block_grass_block);
 					// surface slab
-					if (dao.depth % 1.0 > 0.7) {
-						chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_grass_slab);
+					if (dao_hills.depth % 1.0 > 0.7) {
+						chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_slab);
 					} else {
-						mod_grass = (int) Math.floor(dao.valueHill * 1000.0) % 3;
-						rnd_grass = rnd.nextInt();
-						if      (rnd_grass == 1) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_rose            );
+						final int mod_grass = (int) Math.floor(dao_hills.valueHill * 1000.0) % 3;
+						final int rnd_grass = this.random.nextInt(0, this.grass_rose_chance);
+						if      (rnd_grass == 1) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_rose            );
 						else if (rnd_grass < 20) {
-							chunk                     .setBlock(ix, (y+depth_dirt)-1, iz, block_grass_tall_lower);
-							chunk                     .setBlock(ix,  y+depth_dirt,    iz, block_grass_tall_upper); }
-						else if (mod_grass == 0) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_grass_short     );
-						else if (mod_grass == 1) chunk.setBlock(ix, (y+depth_dirt)-1, iz, block_fern            );
+							chunk                     .setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_tall_lower);
+							chunk                     .setBlock(ix,  this.level_y+depth_dirt,    iz, block_grass_tall_upper); }
+						else if (mod_grass == 0) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_short     );
+						else if (mod_grass == 1) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_fern            );
 					}
 				}
 				// house
-				if (dao.isHouse) {
+				if (dao_hills.isHouse) {
 					house_loc = new Iab(ix, iz);
-					house_y   = dao.house_y - 1;
-					house_dir = dao.house_direction;
+					house_y   = dao_hills.house_y - 1;
+					house_dir = dao_hills.house_direction;
 				}
 			}
 		}
 		// build house
 		if (house_loc != null) {
-			final int house_half = Math.floorDiv(house_width, 2);
+			final int house_half = Math.floorDiv(this.house_width, 2);
 			if (house_dir) {
 				((Stairs)block_house_roofA).setFacing(BlockFace.NORTH);
 				((Stairs)block_house_roofB).setFacing(BlockFace.SOUTH);
@@ -286,8 +292,8 @@ public class Gen_094 extends BackroomsGen {
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("use")
-				.xyz(house_loc.a, y+house_y, house_loc.b)
-				.whd(house_width, house_height+house_half+1, house_width);
+				.xyz(house_loc.a, this.level_y+house_y, house_loc.b)
+				.whd(this.house_width, this.house_height+house_half+1, this.house_width);
 			plot.type('#', block_house_wall      );
 			plot.type('<', block_house_roofA     );
 			plot.type('>', block_house_roofB     );
@@ -298,44 +304,44 @@ public class Gen_094 extends BackroomsGen {
 			plot.rotation = (house_dir ? BlockFace.EAST : BlockFace.SOUTH);
 			final StringBuilder[][] matrix = plot.getMatrix3D();
 			// walls
-			for (int iy=0; iy<house_height; iy++) {
-				matrix[iy][0            ].append("#".repeat(house_width));
-				matrix[iy][house_width-1].append("#".repeat(house_width));
-				for (int iz=1; iz<house_width-1; iz++) {
+			for (int iy=0; iy<this.house_height; iy++) {
+				matrix[iy][0                 ].append("#".repeat(this.house_width));
+				matrix[iy][this.house_width-1].append("#".repeat(this.house_width));
+				for (int iz=1; iz<this.house_width-1; iz++) {
 					matrix[iy][iz].append('#');
-					if (iy == 0) matrix[iy][iz].append("_".repeat(house_width-2));
-					else         matrix[iy][iz].append(".".repeat(house_width-2));
+					if (iy == 0) matrix[iy][iz].append("_".repeat(this.house_width-2));
+					else         matrix[iy][iz].append(".".repeat(this.house_width-2));
 					matrix[iy][iz].append('#');
 				}
 			}
 			// roof
 			if (this.enable_top) {
-			int yy, fill;
-			for (int iy=0; iy<house_half; iy++) {
-				for (int iz=0; iz<house_width; iz++) {
-					yy = iy + house_height;
-					fill = house_width - (iy*2) - 2;
-					matrix[yy][iz].append(".".repeat(iy)).append('>');
-					if (iz == 0 || iz == house_width-1) {
-						if (iy < house_half-1) matrix[yy][iz].append('X');
-						if (fill > 2)          matrix[yy][iz].append("#".repeat(fill-2));
-						if (iy < house_half-1) matrix[yy][iz].append('X');
-					} else {
-						matrix[yy][iz].append(".".repeat(fill));
+				for (int iy=0; iy<house_half; iy++) {
+					for (int iz=0; iz<this.house_width; iz++) {
+						final int yy = iy + this.house_height;
+						final int fill = this.house_width - (iy*2) - 2;
+						matrix[yy][iz].append(".".repeat(iy)).append('>');
+						if (iz == 0 || iz == this.house_width-1) {
+							if (iy < house_half-1) matrix[yy][iz].append('X');
+							if (fill > 2)          matrix[yy][iz].append("#".repeat(fill-2));
+							if (iy < house_half-1) matrix[yy][iz].append('X');
+						} else {
+							matrix[yy][iz].append(".".repeat(fill));
+						}
+						matrix[yy][iz].append('<').append(".".repeat(iy));
 					}
-					matrix[yy][iz].append('<').append(".".repeat(iy));
 				}
 			}
 			// windows
-			for (int i=2; i<4; i++) {
-				StringUtils.ReplaceInString(matrix[house_height-i][0],             "w", house_half-2);
-				StringUtils.ReplaceInString(matrix[house_height-i][0],             "w", house_half+1);
-				StringUtils.ReplaceInString(matrix[house_height-i][house_width-1], "w", house_half-2);
-				StringUtils.ReplaceInString(matrix[house_height-i][house_width-1], "w", house_half+1);
-				StringUtils.ReplaceInString(matrix[house_height-i][house_half-2],  "w", 0            );
-				StringUtils.ReplaceInString(matrix[house_height-i][house_half-2],  "w", house_width-1);
-				StringUtils.ReplaceInString(matrix[house_height-i][house_half+1],  "w", 0            );
-				StringUtils.ReplaceInString(matrix[house_height-i][house_half+1],  "w", house_width-1);
+			for (int iy=2; iy<4; iy++) {
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][0],                  "w", house_half-2      );
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][0],                  "w", house_half+1      );
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][this.house_width-1], "w", house_half-2      );
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][this.house_width-1], "w", house_half+1      );
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half-2],       "w", 0                 );
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half-2],       "w", this.house_width-1);
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half+1],       "w", 0                 );
+				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half+1],       "w", this.house_width-1);
 			}
 			plot.run(chunk, matrix);
 		}
@@ -366,14 +372,6 @@ public class Gen_094 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.valley_depth     .set(cfgParams.getDouble("Valley-Depth"     ));
-		this.valley_gain      .set(cfgParams.getDouble("Valley-Gain"      ));
-		this.hills_gain       .set(cfgParams.getDouble("Hills-Gain"       ));
-		this.grass_rose_chance.set(cfgParams.getInt(   "Grass-Rose-Chance"));
-		this.water_depth      .set(cfgParams.getInt(   "Water-Depth"      ));
-		this.house_width      .set(cfgParams.getInt(   "House-Width"      ));
-		this.house_height     .set(cfgParams.getInt(   "House-Height"     ));
 		// block types
 		this.block_dirt             .set(cfgBlocks.getString("Dirt"             ));
 		this.block_grass_block      .set(cfgBlocks.getString("Grass-Block"      ));
@@ -399,13 +397,16 @@ public class Gen_094 extends BackroomsGen {
 		cfgParams.addDefault("Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
 		cfgParams.addDefault("Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
 		cfgParams.addDefault("Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
-		cfgParams.addDefault("Valley-Depth",         DEFAULT_VALLEY_DEPTH        );
-		cfgParams.addDefault("Valley-Gain",          DEFAULT_VALLEY_GAIN         );
-		cfgParams.addDefault("Hills-Gain",           DEFAULT_HILLS_GAIN          );
-		cfgParams.addDefault("Grass-Rose-Chance",    DEFAULT_GRASS_ROSE_CHANCE   );
-		cfgParams.addDefault("Water-Depth",          DEFAULT_WATER_DEPTH         );
-		cfgParams.addDefault("House-Width",          DEFAULT_HOUSE_WIDTH         );
-		cfgParams.addDefault("House-Height",         DEFAULT_HOUSE_HEIGHT        );
+		cfgParams.addDefault("Level-Y",              Integer.valueOf(DEFAULT_LEVEL_Y             ));
+		cfgParams.addDefault("Level-Height",         Integer.valueOf(DEFAULT_LEVEL_H             ));
+		cfgParams.addDefault("SubFloor",             Integer.valueOf(DEFAULT_SUBFLOOR            ));
+		cfgParams.addDefault("Valley-Depth",         Double .valueOf(DEFAULT_VALLEY_DEPTH        ));
+		cfgParams.addDefault("Valley-Gain",          Double .valueOf(DEFAULT_VALLEY_GAIN         ));
+		cfgParams.addDefault("Hills-Gain",           Double .valueOf(DEFAULT_HILLS_GAIN          ));
+		cfgParams.addDefault("Grass-Rose-Chance",    Integer.valueOf(DEFAULT_GRASS_ROSE_CHANCE   ));
+		cfgParams.addDefault("Water-Depth",          Integer.valueOf(DEFAULT_WATER_DEPTH         ));
+		cfgParams.addDefault("House-Width",          Integer.valueOf(DEFAULT_HOUSE_WIDTH         ));
+		cfgParams.addDefault("House-Height",         Integer.valueOf(DEFAULT_HOUSE_HEIGHT        ));
 		// block types
 		cfgBlocks.addDefault("Dirt",              DEFAULT_BLOCK_DIRT             );
 		cfgBlocks.addDefault("Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );

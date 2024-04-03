@@ -4,38 +4,39 @@ import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.NumberUtils;
 
 
 public abstract class BackroomsGen {
 
 	public final BackroomsPlugin plugin;
 	public final BackroomsLevel backlevel;
+	public final BackroomsGen   gen_below;
 
 	protected final CopyOnWriteArraySet<FastNoiseLiteD> noises = new CopyOnWriteArraySet<FastNoiseLiteD>();
 	protected final int seed;
 
-	public final int level_y;
-	public final int level_h;
+	public final int bedrock_barrier;
 
 	protected final xRand random = new xRand();
 
 
 
-	public BackroomsGen(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
+	protected BackroomsGen(final BackroomsLevel backlevel, final BackroomsGen gen_below, final int seed) {
 		this.plugin    = backlevel.plugin;
 		this.backlevel = backlevel;
+		this.gen_below = gen_below;
 		this.seed      = seed;
-		this.level_y   = level_y;
-		this.level_h   = level_h;
+		this.bedrock_barrier = this.plugin.getBedrockBarrier();
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
+		this.configDefaults(cfgParams, cfgBlocks);
 	}
 
 
@@ -55,15 +56,20 @@ public abstract class BackroomsGen {
 
 	public abstract int getLevelNumber();
 
+	public abstract int getNextY();
+
+	protected int getDefaultY() {
+		return (this.gen_below == null ? -64 : this.gen_below.getNextY());
+	}
+
 	public int getSeed() {
 		return this.seed;
 	}
 
 
 
-	protected void initNoise(final ConfigurationSection cfgParams) {}
+	protected void initNoise() {}
 
-	protected abstract void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks);
 	protected abstract void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks);
 
 

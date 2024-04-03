@@ -1,6 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_000.SUBFLOOR;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
-import com.poixson.tools.abstractions.AtomicDouble;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -32,6 +30,13 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_001 extends BackroomsGen {
 
 	// default params
+	public static final int    DEFAULT_LEVEL_Y             = -20;
+	public static final int    DEFAULT_LEVEL_H             = 24;
+	public static final int    DEFAULT_SUBFLOOR            = 3;
+	public static final int    DEFAULT_WALL_HEIGHT         = 7;
+	public static final int    DEFAULT_LAMP_Y              = 6;
+	public static final int    DEFAULT_WELL_SIZE           = 5;
+	public static final int    DEFAULT_WELL_HEIGHT         = 2;
 	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.033;
 	public static final int    DEFAULT_NOISE_WALL_OCTAVE   = 2;
 	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.03;
@@ -42,8 +47,6 @@ public class Gen_001 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_WELL_FREQ     = 0.0028;
 	public static final double DEFAULT_THRESH_WALL         = 0.9;
 	public static final double DEFAULT_THRESH_MOIST        = 0.4;
-
-	public static final int LAMP_Y = 6;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL      = "minecraft:mud_bricks";
@@ -59,8 +62,15 @@ public class Gen_001 extends BackroomsGen {
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
-	public final AtomicDouble thresh_wall  = new AtomicDouble( DEFAULT_THRESH_WALL );
-	public final AtomicDouble thresh_moist = new AtomicDouble( DEFAULT_THRESH_MOIST);
+	public final int     level_y;
+	public final int     level_h;
+	public final int     subfloor;
+	public final int     wall_height;
+	public final int     lamp_y;
+	public final int     well_size;
+	public final int     well_height;
+	public final double  thresh_wall;
+	public final double  thresh_moist;
 
 	// blocks
 	public final AtomicReference<String> block_wall      = new AtomicReference<String>(null);
@@ -70,11 +80,23 @@ public class Gen_001 extends BackroomsGen {
 
 
 
-	public Gen_001(final BackroomsLevel backlevel, final int seed,
-			final int level_y, final int level_h) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_001(final BackroomsLevel backlevel, final int seed) {
+		super(backlevel, null, seed);
+		final int level_number = this.getLevelNumber();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
+		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
+		// params
 		this.enable_gen   = cfgParams.getBoolean("Enable-Gen"  );
 		this.enable_top   = cfgParams.getBoolean("Enable-Top"  );
+		this.level_y      = cfgParams.getInt(    "Level-Y"     );
+		this.level_h      = cfgParams.getInt(    "Level-Height");
+		this.subfloor     = cfgParams.getInt(    "SubFloor"    );
+		this.wall_height  = cfgParams.getInt(    "Wall-Height" );
+		this.lamp_y       = cfgParams.getInt(    "Lamp-Y"      );
+		this.well_size    = cfgParams.getInt(    "Well-Size"   );
+		this.well_height  = cfgParams.getInt(    "Well-Height" );
+		this.thresh_wall  = cfgParams.getDouble( "Thresh-Wall" );
+		this.thresh_moist = cfgParams.getDouble( "Thresh-Moist");
 		// noise
 		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
 		this.noiseMoist         = this.register(new FastNoiseLiteD());
@@ -86,6 +108,11 @@ public class Gen_001 extends BackroomsGen {
 	@Override
 	public int getLevelNumber() {
 		return 1;
+	}
+
+	@Override
+	public int getNextY() {
+		return this.level_y + this.bedrock_barrier + this.subfloor + this.level_h + 3;
 	}
 
 
@@ -102,8 +129,8 @@ public class Gen_001 extends BackroomsGen {
 			this.valueWall   = valueWall;
 			this.valueMoistA = valueMoistA;
 			this.valueMoistB = valueMoistB;
-			this.isWall = (valueWall > Gen_001.this.thresh_wall.get());
-			final double thresh_moist = Gen_001.this.thresh_moist.get();
+			this.isWall = (valueWall > Gen_001.this.thresh_wall);
+			final double thresh_moist = Gen_001.this.thresh_moist;
 			this.isWet = (
 				valueMoistA > thresh_moist ||
 				valueMoistB > thresh_moist
@@ -148,46 +175,55 @@ public class Gen_001 extends BackroomsGen {
 		if (block_floor_dry == null) throw new RuntimeException("Invalid block type for level 1 Floor-Dry");
 		if (block_floor_wet == null) throw new RuntimeException("Invalid block type for level 1 Floor-Wet");
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
-		BasementData dao;
-		final int y = this.level_y + SUBFLOOR + 1;
-		final int h = this.level_h + 1;
-		int modX, modZ;
-		int xx, zz;
+		final int h_walls = this.level_h + 1;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int y_floor = y_base + this.subfloor;
+		final int y_ceil  = y_floor + h_walls + 1;
 		for (int iz=0; iz<16; iz++) {
-			zz = (chunkZ * 16) + iz;
-			modZ = (zz < 0 ? 0-zz : zz) % 10;
+			final int zz = (chunkZ * 16) + iz;
+			final int mod_z = (zz < 0 ? 0-zz : zz) % 10;
 			for (int ix=0; ix<16; ix++) {
-				xx = (chunkX * 16) + ix;
-				modX = (xx < 0 ? 0-xx : xx) % 10;
-				// basement floor
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
-				for (int yy=0; yy<SUBFLOOR; yy++)
-					chunk.setBlock(ix, this.level_y+yy+1, iz, block_subfloor);
-				dao = basementData.get(new Iab(ix, iz));
-				if (dao == null) continue;
+				final int xx = (chunkX * 16) + ix;
+				final int mod_x = (xx < 0 ? 0-xx : xx) % 10;
+				final BasementData dao_basement = data_basement.get(new Iab(ix, iz));
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
+				// subfloor wet
+				if (dao_basement.isWet) {
+					for (int iy=0; iy<this.subfloor; iy++)
+						chunk.setBlock(ix, y_base+iy, iz, block_subfloor_wet);
+				// subfloor dry
+				} else {
+					for (int iy=0; iy<this.subfloor; iy++)
+						chunk.setBlock(ix, y_base+iy, iz, block_subfloor_dry);
+				}
 				// wall
-				if (dao.isWall) {
-					for (int yy=0; yy<h; yy++) {
-						if (yy > 6) chunk.setBlock(ix, y+yy, iz, Material.BEDROCK);
-						else        chunk.setBlock(ix, y+yy, iz, block_wall);
+				if (dao_basement.isWall) {
+					for (int iy=0; iy<h_walls; iy++) {
+						if (iy > this.wall_height) chunk.setBlock(ix, y_floor+iy, iz, Material.BEDROCK);
+						else                       chunk.setBlock(ix, y_floor+iy, iz, block_wall      );
 					}
 				// room
 				} else {
-					if (dao.isWet) chunk.setBlock(ix, y, iz, block_floor_wet);
-					else           chunk.setBlock(ix, y, iz, block_floor_dry);
+					// floor
+					if (dao_basement.isWet) chunk.setBlock(ix, y_floor, iz, block_floor_wet);
+					else                    chunk.setBlock(ix, y_floor, iz, block_floor_dry);
 					// basement lights
-					if (modZ == 0) {
-						if (modX < 3 || modX > 7) {
-							chunk.setBlock(ix, y+LAMP_Y, iz, Material.REDSTONE_LAMP);
-							switch (modX) {
-							case 0: chunk.setBlock(ix, y+LAMP_Y+1, iz, Material.BEDROCK);       break;
+					if (mod_z == 0) {
+						if (mod_x < 3 || mod_x > 7) {
+							chunk.setBlock(ix, y_floor+this.lamp_y, iz, Material.REDSTONE_LAMP);
+							LAMP_SWITCH:
+							switch (mod_x) {
+							case 0: chunk.setBlock(ix, y_floor+this.lamp_y+1, iz, Material.BEDROCK);       break LAMP_SWITCH;
 							case 1:
-							case 9: chunk.setBlock(ix, y+LAMP_Y+1, iz, Material.REDSTONE_WIRE); break;
+							case 9: chunk.setBlock(ix, y_floor+this.lamp_y+1, iz, Material.REDSTONE_WIRE); break LAMP_SWITCH;
 							case 2:
 							case 8:
 								for (int iy=0; iy<5; iy++)
-									chunk.setBlock(ix, y+iy+LAMP_Y+1, iz, Material.CHAIN);
-								break;
+									chunk.setBlock(ix, y_floor+iy+this.lamp_y+1, iz, Material.CHAIN);
+								break LAMP_SWITCH;
+							default: break LAMP_SWITCH;
 							}
 						}
 					}
@@ -234,8 +270,6 @@ public class Gen_001 extends BackroomsGen {
 
 	@Override
 	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		this.thresh_wall .set(cfgParams.getDouble("Thresh-Wall" ));
-		this.thresh_moist.set(cfgParams.getDouble("Thresh-Moist"));
 		// block types
 		this.block_wall     .set(cfgBlocks.getString("Wall"     ));
 		this.block_subfloor .set(cfgBlocks.getString("SubFloor" ));
@@ -255,8 +289,15 @@ public class Gen_001 extends BackroomsGen {
 		cfgParams.addDefault("Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
 		cfgParams.addDefault("Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
 		cfgParams.addDefault("Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
-		cfgParams.addDefault("Thresh-Wall",         DEFAULT_THRESH_WALL        );
-		cfgParams.addDefault("Thresh-Moist",        DEFAULT_THRESH_MOIST       );
+		cfgParams.addDefault("Level-Y",             Integer.valueOf(DEFAULT_LEVEL_Y            ));
+		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H            ));
+		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR           ));
+		cfgParams.addDefault("Wall-Height",         Integer.valueOf(DEFAULT_WALL_HEIGHT        ));
+		cfgParams.addDefault("Lamp-Y",              Integer.valueOf(DEFAULT_LAMP_Y             ));
+		cfgParams.addDefault("Well-Size",           Integer.valueOf(DEFAULT_WELL_SIZE          ));
+		cfgParams.addDefault("Well-Height",         Integer.valueOf(DEFAULT_WELL_HEIGHT        ));
+		cfgParams.addDefault("Thresh-Wall",         Double .valueOf(DEFAULT_THRESH_WALL        ));
+		cfgParams.addDefault("Thresh-Moist",        Double .valueOf(DEFAULT_THRESH_MOIST       ));
 		// block types
 		cfgBlocks.addDefault("Wall",      DEFAULT_BLOCK_WALL     );
 		cfgBlocks.addDefault("SubFloor",  DEFAULT_BLOCK_SUBFLOOR );

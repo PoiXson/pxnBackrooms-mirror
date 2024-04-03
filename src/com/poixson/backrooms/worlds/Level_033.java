@@ -20,12 +20,6 @@ import com.poixson.tools.worldstore.VarStore;
 public class Level_033 extends BackroomsLevel {
 	public static final String KEY_NEXT_HALL_X = "next_hall_x";
 
-	public static final boolean ENABLE_GEN_033 = true;
-	public static final boolean ENABLE_TOP_033 = true;
-
-	public static final int LEVEL_Y = 50;
-	public static final int LEVEL_H = 8;
-
 	// generators
 	public final Gen_033 gen;
 
@@ -38,18 +32,18 @@ public class Level_033 extends BackroomsLevel {
 
 	public Level_033(final BackroomsPlugin plugin) {
 		super(plugin);
-		// dynmap
-		if (plugin.enableDynmapConfigGen()) {
-			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 33);
-			gen_tpl.add(33, "run", "Run For Your Life", LEVEL_Y+LEVEL_H+1);
-		}
 		// generators
-		this.gen = this.register(new Gen_033(this, this.seed, LEVEL_Y, LEVEL_H));
+		this.gen_033 = this.register(new Gen_033(this, this.seed));
 		// listeners
 		this.listener_033 = new Listener_033(plugin);
 		// next hall
-		this.varstore = new VarStore("level33");
+		this.varstore = new VarStore("level_033");
 		this.varstore.start(plugin);
+		// dynmap
+		if (plugin.enableDynmapConfigGen()) {
+			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 33);
+			gen_tpl.add(33, "run", "Run For Your Life", this.gen_033.level_y+this.gen_033.level_h+1);
+		}
 	}
 
 
@@ -90,11 +84,11 @@ public class Level_033 extends BackroomsLevel {
 
 	@Override
 	public int getY(final int level) {
-		return LEVEL_Y + 1;
+		return this.gen_033.level_y + 1;
 	}
 	@Override
 	public int getMaxY(final int level) {
-		return LEVEL_Y + LEVEL_H;
+		return this.gen_033.level_y + this.gen_033.level_h;
 	}
 
 
