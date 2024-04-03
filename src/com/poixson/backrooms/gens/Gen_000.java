@@ -5,7 +5,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -56,16 +55,12 @@ public class Gen_000 extends BackroomsGen {
 	public static final int WALL_SEARCH_DIST = 6;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_WALL        = "minecraft:yellow_terracotta";
-	public static final String DEFAULT_BLOCK_WALL_BASE   = "minecraft:orange_terracotta";
-	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_SUBCEILING  = "minecraft:oak_planks";
-	public static final String DEFAULT_BLOCK_CARPET      = "minecraft:light_gray_wool";
-	public static final String DEFAULT_BLOCK_CEILING     = "minecraft:smooth_stone_slab[type=top]";
-
-	// noise
-	public final FastNoiseLiteD noiseLobbyWalls;
-	public final FastNoiseLiteD noiseLoot;
+	public static final String DEFAULT_BLOCK_SUBFLOOR   = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_SUBCEILING = "minecraft:oak_planks";
+	public static final String DEFAULT_BLOCK_CARPET     = "minecraft:light_gray_wool";
+	public static final String DEFAULT_BLOCK_CEILING    = "minecraft:smooth_stone_slab[type=top]";
+	public static final String DEFAULT_BLOCK_WALL       = "minecraft:yellow_terracotta";
+	public static final String DEFAULT_BLOCK_WALL_BASE  = "minecraft:orange_terracotta";
 
 	// params
 	public final boolean enable_gen;
@@ -79,12 +74,16 @@ public class Gen_000 extends BackroomsGen {
 	public final double  thresh_loot;
 
 	// blocks
-	public final AtomicReference<String> block_wall        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_wall_base   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor    = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_carpet      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling     = new AtomicReference<String>(null);
+	public final String block_subfloor;
+	public final String block_subceiling;
+	public final String block_carpet;
+	public final String block_ceiling;
+	public final String block_wall;
+	public final String block_wall_base;
+
+	// noise
+	public final FastNoiseLiteD noiseLobbyWalls;
+	public final FastNoiseLiteD noiseLoot;
 
 
 
@@ -103,6 +102,13 @@ public class Gen_000 extends BackroomsGen {
 		this.thresh_wall_L = cfgParams.getDouble( "Thresh-Wall-L");
 		this.thresh_wall_H = cfgParams.getDouble( "Thresh-Wall-H");
 		this.thresh_loot   = cfgParams.getDouble( "Thresh-Loot"  );
+		// block types
+		this.block_subfloor   = cfgBlocks.getString("SubFloor"  );
+		this.block_subceiling = cfgBlocks.getString("SubCeiling");
+		this.block_carpet     = cfgBlocks.getString("Carpet"    );
+		this.block_ceiling    = cfgBlocks.getString("Ceiling"   );
+		this.block_wall       = cfgBlocks.getString("Wall"      );
+		this.block_wall_base  = cfgBlocks.getString("Wall-Base" );
 		// noise
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLoot       = this.register(new FastNoiseLiteD());
@@ -249,19 +255,22 @@ public class Gen_000 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_wall            = StringToBlockData(this.block_wall,       DEFAULT_BLOCK_WALL      );
-		final BlockData block_wall_base       = StringToBlockData(this.block_wall_base,  DEFAULT_BLOCK_WALL_BASE );
-		final BlockData block_subfloor        = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
-		final BlockData block_subceiling      = StringToBlockData(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
-		final BlockData block_carpet          = StringToBlockData(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
-		final BlockData block_ceiling         = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
-		final BlockData block_overgrowth_wall = StringToBlockData(((Level_000)this.backlevel).gen_023.block_wall, Gen_023.DEFAULT_BLOCK_WALL);
-		if (block_wall            == null) throw new RuntimeException("Invalid block type for level 0 Wall"      );
-		if (block_wall_base       == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base" );
+		final Level_000 level_000 = (Level_000) this.backlevel;
+		final Gen_001 gen_001 = level_000.gen_001;
+		final Gen_023 gen_023 = level_000.gen_023;
+		final BlockData block_subfloor        = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
+		final BlockData block_subceiling      = StringToBlockDataDef(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
+		final BlockData block_carpet          = StringToBlockDataDef(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
+		final BlockData block_ceiling         = StringToBlockDataDef(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
+		final BlockData block_wall            = StringToBlockDataDef(this.block_wall,       DEFAULT_BLOCK_WALL      );
+		final BlockData block_wall_base       = StringToBlockDataDef(this.block_wall_base,  DEFAULT_BLOCK_WALL_BASE );
+		final BlockData block_overgrowth_wall = StringToBlockDataDef(gen_023.block_wall,  Gen_023.DEFAULT_BLOCK_WALL);
 		if (block_subfloor        == null) throw new RuntimeException("Invalid block type for level 0 SubFloor"  );
 		if (block_subceiling      == null) throw new RuntimeException("Invalid block type for level 0 SubCeiling");
 		if (block_carpet          == null) throw new RuntimeException("Invalid block type for level 0 Carpet"    );
 		if (block_ceiling         == null) throw new RuntimeException("Invalid block type for level 0 Ceiling"   );
+		if (block_wall            == null) throw new RuntimeException("Invalid block type for level 0 Wall"      );
+		if (block_wall_base       == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base" );
 		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall"     );
 		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
 		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
@@ -489,34 +498,25 @@ public class Gen_000 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// lobby walls
-		this.noiseLobbyWalls.setFrequency(                cfgParams.getDouble("Noise-Wall-Freq"    ) );
-		this.noiseLobbyWalls.setFractalOctaves(           cfgParams.getInt(   "Noise-Wall-Octave"  ) );
-		this.noiseLobbyWalls.setFractalGain(              cfgParams.getDouble("Noise-Wall-Gain"    ) );
-		this.noiseLobbyWalls.setFractalLacunarity(        cfgParams.getDouble("Noise-Wall-Lacun"   ) );
-		this.noiseLobbyWalls.setFractalPingPongStrength(  cfgParams.getDouble("Noise-Wall-Strength") );
-		this.noiseLobbyWalls.setNoiseType(                NoiseType.Cellular                         );
-		this.noiseLobbyWalls.setFractalType(              FractalType.PingPong                       );
-		this.noiseLobbyWalls.setCellularDistanceFunction( CellularDistanceFunction.Manhattan         );
-		this.noiseLobbyWalls.setCellularReturnType(       CellularReturnType.Distance                );
+		this.noiseLobbyWalls.setFrequency(               cfgParams.getDouble("Noise-Wall-Freq"    ));
+		this.noiseLobbyWalls.setFractalOctaves(          cfgParams.getInt(   "Noise-Wall-Octave"  ));
+		this.noiseLobbyWalls.setFractalGain(             cfgParams.getDouble("Noise-Wall-Gain"    ));
+		this.noiseLobbyWalls.setFractalLacunarity(       cfgParams.getDouble("Noise-Wall-Lacun"   ));
+		this.noiseLobbyWalls.setFractalPingPongStrength( cfgParams.getDouble("Noise-Wall-Strength"));
+		this.noiseLobbyWalls.setNoiseType(               NoiseType.Cellular                        );
+		this.noiseLobbyWalls.setFractalType(             FractalType.PingPong                      );
+		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan        );
+		this.noiseLobbyWalls.setCellularReturnType(      CellularReturnType.Distance               );
 		// chest loot
-		this.noiseLoot.setFrequency( cfgParams.getDouble("Noise-Loot-Freq") );
+		this.noiseLoot.setFrequency(cfgParams.getDouble("Noise-Loot-Freq"));
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_wall      .set(cfgBlocks.getString("Wall"      ));
-		this.block_wall_base .set(cfgBlocks.getString("Wall-Base" ));
-		this.block_subfloor  .set(cfgBlocks.getString("SubFloor"  ));
-		this.block_subceiling.set(cfgBlocks.getString("SubCeiling"));
-		this.block_carpet    .set(cfgBlocks.getString("Carpet"    ));
-		this.block_ceiling   .set(cfgBlocks.getString("Ceiling"   ));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
@@ -526,22 +526,22 @@ public class Gen_000 extends BackroomsGen {
 		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H            ));
 		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR           ));
 		cfgParams.addDefault("SubCeiling",          Integer.valueOf(DEFAULT_SUBCEILING         ));
-		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-		cfgParams.addDefault("Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-		cfgParams.addDefault("Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-		cfgParams.addDefault("Noise-Wall-Lacun",    DEFAULT_NOISE_WALL_LACUN   );
-		cfgParams.addDefault("Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-		cfgParams.addDefault("Noise-Loot-Freq",     DEFAULT_NOISE_LOOT_FREQ    );
-		cfgParams.addDefault("Thresh-Wall-L",       DEFAULT_THRESH_WALL_L      );
-		cfgParams.addDefault("Thresh-Wall-H",       DEFAULT_THRESH_WALL_H      );
-		cfgParams.addDefault("Thresh-Loot",         DEFAULT_THRESH_LOOT        );
+		cfgParams.addDefault("Noise-Wall-Freq",     Double .valueOf(DEFAULT_NOISE_WALL_FREQ    ));
+		cfgParams.addDefault("Noise-Wall-Octave",   Integer.valueOf(DEFAULT_NOISE_WALL_OCTAVE  ));
+		cfgParams.addDefault("Noise-Wall-Gain",     Double .valueOf(DEFAULT_NOISE_WALL_GAIN    ));
+		cfgParams.addDefault("Noise-Wall-Lacun",    Double .valueOf(DEFAULT_NOISE_WALL_LACUN   ));
+		cfgParams.addDefault("Noise-Wall-Strength", Double .valueOf(DEFAULT_NOISE_WALL_STRENGTH));
+		cfgParams.addDefault("Noise-Loot-Freq",     Double .valueOf(DEFAULT_NOISE_LOOT_FREQ    ));
+		cfgParams.addDefault("Thresh-Wall-L",       Double .valueOf(DEFAULT_THRESH_WALL_L      ));
+		cfgParams.addDefault("Thresh-Wall-H",       Double .valueOf(DEFAULT_THRESH_WALL_H      ));
+		cfgParams.addDefault("Thresh-Loot",         Double .valueOf(DEFAULT_THRESH_LOOT        ));
 		// block types
-		cfgBlocks.addDefault("Wall",       DEFAULT_BLOCK_WALL      );
-		cfgBlocks.addDefault("Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
 		cfgBlocks.addDefault("SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );
 		cfgBlocks.addDefault("SubCeiling", DEFAULT_BLOCK_SUBCEILING);
 		cfgBlocks.addDefault("Carpet",     DEFAULT_BLOCK_CARPET    );
 		cfgBlocks.addDefault("Ceiling",    DEFAULT_BLOCK_CEILING   );
+		cfgBlocks.addDefault("Wall",       DEFAULT_BLOCK_WALL      );
+		cfgBlocks.addDefault("Wall-Base",  DEFAULT_BLOCK_WALL_BASE );
 	}
 
 

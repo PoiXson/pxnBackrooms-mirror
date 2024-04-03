@@ -3,7 +3,6 @@ package com.poixson.backrooms.gens;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -40,26 +39,26 @@ public class Gen_033 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_PLATE      = "minecraft:stone_pressure_plate";
 	public static final String DEFAULT_BLOCK_HAZARD     = "minecraft:bricks";
 
-	// noise
-	public final FastNoiseLiteD noiseFloor;
-
 	// params
 	public final boolean enable_gen;
 	public final boolean enable_top;
-	public final AtomicDouble thresh_floor   = new AtomicDouble(DEFAULT_THRESH_FLOOR  );
-	public final AtomicDouble thresh_hazard  = new AtomicDouble(DEFAULT_THRESH_HAZARD );
-	public final AtomicInteger danger_chunks = new AtomicInteger(DEFAULT_DANGER_CHUNKS);
 	public final int     level_y;
 	public final int     level_h;
+	public final double  thresh_floor;
+	public final double  thresh_hazard;
+	public final int     danger_chunks;
 
 	// blocks
-	public final AtomicReference<String> block_wall       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling    = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor_safe = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_plate      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_hazard     = new AtomicReference<String>(null);
+	public final String block_wall;
+	public final String block_ceiling;
+	public final String block_floor;
+	public final String block_floor_safe;
+	public final String block_subfloor;
+	public final String block_plate;
+	public final String block_hazard;
+
+	// noise
+	public final FastNoiseLiteD noiseFloor;
 
 
 
@@ -73,6 +72,17 @@ public class Gen_033 extends BackroomsGen {
 		this.enable_top    = cfgParams.getBoolean("Enable-Top"   );
 		this.level_y       = cfgParams.getInt(    "Level-Y"      );
 		this.level_h       = cfgParams.getInt(    "Level-Height" );
+		this.thresh_floor  = cfgParams.getDouble( "Thresh-Floor" );
+		this.thresh_hazard = cfgParams.getDouble( "Thresh-Hazard");
+		this.danger_chunks = cfgParams.getInt(    "Danger-Chunks");
+		// block types
+		this.block_wall       = cfgBlocks.getString("Wall"      );
+		this.block_ceiling    = cfgBlocks.getString("Ceiling"   );
+		this.block_floor      = cfgBlocks.getString("Floor"     );
+		this.block_floor_safe = cfgBlocks.getString("Floor-Safe");
+		this.block_subfloor   = cfgBlocks.getString("SubFloor"  );
+		this.block_plate      = cfgBlocks.getString("Plate"     );
+		this.block_hazard     = cfgBlocks.getString("Hazard"    );
 		// noise
 		this.noiseFloor = this.register(new FastNoiseLiteD());
 	}
@@ -96,13 +106,13 @@ public class Gen_033 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_wall       = StringToBlockData(this.block_wall,       DEFAULT_BLOCK_WALL      );
-		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
-		final BlockData block_floor      = StringToBlockData(this.block_floor,      DEFAULT_BLOCK_FLOOR     );
-		final BlockData block_floor_safe = StringToBlockData(this.block_floor_safe, DEFAULT_BLOCK_FLOOR_SAFE);
-		final BlockData block_subfloor   = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
-		final BlockData block_plate      = StringToBlockData(this.block_plate,      DEFAULT_BLOCK_PLATE     );
-		final BlockData block_hazard     = StringToBlockData(this.block_hazard,     DEFAULT_BLOCK_HAZARD    );
+		final BlockData block_wall       = StringToBlockDataDef(this.block_wall,       DEFAULT_BLOCK_WALL      );
+		final BlockData block_ceiling    = StringToBlockDataDef(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
+		final BlockData block_floor      = StringToBlockDataDef(this.block_floor,      DEFAULT_BLOCK_FLOOR     );
+		final BlockData block_floor_safe = StringToBlockDataDef(this.block_floor_safe, DEFAULT_BLOCK_FLOOR_SAFE);
+		final BlockData block_subfloor   = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
+		final BlockData block_plate      = StringToBlockDataDef(this.block_plate,      DEFAULT_BLOCK_PLATE     );
+		final BlockData block_hazard     = StringToBlockDataDef(this.block_hazard,     DEFAULT_BLOCK_HAZARD    );
 		if (block_wall       == null) throw new RuntimeException("Invalid block type for level 33 Wall"      );
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 33 Ceiling"   );
 		if (block_floor      == null) throw new RuntimeException("Invalid block type for level 33 Floor"     );
@@ -110,9 +120,6 @@ public class Gen_033 extends BackroomsGen {
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 33 SubFloor"  );
 		if (block_plate      == null) throw new RuntimeException("Invalid block type for level 33 Plate"     );
 		if (block_hazard     == null) throw new RuntimeException("Invalid block type for level 33 Hazard"    );
-		final double thresh_floor  = this.thresh_floor .get();
-		final double thresh_hazard = this.thresh_hazard.get();
-		final int danger_chunks    = this.danger_chunks.get() + 1;
 		final int danger_chunks = this.danger_chunks + 1;
 		for (int iz=0; iz<16; iz++) {
 			final int zz = (chunkZ * 16) + iz;
@@ -178,32 +185,18 @@ public class Gen_033 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// pool rooms
-		this.noiseFloor.setFrequency(      cfgParams.getDouble("Noise-Floor-Freq"  ) );
-		this.noiseFloor.setFractalOctaves( cfgParams.getInt(   "Noise-Floor-Octave") );
-		this.noiseFloor.setFractalGain(    cfgParams.getDouble("Noise-Floor-Gain"  ) );
-		this.noiseFloor.setFractalType(    FastNoiseLiteD.FractalType.FBm            );
+		this.noiseFloor.setFrequency(     cfgParams.getDouble("Noise-Floor-Freq"  ));
+		this.noiseFloor.setFractalOctaves(cfgParams.getInt(   "Noise-Floor-Octave"));
+		this.noiseFloor.setFractalGain(   cfgParams.getDouble("Noise-Floor-Gain"  ));
+		this.noiseFloor.setFractalType(   FastNoiseLiteD.FractalType.FBm           );
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.thresh_floor .set(cfgParams.getDouble("Thresh-Floor" ));
-		this.thresh_hazard.set(cfgParams.getDouble("Thresh-Hazard"));
-		this.danger_chunks.set(cfgParams.getInt(   "Danger-Chunks"));
-		// block types
-		this.block_wall      .set(cfgBlocks.getString("Wall"      ));
-		this.block_ceiling   .set(cfgBlocks.getString("Ceiling"   ));
-		this.block_floor     .set(cfgBlocks.getString("Floor"     ));
-		this.block_floor_safe.set(cfgBlocks.getString("Floor-Safe"));
-		this.block_subfloor  .set(cfgBlocks.getString("SubFloor"  ));
-		this.block_plate     .set(cfgBlocks.getString("Plate"     ));
-		this.block_hazard    .set(cfgBlocks.getString("Hazard"    ));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
@@ -211,12 +204,12 @@ public class Gen_033 extends BackroomsGen {
 		cfgParams.addDefault("Enable-Top",         Boolean.TRUE                               );
 		cfgParams.addDefault("Level-Y",            Integer.valueOf(DEFAULT_LEVEL_Y           ));
 		cfgParams.addDefault("Level-Height",       Integer.valueOf(DEFAULT_LEVEL_H           ));
-		cfgParams.addDefault("Noise-Floor-Freq",   DEFAULT_NOISE_FLOOR_FREQ  );
-		cfgParams.addDefault("Noise-Floor-Octave", DEFAULT_NOISE_FLOOR_OCTAVE);
-		cfgParams.addDefault("Noise-Floor-Gain",   DEFAULT_NOISE_FLOOR_GAIN  );
-		cfgParams.addDefault("Thresh-Floor",       DEFAULT_THRESH_FLOOR      );
-		cfgParams.addDefault("Thresh-Hazard",      DEFAULT_THRESH_HAZARD     );
-		cfgParams.addDefault("Danger-Chunks",      DEFAULT_DANGER_CHUNKS     );
+		cfgParams.addDefault("Noise-Floor-Freq",   Double .valueOf(DEFAULT_NOISE_FLOOR_FREQ  ));
+		cfgParams.addDefault("Noise-Floor-Octave", Integer.valueOf(DEFAULT_NOISE_FLOOR_OCTAVE));
+		cfgParams.addDefault("Noise-Floor-Gain",   Double .valueOf(DEFAULT_NOISE_FLOOR_GAIN  ));
+		cfgParams.addDefault("Thresh-Floor",       Double .valueOf(DEFAULT_THRESH_FLOOR      ));
+		cfgParams.addDefault("Thresh-Hazard",      Double .valueOf(DEFAULT_THRESH_HAZARD     ));
+		cfgParams.addDefault("Danger-Chunks",      Integer.valueOf(DEFAULT_DANGER_CHUNKS     ));
 		// block types
 		cfgBlocks.addDefault("Wall",       DEFAULT_BLOCK_WALL      );
 		cfgBlocks.addDefault("Ceiling",    DEFAULT_BLOCK_CEILING   );

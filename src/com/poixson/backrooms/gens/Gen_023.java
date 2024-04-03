@@ -5,7 +5,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -33,14 +32,16 @@ public class Gen_023 extends BackroomsGen {
 	public static final int DEFAULT_GRASS_MODULUS = 25;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_WALL                 = "minecraft:moss_block";
-	public static final String DEFAULT_BLOCK_WALL_GRASSY          = "minecraft:sculk_shrieker";
-	public static final String DEFAULT_BLOCK_FLOOR                = "minecraft:moss_block";
+	public static final String DEFAULT_BLOCK_SUBFLOOR_WET         = "minecraft:mud";
+	public static final String DEFAULT_BLOCK_SUBFLOOR_DRY         = "minecraft:dirt";
+	public static final String DEFAULT_BLOCK_FLOOR_WET            = "minecraft:moss_block";
+	public static final String DEFAULT_BLOCK_FLOOR_DRY            = "minecraft:moss_block";
+	public static final String DEFAULT_BLOCK_SUBCEILING           = "minecraft:stone";
 	public static final String DEFAULT_BLOCK_CEILING              = "minecraft:moss_block";
 	public static final String DEFAULT_BLOCK_CEILING_GRASS        = "minecraft:hanging_roots";
 	public static final String DEFAULT_BLOCK_CEILING_FLOWER       = "minecraft:spore_blossom";
-	public static final String DEFAULT_BLOCK_SUBFLOOR             = "minecraft:dirt";
-	public static final String DEFAULT_BLOCK_SUBCEILING           = "minecraft:stone";
+	public static final String DEFAULT_BLOCK_WALL                 = "minecraft:moss_block";
+	public static final String DEFAULT_BLOCK_WALL_GRASSY          = "minecraft:sculk_shrieker";
 	public static final String DEFAULT_BLOCK_GRASS_WET_SHORT      = "minecraft:dead_bush";
 	public static final String DEFAULT_BLOCK_GRASS_DRY_SHORT      = "minecraft:short_grass";
 	public static final String DEFAULT_BLOCK_GRASS_WET_TALL_LOWER = "minecraft:small_dripleaf[half=lower]";
@@ -59,20 +60,22 @@ public class Gen_023 extends BackroomsGen {
 	public final AtomicInteger grass_modulus = new AtomicInteger(DEFAULT_GRASS_MODULUS);
 
 	// blocks
-	public final AtomicReference<String> block_wall                 = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_wall_grassy          = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor                = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling_grass        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling_flower       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor             = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling           = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_wet_short      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_dry_short      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_wet_tall_lower = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_wet_tall_upper = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_dry_tall_lower = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_dry_tall_upper = new AtomicReference<String>(null);
+	public final String block_subfloor_wet;
+	public final String block_subfloor_dry;
+	public final String block_floor_wet;
+	public final String block_floor_dry;
+	public final String block_subceiling;
+	public final String block_ceiling;
+	public final String block_ceiling_grass;
+	public final String block_ceiling_flower;
+	public final String block_wall;
+	public final String block_wall_grassy;
+	public final String block_grass_wet_short;
+	public final String block_grass_dry_short;
+	public final String block_grass_wet_tall_lower;
+	public final String block_grass_wet_tall_upper;
+	public final String block_grass_dry_tall_lower;
+	public final String block_grass_dry_tall_upper;
 
 	protected final AtomicInteger rnd_grass = new AtomicInteger(0);
 
@@ -91,6 +94,23 @@ public class Gen_023 extends BackroomsGen {
 		this.subfloor      = cfgParams.getInt(    "SubFloor"     );
 		this.subceiling    = cfgParams.getInt(    "SubCeiling"   );
 		this.grass_modulus = cfgParams.getInt(    "Grass-Modulus");
+		// block types
+		this.block_subfloor_wet         = cfgBlocks.getString("SubFloor-Wet"        );
+		this.block_subfloor_dry         = cfgBlocks.getString("SubFloor-Dry"        );
+		this.block_floor_wet            = cfgBlocks.getString("Floor-Wet"           );
+		this.block_floor_dry            = cfgBlocks.getString("Floor-Dry"           );
+		this.block_subceiling           = cfgBlocks.getString("SubCeiling"          );
+		this.block_ceiling              = cfgBlocks.getString("Ceiling"             );
+		this.block_ceiling_grass        = cfgBlocks.getString("Ceiling-Grass"       );
+		this.block_ceiling_flower       = cfgBlocks.getString("Ceiling-Flower"      );
+		this.block_wall                 = cfgBlocks.getString("Wall"                );
+		this.block_wall_grassy          = cfgBlocks.getString("Wall-Grassy"         );
+		this.block_grass_wet_short      = cfgBlocks.getString("Grass-Wet-Short"     );
+		this.block_grass_dry_short      = cfgBlocks.getString("Grass-Dry-Short"     );
+		this.block_grass_wet_tall_lower = cfgBlocks.getString("Grass-Wet-Tall-Lower");
+		this.block_grass_wet_tall_upper = cfgBlocks.getString("Grass-Wet-Tall-Upper");
+		this.block_grass_dry_tall_lower = cfgBlocks.getString("Grass-Dry-Tall-Lower");
+		this.block_grass_dry_tall_upper = cfgBlocks.getString("Grass-Dry-Tall-Upper");
 	}
 
 
@@ -112,27 +132,38 @@ public class Gen_023 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_wall                 = StringToBlockData(this.block_wall,                 DEFAULT_BLOCK_WALL                );
-		final BlockData block_wall_grassy          = StringToBlockData(this.block_wall_grassy,          DEFAULT_BLOCK_WALL_GRASSY         );
-		final BlockData block_floor                = StringToBlockData(this.block_floor,                DEFAULT_BLOCK_FLOOR               );
-		final BlockData block_ceiling              = StringToBlockData(this.block_ceiling,              DEFAULT_BLOCK_CEILING             );
-		final BlockData block_ceiling_grass        = StringToBlockData(this.block_ceiling_grass,        DEFAULT_BLOCK_CEILING_GRASS       );
-		final BlockData block_ceiling_flower       = StringToBlockData(this.block_ceiling_flower,       DEFAULT_BLOCK_CEILING_FLOWER      );
-		final BlockData block_subfloor             = StringToBlockData(this.block_subfloor,             DEFAULT_BLOCK_SUBFLOOR            );
-		final BlockData block_subceiling           = StringToBlockData(this.block_subceiling,           DEFAULT_BLOCK_SUBCEILING          );
-		final BlockData block_grass_wet_short      = StringToBlockData(this.block_grass_wet_short,      DEFAULT_BLOCK_GRASS_WET_SHORT     );
-		final BlockData block_grass_dry_short      = StringToBlockData(this.block_grass_dry_short,      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
-		final BlockData block_grass_wet_tall_lower = StringToBlockData(this.block_grass_wet_tall_lower, DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);
-		final BlockData block_grass_wet_tall_upper = StringToBlockData(this.block_grass_wet_tall_upper, DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
-		final BlockData block_grass_dry_tall_lower = StringToBlockData(this.block_grass_dry_tall_lower, DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
-		final BlockData block_grass_dry_tall_upper = StringToBlockData(this.block_grass_dry_tall_upper, DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
-		if (block_wall          == null) throw new RuntimeException("Invalid block type for level 23 Wall"         );
-		if (block_wall_grassy   == null) throw new RuntimeException("Invalid block type for level 23 Wall-Grassy"  );
-		if (block_floor         == null) throw new RuntimeException("Invalid block type for level 23 Floor"        );
-		if (block_ceiling       == null) throw new RuntimeException("Invalid block type for level 23 Ceiling"      );
-		if (block_ceiling_grass == null) throw new RuntimeException("Invalid block type for level 23 Ceiling-Grass");
-		if (block_subfloor      == null) throw new RuntimeException("Invalid block type for level 23 SubFloor"     );
-		if (block_subceiling    == null) throw new RuntimeException("Invalid block type for level 23 SubCeiling"   );
+		final BlockData block_subfloor_wet         = StringToBlockDataDef(this.block_subfloor_wet,         DEFAULT_BLOCK_SUBFLOOR_WET        );
+		final BlockData block_subfloor_dry         = StringToBlockDataDef(this.block_subfloor_dry,         DEFAULT_BLOCK_SUBFLOOR_DRY        );
+		final BlockData block_floor_wet            = StringToBlockDataDef(this.block_floor_wet,            DEFAULT_BLOCK_FLOOR_WET           );
+		final BlockData block_floor_dry            = StringToBlockDataDef(this.block_floor_dry,            DEFAULT_BLOCK_FLOOR_DRY           );
+		final BlockData block_subceiling           = StringToBlockDataDef(this.block_subceiling,           DEFAULT_BLOCK_SUBCEILING          );
+		final BlockData block_ceiling              = StringToBlockDataDef(this.block_ceiling,              DEFAULT_BLOCK_CEILING             );
+		final BlockData block_ceiling_grass        = StringToBlockDataDef(this.block_ceiling_grass,        DEFAULT_BLOCK_CEILING_GRASS       );
+		final BlockData block_ceiling_flower       = StringToBlockDataDef(this.block_ceiling_flower,       DEFAULT_BLOCK_CEILING_FLOWER      );
+		final BlockData block_wall                 = StringToBlockDataDef(this.block_wall,                 DEFAULT_BLOCK_WALL                );
+		final BlockData block_wall_grassy          = StringToBlockDataDef(this.block_wall_grassy,          DEFAULT_BLOCK_WALL_GRASSY         );
+		final BlockData block_grass_wet_short      = StringToBlockDataDef(this.block_grass_wet_short,      DEFAULT_BLOCK_GRASS_WET_SHORT     );
+		final BlockData block_grass_dry_short      = StringToBlockDataDef(this.block_grass_dry_short,      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
+		final BlockData block_grass_wet_tall_lower = StringToBlockDataDef(this.block_grass_wet_tall_lower, DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);
+		final BlockData block_grass_wet_tall_upper = StringToBlockDataDef(this.block_grass_wet_tall_upper, DEFAULT_BLOCK_GRASS_WET_TALL_UPPER);
+		final BlockData block_grass_dry_tall_lower = StringToBlockDataDef(this.block_grass_dry_tall_lower, DEFAULT_BLOCK_GRASS_DRY_TALL_LOWER);
+		final BlockData block_grass_dry_tall_upper = StringToBlockDataDef(this.block_grass_dry_tall_upper, DEFAULT_BLOCK_GRASS_DRY_TALL_UPPER);
+		if (block_subfloor_wet         == null) throw new RuntimeException("Invalid block type for level 23 SubFloor"            );
+		if (block_subfloor_dry         == null) throw new RuntimeException("Invalid block type for level 23 SubFloor"            );
+		if (block_floor_wet            == null) throw new RuntimeException("Invalid block type for level 23 Floor-Wet"           );
+		if (block_floor_dry            == null) throw new RuntimeException("Invalid block type for level 23 Floor-Dry"           );
+		if (block_subceiling           == null) throw new RuntimeException("Invalid block type for level 23 SubCeiling"          );
+		if (block_ceiling              == null) throw new RuntimeException("Invalid block type for level 23 Ceiling"             );
+		if (block_ceiling_grass        == null) throw new RuntimeException("Invalid block type for level 23 Ceiling-Grass"       );
+		if (block_ceiling_flower       == null) throw new RuntimeException("Invalid block type for level 23 Ceiling-Flower"      );
+		if (block_wall                 == null) throw new RuntimeException("Invalid block type for level 23 Wall"                );
+		if (block_wall_grassy          == null) throw new RuntimeException("Invalid block type for level 23 Wall-Grassy"         );
+		if (block_grass_wet_short      == null) throw new RuntimeException("Invalid block type for level 23 Grass-Wet-Short"     );
+		if (block_grass_dry_short      == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Short"     );
+		if (block_grass_wet_tall_lower == null) throw new RuntimeException("Invalid block type for level 23 Grass-Wet-Tall-Lower");
+		if (block_grass_wet_tall_upper == null) throw new RuntimeException("Invalid block type for level 23 Grass-Wet-Tall-Upper");
+		if (block_grass_dry_tall_lower == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Tall-Lower");
+		if (block_grass_dry_tall_upper == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Tall-Upper");
 		final PregenLevel0 pregen0 = (PregenLevel0) pregen;
 		final HashMap<Iab, LobbyData>    lobbyData    = pregen0.lobby;
 		final HashMap<Iab, BasementData> basementData = pregen0.basement;
@@ -220,24 +251,6 @@ public class Gen_023 extends BackroomsGen {
 
 
 	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_wall                .set(cfgBlocks.getString("Wall"                ));
-		this.block_wall_grassy         .set(cfgBlocks.getString("Wall-Grassy"         ));
-		this.block_floor               .set(cfgBlocks.getString("Floor"               ));
-		this.block_ceiling             .set(cfgBlocks.getString("Ceiling"             ));
-		this.block_ceiling_grass       .set(cfgBlocks.getString("Ceiling-Grass"       ));
-		this.block_ceiling_flower      .set(cfgBlocks.getString("Ceiling-Flower"      ));
-		this.block_subfloor            .set(cfgBlocks.getString("SubFloor"            ));
-		this.block_subceiling          .set(cfgBlocks.getString("SubCeiling"          ));
-		this.block_grass_wet_short     .set(cfgBlocks.getString("Grass-Wet-Short"     ));
-		this.block_grass_dry_short     .set(cfgBlocks.getString("Grass-Dry-Short"     ));
-		this.block_grass_wet_tall_lower.set(cfgBlocks.getString("Grass-Wet-Tall-Lower"));
-		this.block_grass_wet_tall_upper.set(cfgBlocks.getString("Grass-Wet-Tall-Upper"));
-		this.block_grass_dry_tall_lower.set(cfgBlocks.getString("Grass-Dry-Tall-Lower"));
-		this.block_grass_dry_tall_upper.set(cfgBlocks.getString("Grass-Dry-Tall-Upper"));
-	}
-	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
 		cfgParams.addDefault("Enable-Gen",    Boolean.TRUE                          );
@@ -248,14 +261,16 @@ public class Gen_023 extends BackroomsGen {
 		cfgParams.addDefault("SubCeiling",    Integer.valueOf(DEFAULT_SUBCEILING   ));
 		cfgParams.addDefault("Grass-Modulus", Integer.valueOf(DEFAULT_GRASS_MODULUS));
 		// block types
-		cfgBlocks.addDefault("Wall",                 DEFAULT_BLOCK_WALL                );
-		cfgBlocks.addDefault("Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );
-		cfgBlocks.addDefault("Floor",                DEFAULT_BLOCK_FLOOR               );
+		cfgBlocks.addDefault("SubFloor-Wet",         DEFAULT_BLOCK_SUBFLOOR_WET        );
+		cfgBlocks.addDefault("SubFloor-Dry",         DEFAULT_BLOCK_SUBFLOOR_DRY        );
+		cfgBlocks.addDefault("Floor-Wet",            DEFAULT_BLOCK_FLOOR_WET           );
+		cfgBlocks.addDefault("Floor-Dry",            DEFAULT_BLOCK_FLOOR_DRY           );
+		cfgBlocks.addDefault("SubCeiling",           DEFAULT_BLOCK_SUBCEILING          );
 		cfgBlocks.addDefault("Ceiling",              DEFAULT_BLOCK_CEILING             );
 		cfgBlocks.addDefault("Ceiling-Grass",        DEFAULT_BLOCK_CEILING_GRASS       );
 		cfgBlocks.addDefault("Ceiling-Flower",       DEFAULT_BLOCK_CEILING_FLOWER      );
-		cfgBlocks.addDefault("SubFloor",             DEFAULT_BLOCK_SUBFLOOR            );
-		cfgBlocks.addDefault("SubCeiling",           DEFAULT_BLOCK_SUBCEILING          );
+		cfgBlocks.addDefault("Wall",                 DEFAULT_BLOCK_WALL                );
+		cfgBlocks.addDefault("Wall-Grassy",          DEFAULT_BLOCK_WALL_GRASSY         );
 		cfgBlocks.addDefault("Grass-Wet-Short",      DEFAULT_BLOCK_GRASS_WET_SHORT     );
 		cfgBlocks.addDefault("Grass-Dry-Short",      DEFAULT_BLOCK_GRASS_DRY_SHORT     );
 		cfgBlocks.addDefault("Grass-Wet-Tall-Lower", DEFAULT_BLOCK_GRASS_WET_TALL_LOWER);

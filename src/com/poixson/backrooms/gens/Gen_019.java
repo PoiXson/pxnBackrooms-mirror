@@ -4,7 +4,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -41,13 +40,14 @@ public class Gen_019 extends BackroomsGen {
 	public final int     level_y;
 	public final int     level_h;
 	public final int     subfloor;
-	// noise
-	public final FastNoiseLiteD noiseLamps;
 
 	// blocks
-	public final AtomicReference<String> block_wall  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_beam  = new AtomicReference<String>(null);
+	public final String block_wall;
+	public final String block_floor;
+	public final String block_beam;
+
+	// noise
+	public final FastNoiseLiteD noiseLamps;
 
 
 
@@ -61,6 +61,10 @@ public class Gen_019 extends BackroomsGen {
 		this.level_y    = cfgParams.getInt(    "Level-Y"     );
 		this.level_h    = cfgParams.getInt(    "Level-Height");
 		this.subfloor   = cfgParams.getInt(    "SubFloor"    );
+		// block types
+		this.block_wall  = cfgBlocks.getString("Wall" );
+		this.block_floor = cfgBlocks.getString("Floor");
+		this.block_beam  = cfgBlocks.getString("Beam" );
 		// noise
 		this.noiseLamps = this.register(new FastNoiseLiteD());
 	}
@@ -84,9 +88,9 @@ public class Gen_019 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_wall  = StringToBlockData(this.block_wall,  DEFAULT_BLOCK_WALL );
-		final BlockData block_floor = StringToBlockData(this.block_floor, DEFAULT_BLOCK_FLOOR);
-		final BlockData block_beam  = StringToBlockData(this.block_beam,  DEFAULT_BLOCK_BEAM );
+		final BlockData block_wall  = StringToBlockDataDef(this.block_wall,  DEFAULT_BLOCK_WALL );
+		final BlockData block_floor = StringToBlockDataDef(this.block_floor, DEFAULT_BLOCK_FLOOR);
+		final BlockData block_beam  = StringToBlockDataDef(this.block_beam,  DEFAULT_BLOCK_BEAM );
 		if (block_wall  == null) throw new RuntimeException("Invalid block type for level 19 Wall" );
 		if (block_floor == null) throw new RuntimeException("Invalid block type for level 19 Floor");
 		if (block_beam  == null) throw new RuntimeException("Invalid block type for level 19 Beam" );
@@ -135,21 +139,15 @@ public class Gen_019 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// lanterns
-		this.noiseLamps.setFrequency( cfgParams.getDouble("Noise-Lamps-Freq") );
+		this.noiseLamps.setFrequency(cfgParams.getDouble("Noise-Lamps-Freq"));
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_wall .set(cfgBlocks.getString("Wall" ));
-		this.block_floor.set(cfgBlocks.getString("Floor"));
-		this.block_beam .set(cfgBlocks.getString("Beam" ));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params

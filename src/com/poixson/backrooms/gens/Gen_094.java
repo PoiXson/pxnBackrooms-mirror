@@ -5,7 +5,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -34,11 +33,6 @@ public class Gen_094 extends BackroomsGen {
 	public static final int    DEFAULT_LEVEL_Y              = 0;
 	public static final int    DEFAULT_LEVEL_H              = 8;
 	public static final int    DEFAULT_SUBFLOOR             = 3;
-	public static final double DEFAULT_NOISE_HILLS_FREQ     = 0.015;
-	public static final int    DEFAULT_NOISE_HILLS_OCTAVE   = 2;
-	public static final double DEFAULT_NOISE_HILLS_STRENGTH = 1.8;
-	public static final double DEFAULT_NOISE_HILLS_LACUN    = 0.8;
-	public static final double DEFAULT_NOISE_HOUSE_FREQ     = 0.07;
 	public static final double DEFAULT_VALLEY_DEPTH         = 0.33;
 	public static final double DEFAULT_VALLEY_GAIN          = 0.3;
 	public static final double DEFAULT_HILLS_GAIN           = 12.0;
@@ -46,6 +40,11 @@ public class Gen_094 extends BackroomsGen {
 	public static final int    DEFAULT_WATER_DEPTH          = 3;
 	public static final int    DEFAULT_HOUSE_WIDTH          = 8;
 	public static final int    DEFAULT_HOUSE_HEIGHT         = 5;
+	public static final double DEFAULT_NOISE_HILLS_FREQ     = 0.015;
+	public static final int    DEFAULT_NOISE_HILLS_OCTAVE   = 2;
+	public static final double DEFAULT_NOISE_HILLS_STRENGTH = 1.8;
+	public static final double DEFAULT_NOISE_HILLS_LACUN    = 0.8;
+	public static final double DEFAULT_NOISE_HOUSE_FREQ     = 0.07;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_DIRT              = "minecraft:moss_block";
@@ -75,25 +74,25 @@ public class Gen_094 extends BackroomsGen {
 	public final int     water_depth;
 	public final int     house_width;
 	public final int     house_height;
+
+	// blocks
+	public final String block_dirt;
+	public final String block_grass_block;
+	public final String block_grass_slab;
+	public final String block_grass_short;
+	public final String block_grass_tall_upper;
+	public final String block_grass_tall_lower;
+	public final String block_fern;
+	public final String block_rose;
+	public final String block_house_wall;
+	public final String block_house_roof_stairs;
+	public final String block_house_roof_solid;
+	public final String block_house_window;
+	public final String block_house_floor;
+
 	// noise
 	public final FastNoiseLiteD noiseHills;
 	public final FastNoiseLiteD noiseHouse;
-
-
-	// blocks
-	public final AtomicReference<String> block_dirt              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_block       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_slab        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_short       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_tall_upper  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass_tall_lower  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_fern              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_rose              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_house_wall        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_house_roof_stairs = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_house_roof_solid  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_house_window      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_house_floor       = new AtomicReference<String>(null);
 
 
 
@@ -115,6 +114,20 @@ public class Gen_094 extends BackroomsGen {
 		this.water_depth       = cfgParams.getInt(    "Water-Depth"      );
 		this.house_width       = cfgParams.getInt(    "House-Width"      );
 		this.house_height      = cfgParams.getInt(    "House-Height"     );
+		// block types
+		this.block_dirt              = cfgBlocks.getString("Dirt"             );
+		this.block_grass_block       = cfgBlocks.getString("Grass-Block"      );
+		this.block_grass_slab        = cfgBlocks.getString("Grass-Slab"       );
+		this.block_grass_short       = cfgBlocks.getString("Grass-Short"      );
+		this.block_grass_tall_upper  = cfgBlocks.getString("Grass-Tall-Top"   );
+		this.block_grass_tall_lower  = cfgBlocks.getString("Grass-Tall-Bottom");
+		this.block_fern              = cfgBlocks.getString("Fern"             );
+		this.block_rose              = cfgBlocks.getString("Rose"             );
+		this.block_house_wall        = cfgBlocks.getString("House-Wall"       );
+		this.block_house_roof_stairs = cfgBlocks.getString("House-Roof-Stairs");
+		this.block_house_roof_solid  = cfgBlocks.getString("House-Roof-Solid" );
+		this.block_house_window      = cfgBlocks.getString("House-Window"     );
+		this.block_house_floor       = cfgBlocks.getString("House-Floor"      );
 		// noise
 		this.noiseHills = this.register(new FastNoiseLiteD());
 		this.noiseHouse = this.register(new FastNoiseLiteD());
@@ -209,20 +222,20 @@ public class Gen_094 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_dirt             = StringToBlockData(this.block_dirt,              DEFAULT_BLOCK_DIRT             );
-		final BlockData block_grass_block      = StringToBlockData(this.block_grass_block,       DEFAULT_BLOCK_GRASS_BLOCK      );
-		final BlockData block_grass_slab       = StringToBlockData(this.block_grass_slab,        DEFAULT_BLOCK_GRASS_SLAB       );
-		final BlockData block_grass_short      = StringToBlockData(this.block_grass_short,       DEFAULT_BLOCK_GRASS_SHORT      );
-		final BlockData block_grass_tall_upper = StringToBlockData(this.block_grass_tall_upper,  DEFAULT_BLOCK_GRASS_TALL_UPPER );
-		final BlockData block_grass_tall_lower = StringToBlockData(this.block_grass_tall_lower,  DEFAULT_BLOCK_GRASS_TALL_LOWER );
-		final BlockData block_fern             = StringToBlockData(this.block_fern,              DEFAULT_BLOCK_FERN             );
-		final BlockData block_rose             = StringToBlockData(this.block_rose,              DEFAULT_BLOCK_ROSE             );
-		final BlockData block_house_wall       = StringToBlockData(this.block_house_wall,        DEFAULT_BLOCK_HOUSE_WALL       );
-		final BlockData block_house_roofA      = StringToBlockData(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
-		final BlockData block_house_roofB      = StringToBlockData(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
-		final BlockData block_house_roof_solid = StringToBlockData(this.block_house_roof_solid,  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
-		final BlockData block_house_window     = StringToBlockData(this.block_house_window,      DEFAULT_BLOCK_HOUSE_WINDOW     );
-		final BlockData block_house_floor      = StringToBlockData(this.block_house_floor,       DEFAULT_BLOCK_HOUSE_FLOOR      );
+		final BlockData block_dirt             = StringToBlockDataDef(this.block_dirt,              DEFAULT_BLOCK_DIRT             );
+		final BlockData block_grass_block      = StringToBlockDataDef(this.block_grass_block,       DEFAULT_BLOCK_GRASS_BLOCK      );
+		final BlockData block_grass_slab       = StringToBlockDataDef(this.block_grass_slab,        DEFAULT_BLOCK_GRASS_SLAB       );
+		final BlockData block_grass_short      = StringToBlockDataDef(this.block_grass_short,       DEFAULT_BLOCK_GRASS_SHORT      );
+		final BlockData block_grass_tall_upper = StringToBlockDataDef(this.block_grass_tall_upper,  DEFAULT_BLOCK_GRASS_TALL_UPPER );
+		final BlockData block_grass_tall_lower = StringToBlockDataDef(this.block_grass_tall_lower,  DEFAULT_BLOCK_GRASS_TALL_LOWER );
+		final BlockData block_fern             = StringToBlockDataDef(this.block_fern,              DEFAULT_BLOCK_FERN             );
+		final BlockData block_rose             = StringToBlockDataDef(this.block_rose,              DEFAULT_BLOCK_ROSE             );
+		final BlockData block_house_wall       = StringToBlockDataDef(this.block_house_wall,        DEFAULT_BLOCK_HOUSE_WALL       );
+		final BlockData block_house_roofA      = StringToBlockDataDef(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
+		final BlockData block_house_roofB      = StringToBlockDataDef(this.block_house_roof_stairs, DEFAULT_BLOCK_HOUSE_ROOF_STAIRS);
+		final BlockData block_house_roof_solid = StringToBlockDataDef(this.block_house_roof_solid,  DEFAULT_BLOCK_HOUSE_ROOF_SOLID );
+		final BlockData block_house_window     = StringToBlockDataDef(this.block_house_window,      DEFAULT_BLOCK_HOUSE_WINDOW     );
+		final BlockData block_house_floor      = StringToBlockDataDef(this.block_house_floor,       DEFAULT_BLOCK_HOUSE_FLOOR      );
 		if (block_dirt             == null) throw new RuntimeException("Invalid block type for level 94 Dirt"             );
 		if (block_grass_block      == null) throw new RuntimeException("Invalid block type for level 94 Grass-Block"      );
 		if (block_grass_slab       == null) throw new RuntimeException("Invalid block type for level 94 Grass-Slab"       );
@@ -355,48 +368,27 @@ public class Gen_094 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// hills noise
-		this.noiseHills.setFrequency(               cfgParams.getDouble("Noise-Hills-Freq"    ) );
-		this.noiseHills.setFractalOctaves(          cfgParams.getInt(   "Noise-Hills-Octave"  ) );
-		this.noiseHills.setFractalPingPongStrength( cfgParams.getDouble("Noise-Hills-Strength") );
-		this.noiseHills.setFractalLacunarity(       cfgParams.getDouble("Noise-Hills-Lacun"   ) );
-		this.noiseHills.setNoiseType(               NoiseType.Cellular                          );
-		this.noiseHills.setFractalType(             FractalType.PingPong                        );
+		this.noiseHills.setFrequency(              cfgParams.getDouble("Noise-Hills-Freq"    ));
+		this.noiseHills.setFractalOctaves(         cfgParams.getInt(   "Noise-Hills-Octave"  ));
+		this.noiseHills.setFractalPingPongStrength(cfgParams.getDouble("Noise-Hills-Strength"));
+		this.noiseHills.setFractalLacunarity(      cfgParams.getDouble("Noise-Hills-Lacun"   ));
+		this.noiseHills.setNoiseType(              NoiseType.Cellular                         );
+		this.noiseHills.setFractalType(            FractalType.PingPong                       );
 		// house noise
-		this.noiseHouse.setFrequency( cfgParams.getDouble("Noise-House-Freq") );
+		this.noiseHouse.setFrequency(cfgParams.getDouble("Noise-House-Freq"));
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_dirt             .set(cfgBlocks.getString("Dirt"             ));
-		this.block_grass_block      .set(cfgBlocks.getString("Grass-Block"      ));
-		this.block_grass_slab       .set(cfgBlocks.getString("Grass-Slab"       ));
-		this.block_grass_short      .set(cfgBlocks.getString("Grass-Short"      ));
-		this.block_grass_tall_upper .set(cfgBlocks.getString("Grass-Tall-Top"   ));
-		this.block_grass_tall_lower .set(cfgBlocks.getString("Grass-Tall-Bottom"));
-		this.block_fern             .set(cfgBlocks.getString("Fern"             ));
-		this.block_rose             .set(cfgBlocks.getString("Rose"             ));
-		this.block_house_wall       .set(cfgBlocks.getString("House-Wall"       ));
-		this.block_house_roof_stairs.set(cfgBlocks.getString("House-Roof-Stairs"));
-		this.block_house_roof_solid .set(cfgBlocks.getString("House-Roof-Solid" ));
-		this.block_house_window     .set(cfgBlocks.getString("House-Window"     ));
-		this.block_house_floor      .set(cfgBlocks.getString("House-Floor"      ));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
 		cfgParams.addDefault("Enable-Gen",           Boolean.TRUE                                 );
 		cfgParams.addDefault("Enable-Top",           Boolean.TRUE                                 );
-		cfgParams.addDefault("Noise-Hills-Freq",     DEFAULT_NOISE_HILLS_FREQ    );
-		cfgParams.addDefault("Noise-Hills-Octave",   DEFAULT_NOISE_HILLS_OCTAVE  );
-		cfgParams.addDefault("Noise-Hills-Strength", DEFAULT_NOISE_HILLS_STRENGTH);
-		cfgParams.addDefault("Noise-Hills-Lacun",    DEFAULT_NOISE_HILLS_LACUN   );
-		cfgParams.addDefault("Noise-House-Freq",     DEFAULT_NOISE_HOUSE_FREQ    );
 		cfgParams.addDefault("Level-Y",              Integer.valueOf(DEFAULT_LEVEL_Y             ));
 		cfgParams.addDefault("Level-Height",         Integer.valueOf(DEFAULT_LEVEL_H             ));
 		cfgParams.addDefault("SubFloor",             Integer.valueOf(DEFAULT_SUBFLOOR            ));
@@ -407,6 +399,11 @@ public class Gen_094 extends BackroomsGen {
 		cfgParams.addDefault("Water-Depth",          Integer.valueOf(DEFAULT_WATER_DEPTH         ));
 		cfgParams.addDefault("House-Width",          Integer.valueOf(DEFAULT_HOUSE_WIDTH         ));
 		cfgParams.addDefault("House-Height",         Integer.valueOf(DEFAULT_HOUSE_HEIGHT        ));
+		cfgParams.addDefault("Noise-Hills-Freq",     Double .valueOf(DEFAULT_NOISE_HILLS_FREQ    ));
+		cfgParams.addDefault("Noise-Hills-Octave",   Integer.valueOf(DEFAULT_NOISE_HILLS_OCTAVE  ));
+		cfgParams.addDefault("Noise-Hills-Strength", Double .valueOf(DEFAULT_NOISE_HILLS_STRENGTH));
+		cfgParams.addDefault("Noise-Hills-Lacun",    Double .valueOf(DEFAULT_NOISE_HILLS_LACUN   ));
+		cfgParams.addDefault("Noise-House-Freq",     Double .valueOf(DEFAULT_NOISE_HOUSE_FREQ    ));
 		// block types
 		cfgBlocks.addDefault("Dirt",              DEFAULT_BLOCK_DIRT             );
 		cfgBlocks.addDefault("Grass-Block",       DEFAULT_BLOCK_GRASS_BLOCK      );

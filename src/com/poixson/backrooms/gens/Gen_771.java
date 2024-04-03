@@ -9,7 +9,6 @@ import static com.poixson.utils.LocationUtils.ValueToFaceQuarter;
 import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -90,45 +89,46 @@ public class Gen_771 extends BackroomsGen {
 	public final double  thresh_void;
 	public final double  thresh_ladder;
 	public final double  thresh_loot;
+
+	// blocks
+	public final String block_nexus_arch;
+	public final String block_nexus_arch_slab_upper;
+	public final String block_nexus_arch_slab_lower;
+	public final String block_nexus_arch_stairs_upper;
+	public final String block_nexus_arch_stairs_lower;
+	public final String block_nexus_arch_pillar;
+	public final String block_nexus_arch_base;
+	public final String block_nexus_floor_upper;
+	public final String block_nexus_floor_lower;
+	public final String block_nexus_floor_lower_slab;
+	public final String block_nexus_hatch;
+	public final String block_nexus_flair_hot;
+	public final String block_nexus_flair_cool;
+	public final String block_nexus_wall;
+	public final String block_nexus_wall_top;
+	public final String block_nexus_light_upper;
+	public final String block_nexus_light_lower;
+	public final String block_road_upper;
+	public final String block_road_lower;
+	public final String block_road_upper_center;
+	public final String block_road_lower_center;
+	public final String block_road_upper_wall;
+	public final String block_road_lower_wall;
+	public final String block_road_upper_lamp;
+	public final String block_road_lower_lamp;
+	public final String block_road_upper_light;
+	public final String block_road_lower_light;
+	public final String block_pillar;
+	public final String block_pillar_stairs_upper;
+	public final String block_pillar_stairs_lower;
+	public final String block_pillar_stairs_under;
+	public final String block_pillar_stairs_bottom;
+	public final String block_shaft_floor;
+
 	// noise
 	public final FastNoiseLiteD noiseRoadLights;
 	public final FastNoiseLiteD noiseExits;
 	public final FastNoiseLiteD noiseLoot;
-
-	// blocks
-	public final AtomicReference<String> block_nexus_arch              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_arch_slab_upper   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_arch_slab_lower   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_arch_stairs_upper = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_arch_stairs_lower = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_arch_pillar       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_arch_base         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_floor_upper       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_floor_lower       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_floor_lower_slab  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_hatch             = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_flair_hot         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_flair_cool        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_wall              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_wall_top          = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_light_upper       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_nexus_light_lower       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_upper              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_lower              = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_upper_center       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_lower_center       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_upper_wall         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_lower_wall         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_upper_lamp         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_lower_lamp         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_upper_light        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_road_lower_light        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_pillar                  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_pillar_stairs_upper     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_pillar_stairs_lower     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_pillar_stairs_under     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_pillar_stairs_bottom    = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_shaft_floor             = new AtomicReference<String>(null);
 
 
 
@@ -156,6 +156,40 @@ public class Gen_771 extends BackroomsGen {
 		this.thresh_void   = cfgParams.getDouble( "Thresh-Void"  );
 		this.thresh_ladder = cfgParams.getDouble( "Thresh-Ladder");
 		this.thresh_loot   = cfgParams.getDouble( "Thresh-Loot"  );
+		// block types
+		this.block_nexus_arch              = cfgBlocks.getString("Nexus-Arch"             );
+		this.block_nexus_arch_slab_upper   = cfgBlocks.getString("Nexus-Arch-Slab-Upper"  );
+		this.block_nexus_arch_slab_lower   = cfgBlocks.getString("Nexus-Arch-Slab-Lower"  );
+		this.block_nexus_arch_stairs_upper = cfgBlocks.getString("Nexus-Arch-Stairs-Upper");
+		this.block_nexus_arch_stairs_lower = cfgBlocks.getString("Nexus-Arch-Stairs-Lower");
+		this.block_nexus_arch_pillar       = cfgBlocks.getString("Nexus-Arch-Pillar"      );
+		this.block_nexus_arch_base         = cfgBlocks.getString("Nexus-Arch-Base"        );
+		this.block_nexus_floor_upper       = cfgBlocks.getString("Nexus-Floor-Upper"      );
+		this.block_nexus_floor_lower       = cfgBlocks.getString("Nexus-Floor-Lower"      );
+		this.block_nexus_floor_lower_slab  = cfgBlocks.getString("Nexus-Floor-Lower-Slab" );
+		this.block_nexus_hatch             = cfgBlocks.getString("Nexus-Hatch"            );
+		this.block_nexus_flair_hot         = cfgBlocks.getString("Nexus-Flair-Hot"        );
+		this.block_nexus_flair_cool        = cfgBlocks.getString("Nexus-Flair-Cool"       );
+		this.block_nexus_wall              = cfgBlocks.getString("Nexus-Wall"             );
+		this.block_nexus_wall_top          = cfgBlocks.getString("Nexus-Wall-Top"         );
+		this.block_nexus_light_upper       = cfgBlocks.getString("Nexus-Light-Upper"      );
+		this.block_nexus_light_lower       = cfgBlocks.getString("Nexus-Light-Lower"      );
+		this.block_road_upper              = cfgBlocks.getString("Road-Upper"             );
+		this.block_road_lower              = cfgBlocks.getString("Road-Lower"             );
+		this.block_road_upper_center       = cfgBlocks.getString("Road-Upper-Center"      );
+		this.block_road_lower_center       = cfgBlocks.getString("Road-Lower-Center"      );
+		this.block_road_upper_wall         = cfgBlocks.getString("Road-Upper-Wall"        );
+		this.block_road_lower_wall         = cfgBlocks.getString("Road-Lower-Wall"        );
+		this.block_road_upper_lamp         = cfgBlocks.getString("Road-Upper-Lamp"        );
+		this.block_road_lower_lamp         = cfgBlocks.getString("Road-Lower-Lamp"        );
+		this.block_road_upper_light        = cfgBlocks.getString("Road-Upper-Light"       );
+		this.block_road_lower_light        = cfgBlocks.getString("Road-Lower-Light"       );
+		this.block_pillar                  = cfgBlocks.getString("Pillar"                 );
+		this.block_pillar_stairs_upper     = cfgBlocks.getString("Pillar-Stairs-Upper"    );
+		this.block_pillar_stairs_lower     = cfgBlocks.getString("Pillar-Stairs-Lower"    );
+		this.block_pillar_stairs_under     = cfgBlocks.getString("Pillar-Stairs-Under"    );
+		this.block_pillar_stairs_bottom    = cfgBlocks.getString("Pillar-Stairs-Bottom"   );
+		this.block_shaft_floor             = cfgBlocks.getString("Shaft-Floor"            );
 		// noise
 		this.noiseRoadLights = this.register(new FastNoiseLiteD());
 		this.noiseExits      = this.register(new FastNoiseLiteD());
@@ -210,13 +244,13 @@ public class Gen_771 extends BackroomsGen {
 	protected void generateCenterArches(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
 		final BlockFace facing = AxToFace(axis.charAt(2));
-		final BlockData block_nexus_arch              = StringToBlockData(this.block_nexus_arch,              DEFAULT_BLOCK_NEXUS_ARCH             );
-		final BlockData block_nexus_arch_slab_upper   = StringToBlockData(this.block_nexus_arch_slab_upper,   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
-		final BlockData block_nexus_arch_slab_lower   = StringToBlockData(this.block_nexus_arch_slab_lower,   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
-		final BlockData block_nexus_arch_stairs_upper = StringToBlockData(this.block_nexus_arch_stairs_upper, DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER, "<FACING>", FaceToAxisString(facing.getOppositeFace()) );
-		final BlockData block_nexus_arch_stairs_lower = StringToBlockData(this.block_nexus_arch_stairs_lower, DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER, "<FACING>", FaceToAxisString(facing)                   );
-		final BlockData block_nexus_arch_pillar       = StringToBlockData(this.block_nexus_arch_pillar,       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
-		final BlockData block_nexus_arch_base         = StringToBlockData(this.block_nexus_arch_base,         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
+		final BlockData block_nexus_arch              = StringToBlockDataDef(this.block_nexus_arch,              DEFAULT_BLOCK_NEXUS_ARCH             );
+		final BlockData block_nexus_arch_slab_upper   = StringToBlockDataDef(this.block_nexus_arch_slab_upper,   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_UPPER  );
+		final BlockData block_nexus_arch_slab_lower   = StringToBlockDataDef(this.block_nexus_arch_slab_lower,   DEFAULT_BLOCK_NEXUS_ARCH_SLAB_LOWER  );
+		final BlockData block_nexus_arch_stairs_upper = StringToBlockDataDef(this.block_nexus_arch_stairs_upper, DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_UPPER, "<FACING>", FaceToAxisString(facing.getOppositeFace()) );
+		final BlockData block_nexus_arch_stairs_lower = StringToBlockDataDef(this.block_nexus_arch_stairs_lower, DEFAULT_BLOCK_NEXUS_ARCH_STAIRS_LOWER, "<FACING>", FaceToAxisString(facing)                   );
+		final BlockData block_nexus_arch_pillar       = StringToBlockDataDef(this.block_nexus_arch_pillar,       DEFAULT_BLOCK_NEXUS_ARCH_PILLAR      );
+		final BlockData block_nexus_arch_base         = StringToBlockDataDef(this.block_nexus_arch_base,         DEFAULT_BLOCK_NEXUS_ARCH_BASE        );
 		if (block_nexus_arch              == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch"             );
 		if (block_nexus_arch_slab_upper   == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Slab-Upper"  );
 		if (block_nexus_arch_slab_lower   == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Arch-Slab-Lower"  );
@@ -269,16 +303,16 @@ public class Gen_771 extends BackroomsGen {
 	}
 	protected void generateCenterFloor(final ChunkData chunk,
 			final int chunkX, final int chunkZ, final String axis) {
-		final BlockData block_nexus_floor_upper      = StringToBlockData(this.block_nexus_floor_upper,      DEFAULT_BLOCK_NEXUS_FLOOR_UPPER     );
-		final BlockData block_nexus_floor_lower      = StringToBlockData(this.block_nexus_floor_lower,      DEFAULT_BLOCK_NEXUS_FLOOR_LOWER     );
-		final BlockData block_nexus_floor_lower_slab = StringToBlockData(this.block_nexus_floor_lower_slab, DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB);
-		final BlockData block_nexus_hatch            = StringToBlockData(this.block_nexus_hatch,            DEFAULT_BLOCK_NEXUS_HATCH           );
-		final BlockData block_nexus_flair_hot        = StringToBlockData(this.block_nexus_flair_hot,        DEFAULT_BLOCK_NEXUS_FLAIR_HOT       );
-		final BlockData block_nexus_flair_cool       = StringToBlockData(this.block_nexus_flair_cool,       DEFAULT_BLOCK_NEXUS_FLAIR_COOL      );
-		final BlockData block_nexus_wall             = StringToBlockData(this.block_nexus_wall,             DEFAULT_BLOCK_NEXUS_WALL            );
-		final BlockData block_nexus_wall_top         = StringToBlockData(this.block_nexus_wall_top,         DEFAULT_BLOCK_NEXUS_WALL_TOP        );
-		final BlockData block_nexus_light_upper      = StringToBlockData(this.block_nexus_light_upper,      DEFAULT_BLOCK_NEXUS_LIGHT_UPPER     );
-		final BlockData block_nexus_light_lower      = StringToBlockData(this.block_nexus_light_lower,      DEFAULT_BLOCK_NEXUS_LIGHT_LOWER     );
+		final BlockData block_nexus_floor_upper      = StringToBlockDataDef(this.block_nexus_floor_upper,      DEFAULT_BLOCK_NEXUS_FLOOR_UPPER     );
+		final BlockData block_nexus_floor_lower      = StringToBlockDataDef(this.block_nexus_floor_lower,      DEFAULT_BLOCK_NEXUS_FLOOR_LOWER     );
+		final BlockData block_nexus_floor_lower_slab = StringToBlockDataDef(this.block_nexus_floor_lower_slab, DEFAULT_BLOCK_NEXUS_FLOOR_LOWER_SLAB);
+		final BlockData block_nexus_hatch            = StringToBlockDataDef(this.block_nexus_hatch,            DEFAULT_BLOCK_NEXUS_HATCH           );
+		final BlockData block_nexus_flair_hot        = StringToBlockDataDef(this.block_nexus_flair_hot,        DEFAULT_BLOCK_NEXUS_FLAIR_HOT       );
+		final BlockData block_nexus_flair_cool       = StringToBlockDataDef(this.block_nexus_flair_cool,       DEFAULT_BLOCK_NEXUS_FLAIR_COOL      );
+		final BlockData block_nexus_wall             = StringToBlockDataDef(this.block_nexus_wall,             DEFAULT_BLOCK_NEXUS_WALL            );
+		final BlockData block_nexus_wall_top         = StringToBlockDataDef(this.block_nexus_wall_top,         DEFAULT_BLOCK_NEXUS_WALL_TOP        );
+		final BlockData block_nexus_light_upper      = StringToBlockDataDef(this.block_nexus_light_upper,      DEFAULT_BLOCK_NEXUS_LIGHT_UPPER     );
+		final BlockData block_nexus_light_lower      = StringToBlockDataDef(this.block_nexus_light_lower,      DEFAULT_BLOCK_NEXUS_LIGHT_LOWER     );
 		if (block_nexus_floor_upper      == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Floor-Upper"     );
 		if (block_nexus_floor_lower      == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Floor-Lower"     );
 		if (block_nexus_floor_lower_slab == null) throw new RuntimeException("Invalid block type for level 771 Nexus-Floor-Lower-Slab");
@@ -389,11 +423,11 @@ public class Gen_771 extends BackroomsGen {
 		case SOUTH: wall_dirs = "north=low,south=low"; break;
 		default:    wall_dirs = "east=low,west=low";   break;
 		}
-		final BlockData block_road_upper        = StringToBlockData(this.block_road_upper,        DEFAULT_BLOCK_ROAD_UPPER       );
-		final BlockData block_road_upper_center = StringToBlockData(this.block_road_upper_center, DEFAULT_BLOCK_ROAD_UPPER_CENTER);
-		final BlockData block_road_upper_wall   = StringToBlockData(this.block_road_upper_wall,   DEFAULT_BLOCK_ROAD_UPPER_WALL, "<DIRS>", wall_dirs);
-		final BlockData block_road_upper_lamp   = StringToBlockData(this.block_road_upper_lamp,   DEFAULT_BLOCK_ROAD_UPPER_LAMP  );
-		final BlockData block_road_upper_light  = StringToBlockData(this.block_road_upper_light,  DEFAULT_BLOCK_ROAD_UPPER_LIGHT );
+		final BlockData block_road_upper        = StringToBlockDataDef(this.block_road_upper,        DEFAULT_BLOCK_ROAD_UPPER       );
+		final BlockData block_road_upper_center = StringToBlockDataDef(this.block_road_upper_center, DEFAULT_BLOCK_ROAD_UPPER_CENTER);
+		final BlockData block_road_upper_wall   = StringToBlockDataDef(this.block_road_upper_wall,   DEFAULT_BLOCK_ROAD_UPPER_WALL, "<DIRS>", wall_dirs);
+		final BlockData block_road_upper_lamp   = StringToBlockDataDef(this.block_road_upper_lamp,   DEFAULT_BLOCK_ROAD_UPPER_LAMP  );
+		final BlockData block_road_upper_light  = StringToBlockDataDef(this.block_road_upper_light,  DEFAULT_BLOCK_ROAD_UPPER_LIGHT );
 		if (block_road_upper        == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper"       );
 		if (block_road_upper_center == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Center");
 		if (block_road_upper_wall   == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Wall"  );
@@ -435,11 +469,11 @@ public class Gen_771 extends BackroomsGen {
 		case SOUTH: wall_dirs = "north=low,south=low"; break;
 		default:    wall_dirs = "east=low,west=low";   break;
 		}
-		final BlockData block_road_lower        = StringToBlockData(this.block_road_lower,        DEFAULT_BLOCK_ROAD_LOWER       );
-		final BlockData block_road_lower_center = StringToBlockData(this.block_road_lower_center, DEFAULT_BLOCK_ROAD_LOWER_CENTER);
-		final BlockData block_road_lower_wall   = StringToBlockData(this.block_road_lower_wall,   DEFAULT_BLOCK_ROAD_LOWER_WALL, "<DIRS>", wall_dirs);
-		final BlockData block_road_lower_lamp   = StringToBlockData(this.block_road_lower_lamp,   DEFAULT_BLOCK_ROAD_LOWER_LAMP  );
-		final BlockData block_road_lower_light  = StringToBlockData(this.block_road_lower_light,  DEFAULT_BLOCK_ROAD_LOWER_LIGHT );
+		final BlockData block_road_lower        = StringToBlockDataDef(this.block_road_lower,        DEFAULT_BLOCK_ROAD_LOWER       );
+		final BlockData block_road_lower_center = StringToBlockDataDef(this.block_road_lower_center, DEFAULT_BLOCK_ROAD_LOWER_CENTER);
+		final BlockData block_road_lower_wall   = StringToBlockDataDef(this.block_road_lower_wall,   DEFAULT_BLOCK_ROAD_LOWER_WALL, "<DIRS>", wall_dirs);
+		final BlockData block_road_lower_lamp   = StringToBlockDataDef(this.block_road_lower_lamp,   DEFAULT_BLOCK_ROAD_LOWER_LAMP  );
+		final BlockData block_road_lower_light  = StringToBlockDataDef(this.block_road_lower_light,  DEFAULT_BLOCK_ROAD_LOWER_LIGHT );
 		if (block_road_lower        == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower"       );
 		if (block_road_lower_center == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Center");
 		if (block_road_lower_wall   == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Wall"  );
@@ -544,12 +578,12 @@ public class Gen_771 extends BackroomsGen {
 	protected void generatePillar(final PillarType type, final ChunkData chunk,
 			final BlockFace facing, final BlockFace side,
 			final int chunkX, final int chunkZ, final int x, final int z) {
-		final BlockData block_pillar               = StringToBlockData(this.block_pillar,               DEFAULT_BLOCK_PILLAR);
-		final BlockData block_pillar_stairs_upper  = StringToBlockData(this.block_pillar_stairs_upper,  DEFAULT_BLOCK_PILLAR_STAIRS_UPPER,  "<FACING>", FaceToAxisString(facing.getOppositeFace()) );
-		final BlockData block_pillar_stairs_lower  = StringToBlockData(this.block_pillar_stairs_lower,  DEFAULT_BLOCK_PILLAR_STAIRS_LOWER,  "<FACING>", FaceToAxisString(side  .getOppositeFace()) );
-		final BlockData block_pillar_stairs_under  = StringToBlockData(this.block_pillar_stairs_under,  DEFAULT_BLOCK_PILLAR_STAIRS_UNDER,  "<FACING>", FaceToAxisString(side                    ) );
-		final BlockData block_pillar_stairs_bottom = StringToBlockData(this.block_pillar_stairs_bottom, DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM, "<FACING>", FaceToAxisString(side  .getOppositeFace()) );
-		final BlockData block_shaft_floor          = StringToBlockData(this.block_shaft_floor,          DEFAULT_BLOCK_SHAFT_FLOOR);
+		final BlockData block_pillar               = StringToBlockDataDef(this.block_pillar,               DEFAULT_BLOCK_PILLAR);
+		final BlockData block_pillar_stairs_upper  = StringToBlockDataDef(this.block_pillar_stairs_upper,  DEFAULT_BLOCK_PILLAR_STAIRS_UPPER,  "<FACING>", FaceToAxisString(facing.getOppositeFace()) );
+		final BlockData block_pillar_stairs_lower  = StringToBlockDataDef(this.block_pillar_stairs_lower,  DEFAULT_BLOCK_PILLAR_STAIRS_LOWER,  "<FACING>", FaceToAxisString(side  .getOppositeFace()) );
+		final BlockData block_pillar_stairs_under  = StringToBlockDataDef(this.block_pillar_stairs_under,  DEFAULT_BLOCK_PILLAR_STAIRS_UNDER,  "<FACING>", FaceToAxisString(side                    ) );
+		final BlockData block_pillar_stairs_bottom = StringToBlockDataDef(this.block_pillar_stairs_bottom, DEFAULT_BLOCK_PILLAR_STAIRS_BOTTOM, "<FACING>", FaceToAxisString(side  .getOppositeFace()) );
+		final BlockData block_shaft_floor          = StringToBlockDataDef(this.block_shaft_floor,          DEFAULT_BLOCK_SHAFT_FLOOR);
 		if (block_pillar               == null) throw new RuntimeException("Invalid block type for level 771 Pillar"              );
 		if (block_pillar_stairs_upper  == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Upper" );
 		if (block_pillar_stairs_lower  == null) throw new RuntimeException("Invalid block type for level 771 Pillar-Stairs-Lower" );
@@ -737,52 +771,19 @@ public class Gen_771 extends BackroomsGen {
 
 
 	@Override
-	public void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
-		this.noiseRoadLights.setFrequency( cfgParams.getDouble("Noise-Lamps-Freq") ); // road lanterns
-		this.noiseExits     .setFrequency( cfgParams.getDouble("Noise-Exits-Freq") ); // special exits
-		this.noiseLoot      .setFrequency( cfgParams.getDouble("Noise-Loot-Freq" ) ); // chest loot
+	public void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
+		// road lanterns
+		this.noiseRoadLights.setFrequency(cfgParams.getDouble("Noise-Lamps-Freq"));
+		// special exits
+		this.noiseExits.setFrequency(cfgParams.getDouble("Noise-Exits-Freq"));
+		// loot noise
+		this.noiseLoot.setFrequency(cfgParams.getDouble("Noise-Loot-Freq"));
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_nexus_arch             .set(cfgBlocks.getString("Nexus-Arch"             ));
-		this.block_nexus_arch_slab_upper  .set(cfgBlocks.getString("Nexus-Arch-Slab-Upper"  ));
-		this.block_nexus_arch_slab_lower  .set(cfgBlocks.getString("Nexus-Arch-Slab-Lower"  ));
-		this.block_nexus_arch_stairs_upper.set(cfgBlocks.getString("Nexus-Arch-Stairs-Upper"));
-		this.block_nexus_arch_stairs_lower.set(cfgBlocks.getString("Nexus-Arch-Stairs-Lower"));
-		this.block_nexus_arch_pillar      .set(cfgBlocks.getString("Nexus-Arch-Pillar"      ));
-		this.block_nexus_arch_base        .set(cfgBlocks.getString("Nexus-Arch-Base"        ));
-		this.block_nexus_floor_upper      .set(cfgBlocks.getString("Nexus-Floor-Upper"      ));
-		this.block_nexus_floor_lower      .set(cfgBlocks.getString("Nexus-Floor-Lower"      ));
-		this.block_nexus_floor_lower_slab .set(cfgBlocks.getString("Nexus-Floor-Lower-Slab" ));
-		this.block_nexus_hatch            .set(cfgBlocks.getString("Nexus-Hatch"            ));
-		this.block_nexus_flair_hot        .set(cfgBlocks.getString("Nexus-Flair-Hot"        ));
-		this.block_nexus_flair_cool       .set(cfgBlocks.getString("Nexus-Flair-Cool"       ));
-		this.block_nexus_wall             .set(cfgBlocks.getString("Nexus-Wall"             ));
-		this.block_nexus_wall_top         .set(cfgBlocks.getString("Nexus-Wall-Top"         ));
-		this.block_nexus_light_upper      .set(cfgBlocks.getString("Nexus-Light-Upper"      ));
-		this.block_nexus_light_lower      .set(cfgBlocks.getString("Nexus-Light-Lower"      ));
-		this.block_road_upper             .set(cfgBlocks.getString("Road-Upper"             ));
-		this.block_road_lower             .set(cfgBlocks.getString("Road-Lower"             ));
-		this.block_road_upper_center      .set(cfgBlocks.getString("Road-Upper-Center"      ));
-		this.block_road_lower_center      .set(cfgBlocks.getString("Road-Lower-Center"      ));
-		this.block_road_upper_wall        .set(cfgBlocks.getString("Road-Upper-Wall"        ));
-		this.block_road_lower_wall        .set(cfgBlocks.getString("Road-Lower-Wall"        ));
-		this.block_road_upper_lamp        .set(cfgBlocks.getString("Road-Upper-Lamp"        ));
-		this.block_road_lower_lamp        .set(cfgBlocks.getString("Road-Lower-Lamp"        ));
-		this.block_road_upper_light       .set(cfgBlocks.getString("Road-Upper-Light"       ));
-		this.block_road_lower_light       .set(cfgBlocks.getString("Road-Lower-Light"       ));
-		this.block_pillar                 .set(cfgBlocks.getString("Pillar"                 ));
-		this.block_pillar_stairs_upper    .set(cfgBlocks.getString("Pillar-Stairs-Upper"    ));
-		this.block_pillar_stairs_lower    .set(cfgBlocks.getString("Pillar-Stairs-Lower"    ));
-		this.block_pillar_stairs_under    .set(cfgBlocks.getString("Pillar-Stairs-Under"    ));
-		this.block_pillar_stairs_bottom   .set(cfgBlocks.getString("Pillar-Stairs-Bottom"   ));
-		this.block_shaft_floor            .set(cfgBlocks.getString("Shaft-Floor"            ));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params

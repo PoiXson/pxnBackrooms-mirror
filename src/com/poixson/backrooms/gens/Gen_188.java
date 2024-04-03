@@ -3,7 +3,6 @@ package com.poixson.backrooms.gens;
 import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -42,13 +41,13 @@ public class Gen_188 extends BackroomsGen {
 	public final boolean dark_room;
 
 	// blocks
-	public final AtomicReference<String> block_subfloor         = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor            = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor_path_lines = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor_path_areas = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_wall             = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling          = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_window           = new AtomicReference<String>(null);
+	public final String block_subfloor;
+	public final String block_floor;
+	public final String block_floor_path_lines;
+	public final String block_floor_path_areas;
+	public final String block_wall;
+	public final String block_ceiling;
+	public final String block_window;
 
 
 
@@ -71,6 +70,14 @@ public class Gen_188 extends BackroomsGen {
 			level_000.gen_019.level_h;
 		this.subfloor  = level_000.gen_001.subfloor;
 		this.dark_room = cfgParams.getBoolean("Dark-Room");
+		// block types
+		this.block_subfloor         = cfgBlocks.getString("SubFloor"        );
+		this.block_floor            = cfgBlocks.getString("Floor"           );
+		this.block_floor_path_lines = cfgBlocks.getString("Floor-Path-Lines");
+		this.block_floor_path_areas = cfgBlocks.getString("Floor-Path-Areas");
+		this.block_wall             = cfgBlocks.getString("Wall"            );
+		this.block_ceiling          = cfgBlocks.getString("Ceiling"         );
+		this.block_window           = cfgBlocks.getString("Window"          );
 	}
 
 
@@ -93,23 +100,23 @@ public class Gen_188 extends BackroomsGen {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
 		final Level_000 level0 = (Level_000) this.backlevel;
-		final BlockData block_subfloor            = StringToBlockData(this.block_subfloor,                     DEFAULT_BLOCK_SUBFLOOR        );
-		final BlockData block_floor               = StringToBlockData(this.block_floor,                        DEFAULT_BLOCK_FLOOR           );
-		final BlockData block_floor_path_lines    = StringToBlockData(this.block_floor_path_lines,             DEFAULT_BLOCK_FLOOR_PATH_LINES);
-		final BlockData block_floor_path_areas    = StringToBlockData(this.block_floor_path_areas,             DEFAULT_BLOCK_FLOOR_PATH_AREAS);
-		final BlockData block_wall                = StringToBlockData(this.block_wall,                         DEFAULT_BLOCK_WALL            );
-		final BlockData block_ceiling             = StringToBlockData(this.block_ceiling,                      DEFAULT_BLOCK_CEILING         );
-		final BlockData block_window              = StringToBlockData(this.block_window,                       DEFAULT_BLOCK_WINDOW          );
-		final BlockData block_hotel_wall_top_x    = StringToBlockData(level0.gen_005.block_hall_wall_top_x,    Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_X   );
-		final BlockData block_hotel_wall_top_z    = StringToBlockData(level0.gen_005.block_hall_wall_top_z,    Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
-		final BlockData block_hotel_wall_center   = StringToBlockData(level0.gen_005.block_hall_wall_center,   Gen_005.DEFAULT_BLOCK_HALL_WALL_CENTER  );
-		final BlockData block_hotel_wall_bottom_x = StringToBlockData(level0.gen_005.block_hall_wall_bottom_x, Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
-		final BlockData block_hotel_wall_bottom_z = StringToBlockData(level0.gen_005.block_hall_wall_bottom_z, Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
-		final BlockData block_attic_wall          = StringToBlockData(level0.gen_019.block_wall,               Gen_019.DEFAULT_BLOCK_WALL              );
-		final BlockData block_pool_wall           = StringToBlockData(level0.gen_037.block_wall_a,             Gen_037.DEFAULT_BLOCK_WALL_A            );
-		final BlockData block_lightsout_wall      = StringToBlockData(level0.gen_006.block_wall,               Gen_006.DEFAULT_BLOCK_WALL              );
-		final BlockData block_lobby_wall          = StringToBlockData(level0.gen_000.block_wall,               Gen_000.DEFAULT_BLOCK_WALL              );
-		final BlockData block_overgrowth_wall     = StringToBlockData(level0.gen_023.block_wall,               Gen_023.DEFAULT_BLOCK_WALL              );
+		final BlockData block_subfloor            = StringToBlockDataDef(this.block_subfloor,         DEFAULT_BLOCK_SUBFLOOR        );
+		final BlockData block_floor               = StringToBlockDataDef(this.block_floor,            DEFAULT_BLOCK_FLOOR           );
+		final BlockData block_floor_path_lines    = StringToBlockDataDef(this.block_floor_path_lines, DEFAULT_BLOCK_FLOOR_PATH_LINES);
+		final BlockData block_floor_path_areas    = StringToBlockDataDef(this.block_floor_path_areas, DEFAULT_BLOCK_FLOOR_PATH_AREAS);
+		final BlockData block_wall                = StringToBlockDataDef(this.block_wall,             DEFAULT_BLOCK_WALL            );
+		final BlockData block_ceiling             = StringToBlockDataDef(this.block_ceiling,          DEFAULT_BLOCK_CEILING         );
+		final BlockData block_window              = StringToBlockDataDef(this.block_window,           DEFAULT_BLOCK_WINDOW          );
+		final BlockData block_hotel_wall_top_x    = StringToBlockDataDef(backlevel.gen_005.block_hall_wall_top_x,    Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_X   );
+		final BlockData block_hotel_wall_top_z    = StringToBlockDataDef(backlevel.gen_005.block_hall_wall_top_z,    Gen_005.DEFAULT_BLOCK_HALL_WALL_TOP_Z   );
+		final BlockData block_hotel_wall_center   = StringToBlockDataDef(backlevel.gen_005.block_hall_wall_center,   Gen_005.DEFAULT_BLOCK_HALL_WALL_CENTER  );
+		final BlockData block_hotel_wall_bottom_x = StringToBlockDataDef(backlevel.gen_005.block_hall_wall_bottom_x, Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_X);
+		final BlockData block_hotel_wall_bottom_z = StringToBlockDataDef(backlevel.gen_005.block_hall_wall_bottom_z, Gen_005.DEFAULT_BLOCK_HALL_WALL_BOTTOM_Z);
+		final BlockData block_attic_wall          = StringToBlockDataDef(backlevel.gen_019.block_wall,               Gen_019.DEFAULT_BLOCK_WALL              );
+		final BlockData block_pool_wall           = StringToBlockDataDef(backlevel.gen_037.block_wall_a,             Gen_037.DEFAULT_BLOCK_WALL_A            );
+		final BlockData block_lightsout_wall      = StringToBlockDataDef(backlevel.gen_006.block_wall,               Gen_006.DEFAULT_BLOCK_WALL              );
+		final BlockData block_lobby_wall          = StringToBlockDataDef(backlevel.gen_000.block_wall,               Gen_000.DEFAULT_BLOCK_WALL              );
+		final BlockData block_overgrowth_wall     = StringToBlockDataDef(backlevel.gen_023.block_wall,               Gen_023.DEFAULT_BLOCK_WALL              );
 		if (block_subfloor            == null) throw new RuntimeException("Invalid block type for level 188 SubFloor"        );
 		if (block_floor               == null) throw new RuntimeException("Invalid block type for level 188 Floor"           );
 		if (block_floor_path_lines    == null) throw new RuntimeException("Invalid block type for level 188 Floor-Path-Lines");
@@ -353,16 +360,6 @@ public class Gen_188 extends BackroomsGen {
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_subfloor        .set(cfgBlocks.getString("SubFloor"        ));
-		this.block_floor           .set(cfgBlocks.getString("Floor"           ));
-		this.block_floor_path_lines.set(cfgBlocks.getString("Floor-Path-Lines"));
-		this.block_floor_path_areas.set(cfgBlocks.getString("Floor-Path-Areas"));
-		this.block_ceiling         .set(cfgBlocks.getString("Ceiling"         ));
-		this.block_window          .set(cfgBlocks.getString("Window"          ));
-	}
 	@Override
 	public void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params

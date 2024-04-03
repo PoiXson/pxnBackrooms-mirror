@@ -25,13 +25,6 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 public class Gen_309 extends BackroomsGen {
 
 	// default params
-	public static final double DEFAULT_NOISE_PATH_FREQ     = 0.01;
-	public static final double DEFAULT_NOISE_GROUND_FREQ   = 0.002;
-	public static final int    DEFAULT_NOISE_GROUND_OCTAVE = 3;
-	public static final double DEFAULT_NOISE_GROUND_GAIN   = 0.5;
-	public static final double DEFAULT_NOISE_GROUND_LACUN  = 2.0;
-	public static final double DEFAULT_NOISE_TREES_FREQ    = 0.2;
-	public static final double DEFAULT_NOISE_PRAIRIE_FREQ  = 0.004;
 	public static final int    DEFAULT_LEVEL_H              = 8;
 	public static final int    DEFAULT_SUBFLOOR             = 3;
 	public static final double DEFAULT_THRESH_PRAIRIE       = 0.35;
@@ -44,12 +37,22 @@ public class Gen_309 extends BackroomsGen {
 	public static final int    PATH_START_Z                 = 32;
 	public static final int    DEFAULT_SPECIAL_MOD_A        = 19;
 	public static final int    DEFAULT_SPECIAL_MOD_B        = 15;
+	public static final double DEFAULT_NOISE_PATH_FREQ      = 0.01;
+	public static final double DEFAULT_NOISE_GROUND_FREQ    = 0.002;
+	public static final int    DEFAULT_NOISE_GROUND_OCTAVE  = 3;
+	public static final double DEFAULT_NOISE_GROUND_GAIN    = 0.5;
+	public static final double DEFAULT_NOISE_GROUND_LACUN   = 2.0;
+	public static final double DEFAULT_NOISE_TREES_FREQ     = 0.2;
+	public static final double DEFAULT_NOISE_PRAIRIE_FREQ   = 0.004;
+	public static final int    DEFAULT_NOISE_PRAIRIE_OCTAVE = 2;
+	public static final double DEFAULT_NOISE_PRAIRIE_WEIGHT = 2.0;
+	public static final double DEFAULT_NOISE_PRAIRIE_LACUN  = 5.0;
 
 	// default blocks
+	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:stone";
 	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
 	public static final String DEFAULT_BLOCK_PATH        = "minecraft:dirt_path";
 	public static final String DEFAULT_BLOCK_GRASS       = "minecraft:grass_block";
-	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:stone";
 	public static final String DEFAULT_BLOCK_TREE_TRUNK  = "minecraft:birch_log";
 	public static final String DEFAULT_BLOCK_TREE_LEAVES = "minecraft:birch_leaves";
 
@@ -68,6 +71,14 @@ public class Gen_309 extends BackroomsGen {
 	public final int     special_mod_a;
 	public final int     special_mod_b;
 
+	// blocks
+	public final String block_subfloor;
+	public final String block_dirt;
+	public final String block_path;
+	public final String block_grass;
+	public final String block_tree_trunk;
+	public final String block_tree_leaves;
+
 	// noise
 	public final FastNoiseLiteD noisePath;
 	public final FastNoiseLiteD noiseGround;
@@ -78,14 +89,6 @@ public class Gen_309 extends BackroomsGen {
 	protected final PathTracer pathTrace;
 	protected final AtomicReference<ConcurrentHashMap<Integer, Double>> pathCache =
 			new AtomicReference<ConcurrentHashMap<Integer, Double>>(null);
-
-	// blocks
-	public final AtomicReference<String> block_dirt        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_path        = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_grass       = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor    = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_tree_trunk  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_tree_leaves = new AtomicReference<String>(null);
 
 
 
@@ -108,6 +111,13 @@ public class Gen_309 extends BackroomsGen {
 		this.fence_thickness = cfgParams.getDouble( "Fence-Thickness");
 		this.special_mod_a  = cfgParams.getInt(    "Special-Mod-A" );
 		this.special_mod_b  = cfgParams.getInt(    "Special-Mod-B" );
+		// block types
+		this.block_subfloor    = cfgBlocks.getString("SubFloor"   );
+		this.block_dirt        = cfgBlocks.getString("Dirt"       );
+		this.block_path        = cfgBlocks.getString("Path"       );
+		this.block_grass       = cfgBlocks.getString("Grass"      );
+		this.block_tree_trunk  = cfgBlocks.getString("Tree-Trunk" );
+		this.block_tree_leaves = cfgBlocks.getString("Tree-Leaves");
 		// noise
 		this.noisePath    = this.register(new FastNoiseLiteD());
 		this.noiseGround  = this.register(new FastNoiseLiteD());
@@ -153,10 +163,10 @@ public class Gen_309 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_dirt     = StringToBlockData(this.block_dirt,     DEFAULT_BLOCK_DIRT    );
-		final BlockData block_path     = StringToBlockData(this.block_path,     DEFAULT_BLOCK_PATH    );
-		final BlockData block_grass    = StringToBlockData(this.block_grass,    DEFAULT_BLOCK_GRASS   );
-		final BlockData block_subfloor = StringToBlockData(this.block_subfloor, DEFAULT_BLOCK_SUBFLOOR);
+		final BlockData block_dirt     = StringToBlockDataDef(this.block_dirt,     DEFAULT_BLOCK_DIRT    );
+		final BlockData block_path     = StringToBlockDataDef(this.block_path,     DEFAULT_BLOCK_PATH    );
+		final BlockData block_grass    = StringToBlockDataDef(this.block_grass,    DEFAULT_BLOCK_GRASS   );
+		final BlockData block_subfloor = StringToBlockDataDef(this.block_subfloor, DEFAULT_BLOCK_SUBFLOOR);
 		if (block_dirt     == null) throw new RuntimeException("Invalid block type for level 309 Dirt"    );
 		if (block_path     == null) throw new RuntimeException("Invalid block type for level 309 Path"    );
 		if (block_grass    == null) throw new RuntimeException("Invalid block type for level 309 Grass"   );
@@ -234,8 +244,9 @@ public class Gen_309 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// path
 		this.noisePath.setFrequency( cfgParams.getDouble("Noise-Path-Freq") );
 		// path ground
@@ -251,32 +262,16 @@ public class Gen_309 extends BackroomsGen {
 		this.noisePrairie.setFractalOctaves(          cfgParams.getInt(   "Noise-Prairie-Octave") );
 		this.noisePrairie.setFractalType(             FractalType.Ridged                          );
 		this.noisePrairie.setFractalWeightedStrength( cfgParams.getDouble("Noise-Prairie-Weight") );
-		this.noisePrairie.setFractalLacunarity(       cfgParams.getDouble("Noise-Prairie-Lac"   ) );
+		this.noisePrairie.setFractalLacunarity(       cfgParams.getDouble("Noise-Prairie-Lacun" ) );
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_tree_trunk .set(cfgBlocks.getString("Tree-Trunk" ));
-		this.block_tree_leaves.set(cfgBlocks.getString("Tree-Leaves"));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
 		cfgParams.addDefault("Enable-Gen",           Boolean.TRUE                                 );
 		cfgParams.addDefault("Enable-Top",           Boolean.TRUE                                 );
-		cfgParams.addDefault("Noise-Path-Freq",      DEFAULT_NOISE_PATH_FREQ      );
-		cfgParams.addDefault("Noise-Ground-Freq",    DEFAULT_NOISE_GROUND_FREQ    );
-		cfgParams.addDefault("Noise-Ground-Octave",  DEFAULT_NOISE_GROUND_OCTAVE  );
-		cfgParams.addDefault("Noise-Ground-Gain",    DEFAULT_NOISE_GROUND_GAIN    );
-		cfgParams.addDefault("Noise-Ground-Lacun",   DEFAULT_NOISE_GROUND_LACUN   );
-		cfgParams.addDefault("Noise-Trees-Freq",     DEFAULT_NOISE_TREES_FREQ     );
-		cfgParams.addDefault("Noise-Prairie-Freq",   DEFAULT_NOISE_PRAIRIE_FREQ   );
-		cfgParams.addDefault("Noise-Prairie-Octave", DEFAULT_NOISE_PRAIRIE_OCTAVE );
-		cfgParams.addDefault("Noise-Prairie-Weight", DEFAULT_NOISE_PRAIRIE_WEIGHT );
-		cfgParams.addDefault("Noise-Prairie-Lac",    DEFAULT_NOISE_PRAIRIE_LAC    );
 		cfgParams.addDefault("Level-Y",              Integer.valueOf(this.getDefaultY()          ));
 		cfgParams.addDefault("Level-Height",         Integer.valueOf(DEFAULT_LEVEL_H             ));
 		cfgParams.addDefault("SubFloor",             Integer.valueOf(DEFAULT_SUBFLOOR            ));
@@ -288,11 +283,21 @@ public class Gen_309 extends BackroomsGen {
 		cfgParams.addDefault("Fence-Thickness",      Double .valueOf(DEFAULT_FENCE_THICKNESS     ));
 		cfgParams.addDefault("Special-Mod-A",        Integer.valueOf(DEFAULT_SPECIAL_MOD_A       ));
 		cfgParams.addDefault("Special-Mod-B",        Integer.valueOf(DEFAULT_SPECIAL_MOD_B       ));
+		cfgParams.addDefault("Noise-Path-Freq",      Double .valueOf(DEFAULT_NOISE_PATH_FREQ     ));
+		cfgParams.addDefault("Noise-Ground-Freq",    Double .valueOf(DEFAULT_NOISE_GROUND_FREQ   ));
+		cfgParams.addDefault("Noise-Ground-Octave",  Integer.valueOf(DEFAULT_NOISE_GROUND_OCTAVE ));
+		cfgParams.addDefault("Noise-Ground-Gain",    Double .valueOf(DEFAULT_NOISE_GROUND_GAIN   ));
+		cfgParams.addDefault("Noise-Ground-Lacun",   Double .valueOf(DEFAULT_NOISE_GROUND_LACUN  ));
+		cfgParams.addDefault("Noise-Trees-Freq",     Double .valueOf(DEFAULT_NOISE_TREES_FREQ    ));
+		cfgParams.addDefault("Noise-Prairie-Freq",   Double .valueOf(DEFAULT_NOISE_PRAIRIE_FREQ  ));
+		cfgParams.addDefault("Noise-Prairie-Octave", Integer.valueOf(DEFAULT_NOISE_PRAIRIE_OCTAVE));
+		cfgParams.addDefault("Noise-Prairie-Weight", Double .valueOf(DEFAULT_NOISE_PRAIRIE_WEIGHT));
+		cfgParams.addDefault("Noise-Prairie-Lacun",  Double .valueOf(DEFAULT_NOISE_PRAIRIE_LACUN ));
 		// block types
+		cfgBlocks.addDefault("SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfgBlocks.addDefault("Dirt",        DEFAULT_BLOCK_DIRT       );
 		cfgBlocks.addDefault("Path",        DEFAULT_BLOCK_PATH       );
 		cfgBlocks.addDefault("Grass",       DEFAULT_BLOCK_GRASS      );
-		cfgBlocks.addDefault("SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfgBlocks.addDefault("Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
 		cfgBlocks.addDefault("Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
 	}

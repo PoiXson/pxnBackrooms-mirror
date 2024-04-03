@@ -4,7 +4,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -46,6 +45,7 @@ public class Gen_037 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_PORTAL_HOTEL_FREQ   = 0.01;
 	public static final double DEFAULT_THRESH_ROOM               = 0.2;
 	public static final double DEFAULT_THRESH_PORTAL             = 0.5;
+	public static final double DEFAULT_THRESH_TUNNEL             = 0.95;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_WALL_A     = "minecraft:prismarine_bricks";
@@ -62,20 +62,22 @@ public class Gen_037 extends BackroomsGen {
 	public final int     water_depth;
 	public final int     subfloor;
 	public final int     subceiling;
+	public final double  thresh_room;
+	public final double  thresh_portal;
+	public final double  thresh_tunnel;
 
+	// blocks
+	public final String block_wall_a;
+	public final String block_wall_b;
+	public final String block_subfloor;
+	public final String block_subceiling;
+	public final String block_ceiling;
 
 	// noise
 	public final FastNoiseLiteD noisePoolRooms;
 	public final FastNoiseLiteD noiseTunnels;
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
-
-	// blocks
-	public final AtomicReference<String> block_wall_a     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_wall_b     = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor   = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subceiling = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_ceiling    = new AtomicReference<String>(null);
 
 
 
@@ -92,6 +94,15 @@ public class Gen_037 extends BackroomsGen {
 		this.water_depth   = cfgParams.getInt(    "Water-Depth"  );
 		this.subfloor      = cfgParams.getInt(    "SubFloor"     );
 		this.subceiling    = cfgParams.getInt(    "SubCeiling"   );
+		this.thresh_room   = cfgParams.getDouble( "Thresh-Room"  );
+		this.thresh_portal = cfgParams.getDouble( "Thresh-Portal");
+		this.thresh_tunnel = cfgParams.getDouble( "Thresh-Tunnel");
+		// block types
+		this.block_wall_a     = cfgBlocks.getString("WallA"     );
+		this.block_wall_b     = cfgBlocks.getString("WallB"     );
+		this.block_subfloor   = cfgBlocks.getString("SubFloor"  );
+		this.block_subceiling = cfgBlocks.getString("SubCeiling");
+		this.block_ceiling    = cfgBlocks.getString("Ceiling"   );
 		// noise
 		this.noisePoolRooms   = this.register(new FastNoiseLiteD());
 		this.noiseTunnels     = this.register(new FastNoiseLiteD());
@@ -128,12 +139,12 @@ public class Gen_037 extends BackroomsGen {
 		public RoomType type;
 
 		public PoolData(final int x, final int z) {
-			this.valueRoom        = Gen_037.this.noisePoolRooms.getNoise(x, z);
+			this.valueRoom        = Gen_037.this.noisePoolRooms  .getNoise(x, z);
 			this.valuePortalHotel = Gen_037.this.noisePortalHotel.getNoise(x, z);
 			this.valuePortalLobby = Gen_037.this.noisePortalLobby.getNoise(x, z);
-			if (this.valueRoom < Gen_037.this.thresh_room.get()) {
+			if (this.valueRoom < Gen_037.this.thresh_room) {
 				this.type = RoomType.SOLID;
-				this.possiblePortalHotel = (this.valuePortalHotel > Gen_037.this.thresh_portal.get());
+				this.possiblePortalHotel = (this.valuePortalHotel > Gen_037.this.thresh_portal);
 				this.possiblePortalLobby = false;
 			} else {
 				this.type = RoomType.OPEN;
@@ -176,11 +187,11 @@ public class Gen_037 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_wall_a     = StringToBlockData(this.block_wall_a,     DEFAULT_BLOCK_WALL_A    );
-		final BlockData block_wall_b     = StringToBlockData(this.block_wall_b,     DEFAULT_BLOCK_WALL_B    );
-		final BlockData block_subfloor   = StringToBlockData(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
-		final BlockData block_subceiling = StringToBlockData(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
-		final BlockData block_ceiling    = StringToBlockData(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
+		final BlockData block_wall_a     = StringToBlockDataDef(this.block_wall_a,     DEFAULT_BLOCK_WALL_A    );
+		final BlockData block_wall_b     = StringToBlockDataDef(this.block_wall_b,     DEFAULT_BLOCK_WALL_B    );
+		final BlockData block_subfloor   = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
+		final BlockData block_subceiling = StringToBlockDataDef(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
+		final BlockData block_ceiling    = StringToBlockDataDef(this.block_ceiling,    DEFAULT_BLOCK_CEILING   );
 		if (block_wall_a     == null) throw new RuntimeException("Invalid block type for level 37 Wall A"    );
 		if (block_wall_b     == null) throw new RuntimeException("Invalid block type for level 37 Wall B"    );
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
@@ -477,43 +488,32 @@ public class Gen_037 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// pool rooms
-		this.noisePoolRooms.setFrequency(               cfgParams.getDouble("Noise-Room-Freq"    ) );
-		this.noisePoolRooms.setFractalOctaves(          cfgParams.getInt(   "Noise-Room-Octave"  ) );
-		this.noisePoolRooms.setFractalGain(             cfgParams.getDouble("Noise-Room-Gain"    ) );
-		this.noisePoolRooms.setFractalPingPongStrength( cfgParams.getDouble("Noise-Room-Strength") );
-		this.noisePoolRooms.setNoiseType(               NoiseType.OpenSimplex2                     );
-		this.noisePoolRooms.setFractalType(             FractalType.PingPong                       );
+		this.noisePoolRooms.setFrequency(              cfgParams.getDouble("Noise-Room-Freq"    ));
+		this.noisePoolRooms.setFractalOctaves(         cfgParams.getInt(   "Noise-Room-Octave"  ));
+		this.noisePoolRooms.setFractalGain(            cfgParams.getDouble("Noise-Room-Gain"    ));
+		this.noisePoolRooms.setFractalPingPongStrength(cfgParams.getDouble("Noise-Room-Strength"));
+		this.noisePoolRooms.setNoiseType(              NoiseType.OpenSimplex2                    );
+		this.noisePoolRooms.setFractalType(            FractalType.PingPong                      );
 		// tunnels
-		this.noiseTunnels.setFrequency(               cfgParams.getDouble("Noise-Tunnel-Freq"    ) );
-		this.noiseTunnels.setFractalPingPongStrength( cfgParams.getDouble("Noise-Tunnel-Strength") );
-		this.noiseTunnels.setNoiseType(               NoiseType.Cellular                           );
-		this.noiseTunnels.setFractalType(             FractalType.PingPong                         );
-		this.noiseTunnels.setCellularDistanceFunction( CellularDistanceFunction.Manhattan          );
+		this.noiseTunnels.setFrequency(               cfgParams.getDouble("Noise-Tunnel-Freq"    ));
+		this.noiseTunnels.setFractalPingPongStrength( cfgParams.getDouble("Noise-Tunnel-Strength"));
+		this.noiseTunnels.setNoiseType(               NoiseType.Cellular                          );
+		this.noiseTunnels.setFractalType(             FractalType.PingPong                        );
+		this.noiseTunnels.setCellularDistanceFunction(CellularDistanceFunction.Manhattan          );
 		// portal to lobby
-		this.noisePortalLobby.setFrequency(      cfgParams.getDouble("Noise-Portal-Lobby-Freq"  ) );
-		this.noisePortalLobby.setFractalOctaves( cfgParams.getInt(   "Noise-Portal-Lobby-Octave") );
-		this.noisePortalLobby.setFractalType(    FractalType.FBm                                  );
+		this.noisePortalLobby.setFrequency(     cfgParams.getDouble("Noise-Portal-Lobby-Freq"  ));
+		this.noisePortalLobby.setFractalOctaves(cfgParams.getInt(   "Noise-Portal-Lobby-Octave"));
+		this.noisePortalLobby.setFractalType(   FractalType.FBm                                 );
 		// portal to hotel
-		this.noisePortalHotel.setFrequency( cfgParams.getDouble("Noise-Portal-Hotel-Freq") );
+		this.noisePortalHotel.setFrequency(cfgParams.getDouble("Noise-Portal-Hotel-Freq"));
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// params
-		this.thresh_room  .set(cfgParams.getDouble("Thresh-Room"  ));
-		this.thresh_portal.set(cfgParams.getDouble("Thresh-Portal"));
-		// block types
-		this.block_wall_a    .set(cfgBlocks.getString("WallA"     ));
-		this.block_wall_b    .set(cfgBlocks.getString("WallB"     ));
-		this.block_subfloor  .set(cfgBlocks.getString("SubFloor"  ));
-		this.block_subceiling.set(cfgBlocks.getString("SubCeiling"));
-		this.block_ceiling   .set(cfgBlocks.getString("Ceiling"   ));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
@@ -524,17 +524,18 @@ public class Gen_037 extends BackroomsGen {
 		cfgParams.addDefault("Water-Depth",               Integer.valueOf(DEFAULT_WATER_DEPTH              ));
 		cfgParams.addDefault("SubFloor",                  Integer.valueOf(DEFAULT_SUBFLOOR                 ));
 		cfgParams.addDefault("SubCeiling",                Integer.valueOf(DEFAULT_SUBCEILING               ));
-		cfgParams.addDefault("Noise-Room-Freq",           DEFAULT_NOISE_ROOM_FREQ          );
-		cfgParams.addDefault("Noise-Room-Octave",         DEFAULT_NOISE_ROOM_OCTAVE        );
-		cfgParams.addDefault("Noise-Room-Gain",           DEFAULT_NOISE_ROOM_GAIN          );
-		cfgParams.addDefault("Noise-Room-Strength",       DEFAULT_NOISE_ROOM_STRENGTH      );
-		cfgParams.addDefault("Noise-Tunnel-Freq",         DEFAULT_NOISE_TUNNEL_FREQ        );
-		cfgParams.addDefault("Noise-Tunnel-Strength",     DEFAULT_NOISE_TUNNEL_STRENGTH    );
-		cfgParams.addDefault("Noise-Portal-Lobby-Freq",   DEFAULT_NOISE_PORTAL_LOBBY_FREQ  );
-		cfgParams.addDefault("Noise-Portal-Lobby-Octave", DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE);
-		cfgParams.addDefault("Noise-Portal-Hotel-Freq",   DEFAULT_NOISE_PORTAL_HOTEL_FREQ  );
-		cfgParams.addDefault("Thresh-Room",               DEFAULT_THRESH_ROOM              );
-		cfgParams.addDefault("Thresh-Portal",             DEFAULT_THRESH_PORTAL            );
+		cfgParams.addDefault("Noise-Room-Freq",           Double .valueOf(DEFAULT_NOISE_ROOM_FREQ          ));
+		cfgParams.addDefault("Noise-Room-Octave",         Integer.valueOf(DEFAULT_NOISE_ROOM_OCTAVE        ));
+		cfgParams.addDefault("Noise-Room-Gain",           Double .valueOf(DEFAULT_NOISE_ROOM_GAIN          ));
+		cfgParams.addDefault("Noise-Room-Strength",       Double .valueOf(DEFAULT_NOISE_ROOM_STRENGTH      ));
+		cfgParams.addDefault("Noise-Tunnel-Freq",         Double .valueOf(DEFAULT_NOISE_TUNNEL_FREQ        ));
+		cfgParams.addDefault("Noise-Tunnel-Strength",     Double .valueOf(DEFAULT_NOISE_TUNNEL_STRENGTH    ));
+		cfgParams.addDefault("Noise-Portal-Lobby-Freq",   Double .valueOf(DEFAULT_NOISE_PORTAL_LOBBY_FREQ  ));
+		cfgParams.addDefault("Noise-Portal-Lobby-Octave", Integer.valueOf(DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE));
+		cfgParams.addDefault("Noise-Portal-Hotel-Freq",   Double .valueOf(DEFAULT_NOISE_PORTAL_HOTEL_FREQ  ));
+		cfgParams.addDefault("Thresh-Room",               Double .valueOf(DEFAULT_THRESH_ROOM              ));
+		cfgParams.addDefault("Thresh-Portal",             Double .valueOf(DEFAULT_THRESH_PORTAL            ));
+		cfgParams.addDefault("Thresh-Tunnel",             Double .valueOf(DEFAULT_THRESH_TUNNEL            ));
 		// block types
 		cfgBlocks.addDefault("WallA",      DEFAULT_BLOCK_WALL_A    );
 		cfgBlocks.addDefault("WallB",      DEFAULT_BLOCK_WALL_B    );

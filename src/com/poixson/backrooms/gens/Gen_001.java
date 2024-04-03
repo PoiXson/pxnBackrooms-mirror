@@ -5,7 +5,6 @@ import static com.poixson.utils.BlockUtils.StringToBlockData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -49,15 +48,11 @@ public class Gen_001 extends BackroomsGen {
 	public static final double DEFAULT_THRESH_MOIST        = 0.4;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_WALL      = "minecraft:mud_bricks";
-	public static final String DEFAULT_BLOCK_SUBFLOOR  = "minecraft:dirt";
-	public static final String DEFAULT_BLOCK_FLOOR_DRY = "minecraft:brown_concrete_powder";
-	public static final String DEFAULT_BLOCK_FLOOR_WET = "minecraft:brown_concrete";
-
-	// noise
-	public final FastNoiseLiteD noiseBasementWalls;
-	public final FastNoiseLiteD noiseMoist;
-	public final FastNoiseLiteD noiseWell;
+	public static final String DEFAULT_BLOCK_SUBFLOOR_WET = "minecraft:mud";
+	public static final String DEFAULT_BLOCK_SUBFLOOR_DRY = "minecraft:dirt";
+	public static final String DEFAULT_BLOCK_FLOOR_DRY    = "minecraft:brown_concrete_powder";
+	public static final String DEFAULT_BLOCK_FLOOR_WET    = "minecraft:brown_concrete";
+	public static final String DEFAULT_BLOCK_WALL         = "minecraft:mud_bricks";
 
 	// params
 	public final boolean enable_gen;
@@ -73,10 +68,16 @@ public class Gen_001 extends BackroomsGen {
 	public final double  thresh_moist;
 
 	// blocks
-	public final AtomicReference<String> block_wall      = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_subfloor  = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor_dry = new AtomicReference<String>(null);
-	public final AtomicReference<String> block_floor_wet = new AtomicReference<String>(null);
+	public final String block_subfloor_wet;
+	public final String block_subfloor_dry;
+	public final String block_floor_dry;
+	public final String block_floor_wet;
+	public final String block_wall;
+
+	// noise
+	public final FastNoiseLiteD noiseWalls;
+	public final FastNoiseLiteD noiseMoist;
+	public final FastNoiseLiteD noiseWell;
 
 
 
@@ -97,10 +98,16 @@ public class Gen_001 extends BackroomsGen {
 		this.well_height  = cfgParams.getInt(    "Well-Height" );
 		this.thresh_wall  = cfgParams.getDouble( "Thresh-Wall" );
 		this.thresh_moist = cfgParams.getDouble( "Thresh-Moist");
+		// block types
+		this.block_subfloor_wet = cfgBlocks.getString("SubFloor-Wet");
+		this.block_subfloor_dry = cfgBlocks.getString("SubFloor-Dry");
+		this.block_floor_dry    = cfgBlocks.getString("Floor-Dry"   );
+		this.block_floor_wet    = cfgBlocks.getString("Floor-Wet"   );
+		this.block_wall         = cfgBlocks.getString("Wall"        );
 		// noise
-		this.noiseBasementWalls = this.register(new FastNoiseLiteD());
-		this.noiseMoist         = this.register(new FastNoiseLiteD());
-		this.noiseWell          = this.register(new FastNoiseLiteD());
+		this.noiseWalls = this.register(new FastNoiseLiteD());
+		this.noiseMoist = this.register(new FastNoiseLiteD());
+		this.noiseWell  = this.register(new FastNoiseLiteD());
 	}
 
 
@@ -150,7 +157,7 @@ public class Gen_001 extends BackroomsGen {
 			zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
-				valueWall   = this.noiseBasementWalls.getNoiseRot(xx, zz, 0.25);
+				valueWall   = this.noiseWalls.getNoiseRot(xx, zz, 0.25);
 				valueMoistA = this.noiseMoist.getNoise(xx, zz);
 				valueMoistB = this.noiseMoist.getNoise(zz, xx);
 				dao = new BasementData(valueWall, valueMoistA, valueMoistB);
@@ -166,14 +173,16 @@ public class Gen_001 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final BlockData block_wall      = StringToBlockData(this.block_wall,      DEFAULT_BLOCK_WALL     );
-		final BlockData block_subfloor  = StringToBlockData(this.block_subfloor,  DEFAULT_BLOCK_SUBFLOOR );
-		final BlockData block_floor_dry = StringToBlockData(this.block_floor_dry, DEFAULT_BLOCK_FLOOR_DRY);
-		final BlockData block_floor_wet = StringToBlockData(this.block_floor_wet, DEFAULT_BLOCK_FLOOR_WET);
-		if (block_wall      == null) throw new RuntimeException("Invalid block type for level 1 Wall"     );
-		if (block_subfloor  == null) throw new RuntimeException("Invalid block type for level 1 SubFloor" );
-		if (block_floor_dry == null) throw new RuntimeException("Invalid block type for level 1 Floor-Dry");
-		if (block_floor_wet == null) throw new RuntimeException("Invalid block type for level 1 Floor-Wet");
+		final BlockData block_subfloor_wet = StringToBlockDataDef(this.block_subfloor_wet, DEFAULT_BLOCK_SUBFLOOR_WET);
+		final BlockData block_subfloor_dry = StringToBlockDataDef(this.block_subfloor_dry, DEFAULT_BLOCK_SUBFLOOR_DRY);
+		final BlockData block_floor_dry    = StringToBlockDataDef(this.block_floor_dry,    DEFAULT_BLOCK_FLOOR_DRY   );
+		final BlockData block_floor_wet    = StringToBlockDataDef(this.block_floor_wet,    DEFAULT_BLOCK_FLOOR_WET   );
+		final BlockData block_wall         = StringToBlockDataDef(this.block_wall,         DEFAULT_BLOCK_WALL        );
+		if (block_subfloor_wet == null) throw new RuntimeException("Invalid block type for level 1 SubFloor-Wet");
+		if (block_subfloor_dry == null) throw new RuntimeException("Invalid block type for level 1 SubFloor-Dry");
+		if (block_floor_dry    == null) throw new RuntimeException("Invalid block type for level 1 Floor-Dry"   );
+		if (block_floor_wet    == null) throw new RuntimeException("Invalid block type for level 1 Floor-Wet"   );
+		if (block_wall         == null) throw new RuntimeException("Invalid block type for level 1 Wall"        );
 		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
 		final int h_walls = this.level_h + 1;
 		final int y_base  = this.level_y + this.bedrock_barrier;
@@ -246,49 +255,33 @@ public class Gen_001 extends BackroomsGen {
 
 
 	@Override
-	protected void initNoise(final ConfigurationSection cfgParams) {
-		super.initNoise(cfgParams);
-		// params
+	protected void initNoise() {
+		super.initNoise();
+		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// basement wall noise
-		this.noiseWalls.setFrequency(                cfgParams.getDouble("Noise-Wall-Freq"    ) );
-		this.noiseWalls.setFractalOctaves(           cfgParams.getInt(   "Noise-Wall-Octave"  ) );
-		this.noiseWalls.setFractalGain(              cfgParams.getDouble("Noise-Wall-Gain"    ) );
-		this.noiseWalls.setFractalPingPongStrength(  cfgParams.getDouble("Noise-Wall-Strength") );
-		this.noiseWalls.setNoiseType(                NoiseType.Cellular                         );
-		this.noiseWalls.setFractalType(              FractalType.PingPong                       );
-		this.noiseWalls.setCellularDistanceFunction( CellularDistanceFunction.Manhattan         );
-		this.noiseWalls.setCellularReturnType(       CellularReturnType.Distance                );
+		this.noiseWalls.setFrequency(               cfgParams.getDouble("Noise-Wall-Freq"    ));
+		this.noiseWalls.setFractalOctaves(          cfgParams.getInt(   "Noise-Wall-Octave"  ));
+		this.noiseWalls.setFractalGain(             cfgParams.getDouble("Noise-Wall-Gain"    ));
+		this.noiseWalls.setFractalPingPongStrength( cfgParams.getDouble("Noise-Wall-Strength"));
+		this.noiseWalls.setNoiseType(               NoiseType.Cellular                        );
+		this.noiseWalls.setFractalType(             FractalType.PingPong                      );
+		this.noiseWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan        );
+		this.noiseWalls.setCellularReturnType(      CellularReturnType.Distance               );
 		// moist noise
-		this.noiseMoist.setFrequency(      cfgParams.getDouble("Noise-Moist-Freq"  ) );
-		this.noiseMoist.setFractalOctaves( cfgParams.getInt(   "Noise-Moist-Octave") );
-		this.noiseMoist.setFractalGain(    cfgParams.getDouble("Noise-Moist-Gain"  ) );
+		this.noiseMoist.setFrequency(     cfgParams.getDouble("Noise-Moist-Freq"  ));
+		this.noiseMoist.setFractalOctaves(cfgParams.getInt(   "Noise-Moist-Octave"));
+		this.noiseMoist.setFractalGain(   cfgParams.getDouble("Noise-Moist-Gain"  ));
 		// well noise
-		this.noiseWell.setFrequency( cfgParams.getDouble("Noise-Well-Freq") );
+		this.noiseWell.setFrequency(cfgParams.getDouble("Noise-Well-Freq"));
 	}
 
 
 
-	@Override
-	protected void loadConfig(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
-		// block types
-		this.block_wall     .set(cfgBlocks.getString("Wall"     ));
-		this.block_subfloor .set(cfgBlocks.getString("SubFloor" ));
-		this.block_floor_dry.set(cfgBlocks.getString("Floor-Dry"));
-		this.block_floor_wet.set(cfgBlocks.getString("Floor-Wet"));
-	}
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
 		cfgParams.addDefault("Enable-Gen",          Boolean.TRUE                                );
 		cfgParams.addDefault("Enable-Top",          Boolean.TRUE                                );
-		cfgParams.addDefault("Noise-Wall-Freq",     DEFAULT_NOISE_WALL_FREQ    );
-		cfgParams.addDefault("Noise-Wall-Octave",   DEFAULT_NOISE_WALL_OCTAVE  );
-		cfgParams.addDefault("Noise-Wall-Gain",     DEFAULT_NOISE_WALL_GAIN    );
-		cfgParams.addDefault("Noise-Wall-Strength", DEFAULT_NOISE_WALL_STRENGTH);
-		cfgParams.addDefault("Noise-Moist-Freq",    DEFAULT_NOISE_MOIST_FREQ   );
-		cfgParams.addDefault("Noise-Moist-Octave",  DEFAULT_NOISE_MOIST_OCTAVE );
-		cfgParams.addDefault("Noise-Moist-Gain",    DEFAULT_NOISE_MOIST_GAIN   );
-		cfgParams.addDefault("Noise-Well-Freq",     DEFAULT_NOISE_WELL_FREQ    );
 		cfgParams.addDefault("Level-Y",             Integer.valueOf(DEFAULT_LEVEL_Y            ));
 		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H            ));
 		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR           ));
@@ -296,13 +289,22 @@ public class Gen_001 extends BackroomsGen {
 		cfgParams.addDefault("Lamp-Y",              Integer.valueOf(DEFAULT_LAMP_Y             ));
 		cfgParams.addDefault("Well-Size",           Integer.valueOf(DEFAULT_WELL_SIZE          ));
 		cfgParams.addDefault("Well-Height",         Integer.valueOf(DEFAULT_WELL_HEIGHT        ));
+		cfgParams.addDefault("Noise-Wall-Freq",     Double .valueOf(DEFAULT_NOISE_WALL_FREQ    ));
+		cfgParams.addDefault("Noise-Wall-Octave",   Integer.valueOf(DEFAULT_NOISE_WALL_OCTAVE  ));
+		cfgParams.addDefault("Noise-Wall-Gain",     Double .valueOf(DEFAULT_NOISE_WALL_GAIN    ));
+		cfgParams.addDefault("Noise-Wall-Strength", Double .valueOf(DEFAULT_NOISE_WALL_STRENGTH));
+		cfgParams.addDefault("Noise-Moist-Freq",    Double .valueOf(DEFAULT_NOISE_MOIST_FREQ   ));
+		cfgParams.addDefault("Noise-Moist-Octave",  Integer.valueOf(DEFAULT_NOISE_MOIST_OCTAVE ));
+		cfgParams.addDefault("Noise-Moist-Gain",    Double .valueOf(DEFAULT_NOISE_MOIST_GAIN   ));
+		cfgParams.addDefault("Noise-Well-Freq",     Double .valueOf(DEFAULT_NOISE_WELL_FREQ    ));
 		cfgParams.addDefault("Thresh-Wall",         Double .valueOf(DEFAULT_THRESH_WALL        ));
 		cfgParams.addDefault("Thresh-Moist",        Double .valueOf(DEFAULT_THRESH_MOIST       ));
 		// block types
-		cfgBlocks.addDefault("Wall",      DEFAULT_BLOCK_WALL     );
-		cfgBlocks.addDefault("SubFloor",  DEFAULT_BLOCK_SUBFLOOR );
-		cfgBlocks.addDefault("Floor-Dry", DEFAULT_BLOCK_FLOOR_DRY);
-		cfgBlocks.addDefault("Floor-Wet", DEFAULT_BLOCK_FLOOR_WET);
+		cfgBlocks.addDefault("SubFloor-Wet", DEFAULT_BLOCK_SUBFLOOR_WET);
+		cfgBlocks.addDefault("SubFloor-Dry", DEFAULT_BLOCK_SUBFLOOR_DRY);
+		cfgBlocks.addDefault("Floor-Dry",    DEFAULT_BLOCK_FLOOR_DRY   );
+		cfgBlocks.addDefault("Floor-Wet",    DEFAULT_BLOCK_FLOOR_WET   );
+		cfgBlocks.addDefault("Wall",         DEFAULT_BLOCK_WALL        );
 	}
 
 
