@@ -22,14 +22,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 5 | Hotel
 public class Pop_005 implements BackroomsPop {
 
-	protected final Level_000 level0;
-	protected final Gen_005   gen;
+	protected final Level_000 level_000;
+	protected final Gen_005   gen_005;
 
 
 
-	public Pop_005(final Level_000 level0) {
-		this.level0 = level0;
-		this.gen    = level0.gen_005;
+	public Pop_005(final Level_000 level_000) {
+		this.level_000 = level_000;
+		this.gen_005   = level_000.gen_005;
 	}
 
 
@@ -53,7 +53,7 @@ public class Pop_005 implements BackroomsPop {
 	// returns x z w d
 	public Iabcd findRoomWalls(final LimitedRegion region,
 			final int x, final int y, final int z) {
-		final Material block_subwall = StringToMaterial(this.gen.block_subwall, DEFAULT_BLOCK_SUBWALL);
+		final Material block_subwall = StringToMaterial(this.gen_005.block_subwall, DEFAULT_BLOCK_SUBWALL);
 		if (block_subwall == null) throw new RuntimeException("Invalid block type for level 5 Hall-SubWall");
 		// is room area, not hall or wall
 		if (!block_subwall.equals(region.getType(x, y, z))) return null;
@@ -104,12 +104,12 @@ public class Pop_005 implements BackroomsPop {
 			final LimitedRegion region, final Iabcd area, final int y) {
 		final int room_size = this.gen_005.nominal_room_size;
 		if (room_size < 4 || room_size > 20) throw new RuntimeException("Invalid nominal room size: "+Integer.toString(room_size));
-		final Material door_guest = Material.matchMaterial(this.gen.door_guest.get());
+		final Material door_guest = Material.matchMaterial(this.gen_005.door_guest);
 		if (door_guest == null) throw new RuntimeException("Invalid block type for level 5 Door-Guest");
 		// room builders
-		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level0, this.gen.noiseHotelRooms, door_guest);
-		final HotelRoomPool   room_pool   = new HotelRoomPool(  this.level0);
-		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level0);
+		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level_000, this.gen_005.noiseHotelRooms, door_guest);
+		final HotelRoomPool   room_pool   = new HotelRoomPool(  this.level_000);
+		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level_000);
 		// area = x z w d
 		final int num_rooms_wide = Math.floorDiv(area.c, room_size);
 		final int num_rooms_deep = Math.floorDiv(area.d, room_size);
@@ -141,13 +141,13 @@ public class Pop_005 implements BackroomsPop {
 				if (room_z == 0) {
 					// north-west
 					if (room_x == 0) {
-						if (0.0 < this.gen.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.NORTH;
-						else                                               direction = BlockFace.WEST;
+						if (0.0 < this.gen_005.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.NORTH;
+						else                                                   direction = BlockFace.WEST;
 					} else
 					// north-east
 					if (room_x == num_rooms_wide-1) {
-						if (0.0 < this.gen.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.NORTH;
-						else                                               direction = BlockFace.EAST;
+						if (0.0 < this.gen_005.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.NORTH;
+						else                                                   direction = BlockFace.EAST;
 					} else {
 						direction = BlockFace.NORTH;
 					}
@@ -156,13 +156,13 @@ public class Pop_005 implements BackroomsPop {
 				if (room_z == num_rooms_deep-1) {
 					// south-west
 					if (room_x == 0) {
-						if (0.0 < this.gen.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.SOUTH;
-						else                                               direction = BlockFace.WEST;
+						if (0.0 < this.gen_005.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.SOUTH;
+						else                                                   direction = BlockFace.WEST;
 					} else
 					// south-east
 					if (room_x == num_rooms_wide-1) {
-						if (0.0 < this.gen.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.SOUTH;
-						else                                               direction = BlockFace.EAST;
+						if (0.0 < this.gen_005.noiseHotelRooms.getNoise(x, z)) direction = BlockFace.SOUTH;
+						else                                                   direction = BlockFace.EAST;
 					} else {
 						direction = BlockFace.SOUTH;
 					}
@@ -184,7 +184,7 @@ public class Pop_005 implements BackroomsPop {
 				// attic stairs
 				if (room_area.d == 9) {
 					if (room_stairs.checkAtticWall(region, room_area, direction)) {
-						this.level0.portal_5_to_19.add(room_area.a, room_area.b);
+						this.level_000.portal_5_to_19.add(room_area.a, room_area.b);
 						room_stairs.build(plots, region, room_area, y, direction);
 						continue LOOP_ROOM_X;
 					}
@@ -192,7 +192,7 @@ public class Pop_005 implements BackroomsPop {
 				// pool room
 				final BlockFace pool_direction = room_pool.canBuildHere(room_area, region);
 				if (pool_direction != null) {
-					this.level0.portal_5_to_37.add(room_area.a, room_area.b);
+					this.level_000.portal_5_to_37.add(room_area.a, room_area.b);
 					room_pool.build(plots, region, room_area, y, direction);
 					continue LOOP_ROOM_X;
 				}

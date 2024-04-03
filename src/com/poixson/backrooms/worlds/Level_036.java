@@ -14,19 +14,19 @@ public class Level_036 extends BackroomsLevel {
 	public static final boolean ENABLE_GEN_036 = true;
 
 	// generators
-	public final Gen_036 gen;
+	public final Gen_036 gen_036;
 
 
 
 	public Level_036(final BackroomsPlugin plugin) {
 		super(plugin, 36);
+		// generators
+		this.gen_036 = this.register(new Gen_036(this, this.seed, 0, 0));
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
 			gen_tpl.add(36, "airport", "Airport");
 		}
-		// generators
-		this.gen = this.register(new Gen_036(this, this.seed, 0, 0));
 	}
 
 
@@ -62,7 +62,7 @@ public class Level_036 extends BackroomsLevel {
 	@Override
 	protected void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+		this.gen_036.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

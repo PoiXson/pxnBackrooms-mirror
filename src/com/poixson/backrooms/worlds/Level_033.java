@@ -21,7 +21,7 @@ public class Level_033 extends BackroomsLevel {
 	public static final String KEY_NEXT_HALL_X = "next_hall_x";
 
 	// generators
-	public final Gen_033 gen;
+	public final Gen_033 gen_033;
 
 	// listeners
 	protected final Listener_033 listener_033;
@@ -128,7 +128,7 @@ public class Level_033 extends BackroomsLevel {
 	@Override
 	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		this.gen.generate(null, plots, chunk, chunkX, chunkZ);
+		this.gen_033.generate(null, plots, chunk, chunkX, chunkZ);
 	}
 
 

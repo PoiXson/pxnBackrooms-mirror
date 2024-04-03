@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.AxToFace;
 import static com.poixson.utils.LocationUtils.FaceToAxString;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
@@ -660,7 +660,7 @@ public class Gen_771 extends BackroomsGen {
 					}
 					final BlockData barrel = Bukkit.createBlockData("barrel[facing=up]");
 					chunk.setBlock(xx, yy, zz, barrel);
-					(new ChestFiller_771(this.plugin, "level771", xx, yy, zz))
+					(new ChestFiller_771(this.plugin, "level_771", xx, yy, zz))
 						.start();
 				}
 			}

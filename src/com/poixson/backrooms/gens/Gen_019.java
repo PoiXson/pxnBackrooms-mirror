@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,8 +14,7 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
-import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
+import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -78,7 +77,7 @@ public class Gen_019 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return this.bedrock_barrier + this.level_y + this.subfloor + this.level_h + 2;
+		return this.bedrock_barrier + this.level_y + this.subfloor + this.level_h;
 	}
 
 
@@ -94,7 +93,7 @@ public class Gen_019 extends BackroomsGen {
 		if (block_wall  == null) throw new RuntimeException("Invalid block type for level 19 Wall" );
 		if (block_floor == null) throw new RuntimeException("Invalid block type for level 19 Floor");
 		if (block_beam  == null) throw new RuntimeException("Invalid block type for level 19 Beam" );
-		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
+		final HashMap<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = (y_base + this.subfloor) - 1;
 		for (int iz=0; iz<16; iz++) {

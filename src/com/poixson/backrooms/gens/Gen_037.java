@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -15,7 +15,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
+import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -197,8 +197,12 @@ public class Gen_037 extends BackroomsGen {
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
-		final Map<Iab, PoolData>  poolData  = ((PregenLevel0)pregen).pools;
-		final Map<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
+		final Level_000 backlevel = (Level_000) this.backlevel;
+		final int level_000_y = backlevel.gen_000.level_y;
+		final int level_000_h = backlevel.gen_000.level_h;
+		final int level_006_h = backlevel.gen_006.level_h;
+		final Map<Iab, PoolData>  poolData  = ((Pregen_Level_000)pregen).pools;
+		final Map<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int h_walls = this.level_h + 2;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = y_base + this.subfloor;

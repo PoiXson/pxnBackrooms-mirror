@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -250,7 +250,7 @@ public class Gen_094 extends BackroomsGen {
 		if (block_house_roof_solid == null) throw new RuntimeException("Invalid block type for level 94 House-Roof-Solid" );
 		if (block_house_window     == null) throw new RuntimeException("Invalid block type for level 94 House-Window"     );
 		if (block_house_floor      == null) throw new RuntimeException("Invalid block type for level 94 House-Floor"      );
-		final HashMap<Iab, HillsData> hillsData = ((PregenLevel94)pregen).hills;
+		final HashMap<Iab, HillsData> data_hills = ((PregenLevel94)pregen).hills;
 		Iab house_loc = null;
 		int house_y   = 0;
 		boolean house_dir = false;

@@ -17,19 +17,19 @@ public class Level_009 extends BackroomsLevel {
 	public static final int LEVEL_Y = 0;
 
 	// generators
-	public final Gen_009 gen;
+	public final Gen_009 gen_009;
 
 
 
 	public Level_009(final BackroomsPlugin plugin) {
 		super(plugin, 9);
+		// generators
+		this.gen_009 = this.register(new Gen_009(this, this.seed, LEVEL_Y, 0));
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
 			gen_tpl.add(9, "suburbs", "Suburbs");
 		}
-		// generators
-		this.gen = this.register(new Gen_009(this, this.seed, LEVEL_Y, 0));
 	}
 
 
@@ -52,7 +52,7 @@ public class Level_009 extends BackroomsLevel {
 	@Override
 	protected void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+		this.gen_009.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

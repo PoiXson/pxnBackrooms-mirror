@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +22,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_001.BasementData;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
+import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
@@ -273,8 +273,8 @@ public class Gen_000 extends BackroomsGen {
 		if (block_wall_base       == null) throw new RuntimeException("Invalid block type for level 0 Wall-Base" );
 		if (block_overgrowth_wall == null) throw new RuntimeException("Invalid block type for level 23 Wall"     );
 		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
-		final HashMap<Iab, LobbyData>    lobbyData    = ((PregenLevel0)pregen).lobby;
-		final HashMap<Iab, BasementData> basementData = ((PregenLevel0)pregen).basement;
+		final HashMap<Iab, LobbyData>    data_lobby    = ((Pregen_Level_000)pregen).lobby;
+		final HashMap<Iab, BasementData> data_basement = ((Pregen_Level_000)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
 		final int h_walls = this.level_h + 3;
 		final int y_base  = this.level_y + this.bedrock_barrier;

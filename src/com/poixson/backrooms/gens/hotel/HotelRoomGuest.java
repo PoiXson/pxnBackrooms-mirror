@@ -3,7 +3,7 @@ package com.poixson.backrooms.gens.hotel;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_SIDE;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_X;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_Z;
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
 import static com.poixson.utils.LocationUtils.Rotate;
@@ -15,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.gens.Gen_005;
 import com.poixson.backrooms.gens.hotel.HotelRoomSpecs.RoomTheme;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.abstractions.Tuple;
@@ -26,7 +27,8 @@ import com.poixson.utils.StringUtils;
 
 public class HotelRoomGuest implements HotelRoom {
 
-	protected final Level_000 level0;
+	protected final Level_000 level_000;
+	protected final Gen_005   gen_005;
 
 	protected final FastNoiseLiteD noise;
 
@@ -34,9 +36,10 @@ public class HotelRoomGuest implements HotelRoom {
 
 
 
-	public HotelRoomGuest(final Level_000 level0, final FastNoiseLiteD noise,
+	public HotelRoomGuest(final Level_000 level_000, final FastNoiseLiteD noise,
 			final Material door_guest) {
-		this.level0     = level0;
+		this.level_000  = level_000;
+		this.gen_005    = level_000.gen_005;
 		this.noise      = noise;
 		this.door_guest = door_guest;
 	}
@@ -48,10 +51,10 @@ public class HotelRoomGuest implements HotelRoom {
 			final LimitedRegion region, final Iabcd area, final int y, final BlockFace facing) {
 		final boolean axis_x = "x".equals(FaceToPillarAxisString(Rotate(facing, 0.25)));
 		final BlockData block_hotel_door_border_top = (axis_x
-			? StringToBlockData(this.level0.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
-			: StringToBlockData(this.level0.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));
+			? StringToBlockDataDef(this.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
+			: StringToBlockDataDef(this.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));
 		final BlockData block_hotel_door_border_side =
-			StringToBlockData(this.level0.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
+			StringToBlockDataDef(this.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
 		// room specs
 		final HotelRoomSpecs specs =
 			HotelRoomSpecs.SpecsFromValue(
@@ -59,12 +62,12 @@ public class HotelRoomGuest implements HotelRoom {
 				this.door_guest
 			);
 		if (RoomTheme.CHEESE.equals(specs.theme))
-			this.level0.cheese_rooms.add(area.a, area.b);
+			this.level_000.cheese_rooms.add(area.a, area.b);
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
 		final int d = area.d;
-		final int h = Level_000.H_005 + 2;
+		final int h = this.gen_005.level_h + 2;
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("use")

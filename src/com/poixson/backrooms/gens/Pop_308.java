@@ -1,7 +1,5 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.backrooms.worlds.Level_011.ENABLE_GEN_308;
-
 import java.util.LinkedList;
 
 import org.bukkit.generator.LimitedRegion;
@@ -17,7 +15,7 @@ public class Pop_308 implements BackroomsPop {
 
 
 
-	public Pop_308(final Level_011 level11) {
+	public Pop_308(final Level_011 level_011) {
 		super();
 	}
 
@@ -26,7 +24,6 @@ public class Pop_308 implements BackroomsPop {
 	@Override
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
-		if (!ENABLE_GEN_308) return;
 	}
 
 

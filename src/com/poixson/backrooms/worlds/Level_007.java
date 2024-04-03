@@ -18,19 +18,19 @@ public class Level_007 extends BackroomsLevel {
 	public static final int LEVEL_H = 360;
 
 	// generators
-	public final Gen_007 gen;
+	public final Gen_007 gen_007;
 
 
 
 	public Level_007(final BackroomsPlugin plugin) {
 		super(plugin, 007);
+		// generators
+		this.gen_007 = this.register(new Gen_007(this, this.seed, LEVEL_Y, LEVEL_H));
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
 			gen_tpl.add(151, "thalas", "Thalassophobia", LEVEL_Y+LEVEL_H+SUBFLOOR+1);
 		}
-		// generators
-		this.gen = this.register(new Gen_007(this, this.seed, LEVEL_Y, LEVEL_H));
 	}
 
 
@@ -53,7 +53,7 @@ public class Level_007 extends BackroomsLevel {
 	@Override
 	protected void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+		this.gen_007.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

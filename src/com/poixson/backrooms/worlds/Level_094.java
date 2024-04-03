@@ -18,20 +18,20 @@ import com.poixson.tools.plotter.BlockPlotter;
 public class Level_094 extends BackroomsLevel {
 
 	// generators
-	public final Gen_094 gen;
+	public final Gen_094 gen_094;
 
 
 
 	public Level_094(final BackroomsPlugin plugin) {
 		super(plugin);
+		// generators
+		this.gen_094 = this.register(new Gen_094(this, this.seed));
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 94);
 			gen_tpl.add(94, "motion", "Motion");
 			gen_tpl.commit();
 		}
-		// generators
-		this.gen = this.register(new Gen_094(this, this.seed, 0, 0));
 	}
 
 
@@ -89,9 +89,9 @@ public class Level_094 extends BackroomsLevel {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// pre-generate
 		final PregenLevel94 pregen = new PregenLevel94();
-		this.gen.pregenerate(pregen.hills, chunkX, chunkZ);
+		this.gen_094.pregenerate(pregen.hills, chunkX, chunkZ);
 		// generate
-		this.gen.generate(pregen, plots, chunk, chunkX, chunkZ);
+		this.gen_094.generate(pregen, plots, chunk, chunkX, chunkZ);
 	}
 
 

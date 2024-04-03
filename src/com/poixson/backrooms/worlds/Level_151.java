@@ -21,7 +21,7 @@ public class Level_151 extends BackroomsLevel {
 	public static final int LEVEL_H = 100;
 
 	// generators
-	public final Gen_151 gen;
+	public final Gen_151 gen_151;
 
 
 
@@ -33,7 +33,7 @@ public class Level_151 extends BackroomsLevel {
 			gen_tpl.add(151, "dollhouse", "Dollhouse", LEVEL_Y+LEVEL_H+SUBFLOOR+1);
 		}
 		// generators
-		this.gen = this.register(new Gen_151(this, this.seed, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));
+		this.gen_151 = this.register(new Gen_151(this, this.seed, LEVEL_Y, LEVEL_H, SUBFLOOR, SUBCEILING));
 	}
 
 
@@ -56,7 +56,7 @@ public class Level_151 extends BackroomsLevel {
 	@Override
 	protected void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+		this.gen_151.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

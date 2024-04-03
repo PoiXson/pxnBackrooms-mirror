@@ -28,7 +28,8 @@ import com.poixson.tools.plotter.BlockPlotter;
 public class Pop_309 implements BackroomsPop {
 
 	protected final BackroomsPlugin plugin;
-	protected final Gen_309 gen;
+	protected final Level_000 backlevel;
+	protected final Gen_309 gen_309;
 
 	protected final Pop_309_Trees treePop;
 
@@ -36,10 +37,11 @@ public class Pop_309 implements BackroomsPop {
 
 
 
-	public Pop_309(final Level_000 level0) {
-		this.plugin = level0.getPlugin();
-		this.gen    = level0.gen_309;
-		this.treePop = new Pop_309_Trees(this.gen);
+	public Pop_309(final Level_000 level_000) {
+		this.plugin    = level_000.getPlugin();
+		this.backlevel = level_000;
+		this.gen_309   = level_000.gen_309;
+		this.treePop = new Pop_309_Trees(this.gen_309);
 	}
 
 
@@ -141,7 +143,7 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest stairs
 	public void populate_stairs(final int x, final int y, final int z, final LimitedRegion region) {
-		((Level_000)this.gen.backlevel).portal_309_stairs.add(x, z);
+		((Level_000)this.gen_309.backlevel).portal_309_stairs.add(x, z);
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("use")
@@ -162,8 +164,8 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest door
 	public void populate_door(final int x, final int y, final int z, final LimitedRegion region) {
-		((Level_000)this.gen.backlevel).portal_309_doors.add(x, z);
-		final double value = this.gen.noisePrairie.getNoise(x, z);
+		((Level_000)this.gen_309.backlevel).portal_309_doors.add(x, z);
+		final double value = this.gen_309.noisePrairie.getNoise(x, z);
 		final Material block_door = this.getDoorStyle(value);
 		final Material block_wall = this.getDoorWallStyle(value);
 		final BlockPlotter plot =
@@ -306,7 +308,7 @@ public class Pop_309 implements BackroomsPop {
 			matrix[0][2].append("$$$");
 			plot.run(region, matrix);
 		}
-		((Level_000)this.gen.backlevel).portal_19_to_309.add(x, z);
+		((Level_000)this.gen_309.backlevel).portal_19_to_309.add(x, z);
 	}
 
 
@@ -315,9 +317,9 @@ public class Pop_309 implements BackroomsPop {
 	public void populate0x0(final LimitedRegion region) {
 		// find surface
 		int y = Integer.MIN_VALUE;
-		for (int i=0; i<10; i++) {
-			if (Material.AIR.equals(region.getType(PATH_START_X, this.gen.level_y+i, PATH_START_Z-1))) {
-				y = this.gen.level_y + i;
+		for (int iy=0; iy<10; iy++) {
+			if (Material.AIR.equals(region.getType(PATH_START_X, this.gen_309.level_y+iy, PATH_START_Z-1))) {
+				y = this.gen_309.level_y + iy;
 				break;
 			}
 		}
@@ -337,13 +339,13 @@ public class Pop_309 implements BackroomsPop {
 				);
 			script = new xScriptInstance(loader, false);
 			script
-				.setVariable("region",         region                   )
-				.setVariable("surface_y",      y                        )
-				.setVariable("seed",           this.gen.getSeed()       )
-				.setVariable("enable_ceiling", ENABLE_TOP_309           )
-				.setVariable("path_width",     this.gen.path_width.get())
-				.setVariable("path_start_x",   PATH_START_X             )
-				.setVariable("path_start_z",   PATH_START_Z             );
+				.setVariable("region",         region                 )
+				.setVariable("surface_y",      y                      )
+				.setVariable("seed",           this.gen_309.getSeed() )
+				.setVariable("enable_ceiling", this.gen_309.enable_top)
+				.setVariable("path_width",     this.gen_309.path_width)
+				.setVariable("path_start_x",   PATH_START_X           )
+				.setVariable("path_start_z",   PATH_START_Z           );
 			script.start();
 		} finally {
 			if (script != null)

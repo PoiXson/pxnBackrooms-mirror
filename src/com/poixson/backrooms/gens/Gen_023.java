@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,7 +16,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.gens.Gen_001.BasementData;
-import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
+import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -57,7 +57,6 @@ public class Gen_023 extends BackroomsGen {
 	public final int     subfloor;
 	public final int     subceiling;
 	public final int     grass_modulus;
-	public final AtomicInteger grass_modulus = new AtomicInteger(DEFAULT_GRASS_MODULUS);
 
 	// blocks
 	public final String block_subfloor_wet;
@@ -164,11 +163,9 @@ public class Gen_023 extends BackroomsGen {
 		if (block_grass_wet_tall_upper == null) throw new RuntimeException("Invalid block type for level 23 Grass-Wet-Tall-Upper");
 		if (block_grass_dry_tall_lower == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Tall-Lower");
 		if (block_grass_dry_tall_upper == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Tall-Upper");
-		final PregenLevel0 pregen0 = (PregenLevel0) pregen;
-		final HashMap<Iab, LobbyData>    lobbyData    = pregen0.lobby;
-		final HashMap<Iab, BasementData> basementData = pregen0.basement;
-		LobbyData    dao_lobby;
-		BasementData dao_basement;
+		final Pregen_Level_000 pregen0 = (Pregen_Level_000) pregen;
+		final HashMap<Iab, LobbyData>    data_lobby    = pregen0.lobby;
+		final HashMap<Iab, BasementData> data_basement = pregen0.basement;
 		final int h_walls = this.level_h + 2;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = y_base + this.subfloor;

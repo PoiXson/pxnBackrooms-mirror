@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.LinkedList;
 
@@ -78,6 +78,8 @@ public class Gen_011 extends BackroomsGen {
 		this.level_y                = cfgParams.getInt(    "Level-Y"     );
 		this.level_h                = cfgParams.getInt(    "Level-Height");
 		this.subfloor               = cfgParams.getInt(    "SubFloor"    );
+		this.thresh_road            = cfgParams.getDouble( "Thresh-Road" );
+		this.thresh_alley           = cfgParams.getDouble( "Thresh-Alley");
 		// block types
 		this.block_subfloor = cfgBlocks.getString("SubFloor");
 		this.block_road     = cfgBlocks.getString("Road"    );
@@ -114,7 +116,7 @@ public class Gen_011 extends BackroomsGen {
 		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 11 SubFloor");
 		if (block_road     == null) throw new RuntimeException("Invalid block type for level 11 Road"    );
 		if (block_alley    == null) throw new RuntimeException("Invalid block type for level 11 Alley"   );
-		final DataHolder_City city = ((PregenLevel11) pregen).city;
+		final DataHolder_City data_city = ((PregenLevel11) pregen).city;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = y_base + this.subfloor;
 		for (int iz=0; iz<16; iz++) {
@@ -137,9 +139,9 @@ public class Gen_011 extends BackroomsGen {
 				// building
 				} else {
 //TODO
-if (data.isEdgeMain) chunk.setBlock(ix, y+3, iz, Material.BLUE_WOOL );
-if (data.isEdgeBack) chunk.setBlock(ix, y+4, iz, Material.GREEN_WOOL);
-					if (!data.isRoadOrAlley()) {
+if (dao_city.isEdgeMain) chunk.setBlock(ix, y_floor+3, iz, Material.BLUE_WOOL );
+if (dao_city.isEdgeBack) chunk.setBlock(ix, y_floor+4, iz, Material.GREEN_WOOL);
+					if (!dao_city.isRoadOrAlley()) {
 						final Material block_building;
 						final int mod = dao_city.building_height_int % 5;
 						switch (mod) {

@@ -23,7 +23,7 @@ public class Level_866 extends BackroomsLevel {
 	public static final Material GROUND_SLAB = Material.RED_SANDSTONE_SLAB;
 
 	// generators
-	public final Gen_866 gen;
+	public final Gen_866 gen_866;
 
 
 
@@ -35,7 +35,7 @@ public class Level_866 extends BackroomsLevel {
 			gen_tpl.add(866, "dirtfield", "Dirtfield");
 		}
 		// generators
-		this.gen = this.register(new Gen_866(this, this.seed, LEVEL_Y, 0));
+		this.gen_866 = this.register(new Gen_866(this, this.seed, LEVEL_Y, 0));
 	}
 
 
@@ -58,7 +58,7 @@ public class Level_866 extends BackroomsLevel {
 	@Override
 	protected void generate(final int chunkX, final int chunkZ,
 			final ChunkData chunk, final LinkedList<BlockPlotter> plots) {
-		this.gen.generate(null, chunk, plots, chunkX, chunkZ);
+		this.gen_866.generate(null, chunk, plots, chunkX, chunkZ);
 	}
 
 

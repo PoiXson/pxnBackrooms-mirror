@@ -5,12 +5,11 @@ import static com.poixson.utils.LocationUtils.FaceToIxyz;
 import org.bukkit.block.BlockFace;
 
 import com.poixson.tools.dao.Iabc;
-import com.poixson.utils.NumberUtils;
 
 
 public class DataHolder_City {
 
-	protected final Gen_011 gen;
+	protected final Gen_011 gen_011;
 
 	protected final double thresh_road;
 	protected final double thresh_alley;
@@ -21,10 +20,10 @@ public class DataHolder_City {
 
 
 
-	public DataHolder_City(final Gen_011 gen, final int chunkX, final int chunkZ) {
-		this.gen = gen;
-		this.thresh_road            = gen.thresh_road .get();
-		this.thresh_alley           = gen.thresh_alley.get();
+	public DataHolder_City(final Gen_011 gen_011, final int chunkX, final int chunkZ) {
+		this.gen_011      = gen_011;
+		this.thresh_road  = gen_011.thresh_road;
+		this.thresh_alley = gen_011.thresh_alley;
 		this.building_height_base   = gen.building_height_base.get();
 		this.building_height_factor = gen.building_height_base.get();
 		final CityData[][] data = new CityData[48][48];
@@ -119,8 +118,6 @@ public class DataHolder_City {
 
 	public class CityData {
 
-		public final Gen_011 gen;
-
 		public final double value_road;
 		public final double value_alley;
 
@@ -138,9 +135,9 @@ public class DataHolder_City {
 		public final int    building_height_int;
 
 		public CityData(final int x, final int z) {
-			this.gen = DataHolder_City.this.gen;
-			this.value_road  = this.gen.noiseRoad .getNoiseRot(x, z, 0.25);
-			this.value_alley = this.gen.noiseAlley.getNoiseRot(x, z, 0.25);
+			final Gen_011 gen_011 = DataHolder_City.this.gen_011;
+			this.value_road  = gen_011.noiseRoad .getNoiseRot(x, z, 0.25);
+			this.value_alley = gen_011.noiseAlley.getNoiseRot(x, z, 0.25);
 			this.isRoad  = (this.value_road  > DataHolder_City.this.thresh_road );
 			this.isAlley = (this.value_alley > DataHolder_City.this.thresh_alley);
 			this.building_height_dbl = this.getBuildingHeight(x, z);

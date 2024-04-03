@@ -10,7 +10,6 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
-import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.LocationStoreManager;
@@ -20,7 +19,7 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 public class Level_771 extends BackroomsLevel {
 
 	// generators
-	public final Gen_771 gen;
+	public final Gen_771 gen_771;
 
 	// listeners
 	protected final Listener_771 listener_771;
@@ -44,16 +43,16 @@ public class Level_771 extends BackroomsLevel {
 			gen_tpl.commit();
 		}
 		// generators
-		this.gen = this.register(new Gen_771(this, this.seed, LEVEL_Y, LEVEL_H));
+		this.gen_771 = this.register(new Gen_771(this, this.seed));
 		// listeners
 		this.listener_771 = new Listener_771(plugin);
 		// exit locations
-		this.portal_ladder     = new LocationStoreManager(plugin, "level771", "portal_ladder"); // upper/lower ladder
-		this.portal_drop       = new LocationStoreManager(plugin, "level771", "portal_drop"  ); // shaft to lower bridge
-		this.portal_void       = new LocationStoreManager(plugin, "level771", "portal_void"  ); // shaft to void
+		this.portal_ladder     = new LocationStoreManager(plugin, "level_771", "portal_ladder"); // upper/lower ladder
+		this.portal_drop       = new LocationStoreManager(plugin, "level_771", "portal_drop"  ); // shaft to lower bridge
+		this.portal_void       = new LocationStoreManager(plugin, "level_771", "portal_void"  ); // shaft to void
 		// loot
-		this.loot_chests_upper = new LocationStoreManager(plugin, "level771", "loot_upper"   ); // upper path loot chests
-		this.loot_chests_lower = new LocationStoreManager(plugin, "level771", "loot_lower"   ); // lower path loot chests
+		this.loot_chests_upper = new LocationStoreManager(plugin, "level_771", "loot_upper"   ); // upper path loot chests
+		this.loot_chests_lower = new LocationStoreManager(plugin, "level_771", "loot_lower"   ); // lower path loot chests
 	}
 
 
@@ -116,9 +115,8 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	public Location getNewSpawnArea(final int level) {
 		final int distance = this.plugin.getSpawnDistance();
-		final xRand rnd = xRand.Get(0-distance, distance);
-		int x = rnd.nextInt();
-		int z = rnd.nextInt();
+		int x = this.random.nextInt(0-distance, distance);
+		int z = this.random.nextInt(0-distance, distance);
 		if (Math.abs(x) > Math.abs(z)) z = 0;
 		else                           x = 0;
 		final World world = this.plugin.getWorldFromLevel(level);
@@ -130,8 +128,7 @@ public class Level_771 extends BackroomsLevel {
 		final int max_y = this.getMaxY(level);
 		final int distance_near = DEFAULT_SPAWN_NEAR_DISTANCE;
 		final int distance_min  = Math.floorDiv(distance_near, 3);
-		final xRand rnd = xRand.Get(distance_min, distance_near);
-		final float yaw = (float) xRand.Get(0, 360).nextInt();
+		final float yaw = (float) this.random.nextDbl(0.0, 360.0);
 		final World world = spawn.getWorld();
 		final int y = this.getY(level);
 		final int h = max_y - y;
@@ -142,8 +139,8 @@ public class Level_771 extends BackroomsLevel {
 		Location near, valid;
 		for (int tries=0; tries<20; tries++) {
 			for (int iy=0; iy<h; iy++) {
-				if (axis) z = spawn.getBlockZ() + rnd.nextInt();
-				else      x = spawn.getBlockX() + rnd.nextInt();
+				if (axis) z = spawn.getBlockZ() + this.random.nextInt(distance_min, distance_near);
+				else      x = spawn.getBlockX() + this.random.nextInt(distance_min, distance_near);
 				near = world.getBlockAt(x, y+iy, z).getLocation();
 				valid = this.validSpawn(near);
 				if (valid != null) {
@@ -166,7 +163,7 @@ public class Level_771 extends BackroomsLevel {
 	@Override
 	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
-		this.gen.generate(null, plots, chunk, chunkX, chunkZ);
+		this.gen_771.generate(null, plots, chunk, chunkX, chunkZ);
 	}
 
 

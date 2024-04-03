@@ -17,7 +17,7 @@ public class GeneratorTemplate {
 	protected final GeneratorPerspective gen_persp;
 
 	public final int level;
-	public final String worldName;
+	public final String world_name;
 
 	public final StringBuilder out = new StringBuilder();
 	protected final AtomicBoolean committed = new AtomicBoolean(false);
@@ -26,13 +26,13 @@ public class GeneratorTemplate {
 
 	public GeneratorTemplate(final BackroomsPlugin plugin, final int level) {
 		this.plugin = plugin;
-		this.level = level;
+		this.level  = level;
 		this.world_name = String.format("backrooms_%03d", Integer.valueOf(level));
 		this.gen_persp = plugin.getDynmapPerspective();
 		this.out
 			.append("version: 0.20\n"           )
 			.append("templates:\n"              )
-			.append("  ").append(this.worldName).append(":\n")
+			.append("  ").append(this.world_name).append(":\n")
 			.append("    enabled: true\n"       )
 			.append("    bigworld: true\n"      )
 			.append("    extrazoomout: 3\n"     )
@@ -91,13 +91,13 @@ public class GeneratorTemplate {
 
 	public void commit() {
 		if (!this.committed.compareAndSet(false, true)) return;
-		this.log().info("Creating dynmap template: backrooms_"+this.worldName);
+		this.log().info("Creating dynmap template: "+this.world_name);
 		final File path = new File(this.plugin.getDataFolder(), "../dynmap/templates/");
 		if (!path.isDirectory()) {
 			this.log().warning("Path not found: plugins/dynmap/templates/");
 			return;
 		}
-		final File file = new File(path, this.worldName+".txt");
+		final File file = new File(path, this.world_name+".txt");
 		try {
 			FileWriter writer = new FileWriter(file);
 			writer.write(this.toString());

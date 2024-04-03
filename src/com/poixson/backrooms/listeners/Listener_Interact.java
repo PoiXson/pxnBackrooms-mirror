@@ -29,8 +29,8 @@ public class Listener_Interact implements xListener {
 
 	public Listener_Interact(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
-		final Level_000 level0 = (Level_000) plugin.getBackroomsLevel(0);
-		this.tp_range = level0.gen_006.tp_range.get();
+		final Level_000 level_000 = (Level_000) plugin.getBackroomsLevel(0);
+		this.tp_range = level_000.gen_006.tp_range;
 	}
 
 

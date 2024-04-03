@@ -3,7 +3,7 @@ package com.poixson.backrooms.gens.hotel;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_SIDE;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_X;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_Z;
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
@@ -16,6 +16,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
+import com.poixson.backrooms.gens.Gen_005;
+import com.poixson.backrooms.gens.Gen_019;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
@@ -27,15 +29,17 @@ import com.poixson.utils.StringUtils;
 
 public class HotelRoomStairs implements HotelRoom {
 
-	protected final Level_000 level0;
+	protected final Gen_005 gen_005;
+	protected final Gen_019 gen_019;
 
 	protected final FastNoiseLiteD noiseHotelStairs;
 
 
 
-	public HotelRoomStairs(final Level_000 level0) {
-		this.level0 = level0;
-		this.noiseHotelStairs = level0.gen_005.noiseHotelStairs;
+	public HotelRoomStairs(final Level_000 level_000) {
+		this.gen_005 = level_000.gen_005;
+		this.gen_019 = level_000.gen_019;
+		this.noiseHotelStairs = level_000.gen_005.noiseHotelStairs;
 	}
 
 
@@ -49,14 +53,15 @@ public class HotelRoomStairs implements HotelRoom {
 
 
 
+	// hotel stairs
 	protected void buildHotelRoomStairs(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
-			final LimitedRegion region, final Iabcd area, final int y, final BlockFace facing) {
+			final LimitedRegion region, final Iabcd area, final int y_stairs, final BlockFace facing) {
 		final boolean axis_x = "x".equals(FaceToPillarAxisString(Rotate(facing, 0.25)));
 		final BlockData block_hotel_door_border_top = (axis_x
-			? StringToBlockData(this.level0.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
-			: StringToBlockData(this.level0.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));
+			? StringToBlockDataDef(this.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
+			: StringToBlockDataDef(this.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));
 		final BlockData block_hotel_door_border_side =
-			StringToBlockData(this.level0.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
+			StringToBlockDataDef(this.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;
@@ -177,7 +182,7 @@ public class HotelRoomStairs implements HotelRoom {
 		}
 		// find attic walls
 		{
-			final Material block_attic_wall = Material.matchMaterial(HotelRoomStairs.this.level0.gen_019.block_wall.get());
+			final Material block_attic_wall = Material.matchMaterial(this.gen_019.block_wall);
 			if (block_attic_wall == null) throw new RuntimeException("Invalid block type for level 19 Wall");
 			final Iab ab = FaceToIxz(direction);
 			final int xx = (room_area.a + room_area.c) - (8 * ab.a);

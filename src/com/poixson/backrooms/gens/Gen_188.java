@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.LinkedList;
 
@@ -99,7 +99,14 @@ public class Gen_188 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Level_000 level0 = (Level_000) this.backlevel;
+		final Level_000 backlevel = (Level_000) this.backlevel;
+		final int level_019_y = backlevel.gen_019.level_y;
+		final int level_019_h = backlevel.gen_019.level_h;
+		final int level_005_y = backlevel.gen_005.level_y;
+		final int level_037_y = backlevel.gen_037.level_y;
+		final int level_006_y = backlevel.gen_006.level_y;
+		final int level_000_y = backlevel.gen_000.level_y;
+		final int level_023_y = backlevel.gen_023.level_y;
 		final BlockData block_subfloor            = StringToBlockDataDef(this.block_subfloor,         DEFAULT_BLOCK_SUBFLOOR        );
 		final BlockData block_floor               = StringToBlockDataDef(this.block_floor,            DEFAULT_BLOCK_FLOOR           );
 		final BlockData block_floor_path_lines    = StringToBlockDataDef(this.block_floor_path_lines, DEFAULT_BLOCK_FLOOR_PATH_LINES);

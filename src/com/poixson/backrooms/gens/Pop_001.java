@@ -14,14 +14,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 1 | Basement
 public class Pop_001 implements BackroomsPop {
 
-	protected final Level_000 level0;
-	protected final Gen_001   gen;
+	protected final Level_000 level_000;
+	protected final Gen_001   gen_001;
 
 
 
-	public Pop_001(final Level_000 level0) {
-		this.level0 = level0;
-		this.gen    = level0.gen_001;
+	public Pop_001(final Level_000 level_000) {
+		this.level_000 = level_000;
+		this.gen_001   = level_000.gen_001;
 	}
 
 
@@ -36,11 +36,11 @@ public class Pop_001 implements BackroomsPop {
 			zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				xx = (chunkX * 16) + ix;
-				value = this.gen.noiseWell.getNoise(xx, zz);
-				if (value > this.gen.noiseWell.getNoise(xx+1, zz)
-				&&  value > this.gen.noiseWell.getNoise(xx-1, zz)
-				&&  value > this.gen.noiseWell.getNoise(xx, zz+1)
-				&&  value > this.gen.noiseWell.getNoise(xx, zz-1) ) {
+				value = this.gen_001.noiseWell.getNoise(xx, zz);
+				if (value > this.gen_001.noiseWell.getNoise(xx+1, zz)
+				&&  value > this.gen_001.noiseWell.getNoise(xx-1, zz)
+				&&  value > this.gen_001.noiseWell.getNoise(xx, zz+1)
+				&&  value > this.gen_001.noiseWell.getNoise(xx, zz-1) ) {
 					this.generateWell(region, xx, zz);
 					return;
 				}
@@ -70,7 +70,7 @@ public class Pop_001 implements BackroomsPop {
 		}
 		// build well
 		{
-			this.level0.portal_1_well.add(x, z);
+			this.level_000.portal_1_well.add(x, z);
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("use")

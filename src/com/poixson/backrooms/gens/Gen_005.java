@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
+import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -144,6 +144,11 @@ public class Gen_005 extends BackroomsGen {
 		return 5;
 	}
 
+	@Override
+	public int getNextY() {
+		return this.bedrock_barrier + this.level_y + this.subfloor + this.level_h + this.subceiling + 2;
+	}
+
 
 
 	public enum NodeType {
@@ -160,7 +165,7 @@ public class Gen_005 extends BackroomsGen {
 
 		public HotelData(final double value) {
 			this.value = value;
-			final double thresh_room_hall = Gen_005.this.thresh_room_hall.get();
+			final double thresh_room_hall = Gen_005.this.thresh_room_hall;
 			this.type = (value>thresh_room_hall ? NodeType.HALL : NodeType.ROOM);
 		}
 
@@ -294,7 +299,7 @@ public class Gen_005 extends BackroomsGen {
 		if (block_hall_floor_oe      == null) throw new RuntimeException("Invalid block type for level 5 Hall-Floor-OE"     );
 		if (block_hall_floor_oo      == null) throw new RuntimeException("Invalid block type for level 5 Hall-Floor-OO"     );
 		final BlockData lamp = Bukkit.createBlockData("minecraft:redstone_lamp[lit=true]");
-		final HashMap<Iab, HotelData> hotelData = ((PregenLevel0)pregen).hotel;
+		final HashMap<Iab, HotelData> data_hotel = ((Pregen_Level_000)pregen).hotel;
 		final int h_walls = this.level_h + 2;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = y_base + this.subfloor;

@@ -29,7 +29,6 @@ import com.poixson.backrooms.gens.Pop_005;
 import com.poixson.backrooms.gens.Pop_037;
 import com.poixson.backrooms.gens.Pop_309;
 import com.poixson.backrooms.listeners.Listener_023;
-import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -286,7 +285,7 @@ public class Level_000 extends BackroomsLevel {
 		// radio station
 		case 309: {
 			final int distance = this.plugin.getSpawnDistance();
-			final int z = xRand.Get(0, distance).nextInt();
+			final int z = this.random.nextInt(0, distance);
 			final int x = this.gen_309.getPathX(z);
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
@@ -319,12 +318,12 @@ public class Level_000 extends BackroomsLevel {
 
 
 
-	public class PregenLevel0 implements PreGenData {
+	public class Pregen_Level_000 implements PreGenData {
 		public final HashMap<Iab, LobbyData>    lobby    = new HashMap<Iab, LobbyData>();
 		public final HashMap<Iab, BasementData> basement = new HashMap<Iab, BasementData>();
 		public final HashMap<Iab, HotelData>    hotel    = new HashMap<Iab, HotelData>();
 		public final HashMap<Iab, PoolData>     pools    = new HashMap<Iab, PoolData>();
-		public PregenLevel0() {}
+		public Pregen_Level_000() {}
 	}
 
 
@@ -339,7 +338,7 @@ public class Level_000 extends BackroomsLevel {
 		// other levels
 		} else {
 			// pre-generate
-			final PregenLevel0 pregen = new PregenLevel0();
+			final Pregen_Level_000 pregen = new Pregen_Level_000();
 			this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
 			this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ); // basement
 			this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel

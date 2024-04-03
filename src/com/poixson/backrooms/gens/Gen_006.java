@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.BlockUtils.StringToBlockData;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.PregenLevel0;
+import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -109,8 +109,7 @@ public class Gen_006 extends BackroomsGen {
 		final BlockData block_ceiling = StringToBlockDataDef(this.block_ceiling, DEFAULT_BLOCK_CEILING);
 		final BlockData block_wall    = StringToBlockDataDef(this.block_wall,    DEFAULT_BLOCK_WALL   );
 		if (block_wall == null) throw new RuntimeException("Invalid block type for level 6 Wall");
-		final HashMap<Iab, LobbyData> lobbyData = ((PregenLevel0)pregen).lobby;
-		LobbyData dao, daoN, daoS, daoE, daoW;
+		final HashMap<Iab, LobbyData> data_lobby = ((Pregen_Level_000)pregen).lobby;
 		final int h_walls = this.level_h + (block_floor==null ? 0 : 1) + (block_ceiling==null ? 0 : 1);
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_ceil  = (y_base + h_walls) - 1;

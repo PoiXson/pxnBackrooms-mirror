@@ -16,15 +16,15 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 37 | Poolrooms
 public class Pop_037 implements BackroomsPop {
 
-	protected final Gen_037 gen;
+	protected final Gen_037 gen_037;
 
 	protected final Iab[] starting_points;
 
 
 
-	public Pop_037(final Level_000 level0) {
+	public Pop_037(final Level_000 level_000) {
 		super();
-		this.gen = level0.gen_037;
+		this.gen_037 = level_000.gen_037;
 		// find starting points
 		{
 			final LinkedList<Iab> list = new LinkedList<Iab>();
@@ -54,7 +54,7 @@ public class Pop_037 implements BackroomsPop {
 			super(x, z, false);
 			this.region = region;
 			this.otherTracers = otherTracers;
-			this.y = Pop_037.this.gen.level_y + 9;
+			this.y = Pop_037.this.gen_037.level_y + 9;
 			final Material type = region.getType(x, this.y, z);
 			if (Material.AIR.equals(type))
 				this.ok = false;
@@ -98,7 +98,7 @@ public class Pop_037 implements BackroomsPop {
 
 		@Override
 		public boolean isValidPoint(final int x, final int y) {
-			final double value = Pop_037.this.gen.noiseTunnels.getNoiseRot(x, y, 0.25);
+			final double value = Pop_037.this.gen_037.noiseTunnels.getNoiseRot(x, y, 0.25);
 			return (value > Pop_037.this.gen_037.thresh_tunnel);
 		}
 
@@ -110,8 +110,8 @@ public class Pop_037 implements BackroomsPop {
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!this.gen_037.enable_gen) return;
-		final Material block_wall_a = Material.matchMaterial(this.gen.block_wall_a.get());
-		final Material block_wall_b = Material.matchMaterial(this.gen.block_wall_b.get());
+		final Material block_wall_a = Material.matchMaterial(this.gen_037.block_wall_a);
+		final Material block_wall_b = Material.matchMaterial(this.gen_037.block_wall_b);
 		if (block_wall_a == null) throw new RuntimeException("Invalid block type for level 37 WallA");
 		if (block_wall_b == null) throw new RuntimeException("Invalid block type for level 37 WallB");
 		// trace tunnels
@@ -158,7 +158,7 @@ public class Pop_037 implements BackroomsPop {
 			int w = Math.abs(x_high - x_low);
 			int d = Math.abs(z_high - z_low);
 			int xx, zz;
-			final int yy = this.gen.level_y + 7;
+			final int yy = this.gen_037.level_y + 7;
 			for (int iz=0; iz<d; iz++) {
 				zz = z_low + iz;
 				for (int ix=0; ix<w; ix++) {
