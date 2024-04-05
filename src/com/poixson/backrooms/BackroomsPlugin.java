@@ -29,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.commands.Commands;
@@ -48,6 +49,8 @@ import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.xRand;
+
+import net.milkbowl.vault.economy.Economy;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
@@ -77,6 +80,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	// quotes
 	protected final AtomicReference<String[]> quotes = new AtomicReference<String[]>(null);
+
+	// vault
+	protected final AtomicReference<Economy> economy = new AtomicReference<Economy>(null);
 
 	// listeners
 	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
@@ -113,6 +119,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 				this.log().info("Using resource pack: "+Bukkit.getResourcePack());
 			}
 		}
+		// vault
+		this.economy.set(SetupVaultEconomy());
 		// backrooms levels
 		new Level_000(this); // lobby, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
 //		new Level_007(this); // thalassophobia
@@ -264,6 +272,26 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		this.dynmap_perspective.set(null);
 		this.quotes.set(null);
+	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// vault
+
+
+
+	private static Economy SetupVaultEconomy() {
+		if (Bukkit.getPluginManager().getPlugin("Vault") == null)
+			return null;
+		final RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+		if (rsp == null)
+			return null;
+		return rsp.getProvider();
+	}
+
+	public Economy getEconomy() {
+		return this.economy.get();
 	}
 
 
