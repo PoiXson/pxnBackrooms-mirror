@@ -10,14 +10,14 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.tools.events.xListener;
 
 
-// 33 | Run For Your Life!
-public class Listener_033 implements xListener {
+// 111 | Run For Your Life!
+public class Listener_111 implements xListener {
 
 	protected final BackroomsPlugin plugin;
 
 
 
-	public Listener_033(final BackroomsPlugin plugin) {
+	public Listener_111(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -39,7 +39,7 @@ public class Listener_033 implements xListener {
 		final Entity entity = event.getEntity();
 		if (entity instanceof Player) {
 			final int level = this.plugin.getLevel( (Player)entity );
-			if (level == 33) {
+			if (level == 111) {
 				switch (event.getCause()) {
 				case BLOCK_EXPLOSION:
 				case ENTITY_EXPLOSION:

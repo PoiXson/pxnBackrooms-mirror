@@ -324,15 +324,15 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			world.setGameRule(GameRule.SNOW_ACCUMULATION_HEIGHT,    Integer.valueOf( 8));
 			// game mode
 			switch (level) {
-			case 33:
+			case 111:
 			case 771: mvworld.setGameMode(GameMode.ADVENTURE); break;
 			default:  mvworld.setGameMode(GameMode.SURVIVAL ); break;
 			}
 			// time
 			switch (level) {
 			case 7:   // thalassophobia
-			case 33:  // run for your life
 			case 78:  // space
+			case 111: // run for your life
 			case 771: // crossroads
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
 				mvworld.setTime("midnight"); break;
@@ -346,8 +346,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			// weather
 			switch (level) {
 			case 7:   // thalassophobia
-			case 33:  // run for your life
 			case 78:  // space
+			case 111: // run for your life
 			case 151: // dollhouse
 			case 771: // crossroads
 			case 866: // dirtfield
@@ -370,7 +370,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			}
 			// immediate respawn
 			switch (level) {
-			case 33: // run for your life
+			case 111: // run for your life
 				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.TRUE);  break;
 			default:
 				world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, Boolean.FALSE); break;
@@ -418,8 +418,8 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 			final World world = Bukkit.getWorld(name);
 			if (world == null) throw new NullPointerException("Failed to find world: "+name);
 			switch (level) {
-			case 33: world.setTicksPerSpawns(SpawnCategory.MONSTER,   1); break;
-			default: world.setTicksPerSpawns(SpawnCategory.MONSTER, 100); break;
+			case 111: world.setTicksPerSpawns(SpawnCategory.MONSTER,   1); break;
+			default:  world.setTicksPerSpawns(SpawnCategory.MONSTER, 100); break;
 			}
 		}
 	}

@@ -43,8 +43,8 @@ import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_011;
-import com.poixson.backrooms.worlds.Level_033;
 import com.poixson.backrooms.worlds.Level_094;
+import com.poixson.backrooms.worlds.Level_111;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
@@ -127,7 +127,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 //		new Level_009(this); // suburbs
 //		new Level_010(this); // field of wheat
 		new Level_011(this); // city, arcade, ikea, mall, museum, office
-		new Level_033(this); // run for your life
+		new Level_111(this); // run for your life
 //		new Level_078(this); // space
 		new Level_094(this); // motion
 //		new Level_151(this); // dollhouse
