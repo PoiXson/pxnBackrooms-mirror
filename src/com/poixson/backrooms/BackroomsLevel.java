@@ -1,6 +1,5 @@
 package com.poixson.backrooms;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -263,9 +262,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 	@Override
 	public List<BlockPopulator> getDefaultPopulators(final World world) {
-		final List<BlockPopulator> list = new ArrayList<BlockPopulator>();
-		list.add(this.popman);
-		return list;
+		return List.of(this.popman);
 	}
 
 
