@@ -17,8 +17,8 @@ import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.FastNoiseLiteD;
 
 
-// 33 | Run For Your Life!
-public class Gen_033 extends BackroomsGen {
+// 111 | Run For Your Life!
+public class Gen_111 extends BackroomsGen {
 
 	// default params
 	public static final int    DEFAULT_LEVEL_Y            = 50;
@@ -62,7 +62,7 @@ public class Gen_033 extends BackroomsGen {
 
 
 
-	public Gen_033(final BackroomsLevel backlevel, final int seed) {
+	public Gen_111(final BackroomsLevel backlevel, final int seed) {
 		super(backlevel, null, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
@@ -91,7 +91,7 @@ public class Gen_033 extends BackroomsGen {
 
 	@Override
 	public int getLevelNumber() {
-		return 33;
+		return 111;
 	}
 
 	@Override
@@ -113,13 +113,13 @@ public class Gen_033 extends BackroomsGen {
 		final BlockData block_subfloor   = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
 		final BlockData block_plate      = StringToBlockDataDef(this.block_plate,      DEFAULT_BLOCK_PLATE     );
 		final BlockData block_hazard     = StringToBlockDataDef(this.block_hazard,     DEFAULT_BLOCK_HAZARD    );
-		if (block_wall       == null) throw new RuntimeException("Invalid block type for level 33 Wall"      );
-		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 33 Ceiling"   );
-		if (block_floor      == null) throw new RuntimeException("Invalid block type for level 33 Floor"     );
-		if (block_floor_safe == null) throw new RuntimeException("Invalid block type for level 33 Floor-Safe");
-		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 33 SubFloor"  );
-		if (block_plate      == null) throw new RuntimeException("Invalid block type for level 33 Plate"     );
-		if (block_hazard     == null) throw new RuntimeException("Invalid block type for level 33 Hazard"    );
+		if (block_wall       == null) throw new RuntimeException("Invalid block type for level 111 Wall"      );
+		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 111 Ceiling"   );
+		if (block_floor      == null) throw new RuntimeException("Invalid block type for level 111 Floor"     );
+		if (block_floor_safe == null) throw new RuntimeException("Invalid block type for level 111 Floor-Safe");
+		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 111 SubFloor"  );
+		if (block_plate      == null) throw new RuntimeException("Invalid block type for level 111 Plate"     );
+		if (block_hazard     == null) throw new RuntimeException("Invalid block type for level 111 Hazard"    );
 		final int danger_chunks = this.danger_chunks + 1;
 		for (int iz=0; iz<16; iz++) {
 			final int zz = (chunkZ * 16) + iz;
