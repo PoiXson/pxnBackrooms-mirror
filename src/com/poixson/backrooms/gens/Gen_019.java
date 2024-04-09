@@ -33,6 +33,7 @@ public class Gen_019 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_WALL  = "minecraft:spruce_planks";
 	public static final String DEFAULT_BLOCK_FLOOR = "minecraft:spruce_planks";
 	public static final String DEFAULT_BLOCK_BEAM  = "minecraft:spruce_wood";
+	public static final String DEFAULT_BLOCK_LAMP  = "minecraft:lantern[hanging=true]";
 
 	// params
 	public final boolean enable_gen;
@@ -44,6 +45,7 @@ public class Gen_019 extends BackroomsGen {
 	public final String block_wall;
 	public final String block_floor;
 	public final String block_beam;
+	public final String block_lamp;
 
 	// noise
 	public final FastNoiseLiteD noiseLamps;
@@ -64,6 +66,7 @@ public class Gen_019 extends BackroomsGen {
 		this.block_wall  = cfgBlocks.getString("Wall" );
 		this.block_floor = cfgBlocks.getString("Floor");
 		this.block_beam  = cfgBlocks.getString("Beam" );
+		this.block_lamp  = cfgBlocks.getString("Lamp" );
 		// noise
 		this.noiseLamps = this.register(new FastNoiseLiteD());
 	}
@@ -90,9 +93,11 @@ public class Gen_019 extends BackroomsGen {
 		final BlockData block_wall  = StringToBlockDataDef(this.block_wall,  DEFAULT_BLOCK_WALL );
 		final BlockData block_floor = StringToBlockDataDef(this.block_floor, DEFAULT_BLOCK_FLOOR);
 		final BlockData block_beam  = StringToBlockDataDef(this.block_beam,  DEFAULT_BLOCK_BEAM );
+		final BlockData block_lamp  = StringToBlockDataDef(this.block_lamp,  DEFAULT_BLOCK_LAMP );
 		if (block_wall  == null) throw new RuntimeException("Invalid block type for level 19 Wall" );
 		if (block_floor == null) throw new RuntimeException("Invalid block type for level 19 Floor");
 		if (block_beam  == null) throw new RuntimeException("Invalid block type for level 19 Beam" );
+		if (block_lamp  == null) throw new RuntimeException("Invalid block type for level 19 Lamp" );
 		final HashMap<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = (y_base + this.subfloor) - 1;
@@ -117,7 +122,7 @@ public class Gen_019 extends BackroomsGen {
 				if (mod_x == 0 && mod_z == 0 && dao_lobby.wall_dist == 6) {
 					final double value_lamp = this.noiseLamps.getNoise(xx, zz);
 					if (value_lamp < 0.0)
-						chunk.setBlock(ix, y_floor+dao_lobby.wall_dist+1, iz, Material.LANTERN);
+						chunk.setBlock(ix, y_floor+dao_lobby.wall_dist-1, iz, block_lamp);
 				}
 				// wall
 				if (dao_lobby.isWall) {
@@ -159,6 +164,7 @@ public class Gen_019 extends BackroomsGen {
 		cfgBlocks.addDefault("Wall",  DEFAULT_BLOCK_WALL );
 		cfgBlocks.addDefault("Floor", DEFAULT_BLOCK_FLOOR);
 		cfgBlocks.addDefault("Beam",  DEFAULT_BLOCK_BEAM );
+		cfgBlocks.addDefault("Lamp",  DEFAULT_BLOCK_LAMP );
 	}
 
 
