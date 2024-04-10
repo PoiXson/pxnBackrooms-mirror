@@ -126,21 +126,21 @@ public class Gen_001 extends BackroomsGen {
 
 	public class BasementData implements PreGenData {
 
-		public final double valueWall;
-		public final double valueMoistA;
-		public final double valueMoistB;
+		public final double value_wall;
+		public final double value_moistA;
+		public final double value_moistB;
 		public boolean isWall;
 		public boolean isWet;
 
-		public BasementData(final double valueWall, final double valueMoistA, final double valueMoistB) {
-			this.valueWall   = valueWall;
-			this.valueMoistA = valueMoistA;
-			this.valueMoistB = valueMoistB;
-			this.isWall = (valueWall > Gen_001.this.thresh_wall);
+		public BasementData(final double value_wall, final double value_moistA, final double value_moistB) {
+			this.value_wall   = value_wall;
+			this.value_moistA = value_moistA;
+			this.value_moistB = value_moistB;
+			this.isWall = (value_wall > Gen_001.this.thresh_wall);
 			final double thresh_moist = Gen_001.this.thresh_moist;
 			this.isWet = (
-				valueMoistA > thresh_moist ||
-				valueMoistB > thresh_moist
+				value_moistA > thresh_moist ||
+				value_moistB > thresh_moist
 			);
 		}
 
@@ -150,17 +150,14 @@ public class Gen_001 extends BackroomsGen {
 
 	public void pregenerate(Map<Iab, BasementData> data,
 			final int chunkX, final int chunkZ) {
-		BasementData dao;
-		int xx, zz;
-		double valueWall, valueMoistA, valueMoistB;
 		for (int iz=0; iz<16; iz++) {
-			zz = (chunkZ * 16) + iz;
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
-				xx = (chunkX * 16) + ix;
-				valueWall   = this.noiseWalls.getNoiseRot(xx, zz, 0.25);
-				valueMoistA = this.noiseMoist.getNoise(xx, zz);
-				valueMoistB = this.noiseMoist.getNoise(zz, xx);
-				dao = new BasementData(valueWall, valueMoistA, valueMoistB);
+				final int xx = (chunkX * 16) + ix;
+				final double value_wall   = this.noiseWalls.getNoiseRot(xx, zz, 0.25);
+				final double value_moistA = this.noiseMoist.getNoise(xx, zz);
+				final double value_moistB = this.noiseMoist.getNoise(zz, xx);
+				final BasementData dao = new BasementData(value_wall, value_moistA, value_moistB);
 				data.put(new Iab(ix, iz), dao);
 			}
 		}

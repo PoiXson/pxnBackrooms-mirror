@@ -175,24 +175,21 @@ public class Gen_005 extends BackroomsGen {
 
 	public void pregenerate(Map<Iab, HotelData> data,
 			final int chunkX, final int chunkZ) {
-		HotelData dao;
-		int xx, zz;
-		double value;
 		for (int iz=-8; iz<24; iz++) {
-			zz = (chunkZ * 16) + iz;
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-8; ix<24; ix++) {
-				xx = (chunkX * 16) + ix;
-				value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
-				dao = new HotelData(value);
+				final int xx = (chunkX * 16) + ix;
+				final double value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
+				final HotelData dao = new HotelData(value);
 				data.put(new Iab(ix, iz), dao);
 			}
 		}
-		HotelData daoN,  daoS,  daoE,  daoW;
-		HotelData daoNE, daoNW, daoSE, daoSW;
 		// find walls
 		for (int iz=-8; iz<24; iz++) {
 			for (int ix=-8; ix<24; ix++) {
-				dao = data.get(new Iab(ix, iz));
+				final HotelData dao = data.get(new Iab(ix, iz));
+				HotelData daoN,  daoS,  daoE,  daoW;
+				HotelData daoNE, daoNW, daoSE, daoSW;
 				if (NodeType.ROOM.equals(dao.type)) {
 					daoN  = data.get(new Iab(ix,   iz-1));
 					daoS  = data.get(new Iab(ix,   iz+1));

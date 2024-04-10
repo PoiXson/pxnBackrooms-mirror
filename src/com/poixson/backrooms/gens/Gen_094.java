@@ -149,22 +149,22 @@ public class Gen_094 extends BackroomsGen {
 
 	public class HillsData implements PreGenData {
 
-		public final double valueHill;
+		public final double value_hill;
+		public final double value_house;
 		public final double depth;
-		public final double valueHouse;
 		public boolean isHouse = false;
 		public int     house_y = 0;
 		public boolean house_direction;
 
-		public HillsData(final double valueHill, final double valueHouse,
+		public HillsData(final double value_hill, final double value_house,
 				final double valley_depth, final double valley_gain, final double hills_gain) {
-			this.valueHill  = valueHill;
-			double depth = 1.0 - valueHill;
+			this.value_hill = value_hill;
+			double depth = 1.0 - value_hill;
 			if (depth < valley_depth)
 				depth *= valley_gain;
 			this.depth = depth * hills_gain;
-			this.valueHouse = valueHouse;
-			this.house_direction = ((int)Math.floor(valueHouse * 100000.0) % 2 == 1);
+			this.value_house = value_house;
+			this.house_direction = ((int)Math.floor(value_house * 100000.0) % 2 == 1);
 		}
 
 	}
@@ -178,9 +178,9 @@ public class Gen_094 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final double valueHill  = this.noiseHills.getNoise(xx, zz);
-				final double valueHouse = this.noiseHouse.getNoise(xx, zz);
-				HillsData dao_hills = new HillsData(valueHill, valueHouse, this.valley_depth, this.valley_gain, this.hills_gain);
+				final double value_hill  = this.noiseHills.getNoise(xx, zz);
+				final double value_house = this.noiseHouse.getNoise(xx, zz);
+				HillsData dao_hills = new HillsData(value_hill, value_house, this.valley_depth, this.valley_gain, this.hills_gain);
 				data.put(new Iab(ix, iz), dao_hills);
 			}
 		}
@@ -190,11 +190,11 @@ public class Gen_094 extends BackroomsGen {
 		for (int iz=0; iz<search_width; iz++) {
 			for (int ix=0; ix<search_width; ix++) {
 				final HillsData dao_hills = data.get(new Iab(ix, iz));
-				final double valueHouse = dao_hills.valueHouse;
-				if (valueHouse > data.get(new Iab(ix, iz-1)).valueHouse
-				&&  valueHouse > data.get(new Iab(ix, iz+1)).valueHouse
-				&&  valueHouse > data.get(new Iab(ix+1, iz)).valueHouse
-				&&  valueHouse > data.get(new Iab(ix-1, iz)).valueHouse) {
+				final double value_house = dao_hills.value_house;
+				if (value_house > data.get(new Iab(ix, iz-1)).value_house
+				&&  value_house > data.get(new Iab(ix, iz+1)).value_house
+				&&  value_house > data.get(new Iab(ix+1, iz)).value_house
+				&&  value_house > data.get(new Iab(ix-1, iz)).value_house) {
 					int lowest = Integer.MAX_VALUE;
 					int depth;
 					for (int izz=0; izz<search_width; izz++) {
@@ -274,7 +274,7 @@ public class Gen_094 extends BackroomsGen {
 					if (dao_hills.depth % 1.0 > 0.7) {
 						chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_slab);
 					} else {
-						final int mod_grass = (int) Math.floor(dao_hills.valueHill * 1000.0) % 3;
+						final int mod_grass = (int) Math.floor(dao_hills.value_hill * 1000.0) % 3;
 						final int rnd_grass = this.random.nextInt(0, this.grass_rose_chance);
 						if      (rnd_grass == 1) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_rose            );
 						else if (rnd_grass < 20) {

@@ -163,9 +163,9 @@ public class Gen_023 extends BackroomsGen {
 		if (block_grass_wet_tall_upper == null) throw new RuntimeException("Invalid block type for level 23 Grass-Wet-Tall-Upper");
 		if (block_grass_dry_tall_lower == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Tall-Lower");
 		if (block_grass_dry_tall_upper == null) throw new RuntimeException("Invalid block type for level 23 Grass-Dry-Tall-Upper");
-		final Pregen_Level_000 pregen0 = (Pregen_Level_000) pregen;
-		final HashMap<Iab, LobbyData>    data_lobby    = pregen0.lobby;
-		final HashMap<Iab, BasementData> data_basement = pregen0.basement;
+		final Pregen_Level_000 pregen_000 = (Pregen_Level_000) pregen;
+		final HashMap<Iab, LobbyData>    data_lobby    = pregen_000.lobby;
+		final HashMap<Iab, BasementData> data_basement = pregen_000.basement;
 		final int h_walls = this.level_h + 2;
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = y_base + this.subfloor;

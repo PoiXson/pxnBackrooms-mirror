@@ -133,27 +133,27 @@ public class Gen_037 extends BackroomsGen {
 
 	public class PoolData {
 
-		public final double valueRoom, valuePortalHotel, valuePortalLobby;
-		public final boolean possiblePortalHotel;
-		public final boolean possiblePortalLobby;
+		public final double value_room, value_portal_hotel, value_portal_lobby;
+		public final boolean possible_portal_hotel;
+		public final boolean possible_portal_lobby;
 		public RoomType type;
 
 		public PoolData(final int x, final int z) {
-			this.valueRoom        = Gen_037.this.noisePoolRooms  .getNoise(x, z);
-			this.valuePortalHotel = Gen_037.this.noisePortalHotel.getNoise(x, z);
-			this.valuePortalLobby = Gen_037.this.noisePortalLobby.getNoise(x, z);
-			if (this.valueRoom < Gen_037.this.thresh_room) {
+			this.value_room       = Gen_037.this.noisePoolRooms  .getNoise(x, z);
+			this.value_portal_hotel = Gen_037.this.noisePortalHotel.getNoise(x, z);
+			this.value_portal_lobby = Gen_037.this.noisePortalLobby.getNoise(x, z);
+			if (this.value_room < Gen_037.this.thresh_room) {
 				this.type = RoomType.SOLID;
-				this.possiblePortalHotel = (this.valuePortalHotel > Gen_037.this.thresh_portal);
-				this.possiblePortalLobby = false;
+				this.possible_portal_hotel = (this.value_portal_hotel > Gen_037.this.thresh_portal);
+				this.possible_portal_lobby = false;
 			} else {
 				this.type = RoomType.OPEN;
-				this.possiblePortalHotel = false;
-				this.possiblePortalLobby = (
-					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x, z-1) &&
-					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x, z+1) &&
-					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x+1, z) &&
-					this.valuePortalLobby > Gen_037.this.noisePortalLobby.getNoise(x-1, z)
+				this.possible_portal_hotel = false;
+				this.possible_portal_lobby = (
+					this.value_portal_lobby > Gen_037.this.noisePortalLobby.getNoise(x, z-1) &&
+					this.value_portal_lobby > Gen_037.this.noisePortalLobby.getNoise(x, z+1) &&
+					this.value_portal_lobby > Gen_037.this.noisePortalLobby.getNoise(x+1, z) &&
+					this.value_portal_lobby > Gen_037.this.noisePortalLobby.getNoise(x-1, z)
 				);
 			}
 		}
@@ -168,13 +168,11 @@ public class Gen_037 extends BackroomsGen {
 
 	public void pregenerate(final Map<Iab, PoolData> data,
 			final int chunkX, final int chunkZ) {
-		PoolData dao;
-		int xx, zz;
 		for (int iz=-1; iz<3; iz++) {
-			zz = (chunkZ * 16) + (iz * 8) + 4;
+			final int zz = (chunkZ * 16) + (iz * 8) + 4;
 			for (int ix=-1; ix<3; ix++) {
-				xx = (chunkX * 16) + (ix * 8) + 4;
-				dao = new PoolData(xx, zz);
+				final int xx = (chunkX * 16) + (ix * 8) + 4;
+				final PoolData dao = new PoolData(xx, zz);
 				data.put(new Iab(ix, iz), dao);
 			}
 		}

@@ -144,7 +144,7 @@ public class Gen_111 extends BackroomsGen {
 						chunk.setBlock(ix, iy+this.level_y, iz, block_wall);
 					break;
 				default: {
-					final double valueFloor = 0.0 - this.noiseFloor.getNoise(xx, zz*2);
+					final double value_floor = 0.0 - this.noiseFloor.getNoise(xx, zz*2);
 					final boolean safe = (chunkZ % danger_chunks == 0);
 					// ceiling
 					if (this.enable_top)
@@ -152,19 +152,19 @@ public class Gen_111 extends BackroomsGen {
 					// floor
 					if (safe) {
 						if (chunkZ == 0
-						||  valueFloor > this.thresh_floor) {
+						||  value_floor > this.thresh_floor) {
 							chunk.setBlock(ix, this.level_y,   iz, block_floor_safe);
 							chunk.setBlock(ix, this.level_y-1, iz, block_floor_safe);
 						}
 					} else {
-						if (valueFloor > this.thresh_floor) {
+						if (value_floor > this.thresh_floor) {
 							chunk.setBlock(ix, this.level_y+1, iz, block_plate );
 							chunk.setBlock(ix, this.level_y,   iz, block_floor );
 							final long mod_tnt = (ix+iz) % 5;
 							if (mod_tnt == 0 || mod_tnt == 2) chunk.setBlock(ix, this.level_y-1, iz, Material.GLOWSTONE);
 							else                              chunk.setBlock(ix, this.level_y-1, iz, Material.TNT);
 							chunk.setBlock(ix, this.level_y-2, iz, block_subfloor);
-							if (valueFloor > this.thresh_hazard) {
+							if (value_floor > this.thresh_hazard) {
 								chunk.setBlock(ix, this.level_y+2, iz, block_hazard);
 								chunk.setBlock(ix, this.level_y+1, iz, block_hazard);
 							}

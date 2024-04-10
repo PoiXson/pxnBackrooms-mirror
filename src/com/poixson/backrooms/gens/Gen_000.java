@@ -131,7 +131,7 @@ public class Gen_000 extends BackroomsGen {
 
 	public class LobbyData implements PreGenData {
 
-		public final double valueWall;
+		public final double value_wall;
 		public final boolean isWall;
 		public boolean wall_n = false;
 		public boolean wall_s = false;
@@ -141,11 +141,11 @@ public class Gen_000 extends BackroomsGen {
 		public int boxed = 0;
 		public BlockFace box_dir = null;
 
-		public LobbyData(final double valueWall) {
-			this.valueWall = valueWall;
+		public LobbyData(final double value_wall) {
+			this.value_wall = value_wall;
 			this.isWall = (
-				valueWall > Gen_000.this.thresh_wall_L &&
-				valueWall < Gen_000.this.thresh_wall_H
+				value_wall > Gen_000.this.thresh_wall_L &&
+				value_wall < Gen_000.this.thresh_wall_H
 			);
 		}
 
@@ -155,27 +155,24 @@ public class Gen_000 extends BackroomsGen {
 
 	public void pregenerate(Map<Iab, LobbyData> data,
 			final int chunkX, final int chunkZ) {
-		LobbyData dao;
-		int xx, zz;
-		double valueWall;
 		for (int iz=-1; iz<17; iz++) {
-			zz = (chunkZ * 16) + iz;
+			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
-				xx = (chunkX * 16) + ix;
-				valueWall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
-				dao = new LobbyData(valueWall);
+				final int xx = (chunkX * 16) + ix;
+				final double value_wall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
+				final LobbyData dao = new LobbyData(value_wall);
 				data.put(new Iab(ix, iz), dao);
 			}
 		}
 		// find wall distance
-		LobbyData dao_near;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
-				dao = data.get(new Iab(ix, iz));
+				final LobbyData dao = data.get(new Iab(ix, iz));
 				if (dao.isWall) {
 					dao.wall_dist = 0;
 					continue;
 				}
+				LobbyData dao_near;
 				for (int i=1; i<WALL_SEARCH_DIST; i++) {
 					dao.boxed = 0;
 					// north

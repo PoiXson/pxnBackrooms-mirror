@@ -710,7 +710,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (worldName.length() != 9
 		|| !worldName.startsWith("level_"))
 			throw new RuntimeException("Invalid world name, must be level_### found: "+worldName);
-		this.log().info("world: "+worldName);
+//		this.log().info("world generator: "+worldName);
 		return this.getMainBackroomsLevel(worldName);
 	}
 

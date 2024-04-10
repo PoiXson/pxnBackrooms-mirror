@@ -6,6 +6,7 @@ load: STARTUP
 depend:
   - pxnPluginLib
   - Multiverse-Core
+  - Vault
 softdepend:
   - MoreFoods
   - dynmap
