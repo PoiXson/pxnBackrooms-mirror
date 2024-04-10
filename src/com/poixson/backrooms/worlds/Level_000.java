@@ -36,7 +36,6 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 
 
 // 309 | Radio Station
-// 188 | The Windows
 //  19 | Attic
 //   5 | Hotel
 //  37 | Poolrooms
@@ -44,6 +43,7 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 //   0 | Lobby
 //  23 | Overgrowth
 //   1 | Basement
+// 188 | The Windows
 public class Level_000 extends BackroomsLevel {
 
 	// generators
@@ -54,8 +54,8 @@ public class Level_000 extends BackroomsLevel {
 	public final Gen_037 gen_037;
 	public final Gen_005 gen_005;
 	public final Gen_019 gen_019;
-	public final Gen_188 gen_188;
 	public final Gen_309 gen_309;
+	public final Gen_188 gen_188;
 
 	// populators
 	public final Pop_001 pop_001;
@@ -93,8 +93,8 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_037 = this.register(new Gen_037(this, this.seed, this.gen_006        )); // pools
 		this.gen_005 = this.register(new Gen_005(this, this.seed, this.gen_037        )); // hotel
 		this.gen_019 = this.register(new Gen_019(this, this.seed, this.gen_005        )); // attic
-		this.gen_188 = this.register(new Gen_188(this, this.seed, this.gen_001.level_y)); // the windows
 		this.gen_309 = this.register(new Gen_309(this, this.seed, this.gen_019        )); // radio station
+		this.gen_188 = this.register(new Gen_188(this, this.seed, this.gen_001.level_y)); // the windows
 		// populators
 		this.pop_001 = this.register(new Pop_001(this)); // basement
 		this.pop_005 = this.register(new Pop_005(this)); // hotel
@@ -274,19 +274,19 @@ public class Level_000 extends BackroomsLevel {
 		case  5: // hotel
 		case 19: // attic
 			return super.getNewSpawnArea(level);
-		// the windows
-		case 188: {
-			final int x = 0;
-			final int z = 0;
-			final World world = this.plugin.getWorldFromLevel(level);
-			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			return world.getBlockAt(x, 0, z).getLocation();
-		}
 		// radio station
 		case 309: {
 			final int distance = this.plugin.getSpawnDistance();
 			final int z = this.random.nextInt(0, distance);
 			final int x = this.gen_309.getPathX(z);
+			final World world = this.plugin.getWorldFromLevel(level);
+			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+			return world.getBlockAt(x, 0, z).getLocation();
+		}
+		// the windows
+		case 188: {
+			final int x = 0;
+			final int z = 0;
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 			return world.getBlockAt(x, 0, z).getLocation();
