@@ -161,7 +161,7 @@ public class Gen_006 extends BackroomsGen {
 				final Gen_000 gen_000 = level_000.gen_000;
 				// switch
 				if (value > this.thresh_switch) {
-					level_000.portal_0_to_6.add(xx, zz);
+					level_000.portal_000_to_006.add(xx, zz);
 					// level 0 light switch
 					{
 						final int y = gen_000.level_y + gen_000.subfloor + 3;
@@ -176,7 +176,7 @@ public class Gen_006 extends BackroomsGen {
 					}
 				// button
 				} else {
-					level_000.portal_6_to_33.add(xx, zz);
+					level_000.portal_006_to_111.add(xx, zz);
 					// level 6 game button
 					{
 						final int y = this.level_y + 2;

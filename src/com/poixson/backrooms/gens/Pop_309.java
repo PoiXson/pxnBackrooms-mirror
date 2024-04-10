@@ -308,7 +308,7 @@ public class Pop_309 implements BackroomsPop {
 			matrix[0][2].append("$$$");
 			plot.run(region, matrix);
 		}
-		((Level_000)this.gen_309.backlevel).portal_19_to_309.add(x, z);
+		((Level_000)this.gen_309.backlevel).portal_019_to_309.add(x, z);
 	}
 
 

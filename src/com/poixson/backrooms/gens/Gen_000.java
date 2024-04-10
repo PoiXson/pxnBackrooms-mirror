@@ -358,7 +358,7 @@ public class Gen_000 extends BackroomsGen {
 								}
 							}
 							if (!found_basement_wall) {
-								level_000.portal_0_to_1.add(xx, zz);
+								level_000.portal_000_to_001.add(xx, zz);
 								final int y_exit = gen_001.getNextY() - 2;
 								final int h_exit = (y_ceil - gen_001.getNextY()) + 3;
 								final BlockPlotter plot =

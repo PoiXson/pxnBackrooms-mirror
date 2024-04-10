@@ -399,7 +399,7 @@ public class Gen_037 extends BackroomsGen {
 						}
 					}
 					// portal to lobby
-					if (dao_pool.possiblePortalLobby) {
+					if (dao_pool.possible_portal_lobby) {
 						LobbyData lobby;
 						boolean foundWall = false;
 						Z_LOOP:
@@ -417,7 +417,7 @@ public class Gen_037 extends BackroomsGen {
 						if (!foundWall) {
 							final int xx = (chunkX * 16) + (rx * 8);
 							final int zz = (chunkZ * 16) + (rz * 8);
-							((Level_000)this.backlevel).portal_0_to_37.add(xx, zz);
+							((Level_000)this.backlevel).portal_000_to_037.add(xx, zz);
 							final int hh = level_000_h + this.subceiling + level_006_h + this.subfloor + 5;
 							final BlockPlotter pp =
 								(new BlockPlotter())
