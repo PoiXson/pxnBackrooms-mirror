@@ -84,7 +84,7 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return this.level_y + this.level_h;
+		return ((Level_000)this.backlevel).gen_019.getNextY();
 	}
 
 

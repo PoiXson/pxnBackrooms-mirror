@@ -58,7 +58,9 @@ public abstract class BackroomsGen {
 
 	public abstract int getLevelNumber();
 
-	public abstract int getNextY();
+	public int getNextY() {
+		return 320;
+	}
 
 	protected int getDefaultY() {
 		return (this.gen_below == null ? -64 : this.gen_below.getNextY());

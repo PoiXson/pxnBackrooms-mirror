@@ -100,7 +100,7 @@ public class Gen_011 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return this.level_y + this.level_h;
+		return this.level_y + this.bedrock_barrier + this.subfloor + this.level_h + 1;
 	}
 
 

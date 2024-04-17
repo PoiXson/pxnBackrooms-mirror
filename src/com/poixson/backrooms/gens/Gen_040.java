@@ -50,7 +50,7 @@ public class Gen_040 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return this.level_y + this.level_h;
+		return ((Level_011)this.backlevel).gen_122.getNextY();
 	}
 
 

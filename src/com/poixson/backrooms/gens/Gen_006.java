@@ -94,7 +94,7 @@ public class Gen_006 extends BackroomsGen {
 	public int getNextY() {
 		final BlockData block_floor   = StringToBlockDataDef(this.block_floor,   DEFAULT_BLOCK_FLOOR  );
 		final BlockData block_ceiling = StringToBlockDataDef(this.block_ceiling, DEFAULT_BLOCK_CEILING);
-		return this.bedrock_barrier + this.level_y + this.level_h +
+		return this.level_y + this.bedrock_barrier + this.level_h +
 				(block_floor==null ? 0 : 1) + (block_ceiling==null ? 0 : 1);
 	}
 

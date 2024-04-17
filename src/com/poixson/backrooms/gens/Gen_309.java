@@ -134,11 +134,6 @@ public class Gen_309 extends BackroomsGen {
 		return 309;
 	}
 
-	@Override
-	public int getNextY() {
-		return 320;
-	}
-
 
 
 	@Override

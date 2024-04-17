@@ -140,11 +140,6 @@ public class Gen_094 extends BackroomsGen {
 		return 94;
 	}
 
-	@Override
-	public int getNextY() {
-		return this.level_y + this.level_h;
-	}
-
 
 
 	public class HillsData implements PreGenData {

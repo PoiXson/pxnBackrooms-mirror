@@ -94,11 +94,6 @@ public class Gen_111 extends BackroomsGen {
 		return 111;
 	}
 
-	@Override
-	public int getNextY() {
-		return this.level_y + this.level_h;
-	}
-
 
 
 	@Override
