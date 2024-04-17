@@ -41,7 +41,9 @@ public abstract class BackroomsGen {
 
 
 
-	public void register() {}
+	public void register() {
+		this.initNoise();
+	}
 	public void unregister() {}
 
 

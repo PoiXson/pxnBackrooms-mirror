@@ -69,7 +69,6 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 	protected <T extends BackroomsGen> T register(final T gen) {
-		gen.initNoise();
 		this.gens.add(gen);
 		return gen;
 	}
