@@ -41,7 +41,7 @@ public class Gen_000 extends BackroomsGen {
 	// default params
 	public static final int    DEFAULT_LEVEL_H             = 5;
 	public static final int    DEFAULT_SUBFLOOR            = 3;
-	public static final int    DEFAULT_SUBCEILING          = 3;
+	public static final int    DEFAULT_SUBCEILING          = 2;
 	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.022;
 	public static final int    DEFAULT_NOISE_WALL_OCTAVE   = 2;
 	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.1;

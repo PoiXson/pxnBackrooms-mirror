@@ -22,6 +22,8 @@ import com.poixson.backrooms.gens.Gen_019;
 import com.poixson.backrooms.gens.Gen_023;
 import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.gens.Gen_037.PoolData;
+import com.poixson.backrooms.gens.Gen_096;
+import com.poixson.backrooms.gens.Gen_096.DuctData;
 import com.poixson.backrooms.gens.Gen_188;
 import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Pop_001;
@@ -50,6 +52,7 @@ public class Level_000 extends BackroomsLevel {
 	public final Gen_001 gen_001;
 	public final Gen_023 gen_023;
 	public final Gen_000 gen_000;
+	public final Gen_096 gen_096;
 	public final Gen_006 gen_006;
 	public final Gen_037 gen_037;
 	public final Gen_005 gen_005;
@@ -71,6 +74,7 @@ public class Level_000 extends BackroomsLevel {
 	public final LocationStoreManager portal_000_to_006;
 	public final LocationStoreManager portal_006_to_111;
 	public final LocationStoreManager portal_000_to_037;
+	public final LocationStoreManager portal_000_to_096;
 	public final LocationStoreManager portal_001_well;
 	public final LocationStoreManager portal_005_to_019;
 	public final LocationStoreManager portal_005_to_037;
@@ -89,7 +93,8 @@ public class Level_000 extends BackroomsLevel {
 		this.gen_001 = this.register(new Gen_001(this, this.seed                      )); // basement
 		this.gen_023 = this.register(new Gen_023(this, this.seed, this.gen_001        )); // overgrowth
 		this.gen_000 = this.register(new Gen_000(this, this.seed, this.gen_023        )); // lobby
-		this.gen_006 = this.register(new Gen_006(this, this.seed, this.gen_000        )); // lights out
+		this.gen_096 = this.register(new Gen_096(this, this.seed, this.gen_000        )); // ductwork
+		this.gen_006 = this.register(new Gen_006(this, this.seed, this.gen_096        )); // lights out
 		this.gen_037 = this.register(new Gen_037(this, this.seed, this.gen_006        )); // pools
 		this.gen_005 = this.register(new Gen_005(this, this.seed, this.gen_037        )); // hotel
 		this.gen_019 = this.register(new Gen_019(this, this.seed, this.gen_005        )); // attic
@@ -107,6 +112,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_000_to_006 = new LocationStoreManager(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
 		this.portal_006_to_111 = new LocationStoreManager(plugin, "level_000", "portal_006_to_111"); // run for your life button
 		this.portal_000_to_037 = new LocationStoreManager(plugin, "level_000", "portal_000_to_037"); // lobby to pools
+		this.portal_000_to_096 = new LocationStoreManager(plugin, "level_000", "portal_000_to_096"); // lobby to ductwork
 		this.portal_001_well   = new LocationStoreManager(plugin, "level_000", "portal_001_well"  ); // basement well
 		this.portal_005_to_019 = new LocationStoreManager(plugin, "level_000", "portal_005_to_019"); // hotel to attic
 		this.portal_005_to_037 = new LocationStoreManager(plugin, "level_000", "portal_005_to_037"); // hotel to pools
@@ -122,6 +128,7 @@ public class Level_000 extends BackroomsLevel {
 			gen_tpl.add(  1, "basement",  "Basement",   this.gen_001.level_y+this.gen_001.bedrock_barrier+this.gen_001.level_h                        );
 			gen_tpl.add( 23, "overgrow",  "Overgrowth", this.gen_023.level_y+this.gen_023.bedrock_barrier                                           +8);
 			gen_tpl.add(  0, "lobby",     "Lobby",      this.gen_000.level_y+this.gen_000.bedrock_barrier+this.gen_000.level_h+this.gen_000.subfloor+1);
+			gen_tpl.add( 96, "ductwork",  "Ductwork",   this.gen_096.level_y                                                  +this.gen_000.subfloor+2);
 			gen_tpl.add(  6, "lightsout", "Lights Out", this.gen_006.level_y+this.gen_006.bedrock_barrier+this.gen_006.level_h                        );
 			gen_tpl.add( 37, "poolrooms", "Poolrooms",  this.gen_037.level_y+this.gen_037.bedrock_barrier+this.gen_037.level_h                      +1);
 			gen_tpl.add( 05, "hotel",     "Hotel",      this.gen_005.level_y+this.gen_005.bedrock_barrier+this.gen_005.level_h+this.gen_005.subfloor+1);
@@ -140,6 +147,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_000_to_006.start();
 		this.portal_006_to_111.start();
 		this.portal_000_to_037.start();
+		this.portal_000_to_096.start();
 		this.portal_001_well  .start();
 		this.portal_005_to_019.start();
 		this.portal_005_to_037.start();
@@ -158,6 +166,7 @@ public class Level_000 extends BackroomsLevel {
 		this.portal_000_to_006.stop();
 		this.portal_006_to_111.stop();
 		this.portal_000_to_037.stop();
+		this.portal_000_to_096.stop();
 		this.portal_001_well  .stop();
 		this.portal_005_to_019.stop();
 		this.portal_005_to_037.stop();
@@ -192,6 +201,7 @@ public class Level_000 extends BackroomsLevel {
 		if (y < this.getMaxY( 1)) return  1; // basement
 		if (y < this.getMaxY(23)) return 23; // overgrowth
 		if (y < this.getMaxY( 0)) return  0; // lobby
+		if (y < this.getMaxY(96)) return 96; // ductwork
 		if (y < this.getMaxY( 6)) return  6; // lights out
 		if (y < this.getMaxY(37)) return 37; // pools
 		if (y < this.getMaxY( 5)) return  5; // hotel
@@ -204,6 +214,7 @@ public class Level_000 extends BackroomsLevel {
 		case   1: // basement
 		case  23: // overgrowth
 		case   0: // lobby
+		case  96: // ductwork
 		case   6: // lights out
 		case  37: // pools
 		case   5: // hotel
@@ -223,6 +234,7 @@ public class Level_000 extends BackroomsLevel {
 		case   1: return this.gen_001.level_y; // basement
 		case  23: return this.gen_023.level_y; // overgrowth
 		case   0: return this.gen_000.level_y; // lobby
+		case  96: return this.gen_096.level_y; // ductwork
 		case   6: return this.gen_006.level_y; // lights out
 		case  37: return this.gen_037.level_y; // pools
 		case   5: return this.gen_005.level_y; // hotel
@@ -238,6 +250,7 @@ public class Level_000 extends BackroomsLevel {
 		case   1: return this.gen_001.getNextY(); // basement
 		case  23: return this.gen_023.getNextY(); // overgrowth
 		case   0: return this.gen_000.getNextY(); // lobby
+		case  96: return this.gen_096.getNextY(); // ductwork
 		case   6: return this.gen_006.getNextY(); // lights out
 		case  37: return this.gen_037.getNextY(); // pools
 		case   5: return this.gen_005.getNextY(); // hotel
@@ -269,6 +282,7 @@ public class Level_000 extends BackroomsLevel {
 		case  1: // basement
 		case 23: // overgrowth
 		case  0: // lobby
+		case 96: // ductwork
 		case  6: // lights out
 		case 37: // pools
 		case  5: // hotel
@@ -320,6 +334,7 @@ public class Level_000 extends BackroomsLevel {
 
 	public class Pregen_Level_000 implements PreGenData {
 		public final HashMap<Iab, LobbyData>    lobby    = new HashMap<Iab, LobbyData>();
+		public final HashMap<Iab, DuctData>     ducts    = new HashMap<Iab, DuctData>();
 		public final HashMap<Iab, BasementData> basement = new HashMap<Iab, BasementData>();
 		public final HashMap<Iab, HotelData>    hotel    = new HashMap<Iab, HotelData>();
 		public final HashMap<Iab, PoolData>     pools    = new HashMap<Iab, PoolData>();
@@ -340,6 +355,7 @@ public class Level_000 extends BackroomsLevel {
 			// pre-generate
 			final Pregen_Level_000 pregen = new Pregen_Level_000();
 			this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
+			this.gen_096.pregenerate(pregen.ducts,    chunkX, chunkZ); // ductwork
 			this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ); // basement
 			this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
 			this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // pools
@@ -347,6 +363,7 @@ public class Level_000 extends BackroomsLevel {
 			this.gen_001.generate(pregen, plots, chunk, chunkX, chunkZ); // basement
 			this.gen_023.generate(pregen, plots, chunk, chunkX, chunkZ); // overgrowth
 			this.gen_000.generate(pregen, plots, chunk, chunkX, chunkZ); // lobby
+			this.gen_096.generate(pregen, plots, chunk, chunkX, chunkZ); // ductwork
 			this.gen_006.generate(pregen, plots, chunk, chunkX, chunkZ); // lights out
 			this.gen_037.generate(pregen, plots, chunk, chunkX, chunkZ); // pools
 			this.gen_005.generate(pregen, plots, chunk, chunkX, chunkZ); // hotel
