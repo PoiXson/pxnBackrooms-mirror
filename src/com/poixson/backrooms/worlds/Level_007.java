@@ -10,7 +10,7 @@ import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 
 
 // 7 | Thalassophobia
-public class Level_007 extends BackroomsLevel {
+public class Level_007 extends BackroomsWorld {
 
 	public static final boolean ENABLE_GEN_007 = true;
 

@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_111;
 import com.poixson.backrooms.listeners.Listener_111;
@@ -17,7 +17,7 @@ import com.poixson.tools.worldstore.VarStore;
 
 
 // 111 | Run For Your Life!
-public class Level_111 extends BackroomsLevel {
+public class Level_111 extends BackroomsWorld {
 	public static final String KEY_NEXT_HALL_X = "next_hall_x";
 
 	// generators

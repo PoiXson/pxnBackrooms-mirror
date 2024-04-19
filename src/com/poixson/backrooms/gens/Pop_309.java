@@ -28,7 +28,7 @@ import com.poixson.tools.plotter.BlockPlotter;
 public class Pop_309 implements BackroomsPop {
 
 	protected final BackroomsPlugin plugin;
-	protected final Level_000 backlevel;
+	protected final Level_000 level_000;
 	protected final Gen_309 gen_309;
 
 	protected final Pop_309_Trees treePop;
@@ -39,7 +39,7 @@ public class Pop_309 implements BackroomsPop {
 
 	public Pop_309(final Level_000 level_000) {
 		this.plugin    = level_000.getPlugin();
-		this.backlevel = level_000;
+		this.level_000 = level_000;
 		this.gen_309   = level_000.gen_309;
 		this.treePop = new Pop_309_Trees(this.gen_309);
 	}
@@ -143,7 +143,7 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest stairs
 	public void populate_stairs(final int x, final int y, final int z, final LimitedRegion region) {
-		((Level_000)this.gen_309.backlevel).portal_309_stairs.add(x, z);
+		this.level_000.portal_309_stairs.add(x, z);
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.axis("use")
@@ -164,7 +164,7 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest door
 	public void populate_door(final int x, final int y, final int z, final LimitedRegion region) {
-		((Level_000)this.gen_309.backlevel).portal_309_doors.add(x, z);
+		this.level_000.portal_309_doors.add(x, z);
 		final double value = this.gen_309.noisePrairie.getNoise(x, z);
 		final Material block_door = this.getDoorStyle(value);
 		final Material block_wall = this.getDoorWallStyle(value);
@@ -246,8 +246,8 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest hatch
 	public void populate_hatch(final int x, final int y, final int z, final LimitedRegion region) {
-		final int level_019_y = this.backlevel.gen_019.level_y;
-		final int level_019_h = this.backlevel.gen_019.level_h;
+		final int level_019_y = this.level_000.gen_019.level_y;
+		final int level_019_h = this.level_000.gen_019.level_h;
 		// top half
 		{
 			final BlockPlotter plot =
@@ -308,7 +308,7 @@ public class Pop_309 implements BackroomsPop {
 			matrix[0][2].append("$$$");
 			plot.run(region, matrix);
 		}
-		((Level_000)this.gen_309.backlevel).portal_019_to_309.add(x, z);
+		this.level_000.portal_019_to_309.add(x, z);
 	}
 
 

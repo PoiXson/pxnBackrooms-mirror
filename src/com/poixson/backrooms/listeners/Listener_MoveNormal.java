@@ -69,7 +69,7 @@ public class Listener_MoveNormal implements xListener {
 		final int level = this.plugin.getLevel(player);
 		// basement lights
 		if (level == 1) {
-			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsLevel(0);
+			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsWorld(0);
 			final Gen_001 gen_001 = level_000.gen_001;
 			final Location to = event.getTo();
 			final World world = to.getWorld();

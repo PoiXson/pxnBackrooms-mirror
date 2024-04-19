@@ -9,7 +9,7 @@ import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 
 
 // 36 | Airport
-public class Level_036 extends BackroomsLevel {
+public class Level_036 extends BackroomsWorld {
 
 	public static final boolean ENABLE_GEN_036 = true;
 

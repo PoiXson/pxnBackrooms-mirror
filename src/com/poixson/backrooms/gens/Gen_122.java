@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_011;
 import com.poixson.tools.abstractions.Tuple;
@@ -32,8 +32,8 @@ public class Gen_122 extends BackroomsGen {
 
 
 
-	public Gen_122(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
-		super(backlevel, gen_below, seed);
+	public Gen_122(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
+		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		// params
@@ -64,8 +64,8 @@ public class Gen_122 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Level_011 backlevel = (Level_011) this.backlevel;
-		final int level_122_y = backlevel.gen_122.level_y;
+		final Level_011 level_011 = (Level_011) this.backworld;
+		final int level_122_y = level_011.gen_122.level_y;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++)
 				chunk.setBlock(ix, level_122_y, iz, Material.BEDROCK);

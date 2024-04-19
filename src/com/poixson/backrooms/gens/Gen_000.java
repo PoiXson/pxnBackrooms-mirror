@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_001.BasementData;
 import com.poixson.backrooms.worlds.Level_000;
@@ -87,8 +87,8 @@ public class Gen_000 extends BackroomsGen {
 
 
 
-	public Gen_000(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
-		super(backlevel, gen_below, seed);
+	public Gen_000(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below)
+		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
@@ -252,7 +252,7 @@ public class Gen_000 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Level_000 level_000 = (Level_000) this.backlevel;
+		final Level_000 level_000 = (Level_000) this.backworld;
 		final Gen_001 gen_001 = level_000.gen_001;
 		final Gen_023 gen_023 = level_000.gen_023;
 		final BlockData block_subfloor        = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );

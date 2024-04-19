@@ -33,7 +33,7 @@ import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
 
-public abstract class BackroomsLevel extends ChunkGenerator {
+public abstract class BackroomsWorld extends ChunkGenerator {
 	public static final int DEFAULT_SPAWN_NEAR_DISTANCE = 100;
 
 	protected final BackroomsPlugin plugin;
@@ -49,7 +49,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 
 
 
-	public BackroomsLevel(final BackroomsPlugin plugin) {
+	public BackroomsWorld(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
 		this.seed = plugin.getSeed();
 		plugin.register(this.getMainLevel(), this);
@@ -251,7 +251,7 @@ public abstract class BackroomsLevel extends ChunkGenerator {
 				final int chunkX, final int chunkZ, final LimitedRegion region) {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> delayed_plotters = new LinkedList<Tuple<BlockPlotter, StringBuilder[][]>>();
 			// block plotters
-			for (final BackroomsPop pop : BackroomsLevel.this.pops)
+			for (final BackroomsPop pop : BackroomsWorld.this.pops)
 				pop.populate(delayed_plotters, region, chunkX, chunkZ);
 			// place delayed blocks
 			if (!delayed_plotters.isEmpty()) {

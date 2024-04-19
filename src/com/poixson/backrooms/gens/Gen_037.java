@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
@@ -81,8 +81,8 @@ public class Gen_037 extends BackroomsGen {
 
 
 
-	public Gen_037(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
-		super(backlevel, gen_below, seed);
+	public Gen_037(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
+		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
@@ -195,10 +195,10 @@ public class Gen_037 extends BackroomsGen {
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
-		final Level_000 backlevel = (Level_000) this.backlevel;
-		final int level_000_y = backlevel.gen_000.level_y;
-		final int level_000_h = backlevel.gen_000.level_h;
-		final int level_006_h = backlevel.gen_006.level_h;
+		final Level_000 level_000 = (Level_000) this.backworld;
+		final int level_000_y = level_000.gen_000.level_y;
+		final int level_000_h = level_000.gen_000.level_h;
+		final int level_006_h = level_000.gen_006.level_h;
 		final Map<Iab, PoolData>  poolData  = ((Pregen_Level_000)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int h_walls = this.level_h + 2;
@@ -415,7 +415,7 @@ public class Gen_037 extends BackroomsGen {
 						if (!foundWall) {
 							final int xx = (chunkX * 16) + (rx * 8);
 							final int zz = (chunkZ * 16) + (rz * 8);
-							((Level_000)this.backlevel).portal_000_to_037.add(xx, zz);
+							level_000.portal_000_to_037.add(xx, zz);
 							final int hh = level_000_h + this.subceiling + level_006_h + this.subfloor + 5;
 							final BlockPlotter pp =
 								(new BlockPlotter())

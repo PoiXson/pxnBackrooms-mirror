@@ -11,7 +11,7 @@ import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 
 
 // 866 | Dirtfield
-public class Level_866 extends BackroomsLevel {
+public class Level_866 extends BackroomsWorld {
 
 	public static final boolean ENABLE_GEN_866 = true;
 	public static final boolean ENABLE_TOP_866 = true;

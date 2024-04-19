@@ -12,8 +12,8 @@ public class Gen_866 extends BackroomsGen {
 
 
 
-	public Gen_866(final BackroomsLevel backlevel, final int seed, final int level_y) {
-		super(backlevel, seed, level_y, level_h);
+	public Gen_866(final BackroomsWorld backworld, final int seed, final int level_y) {
+		super(backworld, seed, level_y, level_h);
 		// field
 //		this.noiseField = this.register(new FastNoiseLiteD());
 //		this.noiseField.setFrequency(0.006);

@@ -15,7 +15,7 @@ import com.poixson.utils.FastNoiseLiteD;
 public abstract class BackroomsGen {
 
 	public final BackroomsPlugin plugin;
-	public final BackroomsLevel backlevel;
+	public final BackroomsWorld backworld;
 	public final BackroomsGen   gen_below;
 
 	protected final CopyOnWriteArraySet<FastNoiseLiteD> noises = new CopyOnWriteArraySet<FastNoiseLiteD>();
@@ -27,9 +27,9 @@ public abstract class BackroomsGen {
 
 
 
-	protected BackroomsGen(final BackroomsLevel backlevel, final BackroomsGen gen_below, final int seed) {
-		this.plugin    = backlevel.plugin;
-		this.backlevel = backlevel;
+	protected BackroomsGen(final BackroomsWorld backworld, final BackroomsGen gen_below, final int seed) {
+		this.plugin    = backworld.plugin;
+		this.backworld = backworld;
 		this.gen_below = gen_below;
 		this.seed      = seed;
 		this.bedrock_barrier = this.plugin.getBedrockBarrier();

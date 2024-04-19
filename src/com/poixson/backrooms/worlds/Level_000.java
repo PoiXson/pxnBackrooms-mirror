@@ -7,8 +7,8 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_000;
@@ -46,7 +46,7 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 //  23 | Overgrowth
 //   1 | Basement
 // 188 | The Windows
-public class Level_000 extends BackroomsLevel {
+public class Level_000 extends BackroomsWorld {
 
 	// generators
 	public final Gen_001 gen_001;
@@ -87,7 +87,7 @@ public class Level_000 extends BackroomsLevel {
 
 
 
-	public Level_000(final BackroomsPlugin plugin) {
+	public Level_000(final BackroomsPlugin plugin)
 		super(plugin);
 		// generators
 		this.gen_001 = this.register(new Gen_001(this, this.seed                      )); // basement

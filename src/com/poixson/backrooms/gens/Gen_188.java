@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.abstractions.Tuple;
@@ -51,13 +51,13 @@ public class Gen_188 extends BackroomsGen {
 
 
 
-	public Gen_188(final BackroomsLevel backlevel, final int seed, final int level_y) {
-		super(backlevel, null, seed);
+	public Gen_188(final BackroomsWorld backworld, final int seed, final int level_y) {
+		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
-		final Level_000 level_000 = (Level_000) backlevel;
+		final Level_000 level_000 = (Level_000) backworld;
 		final Gen_001 gen_001 = level_000.gen_001;
 		final Gen_309 gen_309 = level_000.gen_309;
 		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
@@ -84,7 +84,7 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return ((Level_000)this.backlevel).gen_019.getNextY();
+		return ((Level_000)this.backworld).gen_019.getNextY();
 	}
 
 
@@ -94,7 +94,7 @@ public class Gen_188 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Level_000 level_000 = (Level_000) this.backlevel;
+		final Level_000 level_000 = (Level_000) this.backworld;
 		final BlockData block_subfloor         = StringToBlockDataDef(this.block_subfloor,         DEFAULT_BLOCK_SUBFLOOR        );
 		final BlockData block_floor            = StringToBlockDataDef(this.block_floor,            DEFAULT_BLOCK_FLOOR           );
 		final BlockData block_floor_path_lines = StringToBlockDataDef(this.block_floor_path_lines, DEFAULT_BLOCK_FLOOR_PATH_LINES);

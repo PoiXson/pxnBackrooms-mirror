@@ -42,7 +42,7 @@ public class Listener_023 implements xListener {
 		if (level == 0
 		||  level == 1
 		||  level == 23) {
-			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsLevel(0);
+			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsWorld(0);
 			final int level_000_y = level_000.gen_000.level_y;
 			final int level_023_y = level_000.gen_023.level_y;
 			final ItemStack stack = event.getItem();

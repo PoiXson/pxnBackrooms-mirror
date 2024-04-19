@@ -29,7 +29,7 @@ public class Listener_Interact implements xListener {
 
 	public Listener_Interact(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
-		final Level_000 level_000 = (Level_000) plugin.getBackroomsLevel(0);
+		final Level_000 level_000 = (Level_000) plugin.getBackroomsWorld(0);
 		this.tp_range = level_000.gen_006.tp_range;
 	}
 
@@ -51,7 +51,7 @@ public class Listener_Interact implements xListener {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		final Level_000 level_000 = (Level_000) this.plugin.getBackroomsLevel(0);
+		final Level_000 level_000 = (Level_000) this.plugin.getBackroomsWorld(0);
 		final int level_000_y = level_000.gen_000.level_y;
 		final int level_006_y = level_000.gen_006.level_y;
 		final Block block = event.getClickedBlock();

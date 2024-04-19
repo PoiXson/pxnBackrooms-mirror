@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
@@ -16,7 +16,7 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 
 
 // 771 | Crossroads
-public class Level_771 extends BackroomsLevel {
+public class Level_771 extends BackroomsWorld {
 
 	// generators
 	public final Gen_771 gen_771;
@@ -34,7 +34,7 @@ public class Level_771 extends BackroomsLevel {
 
 
 
-	public Level_771(final BackroomsPlugin plugin) {
+	public Level_771(final BackroomsPlugin plugin)
 		super(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {

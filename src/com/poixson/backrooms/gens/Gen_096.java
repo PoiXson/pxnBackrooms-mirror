@@ -12,7 +12,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
@@ -65,9 +65,9 @@ public class Gen_096 extends BackroomsGen {
 
 
 
-	public Gen_096(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below)
+	public Gen_096(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below)
 			throws InvalidConfigurationException {
-		super(backlevel, gen_below, seed);
+		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);

@@ -45,7 +45,7 @@ public class Listener_771 implements xListener {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		final Level_771 level_771 = (Level_771) this.plugin.getBackroomsLevel(771);
+		final Level_771 level_771 = (Level_771) this.plugin.getBackroomsWorld(771);
 		final Gen_771 gen_771 = level_771.gen_771;
 		final int level_771_y = gen_771.level_y;
 		final int level_771_h = gen_771.level_h;
@@ -68,9 +68,9 @@ public class Listener_771 implements xListener {
 
 	public void triggerSecretDoor() {
 		if (this.block_changer.get() == null) {
-			final Level_771 backlevel = (Level_771) this.plugin.getBackroomsLevel(771);
-			final int level_771_y = backlevel.gen_771.level_y;
-			final int level_771_h = backlevel.gen_771.level_h;
+			final Level_771 level_771 = (Level_771) this.plugin.getBackroomsWorld(771);
+			final int level_771_y = level_771.gen_771.level_y;
+			final int level_771_h = level_771.gen_771.level_h;
 			final int y = level_771_y + level_771_h;
 			final BlockData block_air   = Bukkit.createBlockData("minecraft:air"                         );
 			final BlockData block_solid = Bukkit.createBlockData("minecraft:chiseled_polished_blackstone");

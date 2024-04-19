@@ -9,7 +9,7 @@ import com.poixson.pluginlib.tools.plotter.BlockPlotter;
 
 
 // 151 | Dollhouse
-public class Level_151 extends BackroomsLevel {
+public class Level_151 extends BackroomsWorld {
 
 	public static final boolean ENABLE_GEN_151 = true;
 	public static final boolean ENABLE_TOP_151 = true;

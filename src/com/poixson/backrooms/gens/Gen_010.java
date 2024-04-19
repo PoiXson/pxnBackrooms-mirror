@@ -7,8 +7,8 @@ public class Gen_010 extends BackroomsGen {
 
 
 
-	public Gen_010(final BackroomsLevel backlevel, final int seed, final int level_y) {
-		super(backlevel, seed, level_y);
+	public Gen_010(final BackroomsWorld backworld, final int seed, final int level_y) {
+		super(backworld, seed, level_y);
 	}
 
 

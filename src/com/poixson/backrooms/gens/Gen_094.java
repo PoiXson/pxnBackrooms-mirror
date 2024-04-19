@@ -14,7 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_094.PregenLevel94;
 import com.poixson.tools.abstractions.Tuple;
@@ -96,8 +96,8 @@ public class Gen_094 extends BackroomsGen {
 
 
 
-	public Gen_094(final BackroomsLevel backlevel, final int seed) {
-		super(backlevel, null, seed);
+	public Gen_094(final BackroomsWorld backworld, final int seed) {
+		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);

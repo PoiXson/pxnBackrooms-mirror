@@ -13,7 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 import com.poixson.backrooms.BackroomsGen;
-import com.poixson.backrooms.BackroomsLevel;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
@@ -62,8 +62,8 @@ public class Gen_006 extends BackroomsGen {
 
 
 
-	public Gen_006(final BackroomsLevel backlevel, final int seed, final BackroomsGen gen_below) {
-		super(backlevel, gen_below, seed);
+	public Gen_006(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
+		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
@@ -157,7 +157,7 @@ public class Gen_006 extends BackroomsGen {
 			&&  value > this.noiseButtonSwitch.getNoise(xx, zz+1)
 			&&  value > this.noiseButtonSwitch.getNoise(xx+1, zz)
 			&&  value > this.noiseButtonSwitch.getNoise(xx-1, zz) ) {
-				final Level_000 level_000 = (Level_000) this.backlevel;
+				final Level_000 level_000 = (Level_000) this.backworld;
 				final Gen_000 gen_000 = level_000.gen_000;
 				// switch
 				if (value > this.thresh_switch) {

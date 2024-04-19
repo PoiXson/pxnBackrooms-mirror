@@ -3,8 +3,8 @@ package com.poixson.backrooms.worlds;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.Gen_094;
@@ -15,14 +15,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 
 
 // 94 | Motion
-public class Level_094 extends BackroomsLevel {
+public class Level_094 extends BackroomsWorld {
 
 	// generators
 	public final Gen_094 gen_094;
 
 
 
-	public Level_094(final BackroomsPlugin plugin) {
+	public Level_094(final BackroomsPlugin plugin)
 		super(plugin);
 		// generators
 		this.gen_094 = this.register(new Gen_094(this, this.seed));

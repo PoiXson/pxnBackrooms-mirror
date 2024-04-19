@@ -6,8 +6,8 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.poixson.backrooms.BackroomsLevel;
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.dynmap.GeneratorTemplate;
 import com.poixson.backrooms.gens.DataHolder_City;
@@ -30,7 +30,7 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 264 | Museum
 //   4 | Abandoned Office
 //  40 | Arcade
-public class Level_011 extends BackroomsLevel {
+public class Level_011 extends BackroomsWorld {
 
 	// generators
 	public final Gen_004 gen_004;
