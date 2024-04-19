@@ -283,7 +283,6 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			this.log().warning("Creating world for backrooms level: "+Integer.toString(level));
 			final Environment env;
 			switch (level) {
-			case 78: env = Environment.THE_END; break;
 			default: env = Environment.NORMAL;  break;
 			}
 			final String seedStr = this.plugin.getSeedString();
@@ -329,27 +328,18 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			}
 			// time
 			switch (level) {
-			case 7:   // thalassophobia
-			case 78:  // space
 			case 111: // run for your life
 			case 771: // crossroads
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
 				mvworld.setTime("midnight"); break;
-			case 151: // dollhouse
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
-				mvworld.setTime("noon"); break;
 			default:
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE);
 				mvworld.setTime("noon"); break;
 			}
 			// weather
 			switch (level) {
-			case 7:   // thalassophobia
-			case 78:  // space
 			case 111: // run for your life
-			case 151: // dollhouse
 			case 771: // crossroads
-			case 866: // dirtfield
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.FALSE); break;
 			default:
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.TRUE);  break;
@@ -357,12 +347,8 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			// insomnia
 			switch (level) {
 			case 0:   // lobby
-			case 9:   // suburbs
 			case 11:  // city
-			case 78:  // space
-			case 151: // dollhouse
 			case 771: // crossroads
-			case 866: // dirtfield
 				world.setGameRule(GameRule.DO_INSOMNIA, Boolean.TRUE);  break;
 			default:
 				world.setGameRule(GameRule.DO_INSOMNIA, Boolean.FALSE); break;
@@ -386,14 +372,8 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			// natural regeneration
 			switch (level) {
 			case 0:   // lobby
-			case 7:   // thalassophobia
-			case 9:   // suburbs
-			case 10:  // field of wheat
 			case 11:  // city
-			case 78:  // space
-			case 151: // dollhouse
 			case 771: // crossroads
-			case 866: // dirtfield
 				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE); break;
 			default:
 				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE);  break;
@@ -401,12 +381,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 //			// F3 debug info
 //			switch (level) {
 //			case 0:   // lobby
-//			case 7:   // thalassophobia
-//			case 9:   // suburbs
-//			case 10:  // field of wheat
 //			case 11:  // city
-//			case 151: // dollhouse
-//			case 866: // dirtfield
 //				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
 //			default:
 //				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;

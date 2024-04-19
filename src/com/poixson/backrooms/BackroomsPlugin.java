@@ -123,16 +123,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.economy.set(SetupVaultEconomy());
 		// backrooms levels
 		new Level_000(this); // lobby, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
-//		new Level_007(this); // thalassophobia
-//		new Level_009(this); // suburbs
-//		new Level_010(this); // field of wheat
 		new Level_011(this); // city, arcade, ikea, mall, museum, office
 		new Level_111(this); // run for your life
-//		new Level_078(this); // space
 		new Level_094(this); // motion
-//		new Level_151(this); // dollhouse
 		new Level_771(this); // crossroads
-//		new Level_866(this); // dirtfield
 		if (this.enableDynmapConfigGen())
 			this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
 //TODO: enable in config
