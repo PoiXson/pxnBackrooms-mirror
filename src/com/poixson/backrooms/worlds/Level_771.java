@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.InvalidConfigurationException;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsWorld;
@@ -35,6 +36,7 @@ public class Level_771 extends BackroomsWorld {
 
 
 	public Level_771(final BackroomsPlugin plugin)
+			throws InvalidConfigurationException {
 		super(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {

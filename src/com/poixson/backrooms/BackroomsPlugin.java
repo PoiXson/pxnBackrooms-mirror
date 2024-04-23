@@ -25,6 +25,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -122,11 +123,15 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// vault
 		this.economy.set(SetupVaultEconomy());
 		// backrooms levels
+		try {
 		new Level_000(this); // lobby, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
 		new Level_011(this); // city, arcade, ikea, mall, museum, office
 		new Level_111(this); // run for your life
 		new Level_094(this); // motion
 		new Level_771(this); // crossroads
+		} catch (InvalidConfigurationException e) {
+			throw new RuntimeException(e);
+		}
 		if (this.enableDynmapConfigGen())
 			this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
 //TODO: enable in config

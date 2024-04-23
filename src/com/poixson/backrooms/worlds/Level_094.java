@@ -3,6 +3,8 @@ package com.poixson.backrooms.worlds;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.bukkit.configuration.InvalidConfigurationException;
+
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
@@ -23,6 +25,7 @@ public class Level_094 extends BackroomsWorld {
 
 
 	public Level_094(final BackroomsPlugin plugin)
+			throws InvalidConfigurationException {
 		super(plugin);
 		// generators
 		this.gen_094 = this.register(new Gen_094(this, this.seed));

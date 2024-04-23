@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.InvalidConfigurationException;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsWorld;
@@ -88,6 +89,7 @@ public class Level_000 extends BackroomsWorld {
 
 
 	public Level_000(final BackroomsPlugin plugin)
+			throws InvalidConfigurationException {
 		super(plugin);
 		// generators
 		this.gen_001 = this.register(new Gen_001(this, this.seed                      )); // basement

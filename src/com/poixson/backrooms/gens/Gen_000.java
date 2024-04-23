@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -88,6 +89,7 @@ public class Gen_000 extends BackroomsGen {
 
 
 	public Gen_000(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below)
+			throws InvalidConfigurationException {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
@@ -112,7 +114,7 @@ public class Gen_000 extends BackroomsGen {
 		// noise
 		this.noiseLobbyWalls = this.register(new FastNoiseLiteD());
 		this.noiseLoot       = this.register(new FastNoiseLiteD());
-		if (this.subceiling < 1) throw new RuntimeException("Invalid SubCeiling value for level 0, must be >=1");
+		if (this.subceiling < 1) throw new InvalidConfigurationException("Invalid parameter value for level 0 SubCeiling, must be 1 or greater");
 	}
 
 
