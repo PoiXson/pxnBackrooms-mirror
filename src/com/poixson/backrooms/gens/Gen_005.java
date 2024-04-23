@@ -163,10 +163,9 @@ public class Gen_005 extends BackroomsGen {
 		public NodeType type;
 		public boolean hall_center = false;
 
-		public HotelData(final double value) {
-			this.value = value;
-			final double thresh_room_hall = Gen_005.this.thresh_room_hall;
-			this.type = (value>thresh_room_hall ? NodeType.HALL : NodeType.ROOM);
+		public HotelData(final int x, final int z) {
+			this.value = Gen_005.this.noiseHotelWalls.getNoiseRot(x, z, 0.25);
+			this.type = (this.value>Gen_005.this.thresh_room_hall ? NodeType.HALL : NodeType.ROOM);
 		}
 
 	}
@@ -179,8 +178,7 @@ public class Gen_005 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-8; ix<24; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final double value = this.noiseHotelWalls.getNoiseRot(xx, zz, 0.25);
-				final HotelData dao = new HotelData(value);
+				final HotelData dao = new HotelData(xx, zz);
 				data.put(new Iab(ix, iz), dao);
 			}
 		}

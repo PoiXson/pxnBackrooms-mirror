@@ -143,11 +143,11 @@ public class Gen_000 extends BackroomsGen {
 		public int boxed = 0;
 		public BlockFace box_dir = null;
 
-		public LobbyData(final double value_wall) {
-			this.value_wall = value_wall;
+		public LobbyData(final int x, final int z) {
+			this.value_wall = Gen_000.this.noiseLobbyWalls.getNoiseRot(x, z, 0.25);
 			this.isWall = (
-				value_wall > Gen_000.this.thresh_wall_L &&
-				value_wall < Gen_000.this.thresh_wall_H
+				this.value_wall > Gen_000.this.thresh_wall_L &&
+				this.value_wall < Gen_000.this.thresh_wall_H
 			);
 		}
 
@@ -161,8 +161,7 @@ public class Gen_000 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final double value_wall = this.noiseLobbyWalls.getNoiseRot(xx, zz, 0.25);
-				final LobbyData dao = new LobbyData(value_wall);
+				final LobbyData dao = new LobbyData(xx, zz);
 				data.put(new Iab(ix, iz), dao);
 			}
 		}
