@@ -108,7 +108,10 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 	}
 
 	public abstract int getY(final int level);
-	public abstract int getMaxY(final int level);
+
+	public int getMaxY(final int level) {
+		return 319;
+	}
 
 
 

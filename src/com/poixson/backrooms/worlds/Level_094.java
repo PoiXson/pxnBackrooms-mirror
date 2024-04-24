@@ -59,10 +59,6 @@ public class Level_094 extends BackroomsWorld {
 	public int getY(final int level) {
 		return this.gen_094.level_y;
 	}
-	@Override
-	public int getMaxY(final int level) {
-		return 319;
-	}
 
 
 
