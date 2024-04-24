@@ -43,7 +43,6 @@ import com.poixson.backrooms.tasks.FreakOut;
 import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_011;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_111;
 import com.poixson.backrooms.worlds.Level_333;
@@ -126,7 +125,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// backrooms levels
 		try {
 		new Level_000(this); // lobby, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
-		new Level_011(this); // city, arcade, ikea, mall, museum, office
 		new Level_111(this); // run for your life
 		new Level_094(this); // motion
 		new Level_333(this); // cubes
