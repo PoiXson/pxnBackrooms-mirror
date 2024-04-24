@@ -46,6 +46,7 @@ import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_011;
 import com.poixson.backrooms.worlds.Level_094;
 import com.poixson.backrooms.worlds.Level_111;
+import com.poixson.backrooms.worlds.Level_333;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
@@ -128,6 +129,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		new Level_011(this); // city, arcade, ikea, mall, museum, office
 		new Level_111(this); // run for your life
 		new Level_094(this); // motion
+		new Level_333(this); // cubes
 		new Level_771(this); // crossroads
 		} catch (InvalidConfigurationException e) {
 			throw new RuntimeException(e);

@@ -329,6 +329,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			// time
 			switch (level) {
 			case 111: // run for your life
+			case 333: // cubes
 			case 771: // crossroads
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
 				mvworld.setTime("midnight"); break;
@@ -339,6 +340,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			// weather
 			switch (level) {
 			case 111: // run for your life
+			case 333: // cubes
 			case 771: // crossroads
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.FALSE); break;
 			default:
@@ -364,6 +366,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			switch (level) {
 			case  0:  // lobby
 			case 94:  // motion
+			case 333: // cubes
 			case 771: // crossroads
 				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.FALSE); break;
 			default:
