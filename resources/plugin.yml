@@ -27,7 +27,7 @@ permissions:
             backrooms.tp.others: true
             backrooms.noclipfront: true
             backrooms.noclipback: true
-            backrooms.level33_button: true
+            backrooms.level_111_button: true
     backrooms.tp:
         default: op
         description: Teleport to the backrooms
@@ -40,6 +40,6 @@ permissions:
     backrooms.noclipback:
         default: true
         description: Allow players to noclip inside the backrooms
-    backrooms.level33_button:
+    backrooms.level_111_button:
         default: true
-        description: Allow players to teleport into level 33 run for your life
+        description: Allow players to teleport into level 111 run for your life
