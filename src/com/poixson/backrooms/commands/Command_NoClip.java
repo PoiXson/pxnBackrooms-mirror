@@ -14,6 +14,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.tools.commands.pxnCommandRoot;
 
 
+// /noclip
 public class Command_NoClip extends pxnCommandRoot {
 
 	protected final BackroomsPlugin plugin;

@@ -7,12 +7,12 @@ import com.poixson.backrooms.BackroomsPlugin;
 
 public class Commands implements Closeable {
 
-	protected final Command_NoClip cmd_noclip;
+	protected final Command_NoClip cmd_noclip; // /noclip
 
 
 
 	public Commands(final BackroomsPlugin plugin) {
-		this.cmd_noclip = new Command_NoClip(plugin);
+		this.cmd_noclip = new Command_NoClip(plugin); // /noclip
 	}
 
 
