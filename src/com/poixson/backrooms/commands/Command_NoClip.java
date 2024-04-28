@@ -40,44 +40,84 @@ public class Command_NoClip extends pxnCommandRoot {
 	public boolean onCommand(final CommandSender sender,
 			final Command command, final String label, final String[] args) {
 		final Player player = (sender instanceof Player ? (Player)sender : null);
-		if (player != null && !player.hasPermission("backrooms.tp")) {
-			player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
-			return true;
-		}
-		final int numargs = args.length;
-		// tp self random
-		if (numargs == 1 && player != null) {
+		final int num_args = args.length;
+		// no-clip self
+		if (num_args == 0) {
+			if (player == null)
+				return false;
+			final int level_from = this.plugin.getLevel(player);
+			// from frontrooms
+			if (level_from < 0) {
+				if (!player.hasPermission("backrooms.cmd.noclip.front")) {
+					if (player.hasPermission("backrooms.cmd.noclip.back")) {
+						sender.sendMessage("You don't have permission to use this command here.");
+						return true;
+					}
+					return false;
+				}
+			// from backrooms
+			} else {
+				if (!player.hasPermission("backrooms.cmd.noclip.back")) {
+					if (player.hasPermission("backrooms.cmd.noclip.front")) {
+						sender.sendMessage("You don't have permission to use this command here.");
+						return true;
+					}
+					return false;
+				}
+			}
 			this.plugin.noclip(player);
 			return true;
-		}
-		// tp to level
+		} // end 0 args
+		// no-clip to level
 		int level = Integer.MIN_VALUE;
-		int i = 1;
-		if (numargs > 1 && NumberUtils.IsNumeric(args[1])) {
-			level = Integer.parseInt(args[1]);
-			if (!this.plugin.isValidLevel(level)) {
-				sender.sendMessage(String.format("%sInvalid backrooms level: %d", CHAT_PREFIX, Integer.valueOf(level)));
+		if (IsNumeric(args[0])) {
+			if (player != null
+			&& !player.hasPermission("backrooms.cmd.noclip.specific"))
+				return false;
+			final int lvl = Integer.parseInt(args[0]);
+			if (!this.plugin.isValidLevel(lvl)) {
+				sender.sendMessage(String.format("%sInvalid backrooms level: %s", CHAT_PREFIX, args[0]));
 				return true;
 			}
-			i = 2;
+			level = lvl;
 		}
-		// tp players
-		if (numargs > i) {
-			if (player != null && !player.hasPermission("backrooms.tp.others")) {
-				player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
-				return true;
-			}
-			for (; i<numargs; i++) {
-				final Player p = Bukkit.getPlayer(args[i]);
-				if (p == null) sender.sendMessage(String.format("%sUnknown player: %s", CHAT_PREFIX, args[i]));
-				else           this.plugin.noclip(p, level);
-			}
-		// tp self
-		} else {
-			if (player == null) {
-				sender.sendMessage(CHAT_PREFIX+"Cannot teleport");
+		// no-clip self
+		if (num_args == 1 && level >= 0) {
+			if (player == null)
+				return false;
+			final int level_from = this.plugin.getLevel(player);
+			// from frontrooms
+			if (level_from < 0) {
+				if (!player.hasPermission("backrooms.cmd.noclip.front")) {
+					if (player.hasPermission("backrooms.cmd.noclip.back")) {
+						sender.sendMessage("You don't have permission to use this command here.");
+						return true;
+					}
+					return false;
+				}
+			// from backrooms
 			} else {
-				this.plugin.noclip(player, level);
+				if (!player.hasPermission("backrooms.cmd.noclip.back")) {
+					if (player.hasPermission("backrooms.cmd.noclip.front")) {
+						sender.sendMessage("You don't have permission to use this command here.");
+						return true;
+					}
+					return false;
+				}
+			}
+			this.plugin.noclip(player, level);
+		// no-clip others
+		} else {
+			if (player != null
+			&& !player.hasPermission("backrooms.cmd.noclip.others"))
+				return false;
+			int index = 0;
+			if (level >= 0)
+				index++;
+			for (; index<num_args; index++) {
+				final Player p = Bukkit.getPlayer(args[index]);
+				if (p == null) sender.sendMessage(String.format("%sUnknown player: %s", CHAT_PREFIX, args[index]));
+				else           this.plugin.noclip(p, level);
 			}
 		}
 		return true;
