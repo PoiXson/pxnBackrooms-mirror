@@ -1,26 +1,34 @@
 package com.poixson.backrooms.commands;
 
 import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
+import static com.poixson.utils.NumberUtils.IsNumeric;
+
+import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.commands.pxnCommand;
-import com.poixson.utils.NumberUtils;
+import com.poixson.tools.commands.pxnCommandRoot;
 
 
-public class Command_TP extends pxnCommand<BackroomsPlugin> {
+public class Command_NoClip extends pxnCommandRoot {
 
 	protected final BackroomsPlugin plugin;
 
 
 
-	public Command_TP(final BackroomsPlugin plugin) {
+	public Command_NoClip(final BackroomsPlugin plugin) {
 		super(plugin,
-			"tp",
-			"teleport"
+			"No-Clip into the backrooms.", // desc
+			null, // usage
+			null, // perm
+			new String[] {
+				"noclip",
+				"no-clip"
+			}
 		);
 		this.plugin = plugin;
 	}
@@ -28,7 +36,8 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 
 
 	@Override
-	public boolean run(final CommandSender sender, final String label, final String[] args) {
+	public boolean onCommand(final CommandSender sender,
+			final Command command, final String label, final String[] args) {
 		final Player player = (sender instanceof Player ? (Player)sender : null);
 		if (player != null && !player.hasPermission("backrooms.tp")) {
 			player.sendMessage(CHAT_PREFIX+"You don't have permission to use this.");
@@ -71,6 +80,15 @@ public class Command_TP extends pxnCommand<BackroomsPlugin> {
 			}
 		}
 		return true;
+	}
+
+
+
+	@Override
+	public List<String> onTabComplete(final CommandSender sender, final String[] args) {
+//TODO
+System.out.println("TAB:"); for (final String arg : args) System.out.println("  "+arg);
+return null;
 	}
 
 

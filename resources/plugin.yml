@@ -13,10 +13,6 @@ softdepend:
 authors: [ lorenzop ]
 website: ${project.url}
 description: ${project.description}
-commands:
-    backrooms:
-        description: "Commands to administrate the backrooms"
-        usage: "Usage: /backrooms <cmd>"
 permission-message: "You don't have permission to use this command."
 permissions:
     backrooms.*:

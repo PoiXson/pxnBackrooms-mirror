@@ -1,16 +1,25 @@
 package com.poixson.backrooms.commands;
 
+import java.io.Closeable;
+
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.commands.pxnCommandsHandler;
 
 
-public class Commands extends pxnCommandsHandler<BackroomsPlugin> {
+public class Commands implements Closeable {
+
+	protected final Command_NoClip cmd_noclip;
 
 
 
 	public Commands(final BackroomsPlugin plugin) {
-		super("backrooms");
-		this.addCommand(new Command_TP(plugin));
+		this.cmd_noclip = new Command_NoClip(plugin);
+	}
+
+
+
+	@Override
+	public void close() {
+		this.cmd_noclip.close();
 	}
 
 

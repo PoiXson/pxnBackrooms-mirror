@@ -86,11 +86,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 	protected final AtomicReference<Economy> economy = new AtomicReference<Economy>(null);
 
 	// listeners
-	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
 	protected final AtomicReference<Listener_NoClip>     listener_noclip      = new AtomicReference<Listener_NoClip>(null);
 	protected final AtomicReference<Listener_MoveNormal> listener_move_normal = new AtomicReference<Listener_MoveNormal>(null);
 	protected final AtomicReference<Listener_OutOfWorld> listener_outofworld  = new AtomicReference<Listener_OutOfWorld>(null);
 	protected final AtomicReference<Listener_Interact>   listener_interact    = new AtomicReference<Listener_Interact>(null);
+
+	protected final AtomicReference<Commands> commands = new AtomicReference<Commands>(null);
 
 	// configs
 	protected final AtomicReference<FileConfiguration> configLevelParams = new AtomicReference<FileConfiguration>(null);
@@ -152,13 +153,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// register levels
 		for (final BackroomsWorld level : this.backworlds.values())
 			level.register();
-		// commands listener
+		// commands
 		{
-			final Commands listener = new Commands(this);
-			final Commands previous = this.commands.getAndSet(listener);
+			final Commands commands = new Commands(this);
+			final Commands previous = this.commands.getAndSet(commands);
 			if (previous != null)
-				previous.unregister();
-			listener.register(this);
+				previous.close();
 		}
 		// load quotes
 		this.loadQuotes();
@@ -220,6 +220,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 		// stop freakouts
 		for (final FreakOut freak : this.freakouts.values())
 			freak.stop();
+		// commands
+		{
+			final Commands commands = this.commands.getAndSet(null);
+			if (commands != null)
+				commands.close();
+		}
 		// interact listener
 		{
 			final Listener_Interact listener = this.listener_interact.getAndSet(null);
@@ -251,12 +257,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 			lvl.unregister();
 		}
 		this.backworlds.clear();
-		// commands listener
-		{
-			final Commands listener = this.commands.getAndSet(null);
-			if (listener != null)
-				listener.unregister();
-		}
 		// out of world listeners
 		{
 			final Listener_OutOfWorld listener = this.listener_outofworld.getAndSet(null);
