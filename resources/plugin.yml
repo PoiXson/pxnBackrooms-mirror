@@ -18,23 +18,31 @@ permissions:
         default: op
         description: Gives access to all backrooms commands.
         children:
-            backrooms.tp: true
-            backrooms.tp.others: true
-            backrooms.noclipfront: true
-            backrooms.noclipback: true
-            backrooms.level_111_button: true
-    backrooms.tp:
-        default: op
-        description: Teleport to the backrooms
-    backrooms.tp.others:
-        default: op
-        description: Teleport players to the backrooms
-    backrooms.noclipfront:
+            backrooms.noclip.front:        true
+            backrooms.noclip.back:         true
+            backrooms.cmd.noclip.front:    true
+            backrooms.cmd.noclip.back:     true
+            backrooms.cmd.noclip.others:   true
+            backrooms.cmd.noclip.specific: true
+            backrooms.level_111.button:    true
+    backrooms.noclip.front:
         default: true
-        description: Allow players to noclip from the frontrooms to the backrooms
-    backrooms.noclipback:
+        description: Allow players to no-clip by suffocation in the frontrooms.
+    backrooms.noclip.back:
         default: true
-        description: Allow players to noclip inside the backrooms
-    backrooms.level_111_button:
+        description: Allow players to no-clip by suffocation in the backrooms.
+    backrooms.cmd.noclip.front:
+        default: op
+        description: Allow players to no-clip from the frontrooms to the backrooms using the /noclip command.
+    backrooms.cmd.noclip.back:
+        default: op
+        description: Allow players to no-clip inside the backrooms using the /noclip command.
+    backrooms.cmd.noclip.others:
+        default: op
+        description: No-Clip other players into the backrooms with the /noclip command.
+    backrooms.cmd.noclip.specific:
+        default: op
+        description: No-Clip to a specific backrooms level with the /noclip command.
+    backrooms.level_111.button:
         default: true
         description: Allow players to teleport into level 111 run for your life.

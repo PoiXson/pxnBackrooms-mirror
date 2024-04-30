@@ -94,8 +94,8 @@ public class Listener_NoClip implements xListener {
 		if (entity instanceof Player) {
 			final Player player = (Player) entity;
 			final int level = this.plugin.getLevel(player);
-			if ((level < 0 && player.hasPermission("backrooms.noclipfront"))
-			||  (level >=0 && player.hasPermission("backrooms.noclipback" ))) {
+			if ((level < 0 && player.hasPermission("backrooms.noclip.front"))
+			||  (level >=0 && player.hasPermission("backrooms.noclip.back" ))) {
 				final double health = player.getHealth();
 				final DamageCause cause = event.getCause();
 				switch (cause) {

@@ -96,7 +96,7 @@ public class Listener_Interact implements xListener {
 			}
 			case DARK_OAK_BUTTON: {
 				if (level == 6) {
-					if (player.hasPermission("backrooms.level_111_button"))
+					if (player.hasPermission("backrooms.level_111.button"))
 						this.plugin.noclip(player, 33); // level 33 - run for your life
 				}
 				break TYPE_SWITCH;
