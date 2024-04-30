@@ -31,8 +31,8 @@ public class Gen_039 extends BackroomsGen {
 
 
 
-	public Gen_039(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
-		super(backworld, gen_below, seed);
+	public Gen_039(final BackroomsWorld backworld, final int seed) {
+		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		// params

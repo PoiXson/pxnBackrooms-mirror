@@ -23,6 +23,7 @@ public class Command_NoClip extends pxnCommandRoot {
 
 	public Command_NoClip(final BackroomsPlugin plugin) {
 		super(plugin,
+			"backrooms", // namespace
 			"No-Clip into the backrooms.", // desc
 			null, // usage
 			null, // perm

@@ -112,6 +112,7 @@ public class Gen_188 extends BackroomsGen {
 		final Gen_001 gen_001 = level_000.gen_001;
 		final Gen_023 gen_023 = level_000.gen_023;
 		final Gen_000 gen_000 = level_000.gen_000;
+		final Gen_096 gen_096 = level_000.gen_096;
 		final Gen_006 gen_006 = level_000.gen_006;
 		final Gen_037 gen_037 = level_000.gen_037;
 		final Gen_005 gen_005 = level_000.gen_005;
@@ -198,8 +199,8 @@ public class Gen_188 extends BackroomsGen {
 						else break Y_LOOP;
 						if (mod9 < 6) {
 							if (xx > -45 || zz > -45) {
-								final int mod_window = (yy + 64) % 4;
-								if (mod_window < 3) isWindow = true;
+								final int mod_window = (iy + 4) % 6;
+								if (mod_window < 4) isWindow = true;
 							}
 						}
 					}
@@ -219,7 +220,8 @@ public class Gen_188 extends BackroomsGen {
 							switch(lvl) {
 							case  1: lvl_min_y += gen_001.bedrock_barrier + gen_001.subfloor + 1; lvl_max_y -=                      3; break LEVEL_SWITCH;
 							case 23: lvl_min_y += gen_023.bedrock_barrier + gen_023.subfloor + 1; lvl_max_y -= gen_023.subceiling + 2; break LEVEL_SWITCH;
-							case  0: lvl_min_y += gen_000.bedrock_barrier + gen_000.subfloor + 1; lvl_max_y -=                      1; break LEVEL_SWITCH;
+							case  0: lvl_min_y += gen_000.bedrock_barrier + gen_000.subfloor + 1; lvl_max_y -= gen_000.subceiling + 1; break LEVEL_SWITCH;
+							case 96: lvl_min_y += gen_096.bedrock_barrier                    + 1; lvl_max_y -=                      3; break LEVEL_SWITCH;
 							case  6: lvl_min_y += gen_006.bedrock_barrier;                                                             break LEVEL_SWITCH;
 							case 37: lvl_min_y += gen_037.bedrock_barrier + gen_037.subfloor + 1; lvl_max_y -= gen_037.subceiling + 2; break LEVEL_SWITCH;
 							case  5: lvl_min_y += gen_005.bedrock_barrier + gen_005.subfloor + 1; lvl_max_y -= gen_005.subceiling + 1; break LEVEL_SWITCH;
@@ -292,7 +294,7 @@ public class Gen_188 extends BackroomsGen {
 			final BlockPlotter plot =
 				(new BlockPlotter())
 				.axis("suw")
-				.xyz(10, y_floor, 13)
+				.xyz(9, y_floor, 13)
 				.whd(9, 5, 3);
 			plot.type('.', Material.AIR    );
 			plot.type('x', Material.BEDROCK);

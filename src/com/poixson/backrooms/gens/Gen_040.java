@@ -10,7 +10,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.backrooms.worlds.Level_011;
+import com.poixson.backrooms.worlds.Level_122;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -33,13 +33,13 @@ public class Gen_040 extends BackroomsGen {
 		final int level_number = this.getLevelNumber();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		// params
-		final Level_011 level_011 = (Level_011) backworld;
+		final Level_122 level_122 = (Level_122) backworld;
 		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
 		this.enable_top = cfgParams.getBoolean("Enable-Top");
-		this.level_y    = level_011.gen_122.level_y;
-		this.level_h    = level_011.gen_122.level_h;
-		this.subfloor   = level_011.gen_122.subfloor;
-		this.subceiling = level_011.gen_122.subceiling;
+		this.level_y    = level_122.gen_122.level_y;
+		this.level_h    = level_122.gen_122.level_h;
+		this.subfloor   = level_122.gen_122.subfloor;
+		this.subceiling = level_122.gen_122.subceiling;
 	}
 
 
@@ -51,7 +51,7 @@ public class Gen_040 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return ((Level_011)this.backworld).gen_122.getNextY();
+		return ((Level_122)this.backworld).gen_122.getNextY();
 	}
 
 

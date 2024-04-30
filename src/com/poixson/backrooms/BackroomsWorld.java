@@ -17,7 +17,6 @@ import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.entity.SpawnCategory;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -331,21 +330,25 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			}
 			// time
 			switch (level) {
+			// always night
 			case 111: // run for your life
 			case 333: // cubes
 			case 771: // crossroads
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.FALSE);
 				mvworld.setTime("midnight"); break;
+			// daylight cycle
 			default:
 				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, Boolean.TRUE);
 				mvworld.setTime("noon"); break;
 			}
 			// weather
 			switch (level) {
+			// no weather
 			case 111: // run for your life
 			case 333: // cubes
 			case 771: // crossroads
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.FALSE); break;
+			// do weather
 			default:
 				world.setGameRule(GameRule.DO_WEATHER_CYCLE, Boolean.TRUE);  break;
 			}
@@ -367,27 +370,22 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			}
 			// fall damage
 			switch (level) {
+			// no fall damage
 			case  0:  // lobby
 			case 94:  // motion
 			case 333: // cubes
 			case 771: // crossroads
 				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.FALSE); break;
+			// fall damage
 			default:
 				world.setGameRule(GameRule.FALL_DAMAGE, Boolean.TRUE);  break;
 			}
 			// natural regeneration
-			switch (level) {
-			case 0:   // lobby
-			case 11:  // city
-			case 771: // crossroads
-				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE); break;
-			default:
-				world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.TRUE);  break;
-			}
+			world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE);
 //			// F3 debug info
 //			switch (level) {
-//			case 0:   // lobby
-//			case 11:  // city
+//			case  0: // lobby
+//			case 11: // city
 //				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.TRUE);  break;
 //			default:
 //				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;

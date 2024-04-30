@@ -139,7 +139,7 @@ public class Gen_037 extends BackroomsGen {
 		public RoomType type;
 
 		public PoolData(final int x, final int z) {
-			this.value_room       = Gen_037.this.noisePoolRooms  .getNoise(x, z);
+			this.value_room         = Gen_037.this.noisePoolRooms  .getNoise(x, z);
 			this.value_portal_hotel = Gen_037.this.noisePortalHotel.getNoise(x, z);
 			this.value_portal_lobby = Gen_037.this.noisePortalLobby.getNoise(x, z);
 			if (this.value_room < Gen_037.this.thresh_room) {

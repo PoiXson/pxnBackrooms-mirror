@@ -109,10 +109,10 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 
 
 
-	public static void ConfigDefaults(final FileConfiguration cfg) {
-		cfg.addDefault("Reconvergence.Update Period", DEFAULT_UPDATE_PERIOD);
-		cfg.addDefault("Reconvergence.Update Grace",  DEFAULT_UPDATE_GRACE );
-		cfg.addDefault("Reconvergence.Max Grace",     DEFAULT_MAX_GRACE    );
+	public static void ConfigDefaults(final FileConfiguration config) {
+		config.addDefault("Reconvergence.Update Period", DEFAULT_UPDATE_PERIOD);
+		config.addDefault("Reconvergence.Update Grace",  DEFAULT_UPDATE_GRACE );
+		config.addDefault("Reconvergence.Max Grace",     DEFAULT_MAX_GRACE    );
 	}
 
 

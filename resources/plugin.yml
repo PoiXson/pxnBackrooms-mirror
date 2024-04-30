@@ -13,11 +13,10 @@ softdepend:
 authors: [ lorenzop ]
 website: ${project.url}
 description: ${project.description}
-permission-message: "You don't have permission to use this command."
 permissions:
     backrooms.*:
         default: op
-        description: Gives access to all backrooms commands
+        description: Gives access to all backrooms commands.
         children:
             backrooms.tp: true
             backrooms.tp.others: true
@@ -38,4 +37,4 @@ permissions:
         description: Allow players to noclip inside the backrooms
     backrooms.level_111_button:
         default: true
-        description: Allow players to teleport into level 111 run for your life
+        description: Allow players to teleport into level 111 run for your life.

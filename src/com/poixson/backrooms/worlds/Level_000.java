@@ -190,6 +190,7 @@ public class Level_000 extends BackroomsWorld {
 	public int getMainLevel() {
 		return 0; // lobby
 	}
+
 	@Override
 	public int getLevel(final Location loc) {
 		final int x = loc.getBlockX();
@@ -200,6 +201,10 @@ public class Level_000 extends BackroomsWorld {
 		&&  x >= -46 && x <= 62
 		&&  z >= -46 && z <= 62)
 			return 188;
+		return this.getLevel(y);
+	}
+	@Override
+	public int getLevel(final int y) {
 		if (y < this.getMaxY( 1)) return  1; // basement
 		if (y < this.getMaxY(23)) return 23; // overgrowth
 		if (y < this.getMaxY( 0)) return  0; // lobby
@@ -210,6 +215,7 @@ public class Level_000 extends BackroomsWorld {
 		if (y < this.getMaxY(19)) return 19; // attic
 		return 309;                          // radio station
 	}
+
 	@Override
 	public boolean containsLevel(final int level) {
 		switch (level) {

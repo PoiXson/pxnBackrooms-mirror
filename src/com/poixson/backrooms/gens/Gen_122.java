@@ -10,7 +10,6 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.backrooms.worlds.Level_011;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -65,11 +64,9 @@ public class Gen_122 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Level_011 level_011 = (Level_011) this.backworld;
-		final int level_122_y = level_011.gen_122.level_y;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++)
-				chunk.setBlock(ix, level_122_y, iz, Material.BEDROCK);
+				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 		}
 	}
 

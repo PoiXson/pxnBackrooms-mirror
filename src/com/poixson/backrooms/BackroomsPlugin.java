@@ -125,11 +125,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.economy.set(SetupVaultEconomy());
 		// backrooms levels
 		try {
-		new Level_000(this); // lobby, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
-		new Level_111(this); // run for your life
-		new Level_094(this); // motion
-		new Level_333(this); // cubes
-		new Level_771(this); // crossroads
+			new Level_000(this); // lobby, ductwork, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
+			new Level_094(this); // motion
+			new Level_111(this); // run for your life
+			new Level_333(this); // cubes
+			new Level_771(this); // crossroads
 		} catch (InvalidConfigurationException e) {
 			throw new RuntimeException(e);
 		}
@@ -302,7 +302,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 	@Override
 	protected void loadConfigs() {
-		this.mkPluginDir();
+		super.loadConfigs();
 		// config.yml
 		{
 			final FileConfiguration cfg = this.getConfig();
@@ -377,14 +377,15 @@ public class BackroomsPlugin extends xJavaPlugin {
 	}
 
 	@Override
-	protected void configDefaults(final FileConfiguration cfg) {
-		TaskReconvergence.ConfigDefaults(cfg);
-		cfg.addDefault("Seed", (new xRand()).nextInt(11, 9999999));
-		cfg.addDefault("Enable World Creation",    Boolean.FALSE);
-		cfg.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
-		cfg.addDefault("Enable Invisible Players", Boolean.TRUE );
-		cfg.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
-		cfg.addDefault("Bedrock-Barrier", DEFAULT_BEDROCK_BARRIER);
+	protected void configDefaults(final FileConfiguration config) {
+		super.configDefaults(config);
+		TaskReconvergence.ConfigDefaults(config);
+		config.addDefault("Seed", (new xRand()).nextInt(11, 9999999));
+		config.addDefault("Enable World Creation",    Boolean.FALSE);
+		config.addDefault("Enable Dynmap Config Gen", Boolean.FALSE);
+		config.addDefault("Enable Invisible Players", Boolean.TRUE );
+		config.addDefault("Spawn Distance", Integer.valueOf(DEFAULT_SPAWN_DISTANCE));
+		config.addDefault("Bedrock-Barrier", DEFAULT_BEDROCK_BARRIER);
 	}
 
 
@@ -653,6 +654,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.noclip(player, 0);
 	}
 	public void noclip(final Player player, final int level) {
+		if (level < 0) {
+			this.noclip(player);
+			return;
+		}
 		Location loc = this.getSpawnLocation(level);
 		if (loc == null) {
 			this.log().warning("Failed to find spawn for level: "+Integer.toString(level));
