@@ -381,6 +381,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 			}
 			// natural regeneration
 			world.setGameRule(GameRule.NATURAL_REGENERATION, Boolean.FALSE);
+//TODO
 //			// F3 debug info
 //			switch (level) {
 //			case  0: // lobby
@@ -390,15 +391,17 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 //				world.setGameRule(GameRule.REDUCED_DEBUG_INFO, Boolean.FALSE); break;
 //			}
 		}
-		// not retained after restart
-		{
-			final World world = Bukkit.getWorld(name);
-			if (world == null) throw new NullPointerException("Failed to find world: "+name);
-			switch (level) {
-			case 111: world.setTicksPerSpawns(SpawnCategory.MONSTER,   1); break;
-			default:  world.setTicksPerSpawns(SpawnCategory.MONSTER, 100); break;
-			}
-		}
+//TODO
+//		// not retained after restart
+//		{
+//			final World world = Bukkit.getWorld(name);
+//			if (world == null) throw new NullPointerException("Failed to find world: "+name);
+//			switch (level) {
+//			case 111: world.setTicksPerSpawns(SpawnCategory.MONSTER,   1); break;
+//			default:  world.setTicksPerSpawns(SpawnCategory.MONSTER, 100); break;
+//			}
+//		}
+		this.log().info("Loaded backrooms world: "+name);
 	}
 
 
