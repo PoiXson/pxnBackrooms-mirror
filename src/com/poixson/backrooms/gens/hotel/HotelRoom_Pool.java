@@ -25,7 +25,7 @@ import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.StringUtils;
 
 
-public class HotelRoomPool implements HotelRoom {
+public class HotelRoom_Pool implements HotelRoom {
 
 	protected final Gen_000   gen_000;
 	protected final Gen_005   gen_005;
@@ -33,7 +33,7 @@ public class HotelRoomPool implements HotelRoom {
 
 
 
-	public HotelRoomPool(final Level_000 level_000) {
+	public HotelRoom_Pool(final Level_000 level_000) {
 		this.gen_000 = level_000.gen_000;
 		this.gen_005 = level_000.gen_005;
 		this.gen_037 = level_000.gen_037;

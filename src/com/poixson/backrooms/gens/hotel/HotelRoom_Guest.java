@@ -16,7 +16,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.gens.Gen_005;
-import com.poixson.backrooms.gens.hotel.HotelRoomSpecs.RoomTheme;
+import com.poixson.backrooms.gens.hotel.HotelRoom_Specs.RoomTheme;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
@@ -25,7 +25,7 @@ import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
 
-public class HotelRoomGuest implements HotelRoom {
+public class HotelRoom_Guest implements HotelRoom {
 
 	protected final Level_000 level_000;
 	protected final Gen_005   gen_005;
@@ -36,7 +36,7 @@ public class HotelRoomGuest implements HotelRoom {
 
 
 
-	public HotelRoomGuest(final Level_000 level_000, final FastNoiseLiteD noise,
+	public HotelRoom_Guest(final Level_000 level_000, final FastNoiseLiteD noise,
 			final Material door_guest) {
 		this.level_000  = level_000;
 		this.gen_005    = level_000.gen_005;
@@ -56,8 +56,8 @@ public class HotelRoomGuest implements HotelRoom {
 		final BlockData block_hotel_door_border_side =
 			StringToBlockDataDef(this.gen_005.block_door_border_side, DEFAULT_BLOCK_DOOR_BORDER_SIDE);
 		// room specs
-		final HotelRoomSpecs specs =
-			HotelRoomSpecs.SpecsFromValue(
+		final HotelRoom_Specs specs =
+			HotelRoom_Specs.SpecsFromValue(
 				this.noise.getNoise(area.a, area.b),
 				this.door_guest
 			);

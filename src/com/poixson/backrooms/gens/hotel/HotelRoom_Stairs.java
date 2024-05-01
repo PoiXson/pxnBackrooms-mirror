@@ -27,7 +27,7 @@ import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
 
-public class HotelRoomStairs implements HotelRoom {
+public class HotelRoom_Stairs implements HotelRoom {
 
 	protected final Gen_005 gen_005;
 	protected final Gen_019 gen_019;
@@ -36,7 +36,7 @@ public class HotelRoomStairs implements HotelRoom {
 
 
 
-	public HotelRoomStairs(final Level_000 level_000) {
+	public HotelRoom_Stairs(final Level_000 level_000) {
 		this.gen_005 = level_000.gen_005;
 		this.gen_019 = level_000.gen_019;
 		this.noiseHotelStairs = level_000.gen_005.noiseHotelStairs;

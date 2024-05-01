@@ -10,9 +10,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
-import com.poixson.backrooms.gens.hotel.HotelRoomGuest;
-import com.poixson.backrooms.gens.hotel.HotelRoomPool;
-import com.poixson.backrooms.gens.hotel.HotelRoomStairs;
+import com.poixson.backrooms.gens.hotel.HotelRoom_Guest;
+import com.poixson.backrooms.gens.hotel.HotelRoom_Pool;
+import com.poixson.backrooms.gens.hotel.HotelRoom_Stairs;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
@@ -107,9 +107,9 @@ public class Pop_005 implements BackroomsPop {
 		final Material door_guest = Material.matchMaterial(this.gen_005.door_guest);
 		if (door_guest == null) throw new RuntimeException("Invalid block type for level 5 Door-Guest");
 		// room builders
-		final HotelRoomGuest  room_guest  = new HotelRoomGuest( this.level_000, this.gen_005.noiseHotelRooms, door_guest);
-		final HotelRoomPool   room_pool   = new HotelRoomPool(  this.level_000);
-		final HotelRoomStairs room_stairs = new HotelRoomStairs(this.level_000);
+		final HotelRoom_Guest  room_guest  = new HotelRoom_Guest( this.level_000, this.gen_005.noiseHotelRooms, door_guest);
+		final HotelRoom_Pool   room_pool   = new HotelRoom_Pool(  this.level_000);
+		final HotelRoom_Stairs room_stairs = new HotelRoom_Stairs(this.level_000);
 		// area = x z w d
 		final int num_rooms_wide = Math.floorDiv(area.c, room_size);
 		final int num_rooms_deep = Math.floorDiv(area.d, room_size);

@@ -3,7 +3,7 @@ package com.poixson.backrooms.gens.hotel;
 import org.bukkit.Material;
 
 
-public class HotelRoomSpecs {
+public class HotelRoom_Specs {
 
 	public enum RoomTheme {
 		PLAIN,
@@ -23,7 +23,7 @@ public class HotelRoomSpecs {
 
 
 
-	public HotelRoomSpecs(final double value, final RoomTheme theme,
+	public HotelRoom_Specs(final double value, final RoomTheme theme,
 			final Material carpet, final Material walls, final Material bed,
 			final Material door, final Material door_plate) {
 		this.value  = value;
@@ -37,13 +37,13 @@ public class HotelRoomSpecs {
 
 
 
-	public static HotelRoomSpecs SpecsFromValue(final double value, final Material door_guest) {
+	public static HotelRoom_Specs SpecsFromValue(final double value, final Material door_guest) {
 		final int index_carpet = (int)Math.floor((value + 1.0) * 50.0);
 		final int index_walls  = (int)Math.floor((value + 1.0) * 55.0) + 5;
 		final int index_bed    = (int)Math.floor((value + 1.0) * 999.0);
 		// cheese room
 		if (index_carpet < 7 && index_walls < 7) {
-			return new HotelRoomSpecs(
+			return new HotelRoom_Specs(
 				value,
 				RoomTheme.CHEESE,
 				Material.END_STONE,
@@ -198,7 +198,7 @@ public class HotelRoomSpecs {
 		}
 		default: throw new RuntimeException("Unknown hotel room theme: "+theme.toString());
 		}
-		return new HotelRoomSpecs(
+		return new HotelRoom_Specs(
 			value,
 			theme,
 			carpet,
