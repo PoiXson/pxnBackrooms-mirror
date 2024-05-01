@@ -55,12 +55,12 @@ fi
 	\zip -r -9  "../pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  || exit 1
 \popd >/dev/null
 
-# vending shop
-\pushd  "../VendingShop/resourcepack/"  >/dev/null  || exit 1
-	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
-		--exclude pack.mcmeta  \
-		--exclude assets/minecraft/atlases/blocks.json  || exit 1
-\popd >/dev/null
+## vending shop
+#\pushd  "../VendingShop/resourcepack/"  >/dev/null  || exit 1
+#	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
+#		--exclude pack.mcmeta  \
+#		--exclude assets/minecraft/atlases/blocks.json  || exit 1
+#\popd >/dev/null
 
 # more foods
 \pushd  "../MoreFoods/resourcepack/"  >/dev/null  || exit 1
@@ -86,11 +86,11 @@ fi
 	\zip -r -9  "../pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  || exit 1
 \popd >/dev/null
 
-# vending shop
-\pushd  "../VendingShop/resourcepack${NAME}/"  >/dev/null  || exit 1
-	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
-		--exclude pack.mcmeta  || exit 1
-\popd >/dev/null
+## vending shop
+#\pushd  "../VendingShop/resourcepack${NAME}/"  >/dev/null  || exit 1
+#	\zip -r -9  "../../pxnBackrooms/pxnBackrooms-resourcepack${NAME}${VERSION}.zip"  *  \
+#		--exclude pack.mcmeta  || exit 1
+#\popd >/dev/null
 
 # more foods
 \pushd  "../MoreFoods/resourcepack${NAME}/"  >/dev/null  || exit 1
