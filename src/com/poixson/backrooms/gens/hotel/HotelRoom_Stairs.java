@@ -23,7 +23,6 @@ import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
 import com.poixson.utils.StringUtils;
 
 
@@ -32,14 +31,11 @@ public class HotelRoom_Stairs implements HotelRoom {
 	protected final Gen_005 gen_005;
 	protected final Gen_019 gen_019;
 
-	protected final FastNoiseLiteD noiseHotelStairs;
-
 
 
 	public HotelRoom_Stairs(final Level_000 level_000) {
 		this.gen_005 = level_000.gen_005;
 		this.gen_019 = level_000.gen_019;
-		this.noiseHotelStairs = level_000.gen_005.noiseHotelStairs;
 	}
 
 
@@ -170,16 +166,6 @@ public class HotelRoom_Stairs implements HotelRoom {
 
 	public boolean checkAtticWall(final LimitedRegion region,
 			final Iabcd room_area, final BlockFace direction) {
-		// make rare with noise
-		{
-			final double value = this.noiseHotelStairs.getNoise(room_area.a, room_area.b);
-			if (value < THRESH_ATTIC_STAIRS
-			||  value < this.noiseHotelStairs.getNoise(room_area.a, room_area.b-8)  // north
-			||  value < this.noiseHotelStairs.getNoise(room_area.a, room_area.b+8)  // south
-			||  value < this.noiseHotelStairs.getNoise(room_area.a+8, room_area.b)  // east
-			||  value < this.noiseHotelStairs.getNoise(room_area.a-8, room_area.b)) // west
-				return false;
-		}
 		// find attic walls
 		{
 			final Material block_attic_wall = Material.matchMaterial(this.gen_019.block_wall);

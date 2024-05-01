@@ -94,7 +94,6 @@ public class Gen_005 extends BackroomsGen {
 	// noise
 	public final FastNoiseLiteD noiseHotelWalls;
 	public final FastNoiseLiteD noiseHotelRooms;
-	public final FastNoiseLiteD noiseHotelStairs;
 
 
 
@@ -134,7 +133,6 @@ public class Gen_005 extends BackroomsGen {
 		// noise
 		this.noiseHotelWalls  = this.register(new FastNoiseLiteD());
 		this.noiseHotelRooms  = this.register(new FastNoiseLiteD());
-		this.noiseHotelStairs = this.register(new FastNoiseLiteD());
 	}
 
 
@@ -401,8 +399,6 @@ public class Gen_005 extends BackroomsGen {
 		this.noiseHotelRooms.setFractalOctaves(cfgParams.getInt(   "Noise-Room-Octave"));
 		this.noiseHotelRooms.setFractalGain(   cfgParams.getDouble("Noise-Room-Gain"  ));
 		this.noiseHotelRooms.setFractalType(   FractalType.FBm                         );
-		// hotel stairs to attic
-		this.noiseHotelStairs.setFrequency(cfgParams.getDouble("Noise-Stairs-Freq"));
 	}
 
 
