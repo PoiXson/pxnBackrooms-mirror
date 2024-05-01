@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Tue Apr 30 04:24:56 PM EDT 2024 -->
+<!-- Generated: Tue Apr 30 09:36:29 PM EDT 2024 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -39,7 +39,6 @@
 		<common-script-version>[4.0.0,)</common-script-version>
 		<plugin-lib-version>[4.0.0,)</plugin-lib-version>
 		<morefoods-api-version>[0.0.0,)</morefoods-api-version>
-		<vendingshop-api-version>[0.0.0,)</vendingshop-api-version>
 		<Multiverse-Core-version>[4,)</Multiverse-Core-version>
 		<VaultAPI-version>[1,)</VaultAPI-version>
 
@@ -243,11 +242,6 @@
 			<artifactId>morefoods-api</artifactId>
 			<groupId>com.poixson</groupId>
 			<version>${morefoods-api-version}</version>
-		</dependency>
-		<dependency>
-			<artifactId>vendingshop-api</artifactId>
-			<groupId>com.poixson</groupId>
-			<version>${vendingshop-api-version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>Multiverse-Core</artifactId>
