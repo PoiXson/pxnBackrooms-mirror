@@ -196,9 +196,9 @@ public class Gen_037 extends BackroomsGen {
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
 		final Level_000 level_000 = (Level_000) this.backworld;
-		final int level_000_y = level_000.gen_000.level_y;
-		final int level_000_h = level_000.gen_000.level_h;
-		final int level_006_h = level_000.gen_006.level_h;
+		final int portal_000_037_y = (level_000.gen_000.level_y + level_000.gen_000.bedrock_barrier + level_000.gen_000.subfloor) - 1;
+		final int portal_000_037_h = ((this.level_y - level_000.gen_000.level_y) + this.bedrock_barrier + this.subfloor) - level_000.gen_000.bedrock_barrier - 1;
+		final int level_000_h = level_000.gen_000.level_h + level_000.gen_000.subceiling + 1;
 		final Map<Iab, PoolData>  poolData  = ((Pregen_Level_000)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int h_walls = this.level_h + 2;
@@ -416,13 +416,13 @@ public class Gen_037 extends BackroomsGen {
 							final int xx = (chunkX * 16) + (rx * 8);
 							final int zz = (chunkZ * 16) + (rz * 8);
 							level_000.portal_000_to_037.add(xx, zz);
-							final int hh = level_000_h + this.subceiling + level_006_h + this.subfloor + 5;
+							final int portal_top = portal_000_037_h - 1;
 							final BlockPlotter pp =
 								(new BlockPlotter())
 								.axis("use")
 								.xz(rx*8, rz*8)
-								.y(level_000_y+this.subfloor)
-								.whd(6, hh+1, 6);
+								.y(portal_000_037_y)
+								.whd(6, portal_000_037_h, 6);
 							pp.type('#', Material.BEDROCK  );
 							pp.type('g', Material.GLOWSTONE);
 							pp.type('.', Material.AIR      );
@@ -435,8 +435,7 @@ public class Gen_037 extends BackroomsGen {
 							mtx[0][3].append("#gggg#"); mtx[1][3].append("#,,,,#");
 							mtx[0][4].append("##gg##"); mtx[1][4].append("##,,##");
 							mtx[0][5].append(" #### "); mtx[1][5].append(" #### ");
-							final int hhh = level_000_h + 3;
-							for (int yi=2; yi<hhh; yi++) {
+							for (int yi=2; yi<level_000_h; yi++) {
 								mtx[yi][0].append(" .... ");
 								mtx[yi][1].append("..,,..");
 								mtx[yi][2].append(".,,,,.");
@@ -445,7 +444,7 @@ public class Gen_037 extends BackroomsGen {
 								mtx[yi][5].append(" .... ");
 							}
 							// shaft
-							for (int yi=hhh; yi<hh; yi++) {
+							for (int yi=level_000_h; yi<portal_top; yi++) {
 								mtx[yi][0].append(" #### ");
 								mtx[yi][1].append("##,,##");
 								mtx[yi][2].append("#,,,,#");
@@ -454,12 +453,12 @@ public class Gen_037 extends BackroomsGen {
 								mtx[yi][5].append(" #### ");
 							}
 							// top
-							mtx[hh][0].append("  gg  ");
-							mtx[hh][1].append(" g,,g ");
-							mtx[hh][2].append("g,,,,g");
-							mtx[hh][3].append("g,,,,g");
-							mtx[hh][4].append(" g,,g ");
-							mtx[hh][5].append("  gg  ");
+							mtx[portal_top][0].append("  gg  ");
+							mtx[portal_top][1].append(" g,,g ");
+							mtx[portal_top][2].append("g,,,,g");
+							mtx[portal_top][3].append("g,,,,g");
+							mtx[portal_top][4].append(" g,,g ");
+							mtx[portal_top][5].append("  gg  ");
 							plots.add(new Tuple<BlockPlotter, StringBuilder[][]>(pp, mtx));
 						}
 					}
