@@ -299,7 +299,7 @@ public class Gen_000 extends BackroomsGen {
 					// lobby walls
 					chunk.setBlock(ix, y_floor,   iz, block_subfloor );
 					chunk.setBlock(ix, y_floor+1, iz, block_wall_base);
-					for (int iy=0; iy<h_walls; iy++)
+					for (int iy=2; iy<h_walls; iy++)
 						chunk.setBlock(ix, y_floor+iy, iz, block_wall);
 //TODO
 //					// outlet
