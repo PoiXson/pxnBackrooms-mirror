@@ -164,13 +164,13 @@ public class Gen_006 extends BackroomsGen {
 					level_000.portal_000_to_006.add(xx, zz);
 					// level 0 light switch
 					{
-						final int y = gen_000.level_y + gen_000.subfloor + 3;
+						final int y = gen_000.level_y + gen_000.bedrock_barrier + gen_000.subfloor + 2;
 						chunk.setBlock(ix, y, iz, Bukkit.createBlockData(Material.LEVER,
 								"[face=wall,facing="+facing.toString().toLowerCase()+",powered=false]"));
 					}
 					// level 6 light switch
 					{
-						final int y = this.level_y + 2;
+						final int y = this.level_y + this.bedrock_barrier + 1;
 						chunk.setBlock(ix, y, iz, Bukkit.createBlockData(Material.LEVER,
 								"[face=wall,facing="+facing.toString().toLowerCase()+",powered=true]"));
 					}
@@ -179,7 +179,7 @@ public class Gen_006 extends BackroomsGen {
 					level_000.portal_006_to_111.add(xx, zz);
 					// level 6 game button
 					{
-						final int y = this.level_y + 2;
+						final int y = this.level_y + this.bedrock_barrier + 1;
 						chunk.setBlock(ix, y, iz, Bukkit.createBlockData(Material.DARK_OAK_BUTTON,
 								"[face=wall,facing="+facing.toString().toLowerCase()+"]"));
 					}
