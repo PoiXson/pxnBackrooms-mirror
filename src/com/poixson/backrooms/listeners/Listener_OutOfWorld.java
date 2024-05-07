@@ -93,10 +93,10 @@ public class Listener_OutOfWorld implements xListener {
 			switch (event.getOutsideWhere()) {
 			case VOID: {
 				final Location player_loc = player.getLocation();
-				// to 94 motion
+				// under bridge to 333 cubes
 				if (Math.abs(player_loc.getBlockX()) < 4
 				||  Math.abs(player_loc.getBlockZ()) < 4) {
-					this.plugin.noclip(event.getPlayer(), 94);
+					this.plugin.noclip(event.getPlayer(), 333);
 					break;
 				}
 				// teleport to sky
