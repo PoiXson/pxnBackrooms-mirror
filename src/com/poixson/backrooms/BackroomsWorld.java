@@ -283,11 +283,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		if (this.plugin.enableAutoCreateWorlds()
 		&& !manager.isMVWorld(name, false)) {
 			this.log().warning("Creating world for backrooms level: "+Integer.toString(level));
-			final Environment env;
-			switch (level) {
-			case 111: env = Environment.THE_END; break;
-			default:  env = Environment.NORMAL;  break;
-			}
+			final Environment env = Environment.NORMAL;
 			final String seedStr = this.plugin.getSeedString();
 			if (!manager.addWorld(name, env, seedStr, WorldType.NORMAL, Boolean.FALSE, BackroomsPlugin.GENERATOR_NAME, true))
 				throw new RuntimeException("Failed to create world: "+name);
