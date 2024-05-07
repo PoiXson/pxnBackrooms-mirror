@@ -77,6 +77,16 @@ public class Listener_OutOfWorld implements xListener {
 			}
 			break LEVEL_SWITCH;
 		}
+		// cubes
+		case 333: {
+			final Player player = event.getPlayer();
+			switch (event.getOutsideWhere()) {
+			case SKY:  player.teleport(player.getLocation().add(0.0, -382.0, 0.0)); break;
+			case VOID: player.teleport(player.getLocation().add(0.0,  381.0, 0.0)); break;
+			default: break;
+			}
+			break LEVEL_SWITCH;
+		}
 		// crossroads
 		case 771: {
 			final Player player = event.getPlayer();
