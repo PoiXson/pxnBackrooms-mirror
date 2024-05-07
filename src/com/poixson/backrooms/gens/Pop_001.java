@@ -1,5 +1,8 @@
 package com.poixson.backrooms.gens;
 
+import static com.poixson.utils.NumberUtils.MinMax;
+import static com.poixson.utils.StringUtils.ReplaceInString;
+
 import java.util.LinkedList;
 
 import org.bukkit.Material;
@@ -53,8 +56,9 @@ public class Pop_001 implements BackroomsPop {
 	protected void generateWell(final LimitedRegion region,
 			final int x, final int z) {
 		final int level_y     = this.gen_001.level_y;
+		final int barrier     = this.gen_001.bedrock_barrier;
 		final int subfloor    = this.gen_001.subfloor;
-		final int well_size   = this.gen_001.well_size;
+		final int well_size   = MinMax(this.gen_001.well_size, 3, 10);
 		final int well_height = this.gen_001.well_height;
 		// check for walls
 		{
@@ -68,47 +72,114 @@ public class Pop_001 implements BackroomsPop {
 				}
 			}
 		}
+		this.level_000.portal_001_well.add(x, z);
 		// build well
 		{
-			this.level_000.portal_001_well.add(x, z);
 			final BlockPlotter plot =
 				(new BlockPlotter())
-				.axis("use")
-				.xyz(x, level_y, z)
-				.wd(well_size, well_size)
-				.h(subfloor+well_height+5);
+				.axis("se")
+				.xyz(x, 0, z)
+				.wd(well_size, well_size);
 			plot.type('#', Material.BEDROCK);
-			plot.type('x', Material.MOSSY_STONE_BRICKS);
 			plot.type('.', Material.AIR  );
-			final StringBuilder[][] matrix = plot.getMatrix3D();
-			matrix[0][1].append(" ...");
-			matrix[0][2].append(" ...");
-			matrix[0][3].append(" ...");
-			int iy = 1;
-			// well below floor
-			for (int i=0; i<subfloor+1; i++) {
-				matrix[iy+i][0].append(" ###" );
-				matrix[iy+i][1].append("#...#");
-				matrix[iy+i][2].append("#...#");
-				matrix[iy+i][3].append("#...#");
-				matrix[iy+i][4].append(" ###" );
+			final StringBuilder[] matrix = plot.getMatrix2D();
+			switch (well_size) {
+			case 3:
+				matrix[0].append(" #" );
+				matrix[1].append("#.#");
+				matrix[2].append(" #" );
+				break;
+			case 4:
+				matrix[0].append(" ##" );
+				matrix[1].append("#..#");
+				matrix[2].append("#..#");
+				matrix[3].append(" ##" );
+				break;
+			case 5:
+				matrix[0].append(" ###" );
+				matrix[1].append("#...#");
+				matrix[2].append("#...#");
+				matrix[3].append("#...#");
+				matrix[4].append(" ###" );
+				break;
+			case 6:
+				matrix[0].append("  ##"  );
+				matrix[1].append(" #..#" );
+				matrix[2].append("#....#");
+				matrix[3].append("#....#");
+				matrix[4].append(" #..#" );
+				matrix[5].append("  ##"  );
+				break;
+			case 7:
+				matrix[0].append("  ###"  );
+				matrix[1].append(" #...#" );
+				matrix[2].append("#.....#");
+				matrix[3].append("#.....#");
+				matrix[4].append("#.....#");
+				matrix[5].append(" #...#" );
+				matrix[6].append("  ###"  );
+				break;
+			case 8:
+				matrix[0].append("  ####"  );
+				matrix[1].append(" #....#" );
+				matrix[2].append("#......#");
+				matrix[3].append("#......#");
+				matrix[4].append("#......#");
+				matrix[5].append("#......#");
+				matrix[6].append(" #....#" );
+				matrix[7].append("  ####"  );
+				break;
+			case 9:
+				matrix[0].append("  #####"  );
+				matrix[1].append(" #.....#" );
+				matrix[2].append("#.......#");
+				matrix[3].append("#.......#");
+				matrix[4].append("#.......#");
+				matrix[5].append("#.......#");
+				matrix[6].append("#.......#");
+				matrix[7].append(" #.....#" );
+				matrix[8].append("  #####"  );
+				break;
+			case 10:
+				matrix[0].append("   ####"   );
+				matrix[1].append("  #....#"  );
+				matrix[2].append(" #......#" );
+				matrix[3].append("#........#");
+				matrix[4].append("#........#");
+				matrix[5].append("#........#");
+				matrix[6].append("#........#");
+				matrix[7].append(" #......# ");
+				matrix[8].append("  #....#"  );
+				matrix[9].append("   ####"   );
+				break;
+			default: throw new RuntimeException("Invalid well size: "+Integer.toString(well_size));
 			}
-			iy += subfloor + 1;
-			// well above floor
+			// well below ground
+			final int h = barrier + subfloor + 1;
+			for (int i=0; i<h; i++) {
+				plot.y(level_y+i);
+				plot.run(region, matrix);
+			}
+			plot.type('#', Material.MOSSY_STONE_BRICKS);
+			plot.type('H', Material.AIR               );
+			switch (well_size) {
+			case 3:  ReplaceInString(matrix[2], "H", 0); break;
+			case 4:  ReplaceInString(matrix[3], "H", 0); break;
+			case 5:  ReplaceInString(matrix[4], "H", 0); break;
+			case 6:  ReplaceInString(matrix[4], "H", 0); break;
+			case 7:  ReplaceInString(matrix[5], "H", 0); break;
+			case 8:  ReplaceInString(matrix[6], "H", 0); break;
+			case 9:  ReplaceInString(matrix[7], "H", 0); break;
+			case 10: ReplaceInString(matrix[7], "H", 0); break;
+			default: throw new RuntimeException("Invalid well size: "+Integer.toString(well_size));
+			}
+			// well above ground
 			for (int i=0; i<well_height; i++) {
-				matrix[iy+i][0].append(" xxx" );
-				matrix[iy+i][1].append("x...x");
-				matrix[iy+i][2].append("x...x");
-				matrix[iy+i][3].append("x...x");
-				matrix[iy+i][4].append(" xxx" );
+				if (i == 1)
+					plot.type('H', "minecraft:ladder[facing=south]");
+				plot.y(level_y+h+i);
+				plot.run(region, matrix);
 			}
-			iy += well_height;
-			// clear above well
-			for (int i=0; i<3; i++) {
-				for (int iz=0; iz<5; iz++)
-					matrix[iy+i][iz].append(".....");
-			}
-			plot.run(region, matrix);
 		}
 	}
 
