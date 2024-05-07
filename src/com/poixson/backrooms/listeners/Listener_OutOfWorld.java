@@ -42,40 +42,62 @@ public class Listener_OutOfWorld implements xListener {
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
 		final int level = this.plugin.getLevel(event.getTo());
-		WHERE_SWITCH:
-		switch (event.getOutsideWhere()) {
-		case SKY: {
-			LEVEL_SWITCH:
-			switch (level) {
-			case 309: this.plugin.noclip(event.getPlayer(), 771); break LEVEL_SWITCH; // 309 radio station to 771 crossroads
-			default: break LEVEL_SWITCH;
+		LEVEL_SWITCH:
+		switch (level) {
+		// basement
+		case 1: {
+			switch (event.getOutsideWhere()) {
+			// to 94 motion
+			case VOID: this.plugin.noclip(event.getPlayer(), 94); break;
+			default: break;
 			}
-			break WHERE_SWITCH;
+			break LEVEL_SWITCH;
 		}
-		case VOID: {
-			LEVEL_SWITCH:
-			switch (level) {
-			case   1: this.plugin.noclip(event.getPlayer(),  94); break LEVEL_SWITCH; //   1 basement          to 94 motion
-			case 111: this.plugin.noclip(event.getPlayer(),   6); break LEVEL_SWITCH; // 111 run for your life to 6 lights out
-			case  94: this.plugin.noclip(event.getPlayer(), 771); break LEVEL_SWITCH; //  94 motion            to 771 crossroads
-			case 771: { // 771 crossroads
-				final Player player = event.getPlayer();
+		// motion
+		case 94: {
+			switch (event.getOutsideWhere()) {
+			// to 771 crossroads
+			case VOID: this.plugin.noclip(event.getPlayer(), 771); break;
+			default: break;
+			}
+			break LEVEL_SWITCH;
+		}
+		// run for your life
+		case 111: {
+			// to 6 lights out
+			this.plugin.noclip(event.getPlayer(), 6);
+			break LEVEL_SWITCH;
+		}
+		// radio station
+		case 309: {
+			switch (event.getOutsideWhere()) {
+			// to 771 crossroads
+			case SKY: this.plugin.noclip(event.getPlayer(), 771); break;
+			default: break;
+			}
+			break LEVEL_SWITCH;
+		}
+		// crossroads
+		case 771: {
+			final Player player = event.getPlayer();
+			switch (event.getOutsideWhere()) {
+			case VOID: {
 				final Location player_loc = player.getLocation();
-				// 771 crossroads to 94 motion
+				// to 94 motion
 				if (Math.abs(player_loc.getBlockX()) < 4
 				||  Math.abs(player_loc.getBlockZ()) < 4) {
-					this.plugin.noclip(event.getPlayer(),  94);
-					break LEVEL_SWITCH;
+					this.plugin.noclip(event.getPlayer(), 94);
+					break;
 				}
 				// teleport to sky
 				player.teleport(player.getLocation().add(0.0, 600.0, 0.0));
-				break LEVEL_SWITCH;
+				break;
 			}
-			default: break LEVEL_SWITCH;
+			default: break;
 			}
-			break WHERE_SWITCH;
+			break LEVEL_SWITCH;
 		}
-		default: throw new RuntimeException("Unknown OutsideOfWorld event type");
+		default: break LEVEL_SWITCH;
 		}
 	}
 
