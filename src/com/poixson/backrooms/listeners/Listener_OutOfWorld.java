@@ -14,7 +14,7 @@ import com.poixson.tools.events.xListener;
 // void   1 >>  94 | Basement          (void) to motion
 // sky  771 >> 309 | Crossroads        (sky)  to Radio Station
 // void 771 >>   1 | Crossroads        (void) to Basement
-// void  33 >>   6 | Run For Your Life (void) to Lights Out
+// void 111 >>   6 | Run For Your Life (void) to Lights Out
 // void  94 >> 771 | Motion            (void) to Crossroads
 public class Listener_OutOfWorld implements xListener {
 
@@ -56,7 +56,7 @@ public class Listener_OutOfWorld implements xListener {
 			LEVEL_SWITCH:
 			switch (level) {
 			case   1: this.plugin.noclip(event.getPlayer(),  94); break LEVEL_SWITCH; //   1 basement          to 94 motion
-			case  33: this.plugin.noclip(event.getPlayer(),   6); break LEVEL_SWITCH; //  33 run for your life to 6 lights out
+			case 111: this.plugin.noclip(event.getPlayer(),   6); break LEVEL_SWITCH; // 111 run for your life to 6 lights out
 			case  94: this.plugin.noclip(event.getPlayer(), 771); break LEVEL_SWITCH; //  94 motion            to 771 crossroads
 			case 771: { // 771 crossroads
 				final Player player = event.getPlayer();
