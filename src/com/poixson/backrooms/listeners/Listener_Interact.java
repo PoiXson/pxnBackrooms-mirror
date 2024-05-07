@@ -52,14 +52,14 @@ public class Listener_Interact implements xListener {
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
 		final Level_000 level_000 = (Level_000) this.plugin.getBackroomsWorld(0);
-		final int level_000_y = level_000.gen_000.level_y;
-		final int level_006_y = level_000.gen_006.level_y;
+		final int level_000_lever_y = level_000.gen_000.level_y + level_000.gen_000.bedrock_barrier + level_000.gen_000.subfloor + 2;
+		final int level_006_lever_y = level_000.gen_006.level_y + level_000.gen_006.bedrock_barrier + 1;
 		final Block block = event.getClickedBlock();
 		final int y = block.getY();
-		if (y == level_000_y+6
-		||  y == level_006_y+2) {
+		if (y == level_000_lever_y
+		||  y == level_006_lever_y) {
 			final Player player = event.getPlayer();
-			final int diff_y = (level_006_y - level_000_y) - 4;
+			final int diff_y = level_006_lever_y - level_000_lever_y;
 			final int level = this.plugin.getLevel(block.getLocation());
 			TYPE_SWITCH:
 			switch (block.getType()) {
@@ -108,13 +108,13 @@ public class Listener_Interact implements xListener {
 
 
 
-	protected void doLeverTP(final int to_level, final Location leverLoc, final int y) {
-		final World world = leverLoc.getWorld();
+	protected void doLeverTP(final int to_level, final Location lever_loc, final int y) {
+		final World world = lever_loc.getWorld();
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (world.equals(player.getWorld())) {
-				final Location playerLoc = player.getLocation();
-				if (playerLoc.distance(leverLoc) < this.tp_range)
-					player.teleport( playerLoc.add(0.0, y, 0.0) );
+				final Location player_loc = player.getLocation();
+				if (player_loc.distance(lever_loc) < this.tp_range)
+					player.teleport( player_loc.add(0.0, y, 0.0) );
 			}
 		}
 	}
