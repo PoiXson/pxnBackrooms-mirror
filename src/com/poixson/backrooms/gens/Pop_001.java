@@ -62,12 +62,10 @@ public class Pop_001 implements BackroomsPop {
 		final int well_height = this.gen_001.well_height;
 		// check for walls
 		{
-			final int y = level_y + subfloor + 2;
-			final int halfL = (int) Math.floor((double)well_size / 2);
-			final int halfH = (int) Math.ceil( (double)well_size / 2);
-			for (int iz=0-halfL; iz<halfH; iz++) {
-				for (int ix=0-halfL; ix<halfH; ix++) {
-					if (!Material.AIR.equals( region.getType(x+ix, y+1, z+iz) ))
+			final int y = level_y + barrier + subfloor + 2;
+			for (int iz=0; iz<well_size; iz++) {
+				for (int ix=0; ix<well_size; ix++) {
+					if (!Material.AIR.equals( region.getType(x+ix, y+2, z+iz) ))
 						return;
 				}
 			}
