@@ -19,6 +19,7 @@ import com.poixson.tools.events.xListener;
 
 
 // 6 | Lobby <-> Lights-Out - teleports
+//   |           and button to 111
 public class Listener_Interact implements xListener {
 
 	protected final BackroomsPlugin plugin;
@@ -97,7 +98,7 @@ public class Listener_Interact implements xListener {
 			case DARK_OAK_BUTTON: {
 				if (level == 6) {
 					if (player.hasPermission("backrooms.level_111.button"))
-						this.plugin.noclip(player, 33); // level 33 - run for your life
+						this.plugin.noclip(player, 111); // level 111 - run for your life
 				}
 				break TYPE_SWITCH;
 			}
