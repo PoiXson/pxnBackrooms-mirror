@@ -246,7 +246,7 @@ public class Pop_309 implements BackroomsPop {
 
 	// forest hatch
 	public void populate_hatch(final int x, final int y, final int z, final LimitedRegion region) {
-		final int level_019_y = this.level_000.gen_019.level_y;
+		final int level_019_y = (this.level_000.gen_019.level_y + this.level_000.gen_019.bedrock_barrier) - 1;
 		final int level_019_h = this.level_000.gen_019.level_h;
 		// top half
 		{
