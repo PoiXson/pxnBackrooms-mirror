@@ -1,8 +1,13 @@
 package com.poixson.backrooms.gens;
 
+import static com.poixson.backrooms.gens.Gen_037.DEFAULT_BLOCK_WALL_A;
+import static com.poixson.backrooms.gens.Gen_037.DEFAULT_BLOCK_WALL_B;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
+
 import java.util.LinkedList;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
@@ -110,8 +115,8 @@ public class Pop_037 implements BackroomsPop {
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!this.gen_037.enable_gen) return;
-		final Material block_wall_a = Material.matchMaterial(this.gen_037.block_wall_a);
-		final Material block_wall_b = Material.matchMaterial(this.gen_037.block_wall_b);
+		final BlockData block_wall_a = StringToBlockDataDef(this.gen_037.block_wall_a, DEFAULT_BLOCK_WALL_A);
+		final BlockData block_wall_b = StringToBlockDataDef(this.gen_037.block_wall_b, DEFAULT_BLOCK_WALL_B);
 		if (block_wall_a == null) throw new RuntimeException("Invalid block type for level 37 WallA");
 		if (block_wall_b == null) throw new RuntimeException("Invalid block type for level 37 WallB");
 		// trace tunnels
@@ -175,28 +180,28 @@ public class Pop_037 implements BackroomsPop {
 					if (region.isInRegion(xx, 0, zz)) {
 						if (distance < 2) {
 							if (block_wall_b.equals(region.getType(xx, yy, zz)))
-								region.setType(xx, yy, zz, block_wall_a);
+								region.setBlockData(xx, yy, zz, block_wall_a);
 							for (int iy=1; iy<5; iy++) {
 								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
 									region.setType(xx, yy+iy, zz, Material.AIR);
 							}
 							if (block_wall_b.equals(region.getType(xx, yy+5, zz)))
-								region.setType(xx, yy+5, zz, block_wall_a);
+								region.setBlockData(xx, yy+5, zz, block_wall_a);
 						} else
 						if (distance == 2) {
 							if (block_wall_b.equals(region.getType(xx, yy, zz)))
-								region.setType(xx, yy, zz, block_wall_a);
+								region.setBlockData(xx, yy, zz, block_wall_a);
 							for (int iy=1; iy<4; iy++) {
 								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
 									region.setType(xx, yy+iy, zz, Material.AIR);
 							}
 							if (block_wall_b.equals(region.getType(xx, yy+4, zz)))
-								region.setType(xx, yy+4, zz, block_wall_a);
+								region.setBlockData(xx, yy+4, zz, block_wall_a);
 						} else
 						if (distance == 3) {
 							for (int iy=0; iy<4; iy++) {
 								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
-									region.setType(xx, yy+iy, zz, block_wall_a);
+									region.setBlockData(xx, yy+iy, zz, block_wall_a);
 							}
 						}
 					}

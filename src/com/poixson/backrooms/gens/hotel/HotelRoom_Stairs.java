@@ -3,6 +3,7 @@ package com.poixson.backrooms.gens.hotel;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_SIDE;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_X;
 import static com.poixson.backrooms.gens.Gen_005.DEFAULT_BLOCK_DOOR_BORDER_TOP_Z;
+import static com.poixson.backrooms.gens.Gen_019.DEFAULT_BLOCK_WALL;
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
@@ -168,7 +169,7 @@ public class HotelRoom_Stairs implements HotelRoom {
 			final Iabcd room_area, final BlockFace direction) {
 		// find attic walls
 		{
-			final Material block_attic_wall = Material.matchMaterial(this.gen_019.block_wall);
+			final BlockData block_attic_wall = StringToBlockDataDef(this.gen_019.block_wall, DEFAULT_BLOCK_WALL);
 			if (block_attic_wall == null) throw new RuntimeException("Invalid block type for level 19 Wall");
 			final Iab ab = FaceToIxz(direction);
 			final int xx = (room_area.a + room_area.c) - (8 * ab.a);
@@ -176,11 +177,10 @@ public class HotelRoom_Stairs implements HotelRoom {
 			final int yy = this.gen_019.level_y + this.gen_019.subfloor + 1;
 			if (region.isInRegion(xx,             0, zz            )
 			&&  region.isInRegion(xx-room_area.c, 0, zz-room_area.d)) {
-				Material type;
 				// find attic wall
 				for (int iz=0; iz<room_area.d; iz++) {
 					for (int ix=0; ix<room_area.c; ix++) {
-						type = region.getType(xx-ix, yy+1, zz-iz);
+						final BlockData type = region.getBlockData(xx-ix, yy+1, zz-iz);
 						if (block_attic_wall.equals(type)) return false;
 					}
 				}
