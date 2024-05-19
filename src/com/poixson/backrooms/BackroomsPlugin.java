@@ -125,7 +125,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.economy.set(SetupVaultEconomy());
 		// backrooms levels
 		try {
-			new Level_000(this); // lobby, ductwork, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
+			new Level_000(this); // lobby, pipe dreams, ductwork, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
 			new Level_094(this); // motion
 			new Level_111(this); // run for your life
 			new Level_333(this); // cubes

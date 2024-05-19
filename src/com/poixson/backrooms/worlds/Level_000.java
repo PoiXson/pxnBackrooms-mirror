@@ -16,6 +16,8 @@ import com.poixson.backrooms.gens.Gen_000;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.gens.Gen_001;
 import com.poixson.backrooms.gens.Gen_001.BasementData;
+import com.poixson.backrooms.gens.Gen_002;
+import com.poixson.backrooms.gens.Gen_002.PipeData;
 import com.poixson.backrooms.gens.Gen_004;
 import com.poixson.backrooms.gens.Gen_004.DuctData;
 import com.poixson.backrooms.gens.Gen_005;
@@ -45,6 +47,7 @@ import com.poixson.tools.worldstore.LocationStoreManager;
 //   6 | Lights Out
 //   4 | Ductwork
 //   0 | Lobby
+//   2 | Pipe Dreams
 //  23 | Overgrowth
 //   1 | Basement
 // 188 | The Windows
@@ -53,6 +56,7 @@ public class Level_000 extends BackroomsWorld {
 	// generators
 	public final Gen_001 gen_001;
 	public final Gen_023 gen_023;
+	public final Gen_002 gen_002;
 	public final Gen_000 gen_000;
 	public final Gen_004 gen_004;
 	public final Gen_006 gen_006;
@@ -76,6 +80,7 @@ public class Level_000 extends BackroomsWorld {
 	public final LocationStoreManager portal_000_to_006;
 	public final LocationStoreManager portal_006_to_111;
 	public final LocationStoreManager portal_000_to_037;
+	public final LocationStoreManager portal_000_to_002;
 	public final LocationStoreManager portal_000_to_004;
 	public final LocationStoreManager portal_001_well;
 	public final LocationStoreManager portal_005_to_019;
@@ -95,7 +100,8 @@ public class Level_000 extends BackroomsWorld {
 		// generators
 		this.gen_001 = this.register(new Gen_001(this, this.seed                      )); // basement
 		this.gen_023 = this.register(new Gen_023(this, this.seed, this.gen_001        )); // overgrowth
-		this.gen_000 = this.register(new Gen_000(this, this.seed, this.gen_023        )); // lobby
+		this.gen_002 = this.register(new Gen_002(this, this.seed, this.gen_023        )); // pipe dreams
+		this.gen_000 = this.register(new Gen_000(this, this.seed, this.gen_002        )); // lobby
 		this.gen_004 = this.register(new Gen_004(this, this.seed, this.gen_000        )); // ductwork
 		this.gen_006 = this.register(new Gen_006(this, this.seed, this.gen_004        )); // lights out
 		this.gen_037 = this.register(new Gen_037(this, this.seed, this.gen_006        )); // pools
@@ -115,6 +121,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_000_to_006 = new LocationStoreManager(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
 		this.portal_006_to_111 = new LocationStoreManager(plugin, "level_000", "portal_006_to_111"); // run for your life button
 		this.portal_000_to_037 = new LocationStoreManager(plugin, "level_000", "portal_000_to_037"); // lobby to pools
+		this.portal_000_to_002 = new LocationStoreManager(plugin, "level_000", "portal_000_to_002"); // lobby to pipe dreams
 		this.portal_000_to_004 = new LocationStoreManager(plugin, "level_000", "portal_000_to_004"); // lobby to ductwork
 		this.portal_001_well   = new LocationStoreManager(plugin, "level_000", "portal_001_well"  ); // basement well
 		this.portal_005_to_019 = new LocationStoreManager(plugin, "level_000", "portal_005_to_019"); // hotel to attic
@@ -136,6 +143,7 @@ public class Level_000 extends BackroomsWorld {
 			gen_tpl.add( 05, "hotel",     "Hotel",      this.gen_005.level_y+this.gen_005.bedrock_barrier+this.gen_005.level_h+this.gen_005.subfloor+1);
 			gen_tpl.add( 19, "attic",     "Attic",      this.gen_019.level_y+this.gen_019.bedrock_barrier                     +this.gen_019.subfloor+1);
 			gen_tpl.add(309, "radio",     "Radio Station"                                                                                             );
+			gen_tpl.add(  2, "pipedreams", "Pipe Dreams", this.gen_002.level_y+this.gen_002.bedrock_barrier+this.gen_002.level_h+this.gen_002.subfloor+2);
 			gen_tpl.add(  4, "ductwork",   "Ductwork",    this.gen_004.level_y                                                  +this.gen_000.subfloor+2);
 			gen_tpl.commit();
 		}
@@ -150,6 +158,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_000_to_006.start();
 		this.portal_006_to_111.start();
 		this.portal_000_to_037.start();
+		this.portal_000_to_002.start();
 		this.portal_000_to_004.start();
 		this.portal_001_well  .start();
 		this.portal_005_to_019.start();
@@ -169,6 +178,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_000_to_006.stop();
 		this.portal_006_to_111.stop();
 		this.portal_000_to_037.stop();
+		this.portal_000_to_002.stop();
 		this.portal_000_to_004.stop();
 		this.portal_001_well  .stop();
 		this.portal_005_to_019.stop();
@@ -208,6 +218,7 @@ public class Level_000 extends BackroomsWorld {
 	public int getLevel(final int y) {
 		if (y < this.getMaxY( 1)) return  1; // basement
 		if (y < this.getMaxY(23)) return 23; // overgrowth
+		if (y < this.getMaxY( 2)) return  2; // pipe dreams
 		if (y < this.getMaxY( 0)) return  0; // lobby
 		if (y < this.getMaxY( 4)) return  4; // ductwork
 		if (y < this.getMaxY( 6)) return  6; // lights out
@@ -222,6 +233,7 @@ public class Level_000 extends BackroomsWorld {
 		switch (level) {
 		case   1: // basement
 		case  23: // overgrowth
+		case   2: // pipe dreams
 		case   0: // lobby
 		case   4: // ductwork
 		case   6: // lights out
@@ -242,6 +254,7 @@ public class Level_000 extends BackroomsWorld {
 		switch (level) {
 		case   1: return this.gen_001.level_y; // basement
 		case  23: return this.gen_023.level_y; // overgrowth
+		case   2: return this.gen_002.level_y; // pipe dreams
 		case   0: return this.gen_000.level_y; // lobby
 		case   4: return this.gen_004.level_y; // ductwork
 		case   6: return this.gen_006.level_y; // lights out
@@ -258,6 +271,7 @@ public class Level_000 extends BackroomsWorld {
 		switch (level) {
 		case   1: return this.gen_001.getNextY(); // basement
 		case  23: return this.gen_023.getNextY(); // overgrowth
+		case   2: return this.gen_002.getNextY(); // pipe dreams
 		case   0: return this.gen_000.getNextY(); // lobby
 		case   4: return this.gen_004.getNextY(); // ductwork
 		case   6: return this.gen_006.getNextY(); // lights out
@@ -290,6 +304,7 @@ public class Level_000 extends BackroomsWorld {
 		switch (level) {
 		case  1: // basement
 		case 23: // overgrowth
+		case  2: // pipe dreams
 		case  0: // lobby
 		case  4: // ductwork
 		case  6: // lights out
@@ -343,6 +358,7 @@ public class Level_000 extends BackroomsWorld {
 
 	public class Pregen_Level_000 implements PreGenData {
 		public final HashMap<Iab, LobbyData>    lobby    = new HashMap<Iab, LobbyData>();
+		public final HashMap<Iab, PipeData>     pipes    = new HashMap<Iab, PipeData>();
 		public final HashMap<Iab, DuctData>     ducts    = new HashMap<Iab, DuctData>();
 		public final HashMap<Iab, BasementData> basement = new HashMap<Iab, BasementData>();
 		public final HashMap<Iab, HotelData>    hotel    = new HashMap<Iab, HotelData>();
@@ -364,6 +380,7 @@ public class Level_000 extends BackroomsWorld {
 			// pre-generate
 			final Pregen_Level_000 pregen = new Pregen_Level_000();
 			this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
+			this.gen_002.pregenerate(pregen.pipes,    chunkX, chunkZ); // pipedreams
 			this.gen_004.pregenerate(pregen.ducts,    chunkX, chunkZ); // ductwork
 			this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ); // basement
 			this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
@@ -371,6 +388,7 @@ public class Level_000 extends BackroomsWorld {
 			// generate
 			this.gen_001.generate(pregen, plots, chunk, chunkX, chunkZ); // basement
 			this.gen_023.generate(pregen, plots, chunk, chunkX, chunkZ); // overgrowth
+			this.gen_002.generate(pregen, plots, chunk, chunkX, chunkZ); // pipedreams
 			this.gen_000.generate(pregen, plots, chunk, chunkX, chunkZ); // lobby
 			this.gen_004.generate(pregen, plots, chunk, chunkX, chunkZ); // ductwork
 			this.gen_006.generate(pregen, plots, chunk, chunkX, chunkZ); // lights out
