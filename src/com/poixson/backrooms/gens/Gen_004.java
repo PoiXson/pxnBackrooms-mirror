@@ -24,8 +24,8 @@ import com.poixson.utils.FastNoiseLiteD.FractalType;
 import com.poixson.utils.FastNoiseLiteD.NoiseType;
 
 
-// 96 | Ductwork
-public class Gen_096 extends BackroomsGen {
+// 4 | Ductwork
+public class Gen_004 extends BackroomsGen {
 
 	// default params
 	public static final int    DEFAULT_LEVEL_H                  = 3;
@@ -65,7 +65,7 @@ public class Gen_096 extends BackroomsGen {
 
 
 
-	public Gen_096(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below)
+	public Gen_004(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below)
 			throws InvalidConfigurationException {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
@@ -95,7 +95,7 @@ public class Gen_096 extends BackroomsGen {
 
 	@Override
 	public int getLevelNumber() {
-		return 96;
+		return 4;
 	}
 
 	@Override
@@ -113,17 +113,17 @@ public class Gen_096 extends BackroomsGen {
 		public       boolean isWall = false;
 
 		public DuctData(final int x, final int z) {
-			final int noiseDuctCount = Gen_096.this.noiseDuctCount;
+			final int noiseDuctCount = Gen_004.this.noiseDuctCount;
 			this.values_duct = new double[noiseDuctCount];
 			double highest = -1.0;
 			for (int i=0; i<noiseDuctCount; i++) {
-				final double value = Gen_096.this.noiseDucts[i].getNoiseRot(x, z, 0.25);
+				final double value = Gen_004.this.noiseDucts[i].getNoiseRot(x, z, 0.25);
 				this.values_duct[i] = value;
 				if (highest < value)
 					highest = value;
 			}
 			this.value_duct = highest;
-			this.isDuct = (this.value_duct > Gen_096.this.thresh_duct);
+			this.isDuct = (this.value_duct > Gen_004.this.thresh_duct);
 		}
 
 	}
