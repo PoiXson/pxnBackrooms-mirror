@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,8 +14,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.plugin.PluginManager;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.events.LevelChangeEvent;
 import com.poixson.backrooms.gens.Gen_001;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.events.PlayerMoveNormalEvent;
@@ -28,6 +31,8 @@ public class Listener_MoveNormal implements xListener {
 	public static final int BASEMENT_LIGHT_RADIUS = 20;
 
 	protected final BackroomsPlugin plugin;
+
+	protected final HashMap<UUID, Integer> last_level = new HashMap<UUID, Integer>();
 
 	protected final HashMap<UUID, List<Location>> player_lights = new HashMap<UUID, List<Location>>();
 
@@ -66,14 +71,31 @@ public class Listener_MoveNormal implements xListener {
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerMoveNormal(final PlayerMoveNormalEvent event) {
 		final Player player = event.getPlayer();
+		final UUID uuid = player.getUniqueId();
 		final int level = this.plugin.getLevel(player);
+		// check level change
+		{
+			final Integer last_level = this.last_level.get(uuid);
+			if (last_level == null) {
+				this.last_level.put(uuid, Integer.valueOf(level));
+			} else {
+				final int previous = last_level.intValue();
+				// level changed
+				if (previous != level) {
+					final PluginManager pm = Bukkit.getPluginManager();
+					pm.callEvent(
+						new LevelChangeEvent(player, level, previous)
+					);
+				}
+			}
+		}
 		// basement lights
 		if (level == 1) {
 			final Level_000 level_000 = (Level_000) this.plugin.getBackroomsWorld(0);
 			final Gen_001 gen_001 = level_000.gen_001;
 			final Location to = event.getTo();
 			final World world = to.getWorld();
-			final List<Location> lights = this.getPlayerLightsList(player.getUniqueId());
+			final List<Location> lights = this.getPlayerLightsList(uuid);
 			// turn off lights
 			{
 				Location loc;
@@ -111,7 +133,6 @@ public class Listener_MoveNormal implements xListener {
 		// outside of basement
 		} else {
 			// player left the basement
-			final UUID uuid = player.getUniqueId();
 			if (this.player_lights.containsKey(uuid)) {
 				// turn off all lights for player
 				final List<Location> list = this.player_lights.get(uuid);
