@@ -151,7 +151,7 @@ public class Gen_001 extends BackroomsGen {
 		public boolean isWet;
 
 		public BasementData(final int x, final int z) {
-			this.value_wall   = Gen_001.this.noiseWalls.getNoiseRot(x, z, 0.25);
+			this.value_wall   = Gen_001.this.noiseWalls.getNoise(x, z);
 			this.value_moistA = Gen_001.this.noiseMoist.getNoise(x, z);
 			this.value_moistB = Gen_001.this.noiseMoist.getNoise(z, x);
 			this.isWall = (this.value_wall > Gen_001.this.thresh_wall);
@@ -271,6 +271,7 @@ public class Gen_001 extends BackroomsGen {
 		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// basement wall noise
+		this.noiseWalls.setAngle(0.25);
 		this.noiseWalls.setFrequency(               cfgParams.getDouble("Noise-Wall-Freq"    ));
 		this.noiseWalls.setFractalOctaves(          cfgParams.getInt(   "Noise-Wall-Octave"  ));
 		this.noiseWalls.setFractalGain(             cfgParams.getDouble("Noise-Wall-Gain"    ));

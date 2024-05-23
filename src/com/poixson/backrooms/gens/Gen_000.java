@@ -159,7 +159,7 @@ public class Gen_000 extends BackroomsGen {
 		public BlockFace box_dir = null;
 
 		public LobbyData(final int x, final int z) {
-			this.value_wall = Gen_000.this.noiseLobbyWalls.getNoiseRot(x, z, 0.25);
+			this.value_wall = Gen_000.this.noiseLobbyWalls.getNoise(x, z);
 			this.isWall = (
 				this.value_wall > Gen_000.this.thresh_wall_L &&
 				this.value_wall < Gen_000.this.thresh_wall_H
@@ -515,6 +515,7 @@ public class Gen_000 extends BackroomsGen {
 		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// lobby walls
+		this.noiseLobbyWalls.setAngle(0.25);
 		this.noiseLobbyWalls.setFrequency(               cfgParams.getDouble("Noise-Wall-Freq"    ));
 		this.noiseLobbyWalls.setFractalOctaves(          cfgParams.getInt(   "Noise-Wall-Octave"  ));
 		this.noiseLobbyWalls.setFractalGain(             cfgParams.getDouble("Noise-Wall-Gain"    ));

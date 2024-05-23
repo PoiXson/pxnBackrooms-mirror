@@ -103,7 +103,7 @@ public class Pop_037 implements BackroomsPop {
 
 		@Override
 		public boolean isValidPoint(final int x, final int y) {
-			final double value = Pop_037.this.gen_037.noiseTunnels.getNoiseRot(x, y, 0.25);
+			final double value = Pop_037.this.gen_037.noiseTunnels.getNoise(x, y);
 			return (value > Pop_037.this.gen_037.thresh_tunnel);
 		}
 

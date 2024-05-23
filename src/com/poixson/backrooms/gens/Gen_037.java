@@ -516,6 +516,7 @@ public class Gen_037 extends BackroomsGen {
 		this.noisePoolRooms.setNoiseType(              NoiseType.OpenSimplex2                    );
 		this.noisePoolRooms.setFractalType(            FractalType.PingPong                      );
 		// tunnels
+		this.noiseTunnels.setAngle(0.25);
 		this.noiseTunnels.setFrequency(               cfgParams.getDouble("Noise-Tunnel-Freq"    ));
 		this.noiseTunnels.setFractalPingPongStrength( cfgParams.getDouble("Noise-Tunnel-Strength"));
 		this.noiseTunnels.setNoiseType(               NoiseType.Cellular                          );

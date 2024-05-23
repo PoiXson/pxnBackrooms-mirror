@@ -132,7 +132,7 @@ public class Gen_004 extends BackroomsGen {
 			this.values_duct = new double[noiseDuctCount];
 			double highest = -1.0;
 			for (int i=0; i<noiseDuctCount; i++) {
-				final double value = Gen_004.this.noiseDucts[i].getNoiseRot(x, z, 0.25);
+				final double value = Gen_004.this.noiseDucts[i].getNoise(x, z);
 				this.values_duct[i] = value;
 				if (highest < value)
 					highest = value;
@@ -246,6 +246,7 @@ public class Gen_004 extends BackroomsGen {
 			final double ii = (double) i;
 			final double freq_adjusted   = noiseDuctFreq   * (1.0 - (ii *noiseDuctFreqAdjust) );
 			final double jitter_adjusted = noiseDuctJitter * (  (1.0+ii)*noiseDuctJitterAdjust);
+			this.noiseDucts[i].setAngle(0.25);
 			this.noiseDucts[i].setFrequency(               freq_adjusted                     );
 			this.noiseDucts[i].setCellularJitter(          jitter_adjusted                   );
 			this.noiseDucts[i].setNoiseType(               NoiseType.Cellular                );

@@ -177,7 +177,7 @@ public class Gen_005 extends BackroomsGen {
 		public boolean hall_center = false;
 
 		public HotelData(final int x, final int z) {
-			this.value = Gen_005.this.noiseHotelWalls.getNoiseRot(x, z, 0.25);
+			this.value = Gen_005.this.noiseHotelWalls.getNoise(x, z);
 			this.type = (this.value>Gen_005.this.thresh_room_hall ? NodeType.HALL : NodeType.ROOM);
 		}
 
@@ -404,6 +404,7 @@ public class Gen_005 extends BackroomsGen {
 		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// hotel walls
+		this.noiseHotelWalls.setAngle(0.25);
 		this.noiseHotelWalls.setFrequency(               cfgParams.getDouble("Noise-Wall-Freq"  ));
 		this.noiseHotelWalls.setCellularJitter(          cfgParams.getDouble("Noise-Wall-Jitter"));
 		this.noiseHotelWalls.setNoiseType(               NoiseType.Cellular                      );
