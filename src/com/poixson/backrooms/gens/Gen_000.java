@@ -41,8 +41,8 @@ public class Gen_000 extends BackroomsGen {
 
 	// default params
 	public static final int    DEFAULT_LEVEL_H             = 5;
-	public static final int    DEFAULT_SUBFLOOR            = 3;
-	public static final int    DEFAULT_SUBCEILING          = 2;
+	public static final int    DEFAULT_SUBFLOOR            = 1;
+	public static final int    DEFAULT_SUBCEILING          = 1;
 	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.022;
 	public static final int    DEFAULT_NOISE_WALL_OCTAVE   = 2;
 	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.1;
@@ -290,8 +290,7 @@ public class Gen_000 extends BackroomsGen {
 		final HashMap<Iab, BasementData> data_basement = ((Pregen_Level_000)pregen).basement;
 		final LinkedList<Iabc> chests = new LinkedList<Iabc>();
 		final int h_walls = this.level_h + 3;
-		final int y_base  = this.level_y + this.bedrock_barrier;
-		final int y_floor = y_base + this.subfloor;
+		final int y_floor = this.level_y + this.subfloor;
 		final int y_ceil  = (y_floor + h_walls) - 2;
 //		int outlets = 0;
 //		int outlet_rnd;
@@ -301,12 +300,9 @@ public class Gen_000 extends BackroomsGen {
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
 				final int mod_x = (xx < 0 ? 1-xx : xx) % 7;
-				// barrier
-				for (int iy=0; iy<this.bedrock_barrier; iy++)
-					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
 				// subfloor
 				for (int iy=0; iy<this.subfloor; iy++)
-					chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
+					chunk.setBlock(ix, this.level_y+iy, iz, block_subfloor);
 				final LobbyData dao_lobby = data_lobby.get(new Iab(ix, iz));
 				if (dao_lobby == null) continue;
 				// wall
