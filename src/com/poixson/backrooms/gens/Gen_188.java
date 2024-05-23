@@ -126,8 +126,9 @@ public class Gen_188 extends BackroomsGen {
 		if (block_window           == null) throw new RuntimeException("Invalid block type for level 188 Window"          );
 		final Gen_001 gen_001 = level_000.gen_001;
 		final Gen_023 gen_023 = level_000.gen_023;
+		final Gen_002 gen_002 = level_000.gen_002;
 		final Gen_000 gen_000 = level_000.gen_000;
-		final Gen_096 gen_096 = level_000.gen_096;
+		final Gen_004 gen_004 = level_000.gen_004;
 		final Gen_006 gen_006 = level_000.gen_006;
 		final Gen_037 gen_037 = level_000.gen_037;
 		final Gen_005 gen_005 = level_000.gen_005;
@@ -235,6 +236,7 @@ public class Gen_188 extends BackroomsGen {
 							switch(lvl) {
 							case  1: lvl_min_y += gen_001.bedrock_barrier + gen_001.subfloor + 1; lvl_max_y -=                      3; break SWITCH_LEVEL;
 							case 23: lvl_min_y += gen_023.bedrock_barrier + gen_023.subfloor + 1; lvl_max_y -= gen_023.subceiling + 2; break SWITCH_LEVEL;
+							case  2: lvl_min_y += gen_002.bedrock_barrier + gen_002.subfloor + 1; lvl_max_y -=                      2; break SWITCH_LEVEL;
 							case  0: lvl_min_y += gen_000.bedrock_barrier + gen_000.subfloor + 1; lvl_max_y -= gen_000.subceiling + 1; break SWITCH_LEVEL;
 							case  4: lvl_min_y += gen_004.bedrock_barrier                    + 1; lvl_max_y -=                      3; break SWITCH_LEVEL;
 							case  6: lvl_min_y += gen_006.bedrock_barrier;                                                             break SWITCH_LEVEL;

@@ -72,13 +72,13 @@ public class Gen_004 extends BackroomsGen {
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
-		this.enable_gen        = cfgParams.getBoolean("Enable-Gen"      );
-		this.enable_top        = cfgParams.getBoolean("Enable-Top"      );
-		this.level_y           = cfgParams.getInt(    "Level-Y"         );
-		this.level_h           = cfgParams.getInt(    "Level-Height"    );
-		this.subceiling        = cfgParams.getInt(    "SubCeiling"      );
-		this.noiseDuctCount    = cfgParams.getInt(    "Noise-Duct-Count");
-		this.thresh_duct       = cfgParams.getDouble( "Thresh-Duct"     );
+		this.enable_gen     = cfgParams.getBoolean("Enable-Gen"      );
+		this.enable_top     = cfgParams.getBoolean("Enable-Top"      );
+		this.level_y        = cfgParams.getInt(    "Level-Y"         );
+		this.level_h        = cfgParams.getInt(    "Level-Height"    );
+		this.subceiling     = cfgParams.getInt(    "SubCeiling"      );
+		this.noiseDuctCount = cfgParams.getInt(    "Noise-Duct-Count");
+		this.thresh_duct    = cfgParams.getDouble( "Thresh-Duct"     );
 		// block types
 		this.block_subceiling = cfgBlocks.getString("SubCeiling");
 		this.block_ceiling    = cfgBlocks.getString("Ceiling"   );
@@ -158,18 +158,17 @@ public class Gen_004 extends BackroomsGen {
 		}
 		// find walls
 		for (int iz=0; iz<16; iz++) {
-			LOOP_X:
 			for (int ix=0; ix<16; ix++) {
 				final DuctData dao = data.get(new Iab(ix, iz));
 				if (!dao.isDuct) {
-					if (data.get(new Iab(ix,   iz-1)).isDuct) { dao.isWall = true; continue LOOP_X; } // north
-					if (data.get(new Iab(ix,   iz+1)).isDuct) { dao.isWall = true; continue LOOP_X; } // south
-					if (data.get(new Iab(ix+1, iz  )).isDuct) { dao.isWall = true; continue LOOP_X; } // east
-					if (data.get(new Iab(ix-1, iz  )).isDuct) { dao.isWall = true; continue LOOP_X; } // west
-					if (data.get(new Iab(ix+1, iz-1)).isDuct) { dao.isWall = true; continue LOOP_X; } // north/east
-					if (data.get(new Iab(ix-1, iz-1)).isDuct) { dao.isWall = true; continue LOOP_X; } // north/west
-					if (data.get(new Iab(ix+1, iz+1)).isDuct) { dao.isWall = true; continue LOOP_X; } // south/east
-					if (data.get(new Iab(ix-1, iz+1)).isDuct) { dao.isWall = true; continue LOOP_X; } // south/west
+					if (data.get(new Iab(ix,   iz-1)).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix,   iz+1)).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix+1, iz  )).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix-1, iz  )).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix+1, iz-1)).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix-1, iz-1)).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix+1, iz+1)).isDuct) dao.isWall = true; else
+					if (data.get(new Iab(ix-1, iz+1)).isDuct) dao.isWall = true;
 				}
 			}
 		}

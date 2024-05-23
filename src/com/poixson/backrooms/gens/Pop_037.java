@@ -179,28 +179,28 @@ public class Pop_037 implements BackroomsPop {
 					}
 					if (region.isInRegion(xx, 0, zz)) {
 						if (distance < 2) {
-							if (block_wall_b.equals(region.getType(xx, yy, zz)))
+							if (block_wall_b.getMaterial().equals(region.getType(xx, yy, zz)))
 								region.setBlockData(xx, yy, zz, block_wall_a);
 							for (int iy=1; iy<5; iy++) {
-								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
+								if (block_wall_b.getMaterial().equals(region.getType(xx, yy+iy, zz)))
 									region.setType(xx, yy+iy, zz, Material.AIR);
 							}
-							if (block_wall_b.equals(region.getType(xx, yy+5, zz)))
+							if (block_wall_b.getMaterial().equals(region.getType(xx, yy+5, zz)))
 								region.setBlockData(xx, yy+5, zz, block_wall_a);
 						} else
 						if (distance == 2) {
-							if (block_wall_b.equals(region.getType(xx, yy, zz)))
+							if (block_wall_b.getMaterial().equals(region.getType(xx, yy, zz)))
 								region.setBlockData(xx, yy, zz, block_wall_a);
 							for (int iy=1; iy<4; iy++) {
-								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
+								if (block_wall_b.getMaterial().equals(region.getType(xx, yy+iy, zz)))
 									region.setType(xx, yy+iy, zz, Material.AIR);
 							}
-							if (block_wall_b.equals(region.getType(xx, yy+4, zz)))
+							if (block_wall_b.getMaterial().equals(region.getType(xx, yy+4, zz)))
 								region.setBlockData(xx, yy+4, zz, block_wall_a);
 						} else
 						if (distance == 3) {
 							for (int iy=0; iy<4; iy++) {
-								if (block_wall_b.equals(region.getType(xx, yy+iy, zz)))
+								if (block_wall_b.getMaterial().equals(region.getType(xx, yy+iy, zz)))
 									region.setBlockData(xx, yy+iy, zz, block_wall_a);
 							}
 						}

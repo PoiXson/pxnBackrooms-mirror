@@ -76,7 +76,7 @@ public class Gen_023 extends BackroomsGen {
 	public final String block_grass_dry_tall_lower;
 	public final String block_grass_dry_tall_upper;
 
-	protected final AtomicInteger rnd_grass = new AtomicInteger(0);
+	protected final AtomicInteger inc_grass = new AtomicInteger(0);
 
 
 
@@ -218,8 +218,8 @@ public class Gen_023 extends BackroomsGen {
 					if (dao_basement.isWet) chunk.setBlock(ix, y_floor, iz, block_floor_wet);
 					else                    chunk.setBlock(ix, y_floor, iz, block_floor_dry);
 					// grass
-					final int rnd = this.rnd_grass.getAndIncrement();
-					final int mod_grass = rnd % this.grass_modulus;
+					final int inc = this.inc_grass.getAndIncrement();
+					final int mod_grass = inc % this.grass_modulus;
 					// tall grass
 					if (mod_grass == 0 || mod_grass == 5) {
 						final BlockData blk_lower = (dao_basement.isWet ? block_grass_wet_tall_lower : block_grass_dry_tall_lower);

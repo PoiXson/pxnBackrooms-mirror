@@ -346,7 +346,7 @@ public class Gen_000 extends BackroomsGen {
 						// loot
 						if (dao_lobby.wall_dist == 1) {
 //TODO
-							level_000.loot_chests_0.add(xx, zz);
+							level_000.loot_0.add(xx, zz);
 							final BlockData barrel = Bukkit.createBlockData("minecraft:barrel[facing=up]");
 							chunk.setBlock(ix, y_floor+1, iz, barrel);
 							chests.add(new Iabc(xx, y_floor+1, zz));
@@ -398,8 +398,7 @@ public class Gen_000 extends BackroomsGen {
 								matrix[0][5].append("xxgxx");
 								int iy = 0;
 								// basement subceiling
-								final int h_exit_subceil = this.bedrock_barrier + 1;
-								for (int i=1; i<h_exit_subceil; i++) {
+								for (int i=1; i<=this.bedrock_barrier; i++) {
 									iy++;
 									matrix[iy][1].append(" xxx");
 									matrix[iy][2].append(" x.x");

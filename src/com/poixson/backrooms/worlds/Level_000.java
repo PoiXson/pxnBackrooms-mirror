@@ -77,11 +77,11 @@ public class Level_000 extends BackroomsWorld {
 
 	// exit locations
 	public final LocationStoreManager portal_000_to_001;
+	public final LocationStoreManager portal_000_to_002;
+	public final LocationStoreManager portal_000_to_004;
 	public final LocationStoreManager portal_000_to_006;
 	public final LocationStoreManager portal_006_to_111;
 	public final LocationStoreManager portal_000_to_037;
-	public final LocationStoreManager portal_000_to_002;
-	public final LocationStoreManager portal_000_to_004;
 	public final LocationStoreManager portal_001_well;
 	public final LocationStoreManager portal_005_to_019;
 	public final LocationStoreManager portal_005_to_037;
@@ -90,7 +90,7 @@ public class Level_000 extends BackroomsWorld {
 	public final LocationStoreManager portal_309_doors;
 	public final LocationStoreManager cheese_rooms;
 	// loot
-	public final LocationStoreManager loot_chests_0;
+	public final LocationStoreManager loot_0;
 
 
 
@@ -104,7 +104,7 @@ public class Level_000 extends BackroomsWorld {
 		this.gen_000 = this.register(new Gen_000(this, this.seed, this.gen_002        )); // lobby
 		this.gen_004 = this.register(new Gen_004(this, this.seed, this.gen_000        )); // ductwork
 		this.gen_006 = this.register(new Gen_006(this, this.seed, this.gen_004        )); // lights out
-		this.gen_037 = this.register(new Gen_037(this, this.seed, this.gen_006        )); // pools
+		this.gen_037 = this.register(new Gen_037(this, this.seed, this.gen_006        )); // poolrooms
 		this.gen_005 = this.register(new Gen_005(this, this.seed, this.gen_037        )); // hotel
 		this.gen_019 = this.register(new Gen_019(this, this.seed, this.gen_005        )); // attic
 		this.gen_309 = this.register(new Gen_309(this, this.seed, this.gen_019        )); // radio station
@@ -112,39 +112,39 @@ public class Level_000 extends BackroomsWorld {
 		// populators
 		this.pop_001 = this.register(new Pop_001(this)); // basement
 		this.pop_005 = this.register(new Pop_005(this)); // hotel
-		this.pop_037 = this.register(new Pop_037(this)); // pools
+		this.pop_037 = this.register(new Pop_037(this)); // poolrooms
 		this.pop_309 = this.register(new Pop_309(this)); // radio station
 		// listeners
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
 		this.portal_000_to_001 = new LocationStoreManager(plugin, "level_000", "portal_000_to_001"); // lobby to basement
-		this.portal_000_to_006 = new LocationStoreManager(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
-		this.portal_006_to_111 = new LocationStoreManager(plugin, "level_000", "portal_006_to_111"); // run for your life button
-		this.portal_000_to_037 = new LocationStoreManager(plugin, "level_000", "portal_000_to_037"); // lobby to pools
 		this.portal_000_to_002 = new LocationStoreManager(plugin, "level_000", "portal_000_to_002"); // lobby to pipe dreams
 		this.portal_000_to_004 = new LocationStoreManager(plugin, "level_000", "portal_000_to_004"); // lobby to ductwork
+		this.portal_000_to_006 = new LocationStoreManager(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
+		this.portal_006_to_111 = new LocationStoreManager(plugin, "level_000", "portal_006_to_111"); // run for your life button
+		this.portal_000_to_037 = new LocationStoreManager(plugin, "level_000", "portal_000_to_037"); // lobby to poolrooms
 		this.portal_001_well   = new LocationStoreManager(plugin, "level_000", "portal_001_well"  ); // basement well
 		this.portal_005_to_019 = new LocationStoreManager(plugin, "level_000", "portal_005_to_019"); // hotel to attic
-		this.portal_005_to_037 = new LocationStoreManager(plugin, "level_000", "portal_005_to_037"); // hotel to pools
+		this.portal_005_to_037 = new LocationStoreManager(plugin, "level_000", "portal_005_to_037"); // hotel to poolrooms
 		this.portal_019_to_309 = new LocationStoreManager(plugin, "level_000", "portal_019_to_309"); // attic to forest
 		this.portal_309_stairs = new LocationStoreManager(plugin, "level_000", "portal_309_stairs"); // stairs in the forest
 		this.portal_309_doors  = new LocationStoreManager(plugin, "level_000", "portal_309_doors" ); // doors in the forest
 		this.cheese_rooms      = new LocationStoreManager(plugin, "level_000", "cheese_rooms"     ); // cheese hotel room
 		// loot
-		this.loot_chests_0     = new LocationStoreManager(plugin, "level_000", "loot_000"         ); // loot chests
+		this.loot_0            = new LocationStoreManager(plugin, "level_000", "loot_000"         ); // loot chests
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);
-			gen_tpl.add(  1, "basement",  "Basement",   this.gen_001.level_y+this.gen_001.bedrock_barrier+this.gen_001.level_h                        );
-			gen_tpl.add( 23, "overgrow",  "Overgrowth", this.gen_023.level_y+this.gen_023.bedrock_barrier                                           +8);
-			gen_tpl.add(  0, "lobby",     "Lobby",      this.gen_000.level_y+this.gen_000.bedrock_barrier+this.gen_000.level_h+this.gen_000.subfloor+1);
-			gen_tpl.add(  6, "lightsout", "Lights Out", this.gen_006.level_y+this.gen_006.bedrock_barrier+this.gen_006.level_h                        );
-			gen_tpl.add( 37, "poolrooms", "Poolrooms",  this.gen_037.level_y+this.gen_037.bedrock_barrier+this.gen_037.level_h                      +1);
-			gen_tpl.add( 05, "hotel",     "Hotel",      this.gen_005.level_y+this.gen_005.bedrock_barrier+this.gen_005.level_h+this.gen_005.subfloor+1);
-			gen_tpl.add( 19, "attic",     "Attic",      this.gen_019.level_y+this.gen_019.bedrock_barrier                     +this.gen_019.subfloor+1);
-			gen_tpl.add(309, "radio",     "Radio Station"                                                                                             );
-			gen_tpl.add(  2, "pipedreams", "Pipe Dreams", this.gen_002.level_y+this.gen_002.bedrock_barrier+this.gen_002.level_h+this.gen_002.subfloor+2);
-			gen_tpl.add(  4, "ductwork",   "Ductwork",    this.gen_004.level_y                                                  +this.gen_000.subfloor+2);
+			gen_tpl.add(  1, "basement",   "Basement",    this.gen_001.getLampY() - 1);
+			gen_tpl.add( 23, "overgrow",   "Overgrowth",  this.gen_023.getOpenY() + 3);
+			gen_tpl.add(  2, "pipedreams", "Pipe Dreams", this.gen_002.getOpenY()    );
+			gen_tpl.add(  0, "lobby",      "Lobby",       this.gen_000.getOpenY() + 1);
+			gen_tpl.add(  4, "ductwork",   "Ductwork",    this.gen_004.getOpenY() + 1);
+			gen_tpl.add(  6, "lightsout",  "Lights Out",  this.gen_006.getOpenY() + 1);
+			gen_tpl.add( 37, "poolrooms",  "Poolrooms",   this.gen_037.getOpenY() + this.gen_037.water_depth + 1);
+			gen_tpl.add( 05, "hotel",      "Hotel",       this.gen_005.getOpenY() + 2);
+			gen_tpl.add( 19, "attic",      "Attic",       this.gen_019.getOpenY()    );
+			gen_tpl.add(309, "radio",      "Radio Station"                           );
 			gen_tpl.commit();
 		}
 	}
@@ -155,11 +155,11 @@ public class Level_000 extends BackroomsWorld {
 	public void register() {
 		super.register();
 		this.portal_000_to_001.start();
+		this.portal_000_to_002.start();
+		this.portal_000_to_004.start();
 		this.portal_000_to_006.start();
 		this.portal_006_to_111.start();
 		this.portal_000_to_037.start();
-		this.portal_000_to_002.start();
-		this.portal_000_to_004.start();
 		this.portal_001_well  .start();
 		this.portal_005_to_019.start();
 		this.portal_005_to_037.start();
@@ -167,7 +167,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_309_stairs.start();
 		this.portal_309_doors .start();
 		this.cheese_rooms     .start();
-		this.loot_chests_0    .start();
+		this.loot_0           .start();
 		this.listener_023.register();
 	}
 	@Override
@@ -175,11 +175,11 @@ public class Level_000 extends BackroomsWorld {
 		super.unregister();
 		this.listener_023.unregister();
 		this.portal_000_to_001.stop();
+		this.portal_000_to_002.stop();
+		this.portal_000_to_004.stop();
 		this.portal_000_to_006.stop();
 		this.portal_006_to_111.stop();
 		this.portal_000_to_037.stop();
-		this.portal_000_to_002.stop();
-		this.portal_000_to_004.stop();
 		this.portal_001_well  .stop();
 		this.portal_005_to_019.stop();
 		this.portal_005_to_037.stop();
@@ -187,7 +187,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_309_stairs.stop();
 		this.portal_309_doors .stop();
 		this.cheese_rooms     .stop();
-		this.loot_chests_0    .stop();
+		this.loot_0           .stop();
 	}
 
 
@@ -222,7 +222,7 @@ public class Level_000 extends BackroomsWorld {
 		if (y < this.getMaxY( 0)) return  0; // lobby
 		if (y < this.getMaxY( 4)) return  4; // ductwork
 		if (y < this.getMaxY( 6)) return  6; // lights out
-		if (y < this.getMaxY(37)) return 37; // pools
+		if (y < this.getMaxY(37)) return 37; // poolrooms
 		if (y < this.getMaxY( 5)) return  5; // hotel
 		if (y < this.getMaxY(19)) return 19; // attic
 		return 309;                          // radio station
@@ -237,7 +237,7 @@ public class Level_000 extends BackroomsWorld {
 		case   0: // lobby
 		case   4: // ductwork
 		case   6: // lights out
-		case  37: // pools
+		case  37: // poolrooms
 		case   5: // hotel
 		case  19: // attic
 		case 309: // radio station
@@ -325,7 +325,7 @@ public class Level_000 extends BackroomsWorld {
 		case  0: // lobby
 		case  4: // ductwork
 		case  6: // lights out
-		case 37: // pools
+		case 37: // poolrooms
 		case  5: // hotel
 		case 19: // attic
 			return super.getNewSpawnArea(level);
@@ -399,7 +399,7 @@ public class Level_000 extends BackroomsWorld {
 			this.gen_004.pregenerate(pregen.ducts,    chunkX, chunkZ); // ductwork
 			this.gen_001.pregenerate(pregen.basement, chunkX, chunkZ); // basement
 			this.gen_005.pregenerate(pregen.hotel,    chunkX, chunkZ); // hotel
-			this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // pools
+			this.gen_037.pregenerate(pregen.pools,    chunkX, chunkZ); // poolrooms
 			// generate
 			this.gen_001.generate(pregen, plots, chunk, chunkX, chunkZ); // basement
 			this.gen_023.generate(pregen, plots, chunk, chunkX, chunkZ); // overgrowth
@@ -407,7 +407,7 @@ public class Level_000 extends BackroomsWorld {
 			this.gen_000.generate(pregen, plots, chunk, chunkX, chunkZ); // lobby
 			this.gen_004.generate(pregen, plots, chunk, chunkX, chunkZ); // ductwork
 			this.gen_006.generate(pregen, plots, chunk, chunkX, chunkZ); // lights out
-			this.gen_037.generate(pregen, plots, chunk, chunkX, chunkZ); // pools
+			this.gen_037.generate(pregen, plots, chunk, chunkX, chunkZ); // poolrooms
 			this.gen_005.generate(pregen, plots, chunk, chunkX, chunkZ); // hotel
 			this.gen_019.generate(pregen, plots, chunk, chunkX, chunkZ); // attic
 		}
