@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -28,14 +29,14 @@ import com.poixson.utils.FastNoiseLiteD.NoiseType;
 public class Gen_002 extends BackroomsGen {
 
 	// default params
-	public static final int    DEFAULT_LEVEL_H                    = 2;
+	public static final int    DEFAULT_LEVEL_H                    = 3;
 	public static final int    DEFAULT_SUBFLOOR                   = 3;
 	public static final int    DEFAULT_NOISE_TUNNEL_COUNT         = 4;
-	public static final double DEFAULT_NOISE_TUNNEL_FREQ          = 0.01;
+	public static final double DEFAULT_NOISE_TUNNEL_FREQ          = 0.02;
 	public static final double DEFAULT_NOISE_TUNNEL_FREQ_ADJUST   = 0.015;
 	public static final double DEFAULT_NOISE_TUNNEL_JITTER        = 0.8;
 	public static final double DEFAULT_NOISE_TUNNEL_JITTER_ADJUST = 2.0;
-	public static final double DEFAULT_THRESH_TUNNEL              = 0.93;
+	public static final double DEFAULT_THRESH_TUNNEL              = 0.87;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR = "minecraft:cobblestone";
@@ -43,6 +44,10 @@ public class Gen_002 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_FLOOR    = "minecraft:bricks";
 	public static final String DEFAULT_BLOCK_WALLS    = "minecraft:bricks";
 	public static final String DEFAULT_BLOCK_FILL     = "minecraft:cobblestone";
+	public static final String DEFAULT_BLOCK_PIPE_END = "minecraft:copper_block";
+	public static final String DEFAULT_BLOCK_PIPE_NS  = "minecraft:lightning_rod[facing=north]";
+	public static final String DEFAULT_BLOCK_PIPE_EW  = "minecraft:lightning_rod[facing=east]";
+	public static final String DEFAULT_BLOCK_LIGHT    = "minecraft:light[level=6]";
 
 	// params
 	public final boolean enable_gen;
@@ -59,6 +64,10 @@ public class Gen_002 extends BackroomsGen {
 	public final String block_floor;
 	public final String block_walls;
 	public final String block_fill;
+	public final String block_pipe_end;
+	public final String block_pipe_ns;
+	public final String block_pipe_ew;
+	public final String block_light;
 
 	// noise
 	public final FastNoiseLiteD noiseTunnels[];
@@ -85,6 +94,10 @@ public class Gen_002 extends BackroomsGen {
 		this.block_floor    = cfgBlocks.getString("Floor"   );
 		this.block_walls    = cfgBlocks.getString("Walls"   );
 		this.block_fill     = cfgBlocks.getString("Fill"    );
+		this.block_pipe_end = cfgBlocks.getString("Pipe-End");
+		this.block_pipe_ns  = cfgBlocks.getString("Pipe-NS" );
+		this.block_pipe_ew  = cfgBlocks.getString("Pipe-EW" );
+		this.block_light    = cfgBlocks.getString("Light"   );
 		// noise
 		this.noiseTunnels = new FastNoiseLiteD[this.noiseTunnelCount];
 		for (int i=0; i<this.noiseTunnelCount; i++)
@@ -126,6 +139,9 @@ public class Gen_002 extends BackroomsGen {
 		public final double values_tunnel[];
 		public final boolean isTunnel;
 		public       boolean isWall = false;
+		public final int    modPipe;
+		public       char   isPipeHigh = ' ';
+		public       char   isPipeLow  = ' ';
 
 		public PipeData(final int x, final int z) {
 			final int noiseTunnelCount = Gen_002.this.noiseTunnelCount;
@@ -139,6 +155,8 @@ public class Gen_002 extends BackroomsGen {
 			}
 			this.value_tunnel = highest;
 			this.isTunnel = (this.value_tunnel > Gen_002.this.thresh_tunnel);
+			if (this.isTunnel) this.modPipe = ((int)(Math.floor(this.value_tunnel * 100.0) % 10.0)) % 7;
+			else               this.modPipe = -1;
 		}
 
 	}
@@ -156,20 +174,42 @@ public class Gen_002 extends BackroomsGen {
 				data.put(new Iab(ix, iz), dao);
 			}
 		}
-		// find walls
+		// find walls/pipes
 		for (int iz=0; iz<16; iz++) {
-			X_LOOP:
 			for (int ix=0; ix<16; ix++) {
-				final PipeData dao = data.get(new Iab(ix, iz));
-				if (!dao.isTunnel) {
-					if (data.get(new Iab(ix,   iz-1)).isTunnel) { dao.isWall = true; continue X_LOOP; } // north
-					if (data.get(new Iab(ix,   iz+1)).isTunnel) { dao.isWall = true; continue X_LOOP; } // south
-					if (data.get(new Iab(ix+1, iz  )).isTunnel) { dao.isWall = true; continue X_LOOP; } // east
-					if (data.get(new Iab(ix-1, iz  )).isTunnel) { dao.isWall = true; continue X_LOOP; } // west
-					if (data.get(new Iab(ix+1, iz-1)).isTunnel) { dao.isWall = true; continue X_LOOP; } // north/east
-					if (data.get(new Iab(ix-1, iz-1)).isTunnel) { dao.isWall = true; continue X_LOOP; } // north/west
-					if (data.get(new Iab(ix+1, iz+1)).isTunnel) { dao.isWall = true; continue X_LOOP; } // south/east
-					if (data.get(new Iab(ix-1, iz+1)).isTunnel) { dao.isWall = true; continue X_LOOP; } // south/west
+				final PipeData dao    = data.get(new Iab(ix,   iz  ));
+				final PipeData dao_n  = data.get(new Iab(ix,   iz-1));
+				final PipeData dao_s  = data.get(new Iab(ix,   iz+1));
+				final PipeData dao_e  = data.get(new Iab(ix+1, iz  ));
+				final PipeData dao_w  = data.get(new Iab(ix-1, iz  ));
+				final PipeData dao_ne = data.get(new Iab(ix+1, iz-1));
+				final PipeData dao_nw = data.get(new Iab(ix-1, iz-1));
+				final PipeData dao_se = data.get(new Iab(ix+1, iz+1));
+				final PipeData dao_sw = data.get(new Iab(ix-1, iz+1));
+				// pipes
+				if (dao.isTunnel) {
+					// upper pipes
+					if (dao.modPipe == 1) {
+						if (dao_n.modPipe == 1 && dao_s.modPipe == 1 && dao_e.modPipe != 1 && dao_w.modPipe != 1) dao.isPipeHigh = 'n'; else
+						if (dao_e.modPipe == 1 && dao_w.modPipe == 1 && dao_n.modPipe != 1 && dao_s.modPipe != 1) dao.isPipeHigh = 'e'; else
+						if (dao_n.modPipe == 1 || dao_s.modPipe == 1 || dao_e.modPipe == 1 || dao_w.modPipe == 1) dao.isPipeHigh = 'x';
+					}
+					// lower pipes
+					if (dao.modPipe == 3) {
+						if (dao_n.modPipe == 3 && dao_s.modPipe == 3 && dao_e.modPipe != 3 && dao_w.modPipe != 3) dao.isPipeLow = 'n'; else
+						if (dao_e.modPipe == 3 && dao_w.modPipe == 3 && dao_n.modPipe != 3 && dao_s.modPipe != 3) dao.isPipeLow = 'e'; else
+						if (dao_n.modPipe == 3 || dao_s.modPipe == 3 || dao_e.modPipe == 3 || dao_w.modPipe == 3) dao.isPipeLow = 'x';
+					}
+				// tunnel walls
+				} else {
+					if (dao_n .isTunnel) dao.isWall = true; else
+					if (dao_s .isTunnel) dao.isWall = true; else
+					if (dao_e .isTunnel) dao.isWall = true; else
+					if (dao_w .isTunnel) dao.isWall = true; else
+					if (dao_ne.isTunnel) dao.isWall = true; else
+					if (dao_nw.isTunnel) dao.isWall = true; else
+					if (dao_se.isTunnel) dao.isWall = true; else
+					if (dao_sw.isTunnel) dao.isWall = true;
 				}
 			}
 		}
@@ -187,22 +227,41 @@ public class Gen_002 extends BackroomsGen {
 		final BlockData block_floor    = StringToBlockDataDef(this.block_floor,    DEFAULT_BLOCK_FLOOR   );
 		final BlockData block_walls    = StringToBlockDataDef(this.block_walls,    DEFAULT_BLOCK_WALLS   );
 		final BlockData block_fill     = StringToBlockDataDef(this.block_fill,     DEFAULT_BLOCK_FILL    );
-		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 23 SubFloor" );
-		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 23 Ceiling");
-		if (block_floor      == null) throw new RuntimeException("Invalid block type for level 23 Floor"  );
-		if (block_walls      == null) throw new RuntimeException("Invalid block type for level 23 Walls"  );
-		if (block_fill       == null) throw new RuntimeException("Invalid block type for level 23 Fill"   );
+		final BlockData block_pipe_end = StringToBlockDataDef(this.block_pipe_end, DEFAULT_BLOCK_PIPE_END);
+		final BlockData block_pipe_ns  = StringToBlockDataDef(this.block_pipe_ns,  DEFAULT_BLOCK_PIPE_NS );
+		final BlockData block_pipe_ew  = StringToBlockDataDef(this.block_pipe_ew,  DEFAULT_BLOCK_PIPE_EW );
+		final BlockData block_light    = StringToBlockDataDef(this.block_light,    DEFAULT_BLOCK_LIGHT   );
+		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 23 SubFloor");
+		if (block_ceiling  == null) throw new RuntimeException("Invalid block type for level 23 Ceiling" );
+		if (block_floor    == null) throw new RuntimeException("Invalid block type for level 23 Floor"   );
+		if (block_walls    == null) throw new RuntimeException("Invalid block type for level 23 Walls"   );
+		if (block_fill     == null) throw new RuntimeException("Invalid block type for level 23 Fill"    );
+		if (block_pipe_end == null) throw new RuntimeException("Invalid block type for level 23 Pipe-End");
+		if (block_pipe_ns  == null) throw new RuntimeException("Invalid block type for level 23 Pipe-NS" );
+		if (block_pipe_ew  == null) throw new RuntimeException("Invalid block type for level 23 Pipe-EW" );
+		if (block_light    == null) throw new RuntimeException("Invalid block type for level 23 Light"   );
 		final Pregen_Level_000 pregen_000 = (Pregen_Level_000) pregen;
 		final HashMap<Iab, PipeData> data_pipes = pregen_000.pipes;
-		final int height  = this.level_h + (this.enable_top? 1 : 0 ) + 1;
-		final int y_floor = this.level_y;
-		final int y_ceil  = (y_floor + height) - 1;
+		final int y_base  = this.level_y + this.bedrock_barrier;
+		final int h_walls = this.level_h + (this.enable_top? 1 : 0 ) + 1;
+		final int y_floor = y_base + this.subfloor;
+		final int y_ceil  = y_floor + this.level_h + 1;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
 				final PipeData dao_tunnels = data_pipes.get(new Iab(ix, iz));
+				// barrier
+				for (int iy=0; iy<this.bedrock_barrier; iy++)
+					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
+				// subfloor
+				if (this.enable_top) {
+					if (this.subfloor > 0) {
+						for (int iy=0; iy<this.subfloor; iy++)
+							chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
+					}
+				}
 				// tunnel wall
 				if (dao_tunnels.isWall) {
-					for (int iy=0; iy<height; iy++)
+					for (int iy=0; iy<h_walls; iy++)
 						chunk.setBlock(ix, y_floor+iy, iz, block_walls);
 				} else
 				// inside tunnel
@@ -210,18 +269,28 @@ public class Gen_002 extends BackroomsGen {
 					chunk.setBlock(ix, y_floor, iz, block_floor);
 					if (this.enable_top)
 						chunk.setBlock(ix, y_ceil, iz, block_ceiling);
+					// pipes
+					SWITCH_PIPE_HIGH:
+					switch (dao_tunnels.isPipeHigh) {
+					case 'x': chunk.setBlock(ix, y_ceil-1, iz, block_pipe_end); chunk.setBlock(ix, y_floor+1, iz, block_light); break SWITCH_PIPE_HIGH;
+					case 'n': chunk.setBlock(ix, y_ceil-1, iz, block_pipe_ns );                                                 break SWITCH_PIPE_HIGH;
+					case 'e': chunk.setBlock(ix, y_ceil-1, iz, block_pipe_ew );                                                 break SWITCH_PIPE_HIGH;
+					default: break SWITCH_PIPE_HIGH;
+					}
+					SWITCH_PIPE_LOW:
+					switch (dao_tunnels.isPipeLow) {
+					case 'x': chunk.setBlock(ix, y_floor+1, iz, block_pipe_end); chunk.setBlock(ix, y_ceil-1, iz, block_light); break SWITCH_PIPE_LOW;
+					case 'n': chunk.setBlock(ix, y_floor+1, iz, block_pipe_ns );                                                break SWITCH_PIPE_LOW;
+					case 'e': chunk.setBlock(ix, y_floor+1, iz, block_pipe_ew );                                                break SWITCH_PIPE_LOW;
+					default: break SWITCH_PIPE_LOW;
+					}
 				// fill
 				} else {
 					if (this.enable_top) {
-						for (int iy=0; iy<height; iy++)
+						for (int iy=0; iy<h_walls; iy++)
 							chunk.setBlock(ix, y_floor+iy, iz, block_fill);
 					}
 				}
-//				// subceiling
-//				if (this.enable_top) {
-//					for (int iy=0; iy<this.subceiling; iy++)
-//						chunk.setBlock(ix, y_ceil+iy+1, iz, block_subceiling);
-//				}
 			} // end ix
 		} // end iz
 	}
@@ -276,6 +345,10 @@ public class Gen_002 extends BackroomsGen {
 		cfgBlocks.addDefault("Floor",    DEFAULT_BLOCK_FLOOR   );
 		cfgBlocks.addDefault("Walls",    DEFAULT_BLOCK_WALLS   );
 		cfgBlocks.addDefault("Fill",     DEFAULT_BLOCK_FILL    );
+		cfgBlocks.addDefault("Pipe-End", DEFAULT_BLOCK_PIPE_END);
+		cfgBlocks.addDefault("Pipe-NS",  DEFAULT_BLOCK_PIPE_NS );
+		cfgBlocks.addDefault("Pipe-EW",  DEFAULT_BLOCK_PIPE_EW );
+		cfgBlocks.addDefault("Light",    DEFAULT_BLOCK_LIGHT   );
 	}
 
 
