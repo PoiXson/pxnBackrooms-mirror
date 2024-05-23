@@ -37,7 +37,7 @@ public class Gen_094 extends BackroomsGen {
 	public static final double DEFAULT_VALLEY_GAIN          = 0.3;
 	public static final double DEFAULT_HILLS_GAIN           = 12.0;
 	public static final int    DEFAULT_GRASS_ROSE_CHANCE    = 80;
-	public static final int    DEFAULT_WATER_DEPTH          = 3;
+	public static final int    DEFAULT_WATER_DEPTH          = 4;
 	public static final int    DEFAULT_HOUSE_WIDTH          = 8;
 	public static final int    DEFAULT_HOUSE_HEIGHT         = 5;
 	public static final double DEFAULT_NOISE_HILLS_FREQ     = 0.015;
@@ -264,38 +264,40 @@ public class Gen_094 extends BackroomsGen {
 		boolean house_dir = false;
 		for (int iz=0; iz<16; iz++) {
 			for (int ix=0; ix<16; ix++) {
-				chunk.setBlock(ix, this.level_y, iz, Material.BEDROCK);
 				final HillsData dao_hills = data_hills.get(new Iab(ix, iz));
 				int depth_dirt = (int) Math.floor(dao_hills.depth);
 				if (depth_dirt < 0) depth_dirt = 0;
 				// water
-				if (depth_dirt <= this.water_depth) {
-					for (int iy=-1; iy<this.water_depth; iy++)
+				if (depth_dirt < this.water_depth) {
+					for (int iy=0; iy<this.water_depth; iy++)
 						chunk.setBlock(ix, this.level_y+iy, iz, Material.WATER);
 				// land
 				} else {
+					// bedrock
+					for (int iy=-64; iy<=this.level_y; iy++)
+						chunk.setBlock(ix, iy, iz, Material.BEDROCK);
 					// fill dirt
 					for (int iy=2; iy<depth_dirt; iy++)
-						chunk.setBlock(ix, (this.level_y+iy)-2, iz, block_dirt);
-					chunk.setBlock(ix, (this.level_y+depth_dirt)-2, iz, block_grass_block);
+						chunk.setBlock(ix, (this.level_y+iy)-1, iz, block_dirt);
+					chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_block);
 					// surface slab
 					if (dao_hills.depth % 1.0 > 0.7) {
-						chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_slab);
+						chunk.setBlock(ix, this.level_y+depth_dirt, iz, block_grass_slab);
 					} else {
 						final int mod_grass = (int) Math.floor(dao_hills.value_hill * 1000.0) % 3;
 						final int rnd_grass = this.random.nextInt(0, this.grass_rose_chance);
-						if      (rnd_grass == 1) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_rose            );
+						if      (rnd_grass == 1) chunk.setBlock(ix, this.level_y+depth_dirt, iz, block_rose            );
 						else if (rnd_grass < 20) {
-							chunk                     .setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_tall_lower);
-							chunk                     .setBlock(ix,  this.level_y+depth_dirt,    iz, block_grass_tall_upper); }
-						else if (mod_grass == 0) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_grass_short     );
-						else if (mod_grass == 1) chunk.setBlock(ix, (this.level_y+depth_dirt)-1, iz, block_fern            );
+							chunk                     .setBlock(ix, this.level_y+depth_dirt,   iz, block_grass_tall_lower);
+							chunk                     .setBlock(ix, this.level_y+depth_dirt+1, iz, block_grass_tall_upper); }
+						else if (mod_grass == 0) chunk.setBlock(ix, this.level_y+depth_dirt,   iz, block_grass_short     );
+						else if (mod_grass == 1) chunk.setBlock(ix, this.level_y+depth_dirt,   iz, block_fern            );
 					}
 				}
 				// house
 				if (dao_hills.isHouse) {
 					house_loc = new Iab(ix, iz);
-					house_y   = dao_hills.house_y - 1;
+					house_y   = dao_hills.house_y;
 					house_dir = dao_hills.house_direction;
 				}
 			}
