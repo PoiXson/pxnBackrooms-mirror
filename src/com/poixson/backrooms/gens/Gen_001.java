@@ -216,17 +216,17 @@ public class Gen_001 extends BackroomsGen {
 					if (mod_z == 0) {
 						if (mod_x < 3 || mod_x > 7) {
 							chunk.setBlock(ix, y_floor+this.lamp_y, iz, Material.REDSTONE_LAMP);
-							LAMP_SWITCH:
+							SWITCH_LAMP:
 							switch (mod_x) {
-							case 0: chunk.setBlock(ix, y_floor+this.lamp_y+1, iz, Material.BEDROCK);       break LAMP_SWITCH;
+							case 0: chunk.setBlock(ix, y_floor+this.lamp_y+1, iz, Material.BEDROCK);       break SWITCH_LAMP;
 							case 1:
-							case 9: chunk.setBlock(ix, y_floor+this.lamp_y+1, iz, Material.REDSTONE_WIRE); break LAMP_SWITCH;
+							case 9: chunk.setBlock(ix, y_floor+this.lamp_y+1, iz, Material.REDSTONE_WIRE); break SWITCH_LAMP;
 							case 2:
 							case 8:
 								for (int iy=0; iy<5; iy++)
 									chunk.setBlock(ix, y_floor+iy+this.lamp_y+1, iz, Material.CHAIN);
-								break LAMP_SWITCH;
-							default: break LAMP_SWITCH;
+								break SWITCH_LAMP;
+							default: break SWITCH_LAMP;
 							}
 						}
 					}

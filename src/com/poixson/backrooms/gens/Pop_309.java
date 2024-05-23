@@ -109,11 +109,11 @@ public class Pop_309 implements BackroomsPop {
 					if (!this.gen_309.pathTrace.isPath(xx, zz, path_clearing)) {
 						// find surface
 						int surface_y = 0;
-						SURFACE_LOOP:
+						LOOP_SURFACE:
 						for (int iy=0; iy<12; iy++) {
 							if (Material.AIR.equals(region.getType(xx+2, this.gen_309.level_y+iy, zz+2))) {
 								surface_y = this.gen_309.level_y + iy;
-								break SURFACE_LOOP;
+								break LOOP_SURFACE;
 							}
 						}
 						if (surface_y != 0) {

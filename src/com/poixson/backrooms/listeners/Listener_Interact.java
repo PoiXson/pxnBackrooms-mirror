@@ -62,10 +62,10 @@ public class Listener_Interact implements xListener {
 			final Player player = event.getPlayer();
 			final int diff_y = level_006_lever_y - level_000_lever_y;
 			final int level = this.plugin.getLevel(block.getLocation());
-			TYPE_SWITCH:
+			SWITCH_TYPE:
 			switch (block.getType()) {
 			case LEVER: {
-				LEVEL_SWITCH:
+				SWITCH_LEVEL:
 				switch (level) {
 				// lobby
 				case 0: {
@@ -77,7 +77,7 @@ public class Listener_Interact implements xListener {
 						this.plugin.getInvisiblePlayersTask()
 							.update(player);
 					}
-					break LEVEL_SWITCH;
+					break SWITCH_LEVEL;
 				}
 				// lights out
 				case 6: {
@@ -89,20 +89,19 @@ public class Listener_Interact implements xListener {
 						this.plugin.getInvisiblePlayersTask()
 							.update(player);
 					}
-					break LEVEL_SWITCH;
+					break SWITCH_LEVEL;
 				}
-				default: break LEVEL_SWITCH;
+				default: break SWITCH_LEVEL;
 				}
-				break TYPE_SWITCH;
+				break SWITCH_TYPE;
 			}
 			case DARK_OAK_BUTTON: {
 				if (level == 6) {
 					if (player.hasPermission("backrooms.level_111.button"))
 						this.plugin.noclip(player, 111); // level 111 - run for your life
 				}
-				break TYPE_SWITCH;
+				break SWITCH_TYPE;
 			}
-			default: break TYPE_SWITCH;
 			}
 		}
 	}

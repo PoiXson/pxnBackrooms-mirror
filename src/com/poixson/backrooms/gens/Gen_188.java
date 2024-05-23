@@ -187,7 +187,7 @@ public class Gen_188 extends BackroomsGen {
 					// ceiling
 					chunk.setBlock(ix, y_ceil, iz, block_ceiling);
 				}
-				Y_LOOP:
+				LOOP_Y:
 				for (int iy=0; iy<this.level_h; iy++) {
 					final int yy = y_floor + iy;
 					boolean isWindow = false;
@@ -196,7 +196,7 @@ public class Gen_188 extends BackroomsGen {
 						final int mod9;
 						if      (xx == -48 || xx == 63 ||  xx == -47 || xx == 62) mod9 = (zz+206) % 9;
 						else if (zz == -48 || zz == 63 ||  zz == -47 || zz == 62) mod9 = (xx+206) % 9;
-						else break Y_LOOP;
+						else break LOOP_Y;
 						if (mod9 < 6) {
 							if (xx > -45 || zz > -45) {
 								final int mod_window = (iy + 4) % 6;
@@ -216,17 +216,17 @@ public class Gen_188 extends BackroomsGen {
 							final int lvl = level_000.getLevel(yy);
 							int lvl_min_y = level_000.getY(lvl);
 							int lvl_max_y = level_000.getMaxY(lvl);
-							LEVEL_SWITCH:
+							SWITCH_LEVEL:
 							switch(lvl) {
-							case  1: lvl_min_y += gen_001.bedrock_barrier + gen_001.subfloor + 1; lvl_max_y -=                      3; break LEVEL_SWITCH;
-							case 23: lvl_min_y += gen_023.bedrock_barrier + gen_023.subfloor + 1; lvl_max_y -= gen_023.subceiling + 2; break LEVEL_SWITCH;
-							case  0: lvl_min_y += gen_000.bedrock_barrier + gen_000.subfloor + 1; lvl_max_y -= gen_000.subceiling + 1; break LEVEL_SWITCH;
-							case 96: lvl_min_y += gen_096.bedrock_barrier                    + 1; lvl_max_y -=                      3; break LEVEL_SWITCH;
-							case  6: lvl_min_y += gen_006.bedrock_barrier;                                                             break LEVEL_SWITCH;
-							case 37: lvl_min_y += gen_037.bedrock_barrier + gen_037.subfloor + 1; lvl_max_y -= gen_037.subceiling + 2; break LEVEL_SWITCH;
-							case  5: lvl_min_y += gen_005.bedrock_barrier + gen_005.subfloor + 1; lvl_max_y -= gen_005.subceiling + 1; break LEVEL_SWITCH;
-							case 19: lvl_min_y += gen_019.bedrock_barrier + gen_019.subfloor;     lvl_max_y -=                      2; break LEVEL_SWITCH;
-							default: break LEVEL_SWITCH;
+							case  1: lvl_min_y += gen_001.bedrock_barrier + gen_001.subfloor + 1; lvl_max_y -=                      3; break SWITCH_LEVEL;
+							case 23: lvl_min_y += gen_023.bedrock_barrier + gen_023.subfloor + 1; lvl_max_y -= gen_023.subceiling + 2; break SWITCH_LEVEL;
+							case  0: lvl_min_y += gen_000.bedrock_barrier + gen_000.subfloor + 1; lvl_max_y -= gen_000.subceiling + 1; break SWITCH_LEVEL;
+							case  4: lvl_min_y += gen_004.bedrock_barrier                    + 1; lvl_max_y -=                      3; break SWITCH_LEVEL;
+							case  6: lvl_min_y += gen_006.bedrock_barrier;                                                             break SWITCH_LEVEL;
+							case 37: lvl_min_y += gen_037.bedrock_barrier + gen_037.subfloor + 1; lvl_max_y -= gen_037.subceiling + 2; break SWITCH_LEVEL;
+							case  5: lvl_min_y += gen_005.bedrock_barrier + gen_005.subfloor + 1; lvl_max_y -= gen_005.subceiling + 1; break SWITCH_LEVEL;
+							case 19: lvl_min_y += gen_019.bedrock_barrier + gen_019.subfloor;     lvl_max_y -=                      2; break SWITCH_LEVEL;
+							default: break SWITCH_LEVEL;
 							}
 							if (yy < lvl_min_y
 							||  yy > lvl_max_y)

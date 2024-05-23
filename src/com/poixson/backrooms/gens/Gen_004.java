@@ -143,18 +143,18 @@ public class Gen_004 extends BackroomsGen {
 		}
 		// find walls
 		for (int iz=0; iz<16; iz++) {
-			X_LOOP:
+			LOOP_X:
 			for (int ix=0; ix<16; ix++) {
 				final DuctData dao = data.get(new Iab(ix, iz));
 				if (!dao.isDuct) {
-					if (data.get(new Iab(ix,   iz-1)).isDuct) { dao.isWall = true; continue X_LOOP; } // north
-					if (data.get(new Iab(ix,   iz+1)).isDuct) { dao.isWall = true; continue X_LOOP; } // south
-					if (data.get(new Iab(ix+1, iz  )).isDuct) { dao.isWall = true; continue X_LOOP; } // east
-					if (data.get(new Iab(ix-1, iz  )).isDuct) { dao.isWall = true; continue X_LOOP; } // west
-					if (data.get(new Iab(ix+1, iz-1)).isDuct) { dao.isWall = true; continue X_LOOP; } // north/east
-					if (data.get(new Iab(ix-1, iz-1)).isDuct) { dao.isWall = true; continue X_LOOP; } // north/west
-					if (data.get(new Iab(ix+1, iz+1)).isDuct) { dao.isWall = true; continue X_LOOP; } // south/east
-					if (data.get(new Iab(ix-1, iz+1)).isDuct) { dao.isWall = true; continue X_LOOP; } // south/west
+					if (data.get(new Iab(ix,   iz-1)).isDuct) { dao.isWall = true; continue LOOP_X; } // north
+					if (data.get(new Iab(ix,   iz+1)).isDuct) { dao.isWall = true; continue LOOP_X; } // south
+					if (data.get(new Iab(ix+1, iz  )).isDuct) { dao.isWall = true; continue LOOP_X; } // east
+					if (data.get(new Iab(ix-1, iz  )).isDuct) { dao.isWall = true; continue LOOP_X; } // west
+					if (data.get(new Iab(ix+1, iz-1)).isDuct) { dao.isWall = true; continue LOOP_X; } // north/east
+					if (data.get(new Iab(ix-1, iz-1)).isDuct) { dao.isWall = true; continue LOOP_X; } // north/west
+					if (data.get(new Iab(ix+1, iz+1)).isDuct) { dao.isWall = true; continue LOOP_X; } // south/east
+					if (data.get(new Iab(ix-1, iz+1)).isDuct) { dao.isWall = true; continue LOOP_X; } // south/west
 				}
 			}
 		}

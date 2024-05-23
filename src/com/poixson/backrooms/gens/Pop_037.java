@@ -123,12 +123,12 @@ public class Pop_037 implements BackroomsPop {
 		final LinkedList<TunnelTracer> tunnelTracers = new LinkedList<TunnelTracer>();
 		{
 			int x, y;
-			STARTING_POINTS_LOOP:
+			LOOP_STARTING_POINTS:
 			for (final Iab loc : this.starting_points) {
 				// part of an existing trace
 				for (final TunnelTracer trace : tunnelTracers) {
 					if (trace.contains(loc))
-						continue STARTING_POINTS_LOOP;
+						continue LOOP_STARTING_POINTS;
 				}
 				// trace a tunnel
 				x = (chunkX * 16) + loc.a;
@@ -137,7 +137,7 @@ public class Pop_037 implements BackroomsPop {
 				tracer.run();
 				if (tracer.ok && tracer.ends == 2) {
 					tunnelTracers.addLast(tracer);
-					break STARTING_POINTS_LOOP;
+					break LOOP_STARTING_POINTS;
 				}
 			}
 		}

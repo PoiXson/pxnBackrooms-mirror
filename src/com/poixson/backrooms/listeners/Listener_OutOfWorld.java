@@ -42,7 +42,7 @@ public class Listener_OutOfWorld implements xListener {
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onOutsideOfWorld(final OutsideOfWorldEvent event) {
 		final int level = this.plugin.getLevel(event.getTo());
-		LEVEL_SWITCH:
+		SWITCH_LEVEL:
 		switch (level) {
 		// basement
 		case 1: {
@@ -51,7 +51,7 @@ public class Listener_OutOfWorld implements xListener {
 			case VOID: this.plugin.noclip(event.getPlayer(), 94); break;
 			default: break;
 			}
-			break LEVEL_SWITCH;
+			break SWITCH_LEVEL;
 		}
 		// motion
 		case 94: {
@@ -60,13 +60,13 @@ public class Listener_OutOfWorld implements xListener {
 			case VOID: this.plugin.noclip(event.getPlayer(), 771); break;
 			default: break;
 			}
-			break LEVEL_SWITCH;
+			break SWITCH_LEVEL;
 		}
 		// run for your life
 		case 111: {
 			// to 6 lights out
 			this.plugin.noclip(event.getPlayer(), 6);
-			break LEVEL_SWITCH;
+			break SWITCH_LEVEL;
 		}
 		// radio station
 		case 309: {
@@ -75,7 +75,7 @@ public class Listener_OutOfWorld implements xListener {
 			case SKY: this.plugin.noclip(event.getPlayer(), 771); break;
 			default: break;
 			}
-			break LEVEL_SWITCH;
+			break SWITCH_LEVEL;
 		}
 		// cubes
 		case 333: {
@@ -85,7 +85,7 @@ public class Listener_OutOfWorld implements xListener {
 			case VOID: player.teleport(player.getLocation().add(0.0,  381.0, 0.0)); break;
 			default: break;
 			}
-			break LEVEL_SWITCH;
+			break SWITCH_LEVEL;
 		}
 		// crossroads
 		case 771: {
@@ -105,9 +105,9 @@ public class Listener_OutOfWorld implements xListener {
 			}
 			default: break;
 			}
-			break LEVEL_SWITCH;
+			break SWITCH_LEVEL;
 		}
-		default: break LEVEL_SWITCH;
+		default: break SWITCH_LEVEL;
 		}
 	}
 

@@ -61,7 +61,7 @@ public class Pop_005 implements BackroomsPop {
 		int foundS = Integer.MIN_VALUE;
 		int foundE = Integer.MIN_VALUE;
 		int foundW = Integer.MIN_VALUE;
-		//DISTANCE_LOOP:
+		//LOOP_DISTANCE:
 		for (int i=2; i<34; i++) {
 			// north
 			if (foundN == Integer.MIN_VALUE
@@ -93,7 +93,7 @@ public class Pop_005 implements BackroomsPop {
 			&&  foundW != Integer.MIN_VALUE )
 				//               x,      z,      w,             d
 				return new Iabcd(foundW, foundN, foundE-foundW, foundS-foundN);
-		} // end DISTANCE_LOOP
+		} // end LOOP_DISTANCE
 		return null;
 	}
 

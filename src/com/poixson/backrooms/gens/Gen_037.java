@@ -400,7 +400,7 @@ public class Gen_037 extends BackroomsGen {
 					if (dao_pool.possible_portal_lobby) {
 						LobbyData lobby;
 						boolean foundWall = false;
-						Z_LOOP:
+						LOOP_Z:
 						for (int iz=0; iz<8; iz++) {
 							final int zz = (rz * 8) + iz;
 							for (int ix=0; ix<8; ix++) {
@@ -408,7 +408,7 @@ public class Gen_037 extends BackroomsGen {
 								lobby = lobbyData.get(new Iab(xx, zz));
 								if (lobby.isWall) {
 									foundWall = true;
-									break Z_LOOP;
+									break LOOP_Z;
 								}
 							}
 						}
