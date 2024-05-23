@@ -137,6 +137,22 @@ public class Gen_309 extends BackroomsGen {
 
 
 	@Override
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return this.getMinY() + this.subfloor + 1;
+	}
+
+	@Override
+	public int getMinY() {
+		return this.getLevelY() + this.bedrock_barrier;
+	}
+
+
+
+	@Override
 	public void unregister() {
 		super.unregister();
 		this.pathCache.set(null);

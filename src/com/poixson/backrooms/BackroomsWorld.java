@@ -99,6 +99,8 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		return (this.gens.size() <= 1);
 	}
 
+
+
 	public int getLevel(final Location loc) {
 		return this.getMainLevel();
 	}
@@ -106,8 +108,15 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		return this.getMainLevel();
 	}
 
-	public abstract int getY(final int level);
 
+
+	public int getOpenY(final int level) {
+		return this.getMinY(level) + 1;
+	}
+
+	public int getMinY(final int level) {
+		return -64;
+	}
 	public int getMaxY(final int level) {
 		return 319;
 	}
@@ -163,7 +172,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		final int distance_min  = Math.floorDiv(distance_near, 3);
 		final float yaw = (float) this.random.nextDbl(0.0, 360.0);
 		final World world = area.getWorld();
-		final int y = this.getY(level);
+		final int y = this.getOpenY(level);
 		final int h = max_y - y;
 		int x, z;
 		Location near, valid;
@@ -194,7 +203,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
 		final int level_main = this.getMainLevel();
-		final int y = this.getY(level_main);
+		final int y = this.getOpenY(level_main);
 		return world.getBlockAt(0, y, 0).getLocation();
 	}
 

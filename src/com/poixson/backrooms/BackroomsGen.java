@@ -58,19 +58,29 @@ public abstract class BackroomsGen {
 
 	public abstract int getLevelNumber();
 
-	public int getNextY() {
+
+
+	public abstract int getLevelY();
+	public int getOpenY() {
+		return this.getMinY() + 1;
+	}
+
+	public int getMinY() {
+		return -64;
+	}
+	public int getMaxY() {
 		return 320;
 	}
 
 	protected int getDefaultY() {
-		return (this.gen_below == null ? -64 : this.gen_below.getNextY());
+		return (this.gen_below == null ? -64 : this.gen_below.getMaxY()+1);
 	}
+
+
 
 	public int getSeed() {
 		return this.seed;
 	}
-
-
 
 	protected void initNoise() {}
 

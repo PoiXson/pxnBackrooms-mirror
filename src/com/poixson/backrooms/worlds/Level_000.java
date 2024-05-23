@@ -250,36 +250,53 @@ public class Level_000 extends BackroomsWorld {
 
 
 	@Override
-	public int getY(final int level) {
+	public int getOpenY(final int level) {
 		switch (level) {
-		case   1: return this.gen_001.level_y; // basement
-		case  23: return this.gen_023.level_y; // overgrowth
-		case   2: return this.gen_002.level_y; // pipe dreams
-		case   0: return this.gen_000.level_y; // lobby
-		case   4: return this.gen_004.level_y; // ductwork
-		case   6: return this.gen_006.level_y; // lights out
-		case  37: return this.gen_037.level_y; // pools
-		case   5: return this.gen_005.level_y; // hotel
-		case  19: return this.gen_019.level_y; // attic
-		case 309: return this.gen_309.level_y; // radio station
-		case 188: return this.gen_188.level_y; // the windows
+		case   1: return this.gen_001.getOpenY(); // basement
+		case  23: return this.gen_023.getOpenY(); // overgrowth
+		case   2: return this.gen_002.getOpenY(); // pipe dreams
+		case   0: return this.gen_000.getOpenY(); // lobby
+		case   4: return this.gen_004.getOpenY(); // ductworrk
+		case   6: return this.gen_006.getOpenY(); // lights out
+		case  37: return this.gen_037.getOpenY(); // poolrooms
+		case   5: return this.gen_005.getOpenY(); // hotel
+		case  19: return this.gen_019.getOpenY(); // attic
+		case 309: return this.gen_309.getOpenY(); // radio station
+		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+		}
+	}
+
+	@Override
+	public int getMinY(final int level) {
+		switch (level) {
+		case   1: return this.gen_001.getMinY(); // basement
+		case  23: return this.gen_023.getMinY(); // overgrowth
+		case   2: return this.gen_002.getMinY(); // pipe dreams
+		case   0: return this.gen_000.getMinY(); // lobby
+		case   4: return this.gen_004.getMinY(); // ductwork
+		case   6: return this.gen_006.getMinY(); // lights out
+		case  37: return this.gen_037.getMinY(); // poolrooms
+		case   5: return this.gen_005.getMinY(); // hotel
+		case  19: return this.gen_019.getMinY(); // attic
+		case 309: return 320;                    // radio station
+		case 188: return this.gen_188.getMinY(); // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
 	@Override
 	public int getMaxY(final int level) {
 		switch (level) {
-		case   1: return this.gen_001.getNextY(); // basement
-		case  23: return this.gen_023.getNextY(); // overgrowth
-		case   2: return this.gen_002.getNextY(); // pipe dreams
-		case   0: return this.gen_000.getNextY(); // lobby
-		case   4: return this.gen_004.getNextY(); // ductwork
-		case   6: return this.gen_006.getNextY(); // lights out
-		case  37: return this.gen_037.getNextY(); // pools
-		case   5: return this.gen_005.getNextY(); // hotel
-		case  19: return this.gen_019.getNextY(); // attic
-		case 309: return 320;                     // radio station
-		case 188: return this.gen_188.getNextY(); // the windows
+		case   1: return this.gen_001.getMaxY(); // basement
+		case  23: return this.gen_023.getMaxY(); // overgrowth
+		case   2: return this.gen_002.getMaxY(); // pipe dreams
+		case   0: return this.gen_000.getMaxY(); // lobby
+		case   4: return this.gen_004.getMaxY(); // ductwork
+		case   6: return this.gen_006.getMaxY(); // lights out
+		case  37: return this.gen_037.getMaxY(); // poolrooms
+		case   5: return this.gen_005.getMaxY(); // hotel
+		case  19: return this.gen_019.getMaxY(); // attic
+		case 309: return 320;                    // radio station
+		case 188: return this.gen_188.getMaxY(); // the windows
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
 	}
@@ -323,11 +340,9 @@ public class Level_000 extends BackroomsWorld {
 		}
 		// the windows
 		case 188: {
-			final int x = 0;
-			final int z = 0;
 			final World world = this.plugin.getWorldFromLevel(level);
 			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			return world.getBlockAt(x, 0, z).getLocation();
+			return world.getBlockAt(0, this.gen_188.getOpenY(), 0).getLocation();
 		}
 		default: throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		}
@@ -335,7 +350,7 @@ public class Level_000 extends BackroomsWorld {
 
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		return world.getBlockAt(100, this.getY(0), 100).getLocation();
+		return world.getBlockAt(100, this.getOpenY(0), 100).getLocation();
 	}
 
 

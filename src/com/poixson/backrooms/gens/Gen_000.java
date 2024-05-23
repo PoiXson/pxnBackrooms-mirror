@@ -124,9 +124,24 @@ public class Gen_000 extends BackroomsGen {
 		return 0;
 	}
 
+
+
 	@Override
-	public int getNextY() {
-		return this.level_y + this.bedrock_barrier + this.subfloor + this.level_h + this.subceiling + 2;
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return this.getMinY() + this.subfloor + 1;
+	}
+
+	@Override
+	public int getMinY() {
+		return this.getLevelY();
+	}
+	@Override
+	public int getMaxY() {
+		return this.getMinY() + this.subfloor + this.level_h + this.subceiling + 1;
 	}
 
 
@@ -357,8 +372,8 @@ public class Gen_000 extends BackroomsGen {
 							}
 							if (!found_basement_wall) {
 								level_000.portal_000_to_001.add(xx, zz);
-								final int y_exit = gen_001.getNextY() - 2;
-								final int h_exit = (y_ceil - gen_001.getNextY()) + 3;
+								final int y_exit = gen_001.getMaxY() - 1;
+								final int h_exit = (y_ceil - gen_001.getMaxY()) + 2;
 								final BlockPlotter plot =
 									(new BlockPlotter())
 									.axis("use")

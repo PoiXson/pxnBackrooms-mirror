@@ -90,12 +90,27 @@ public class Gen_006 extends BackroomsGen {
 		return 6;
 	}
 
+
+
 	@Override
-	public int getNextY() {
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		final BlockData block_floor = StringToBlockDataDef(this.block_floor, DEFAULT_BLOCK_FLOOR);
+		return this.getMinY() + (block_floor==null ? 0 : 1);
+	}
+
+	@Override
+	public int getMinY() {
+		return this.getLevelY() + this.bedrock_barrier;
+	}
+	@Override
+	public int getMaxY() {
 		final BlockData block_floor   = StringToBlockDataDef(this.block_floor,   DEFAULT_BLOCK_FLOOR  );
 		final BlockData block_ceiling = StringToBlockDataDef(this.block_ceiling, DEFAULT_BLOCK_CEILING);
-		return this.level_y + this.bedrock_barrier + this.level_h +
-				(block_floor==null ? 0 : 1) + (block_ceiling==null ? 0 : 1);
+		return (this.getMinY() + this.level_h + (block_floor==null ? 0 : 1) + (block_ceiling==null ? 0 : 1)) - 1;
 	}
 
 

@@ -97,6 +97,26 @@ public class Gen_111 extends BackroomsGen {
 
 
 	@Override
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return this.getLevelY() + 1;
+	}
+
+	@Override
+	public int getMinY() {
+		return this.getLevelY();
+	}
+	@Override
+	public int getMaxY() {
+		return (this.getOpenY() + this.level_h) - 3;
+	}
+
+
+
+	@Override
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {

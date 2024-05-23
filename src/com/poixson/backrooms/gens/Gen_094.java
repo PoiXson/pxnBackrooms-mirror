@@ -142,6 +142,22 @@ public class Gen_094 extends BackroomsGen {
 
 
 
+	@Override
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return this.getMinY() + this.subfloor + 1;
+	}
+
+	@Override
+	public int getMinY() {
+		return this.getLevelY() + this.bedrock_barrier;
+	}
+
+
+
 	public class HillsData implements PreGenData {
 
 		public final double value_hill;

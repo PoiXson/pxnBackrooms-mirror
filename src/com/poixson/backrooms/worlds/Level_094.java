@@ -56,8 +56,17 @@ public class Level_094 extends BackroomsWorld {
 
 
 	@Override
-	public int getY(final int level) {
-		return this.gen_094.level_y;
+	public int getOpenY(final int level) {
+		return this.gen_094.getOpenY();
+	}
+
+	@Override
+	public int getMinY(final int level) {
+		return this.gen_094.getMinY();
+	}
+	@Override
+	public int getMaxY(final int level) {
+		return this.gen_094.getMaxY();
 	}
 
 

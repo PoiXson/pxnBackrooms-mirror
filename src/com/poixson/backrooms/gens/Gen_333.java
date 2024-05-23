@@ -66,6 +66,17 @@ public class Gen_333 extends BackroomsGen {
 
 
 	@Override
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return 306;
+	}
+
+
+
+	@Override
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {

@@ -83,8 +83,17 @@ public class Level_111 extends BackroomsWorld {
 
 
 	@Override
-	public int getY(final int level) {
-		return this.gen_111.level_y + 1;
+	public int getOpenY(final int level) {
+		return this.gen_111.getOpenY();
+	}
+
+	@Override
+	public int getMinY(final int level) {
+		return this.gen_111.getMinY();
+	}
+	@Override
+	public int getMaxY(final int level) {
+		return this.gen_111.getMaxY();
 	}
 
 
@@ -109,7 +118,7 @@ public class Level_111 extends BackroomsWorld {
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		int x = this.varstore.getInt(KEY_NEXT_HALL_X);
 		if (x == Integer.MIN_VALUE) x = 0;
-		final int y = this.getY(level);
+		final int y = this.getOpenY(level);
 		this.varstore.set(KEY_NEXT_HALL_X, (Math.floorDiv(x, 16)+1) * 16);
 		return world.getBlockAt(x+7, y, 7).getLocation();
 	}

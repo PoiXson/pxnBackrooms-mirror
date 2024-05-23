@@ -117,11 +117,29 @@ public class Gen_001 extends BackroomsGen {
 		return 1;
 	}
 
+
+
 	@Override
-	public int getNextY() {
-		return this.level_y + this.bedrock_barrier + this.subfloor + this.level_h + 3;
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return this.getMinY() + this.subfloor + 1;
 	}
 
+	@Override
+	public int getMinY() {
+		return this.getLevelY() + this.bedrock_barrier;
+	}
+	@Override
+	public int getMaxY() {
+		return this.getMinY() + this.subfloor + this.level_h + 2;
+	}
+
+	public int getLampY() {
+		return this.lamp_y;
+	}
 
 
 	public class BasementData implements PreGenData {

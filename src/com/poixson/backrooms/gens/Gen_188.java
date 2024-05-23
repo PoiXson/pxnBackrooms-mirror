@@ -82,9 +82,24 @@ public class Gen_188 extends BackroomsGen {
 		return 188;
 	}
 
+
+
 	@Override
-	public int getNextY() {
-		return ((Level_000)this.backworld).gen_019.getNextY();
+	public int getLevelY() {
+		return ((Level_000)this.backworld).gen_001.getLevelY();
+	}
+	@Override
+	public int getOpenY() {
+		return ((Level_000)this.backworld).gen_001.getOpenY();
+	}
+
+	@Override
+	public int getMinY() {
+		return ((Level_000)this.backworld).gen_001.getMinY();
+	}
+	@Override
+	public int getMaxY() {
+		return ((Level_000)this.backworld).gen_019.getMaxY();
 	}
 
 
@@ -214,7 +229,7 @@ public class Gen_188 extends BackroomsGen {
 					if (outer > 0) {
 						if (isWindow) {
 							final int lvl = level_000.getLevel(yy);
-							int lvl_min_y = level_000.getY(lvl);
+							int lvl_min_y = level_000.getMinY(lvl);
 							int lvl_max_y = level_000.getMaxY(lvl);
 							SWITCH_LEVEL:
 							switch(lvl) {

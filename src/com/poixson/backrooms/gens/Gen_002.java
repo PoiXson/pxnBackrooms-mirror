@@ -98,9 +98,24 @@ public class Gen_002 extends BackroomsGen {
 		return 2;
 	}
 
+
+
 	@Override
-	public int getNextY() {
-		return this.level_y + this.level_h + this.subfloor + 2;
+	public int getLevelY() {
+		return this.level_y;
+	}
+	@Override
+	public int getOpenY() {
+		return this.getMinY() + this.subfloor + 1;
+	}
+
+	@Override
+	public int getMinY() {
+		return this.getLevelY() + this.bedrock_barrier;
+	}
+	@Override
+	public int getMaxY() {
+		return this.getMinY() + this.subfloor + this.level_h + 1;
 	}
 
 

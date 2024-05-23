@@ -99,8 +99,17 @@ public class Level_771 extends BackroomsWorld {
 
 
 	@Override
-	public int getY(final int level) {
-		return this.gen_771.level_y + this.gen_771.level_h + 1;
+	public int getOpenY(final int level) {
+		return this.gen_771.getOpenY();
+	}
+
+	@Override
+	public int getMinY(final int level) {
+		return this.gen_771.getMinY();
+	}
+	@Override
+	public int getMaxY(final int level) {
+		return this.gen_771.getMaxY();
 	}
 
 
@@ -128,7 +137,7 @@ public class Level_771 extends BackroomsWorld {
 		final int distance_min  = Math.floorDiv(distance_near, 3);
 		final float yaw = (float) this.random.nextDbl(0.0, 360.0);
 		final World world = spawn.getWorld();
-		final int y = this.getY(level);
+		final int y = this.getOpenY(level);
 		final int h = max_y - y;
 		// true if north/south roads
 		final boolean axis = (spawn.getBlockX() == 0);
