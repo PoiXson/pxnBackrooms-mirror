@@ -171,7 +171,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		final int x = this.random.nextInt(0-distance, distance);
 		final int z = this.random.nextInt(0-distance, distance);
 		final World world = this.plugin.getWorldFromLevel(level);
-		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
+		if (world == null) throw new RuntimeException("Invalid backrooms world: "+Integer.toString(level));
 		return world.getBlockAt(x, 0, z).getLocation();
 	}
 	public Location getSpawnNear(final int level, final Location area) {
@@ -210,9 +210,8 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 	}
 	@Override
 	public Location getFixedSpawnLocation(final World world, final Random random) {
-		final int level_main = this.getMainLevel();
-		final int y = this.getOpenY(level_main);
-		return world.getBlockAt(0, y, 0).getLocation();
+		final int level = this.getMainLevel();
+		return this.getSpawnLocation(level);
 	}
 
 
@@ -300,7 +299,6 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		if (this.plugin.enableAutoCreateWorlds()
 		&& !manager.isMVWorld(name, false)) {
 			this.log().warning("Creating world for backrooms level: "+Integer.toString(level));
-			final Environment env = Environment.NORMAL;
 			final String seedStr = this.plugin.getSeedString();
 			{
 				final boolean result =

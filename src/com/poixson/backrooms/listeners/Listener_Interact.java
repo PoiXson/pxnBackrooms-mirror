@@ -102,6 +102,7 @@ public class Listener_Interact implements xListener {
 				}
 				break SWITCH_TYPE;
 			}
+			default: break SWITCH_TYPE;
 			}
 		}
 	}

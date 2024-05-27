@@ -89,7 +89,7 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 					if (sinceUpdated <= this.updatePeriod+this.maxGrace)
 						return;
 				}
-				// run hourly
+				// run update
 				this.lastUpdated = time;
 				this.update();
 			}

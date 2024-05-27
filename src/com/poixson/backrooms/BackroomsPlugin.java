@@ -135,25 +135,23 @@ public class BackroomsPlugin extends xJavaPlugin {
 		}
 		if (this.enableDynmapConfigGen())
 			this.getDynmapPerspective().commit( new File(this.getDataFolder(), "../dynmap/") );
-//TODO: enable in config
 		// create worlds (after server starts)
-		(new BukkitRunnable() {
-			@Override
-			public void run() {
-				final Iterator<Entry<Integer, BackroomsWorld>> it = BackroomsPlugin.this.backworlds.entrySet().iterator();
-				while (it.hasNext()) {
-					final Entry<Integer, BackroomsWorld> entry = it.next();
-					final int            level     = entry.getKey().intValue();
-					final BackroomsWorld backworld = entry.getValue();
-					if (backworld.isWorldMain(level))
-						backworld.setup();
+		final BukkitRunnable runCreateWorlds =
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					// setup worlds
+					for (final int level : BackroomsPlugin.this.getLevels()) {
+						final BackroomsWorld backlevel = BackroomsPlugin.this.getBackroomsWorld(level);
+						backlevel.setup();
+					}
 					// update spawn locations
 					final TaskReconvergence task = BackroomsPlugin.this.task_reconvergence.get();
 					if (task != null)
 						task.update();
 				}
-			}
-		}).runTask(this);
+			};
+		runCreateWorlds.runTask(this);
 		// register levels
 		for (final BackroomsWorld level : this.backworlds.values())
 			level.register();
@@ -716,7 +714,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 		if (worldName.length() != 9
 		|| !worldName.startsWith("level_"))
 			throw new RuntimeException("Invalid world name, must be level_### found: "+worldName);
-//		this.log().info("world generator: "+worldName);
 		return this.getBackroomsWorld(worldName);
 	}
 

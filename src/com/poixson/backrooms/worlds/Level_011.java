@@ -103,19 +103,6 @@ public class Level_011 extends BackroomsWorld {
 
 
 	// -------------------------------------------------------------------------------
-	// spawn
-
-
-
-	@Override
-	public Location getFixedSpawnLocation(final World world, final Random random) {
-		final int y = this.getY(11);
-		return world.getBlockAt(100, y, 100).getLocation();
-	}
-
-
-
-	// -------------------------------------------------------------------------------
 	// generate
 
 
