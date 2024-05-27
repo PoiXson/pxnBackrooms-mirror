@@ -95,7 +95,7 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 			}
 		}
 	}
-	protected void update() {
+	public void update() {
 		this.plugin.log().info("Reconvergence..");
 		this.plugin.flushSpawns();
 		// update spawn locations per world

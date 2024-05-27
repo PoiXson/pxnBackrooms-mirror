@@ -147,6 +147,10 @@ public class BackroomsPlugin extends xJavaPlugin {
 					final BackroomsWorld backworld = entry.getValue();
 					if (backworld.isWorldMain(level))
 						backworld.setup();
+					// update spawn locations
+					final TaskReconvergence task = BackroomsPlugin.this.task_reconvergence.get();
+					if (task != null)
+						task.update();
 				}
 			}
 		}).runTask(this);
