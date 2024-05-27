@@ -593,10 +593,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		return Integer.MIN_VALUE;
 	}
 	public World getWorldFromLevel(final int level) {
-		final int lvl = this.getMainLevel(level);
-		if (lvl < 0) return null;
-		final String name = String.format("level_%03d", Integer.valueOf(lvl));
-		return Bukkit.getWorld(name);
+		final BackroomsWorld backlevel = this.getBackroomsWorld(level);
+		return (backlevel==null ? null : backlevel.getWorld());
 	}
 
 

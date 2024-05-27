@@ -84,6 +84,14 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 
 
 
+	public World getWorld() {
+		final int level = this.getMainLevel();
+		final String world_name = String.format("level_%03d", Integer.valueOf(level));
+		return Bukkit.getWorld(world_name);
+	}
+
+
+
 	// -------------------------------------------------------------------------------
 	// locations
 
