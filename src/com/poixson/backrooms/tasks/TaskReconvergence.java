@@ -3,11 +3,14 @@ package com.poixson.backrooms.tasks;
 import static com.poixson.utils.Utils.GetMS;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.tools.xTime;
 import com.poixson.tools.abstractions.xStartStop;
 
@@ -93,7 +96,18 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 		}
 	}
 	protected void update() {
+		this.plugin.log().info("Reconvergence..");
 		this.plugin.flushSpawns();
+		// update spawn locations per world
+		for (final int level : this.plugin.getLevels()) {
+			try {
+				final BackroomsWorld backlevel = this.plugin.getBackroomsWorld(level);
+				final Location loc = backlevel.getSpawnArea(level);
+				final World world = backlevel.getWorld();
+				loc.setY(backlevel.getOpenY(level));
+				world.setSpawnLocation(loc);
+			} catch (UnsupportedOperationException ignore) {}
+		}
 		// refill chests
 //TODO
 	}
