@@ -90,13 +90,13 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 						return;
 				}
 				// run update
-				this.lastUpdated = time;
 				this.update();
 			}
 		}
 	}
 	public void update() {
 		this.plugin.log().info("Reconvergence..");
+		this.lastUpdated = GetMS();
 		this.plugin.flushSpawns();
 		// update spawn locations per world
 		for (final int level : this.plugin.getLevels()) {
