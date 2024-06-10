@@ -213,7 +213,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
-		this.saveConfigs();
 	}
 
 	@Override
@@ -339,11 +338,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 			cfg.options().copyDefaults(true);
 			this.configLevelBlocks.set(cfg);
 		}
+		this.saveConfigs();
 	}
 	@Override
 	protected void saveConfigs() {
 		// config.yml
-		super.saveConfig();
+		super.saveConfigs();
 		// levels-visited.yml
 		{
 			final File file = new File(this.getDataFolder(), "levels-visited.yml");
