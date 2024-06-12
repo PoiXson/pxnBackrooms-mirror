@@ -1,5 +1,6 @@
 package com.poixson.backrooms.tasks;
 
+import static com.poixson.utils.BukkitUtils.SafeCancel;
 import static com.poixson.utils.Utils.GetMS;
 
 import org.bukkit.Bukkit;
@@ -67,9 +68,7 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 	}
 	@Override
 	public void stop() {
-		try {
-			this.cancel();
-		} catch (IllegalStateException ignore) {}
+		SafeCancel(this);
 	}
 
 
