@@ -57,7 +57,7 @@ import net.milkbowl.vault.economy.Economy;
 public class BackroomsPlugin extends xJavaPlugin {
 	@Override public int getSpigotPluginID() { return 108148; }
 	@Override public int getBStatsID() {       return 17231;  }
-	public static final String CHAT_PREFIX = ChatColor.AQUA+"[Backrooms] "+ChatColor.WHITE;
+	public static final String CHAT_PREFIX = ChatColor.DARK_AQUA+"[Backrooms] "+ChatColor.WHITE;
 
 	public static final String GENERATOR_NAME = "pxnBackrooms";
 	protected static final String DEFAULT_RESOURCE_PACK = "https://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-{VERSION}.zip";
