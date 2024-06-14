@@ -685,6 +685,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 //TODO: use this
 	public boolean addVisitedLevel(final Player player) {
+		this.setConfigChanged();
 		final UUID uuid = player.getUniqueId();
 		final int level = this.getLevel(player);
 		if (level < 0) return false;
