@@ -2,7 +2,6 @@ package com.poixson.backrooms.worlds;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.World;

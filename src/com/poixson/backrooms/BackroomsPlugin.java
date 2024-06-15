@@ -264,7 +264,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 			if (listener != null)
 				listener.unregister();
 		}
+		// dynmap
 		this.dynmap_perspective.set(null);
+		// quotes
 		this.quotes.set(null);
 	}
 

@@ -6,10 +6,10 @@ load: STARTUP
 depend:
   - pxnPluginLib
   - Multiverse-Core
-  - Vault
 softdepend:
   - MoreFoods
   - dynmap
+  - Vault
 authors: [ lorenzop ]
 website: ${project.url}
 description: ${project.description}
