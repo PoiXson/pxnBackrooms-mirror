@@ -40,6 +40,10 @@ ext/
 target/
 vendor/
 coverage/
+gradle/
+gradlew
+gradlew.bat
+*.launch
 rpmbuild/
 out/
 build/
