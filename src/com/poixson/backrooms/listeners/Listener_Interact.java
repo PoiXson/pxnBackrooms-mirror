@@ -1,9 +1,10 @@
 package com.poixson.backrooms.listeners;
 
+import static com.poixson.utils.LocationUtils.DistanceFast2D;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -111,12 +112,12 @@ public class Listener_Interact implements xListener {
 
 
 	protected void doLeverTP(final int to_level, final Location lever_loc, final int y) {
-		final World world = lever_loc.getWorld();
 		for (final Player player : Bukkit.getOnlinePlayers()) {
-			if (world.equals(player.getWorld())) {
-				final Location player_loc = player.getLocation();
-				if (player_loc.distance(lever_loc) < this.tp_range)
-					player.teleport( player_loc.add(0.0, y, 0.0) );
+			final Location player_loc = player.getLocation();
+			final double distance = DistanceFast2D(lever_loc, player_loc);
+			if (distance >= 0.0
+			&&  distance < this.tp_range) {
+				player.teleport( player_loc.add(0.0, y, 0.0) );
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 package com.poixson.backrooms.listeners;
 
+import static com.poixson.utils.LocationUtils.DistanceFast3D;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -103,7 +105,8 @@ public class Listener_MoveNormal implements xListener {
 				final Iterator<Location> it = lights.iterator();
 				while (it.hasNext()) {
 					loc = it.next();
-					if (to.distance(loc) > BASEMENT_LIGHT_RADIUS) {
+					final double distance = DistanceFast3D(to, loc);
+					if (distance > BASEMENT_LIGHT_RADIUS) {
 						it.remove();
 						if (this.canTurnOff(loc)) {
 							blk = loc.getBlock();
@@ -121,7 +124,9 @@ public class Listener_MoveNormal implements xListener {
 				for (int ix=0-r-1; ix<r; ix+=10) {
 					xx = Math.floorDiv(ix+to.getBlockX(), 10) * 10;
 					final Block blk = world.getBlockAt(xx, y, zz);
-					if (to.distance(blk.getLocation()) < BASEMENT_LIGHT_RADIUS) {
+					final double distance = DistanceFast3D(to, blk.getLocation());
+					if (distance >= 0
+					&&  distance < BASEMENT_LIGHT_RADIUS) {
 						if (Material.BEDROCK.equals(blk.getType())
 						||  Material.REDSTONE_TORCH.equals(blk.getType()) ) {
 							lights.add(blk.getLocation());
