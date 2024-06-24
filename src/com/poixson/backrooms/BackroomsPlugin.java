@@ -1,5 +1,6 @@
 package com.poixson.backrooms;
 
+import static com.poixson.utils.BukkitUtils.FormatColors;
 import static com.poixson.utils.FileUtils.OpenLocalOrResource;
 import static com.poixson.utils.FileUtils.ReadInputStream;
 import static com.poixson.utils.Utils.IsEmpty;
@@ -21,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -50,11 +50,15 @@ import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.xRand;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.util.Ticks;
+
 
 public class BackroomsPlugin extends xJavaPlugin {
 	@Override public int getSpigotPluginID() { return 108148; }
 	@Override public int getBStatsID() {       return 17231;  }
-	public static final String CHAT_PREFIX = ChatColor.DARK_AQUA+"[Backrooms] "+ChatColor.WHITE;
+	public static final String CHAT_PREFIX = FormatColors("<DARK_AQUA>[Backrooms] <WHITE>");
 
 	public static final String GENERATOR_NAME = "pxnBackrooms";
 	protected static final String DEFAULT_RESOURCE_PACK = "https://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-{VERSION}.zip";
@@ -649,7 +653,15 @@ public class BackroomsPlugin extends xJavaPlugin {
 		player.teleport(loc);
 		player.setNoDamageTicks(100);
 		player.setFallDistance(0.0f);
-		player.sendTitle("Level "+Integer.toString(level), null, 15, 70, 40);
+		player.showTitle(Title.title(
+			Component.text("Level "+Integer.toString(level)),
+			Component.text(""),
+			Title.Times.times(
+				Ticks.duration(15),
+				Ticks.duration(70),
+				Ticks.duration(40)
+			)
+		));
 	}
 
 	public Location getSpawnLocation(final int level) {

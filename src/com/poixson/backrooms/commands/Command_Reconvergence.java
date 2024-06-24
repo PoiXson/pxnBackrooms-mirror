@@ -1,6 +1,7 @@
 package com.poixson.backrooms.commands;
 
-import org.bukkit.ChatColor;
+import static com.poixson.utils.BukkitUtils.FormatColors;
+
 import org.bukkit.command.CommandSender;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -37,7 +38,7 @@ public class Command_Reconvergence extends pxnCommandRoot {
 			return false;
 		final TaskReconvergence task = this.plugin.getReconvergenceTask();
 		task.update();
-		sender.sendMessage(ChatColor.GOLD+"Triggered a reconvergence event");
+		sender.sendMessage(FormatColors("<GOLD>Triggered a reconvergence event"));
 		return true;
 	}
 
