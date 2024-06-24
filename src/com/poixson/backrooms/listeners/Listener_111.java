@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.tools.events.xListener;
+import com.poixson.tools.xListener;
 
 
 // 111 | Run For Your Life!

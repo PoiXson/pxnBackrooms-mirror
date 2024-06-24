@@ -18,7 +18,7 @@ import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.SeriesBlockChanger;
-import com.poixson.tools.events.xListener;
+import com.poixson.tools.xListener;
 
 
 public class Listener_771 implements xListener {

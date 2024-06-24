@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.DelayedLever;
-import com.poixson.tools.events.xListener;
+import com.poixson.tools.xListener;
 
 
 // 6 | Lobby <-> Lights-Out - teleports

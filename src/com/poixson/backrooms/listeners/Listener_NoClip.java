@@ -19,9 +19,9 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
+import com.poixson.tools.xListener;
 import com.poixson.tools.xRand;
 import com.poixson.tools.xTime;
-import com.poixson.tools.events.xListener;
 
 
 public class Listener_NoClip implements xListener {
