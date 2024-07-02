@@ -23,7 +23,7 @@ public abstract class BackroomsGen {
 
 	public final int bedrock_barrier;
 
-	protected final xRand random = new xRand();
+	protected final xRand random = (new xRand()).seed_time();
 
 
 

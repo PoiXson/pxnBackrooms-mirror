@@ -33,7 +33,7 @@ public class Listener_NoClip implements xListener {
 
 	protected final AtomicInteger cleanup = new AtomicInteger(0);
 
-	protected final xRand random = new xRand();
+	protected final xRand random = (new xRand()).seed_time();
 
 
 

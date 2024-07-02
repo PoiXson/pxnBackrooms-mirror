@@ -44,7 +44,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 
 	protected final ConcurrentHashMap<Integer, Location> spawns = new ConcurrentHashMap<Integer, Location>();
 
-	protected final xRand random = new xRand();
+	protected final xRand random = (new xRand()).seed_time();
 
 
 
