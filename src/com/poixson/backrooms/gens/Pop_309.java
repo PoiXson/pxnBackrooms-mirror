@@ -356,7 +356,7 @@ public class Pop_309 implements BackroomsPop {
 
 
 	public Logger log() {
-		return this.plugin.getLogger();
+		return this.plugin.log();
 	}
 
 

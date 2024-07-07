@@ -110,7 +110,7 @@ public class GeneratorTemplate {
 
 
 	public Logger log() {
-		return this.plugin.getLogger();
+		return this.plugin.log();
 	}
 
 

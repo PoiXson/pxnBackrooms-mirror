@@ -1,6 +1,6 @@
 package com.poixson.backrooms.dynmap;
 
-import static com.poixson.tools.xJavaPlugin.Log;
+import static com.poixson.utils.BukkitUtils.Log;
 import static com.poixson.utils.Utils.SafeClose;
 
 import java.io.File;

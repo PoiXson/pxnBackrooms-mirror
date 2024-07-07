@@ -16,7 +16,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
@@ -25,6 +24,7 @@ import com.poixson.backrooms.gens.Gen_001.BasementData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
 import com.poixson.tools.DelayedChestFiller;
+import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabc;
@@ -473,7 +473,7 @@ public class Gen_000 extends BackroomsGen {
 
 	public class ChestFiller_000 extends DelayedChestFiller {
 
-		public ChestFiller_000(final JavaPlugin plugin,
+		public ChestFiller_000(final xJavaPlugin plugin,
 				final String worldName, final int x, final int y, final int z) {
 			super(plugin, worldName, x, y, z);
 		}

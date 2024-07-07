@@ -440,7 +440,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 
 
 	public Logger log() {
-		return this.plugin.getLogger();
+		return this.plugin.log();
 	}
 
 
