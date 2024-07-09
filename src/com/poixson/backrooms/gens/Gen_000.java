@@ -271,6 +271,7 @@ public class Gen_000 extends BackroomsGen {
 		final Level_000 level_000 = (Level_000) this.backworld;
 		final Gen_001 gen_001 = level_000.gen_001;
 		final Gen_023 gen_023 = level_000.gen_023;
+		final Gen_002 gen_002 = level_000.gen_002;
 		final BlockData block_subfloor        = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
 		final BlockData block_subceiling      = StringToBlockDataDef(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
 		final BlockData block_carpet          = StringToBlockDataDef(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
@@ -384,6 +385,7 @@ public class Gen_000 extends BackroomsGen {
 								default: throw new RuntimeException("Unknown boxed walls direction: "+dao_lobby.box_dir.toString());
 								}
 								plot.type('.', Material.AIR         );
+								plot.type('-', block_wall_base      );
 								plot.type('=', block_wall           );
 								plot.type('x', Material.BEDROCK     );
 								plot.type('g', Material.GLOWSTONE   );
@@ -420,10 +422,11 @@ public class Gen_000 extends BackroomsGen {
 									matrix[iy][2].append(" x.x");
 									matrix[iy][3].append(" xxx");
 								}
-								// shaft through overgrowth
-								final int level_023_h = gen_023.level_h + 2;
-								for (int i=0; i<level_023_h; i++) {
+								// shaft through overgrowth and pipedreams
+								final int shaft_h = gen_023.level_h + gen_023.bedrock_barrier + gen_002.level_h + gen_002.bedrock_barrier + 1;
+								for (int i=0; i<shaft_h; i++) {
 									iy++;
+									if (iy >= h_exit) break;
 									matrix[iy][0].append("mmmmm");
 									matrix[iy][1].append("mxxxm");
 									matrix[iy][2].append("mx.xm");
@@ -434,13 +437,23 @@ public class Gen_000 extends BackroomsGen {
 								final int h_exit_closed = gen_023.subceiling + this.bedrock_barrier + this.subfloor + 1;
 								for (int i=0; i<h_exit_closed; i++) {
 									iy++;
+									if (iy >= h_exit) break;
 									matrix[iy][1].append(" xxx");
 									matrix[iy][2].append(" x.x");
 									matrix[iy][3].append(" xxx");
 								}
 								// opening in lobby
-								for (int i=0; i<this.level_h; i++) {
+								iy++;
+								if (iy < h_exit) {
+									matrix[iy][0].append("-----");
+									matrix[iy][1].append("-xxx-");
+									matrix[iy][2].append("-x.x-");
+									matrix[iy][3].append("-x.x-");
+									matrix[iy][4].append("-=.=-");
+								}
+								for (int i=1; i<this.level_h; i++) {
 									iy++;
+									if (iy >= h_exit) break;
 									matrix[iy][0].append("=====");
 									matrix[iy][1].append("=xxx=");
 									matrix[iy][2].append("=x.x=");
@@ -449,11 +462,13 @@ public class Gen_000 extends BackroomsGen {
 								}
 								// top
 								iy++;
-								matrix[iy][0].append("=====");
-								matrix[iy][1].append("=xxx=");
-								matrix[iy][2].append("=xxx=");
-								matrix[iy][3].append("=xxx=");
-								matrix[iy][4].append("== ==");
+								if (iy < h_exit) {
+									matrix[iy][0].append("=====");
+									matrix[iy][1].append("=xxx=");
+									matrix[iy][2].append("=xxx=");
+									matrix[iy][3].append("=xxx=");
+									matrix[iy][4].append("== ==");
+								}
 								plots.add(new Tuple<BlockPlotter, StringBuilder[][]>(plot, matrix));
 							} // end no basement walls
 						} // end portal to basement
