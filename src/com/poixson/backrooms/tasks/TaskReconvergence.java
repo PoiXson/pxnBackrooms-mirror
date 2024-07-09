@@ -3,11 +3,15 @@ package com.poixson.backrooms.tasks;
 import static com.poixson.utils.BukkitUtils.SafeCancel;
 import static com.poixson.utils.Utils.GetMS;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -32,6 +36,8 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 	protected long lastUpdated = 0L;
 	protected long lastUsed    = 0L;
 
+	protected final File file;
+
 
 
 	public TaskReconvergence(final BackroomsPlugin plugin, final ConfigurationSection config) {
@@ -55,20 +61,33 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 		this.updatePeriod = updatePeriod;
 		this.updateGrace  = updateGrace;
 		this.maxGrace     = maxGrace;
+		this.file = new File(this.plugin.getDataFolder(), "reconvergence.json");
 	}
 
 
 
 	@Override
 	public void start() {
-		this.runTaskTimer(this.plugin, this.updateTicks*2L, this.updateTicks);
 		final long time = GetMS();
-		this.lastUpdated = time;
-		this.lastUsed    = time;
+		// load reconvergence.json
+		final FileConfiguration cfg = YamlConfiguration.loadConfiguration(this.file);
+		this.lastUpdated = cfg.getLong("Last Updated", time);
+		this.lastUsed    = cfg.getLong("Last Used",    time);
+		// start task
+		this.runTaskTimer(this.plugin, this.updateTicks*2L, this.updateTicks);
 	}
 	@Override
 	public void stop() {
 		SafeCancel(this);
+		// save reconvergence.json
+		final FileConfiguration cfg = YamlConfiguration.loadConfiguration(this.file);
+		cfg.set("Last Updated", Long.valueOf(this.lastUpdated));
+		cfg.set("Last Used",    Long.valueOf(this.lastUsed   ));
+		try {
+			cfg.save(this.file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
