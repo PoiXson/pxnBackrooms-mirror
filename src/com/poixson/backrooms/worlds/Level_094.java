@@ -52,6 +52,12 @@ public class Level_094 extends BackroomsWorld {
 	public boolean containsLevel(final int level) {
 		return (level == 94);
 	}
+	@Override
+	public int[] getLevels() {
+		return new int[] {
+			94, // motion
+		};
+	}
 
 
 

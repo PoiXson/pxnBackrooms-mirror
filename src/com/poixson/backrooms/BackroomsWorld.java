@@ -99,6 +99,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 
 	public abstract int getMainLevel();
 	public abstract boolean containsLevel(final int level);
+	public abstract int[] getLevels();
 
 	public boolean isWorldMain(final int level) {
 		return (this.getMainLevel() == level);

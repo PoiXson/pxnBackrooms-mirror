@@ -45,6 +45,12 @@ public class Level_333 extends BackroomsWorld {
 	public boolean containsLevel(final int level) {
 		return (level == 333);
 	}
+	@Override
+	public int[] getLevels() {
+		return new int[] {
+			333, // cubes
+		};
+	}
 
 
 

@@ -74,11 +74,18 @@ public class Level_011 extends BackroomsWorld {
 	@Override
 	public boolean containsLevel(final int level) {
 		switch (level) {
-		case 39: // metro
 		case 11: // city
+		case 39: // metro
 			return true;
 		default: return false;
 		}
+	}
+	@Override
+	public int[] getLevels() {
+		return new int[] {
+			11, // city
+			39, // metro
+		};
 	}
 
 

@@ -246,6 +246,23 @@ public class Level_000 extends BackroomsWorld {
 		}
 	}
 
+	@Override
+	public int[] getLevels() {
+		return new int[] {
+			1,   // basement
+			23,  // overgrowth
+			2,   // pipe dreams
+			0,   // lobby
+			4,   // ductwork
+			6,   // lights out
+			37,  // poolrooms
+			5,   // hotel
+			19,  // attic
+			309, // radio station
+			188, // the windows
+		};
+	}
+
 
 
 	@Override

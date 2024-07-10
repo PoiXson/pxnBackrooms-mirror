@@ -79,6 +79,12 @@ public class Level_111 extends BackroomsWorld {
 	public boolean containsLevel(final int level) {
 		return (level == 111);
 	}
+	@Override
+	public int[] getLevels() {
+		return new int[] {
+			111, // run for your life
+		};
+	}
 
 
 

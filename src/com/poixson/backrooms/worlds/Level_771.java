@@ -95,6 +95,12 @@ public class Level_771 extends BackroomsWorld {
 	public boolean containsLevel(final int level) {
 		return (level == 771);
 	}
+	@Override
+	public int[] getLevels() {
+		return new int[] {
+			771, // crossroads
+		};
+	}
 
 
 
