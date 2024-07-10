@@ -117,7 +117,7 @@ public class TaskReconvergence extends BukkitRunnable implements xStartStop {
 		this.lastUpdated = GetMS();
 		this.plugin.flushSpawns();
 		// update spawn locations per world
-		for (final int level : this.plugin.getLevels()) {
+		for (final int level : this.plugin.getMainLevels()) {
 			try {
 				final BackroomsWorld backlevel = this.plugin.getBackroomsWorld(level);
 				final Location loc = backlevel.getSpawnArea(level);

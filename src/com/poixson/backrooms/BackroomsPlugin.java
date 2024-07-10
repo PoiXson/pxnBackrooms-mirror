@@ -139,7 +139,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 				@Override
 				public void run() {
 					// setup worlds
-					for (final int level : BackroomsPlugin.this.getLevels()) {
+					for (final int level : BackroomsPlugin.this.getMainLevels()) {
 						final BackroomsWorld backlevel = BackroomsPlugin.this.getBackroomsWorld(level);
 						backlevel.setup();
 					}
@@ -506,12 +506,25 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.backworlds.put(Integer.valueOf(level), backworld);
 		return backworld;
 	}
-	public int[] getLevels() {
-		final int num = this.backworlds.size();
-		final int[] levels = new int[num];
+
+	public int[] getMainLevels() {
+		final Set<Integer> list = this.backworlds.keySet();
+		final int[] levels = new int[list.size()];
 		int i = 0;
-		for (final Integer lvl : this.backworlds.keySet())
+		for (final Integer lvl : list)
 			levels[i++] = lvl.intValue();
+		return levels;
+	}
+	public int[] getAllLevels() {
+		final LinkedList<Integer> list = new LinkedList<Integer>();
+		for (final BackroomsWorld backworld : this.backworlds.values()) {
+			for (final int level : backworld.getLevels())
+				list.addLast(Integer.valueOf(level));
+		}
+		final int[] levels = new int[list.size()];
+		int i = 0;
+		for (final Integer level : list)
+			levels[i++] = level.intValue();
 		return levels;
 	}
 
