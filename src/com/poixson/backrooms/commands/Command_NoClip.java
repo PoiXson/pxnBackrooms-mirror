@@ -3,6 +3,8 @@ package com.poixson.backrooms.commands;
 import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
 import static com.poixson.utils.NumberUtils.IsNumeric;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -128,9 +130,14 @@ public class Command_NoClip extends pxnCommandRoot {
 
 	@Override
 	public List<String> onTabComplete(final CommandSender sender, final String[] args) {
-//TODO
-System.out.println("TAB:"); for (final String arg : args) System.out.println("  "+arg);
-return null;
+		final LinkedList<String> list = new LinkedList<String>();
+		final int[] levels = this.plugin.getAllLevels();
+		for (final int level : levels) {
+			final String str = Integer.toString(level);
+			if (str.startsWith(args[0]))
+				list.add(str);
+		}
+		return list;
 	}
 
 
