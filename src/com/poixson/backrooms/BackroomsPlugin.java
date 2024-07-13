@@ -211,6 +211,9 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.unregister();
 			listener.register();
 		}
+		// save
+		this.setConfigChanged();
+		this.saveConfigs();
 	}
 
 	@Override
@@ -318,7 +321,6 @@ public class BackroomsPlugin extends xJavaPlugin {
 			cfg.options().copyDefaults(true);
 			this.configLevelBlocks.set(cfg);
 		}
-		this.saveConfigs();
 	}
 	@Override
 	protected void saveConfigs() {
