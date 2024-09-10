@@ -21,6 +21,7 @@ Don't look behind
 Don't look inside
 Don't open the box
 Don't open the door
+You don't belong here
 Hush
 Oops
 Beg
@@ -171,3 +172,5 @@ I have a question for you
 Unprotected Area!
 I would love to go in the forest with you
 Do you ever feel like a plastic bag
+I know where you live
+I know your address
