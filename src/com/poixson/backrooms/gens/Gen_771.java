@@ -25,11 +25,11 @@ import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_771;
 import com.poixson.tools.DelayedChestFiller;
+import com.poixson.tools.FastNoiseLiteD;
 import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
 
 
 // 771 | Crossroads

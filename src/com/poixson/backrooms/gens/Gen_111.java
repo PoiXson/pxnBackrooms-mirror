@@ -12,9 +12,9 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
+import com.poixson.tools.FastNoiseLiteD;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
 
 
 // 111 | Run For Your Life!

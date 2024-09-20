@@ -2,8 +2,8 @@ package com.poixson.backrooms.gens;
 
 import org.bukkit.Material;
 
+import com.poixson.tools.FastNoiseLiteD;
 import com.poixson.tools.TreePopulator;
-import com.poixson.utils.FastNoiseLiteD;
 
 
 // 309 | Radio Station

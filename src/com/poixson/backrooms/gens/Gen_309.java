@@ -15,10 +15,10 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.tools.PathTracer;
+import com.poixson.tools.FastNoiseLiteD;
+import com.poixson.tools.FastNoiseLiteD.FractalType;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.FastNoiseLiteD;
-import com.poixson.utils.FastNoiseLiteD.FractalType;
 
 
 // 309 | Radio Station
