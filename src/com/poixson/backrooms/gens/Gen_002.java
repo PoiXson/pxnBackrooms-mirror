@@ -170,8 +170,10 @@ public class Gen_002 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final PipeData dao = new PipeData(xx, zz);
-				data.put(new Iab(ix, iz), dao);
+				data.put(
+					new Iab(ix, iz),
+					new PipeData(xx, zz)
+				);
 			}
 		}
 		// find walls/pipes

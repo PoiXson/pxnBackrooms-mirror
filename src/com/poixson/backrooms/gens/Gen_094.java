@@ -188,8 +188,10 @@ public class Gen_094 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				HillsData dao_hills = new HillsData(xx, zz);
-				data.put(new Iab(ix, iz), dao_hills);
+				data.put(
+					new Iab(ix, iz),
+					new HillsData(xx, zz)
+				);
 			}
 		}
 		// find house y

@@ -191,8 +191,10 @@ public class Gen_005 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-8; ix<24; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final HotelData dao = new HotelData(xx, zz);
-				data.put(new Iab(ix, iz), dao);
+				data.put(
+					new Iab(ix, iz),
+					new HotelData(xx, zz)
+				);
 			}
 		}
 		// find walls
@@ -316,17 +318,17 @@ public class Gen_005 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
+				final HotelData dao_hotel   = data_hotel.get(new Iab(ix, iz  ));
+				final HotelData dao_hotel_n = data_hotel.get(new Iab(ix, iz-1));
+				final HotelData dao_hotel_s = data_hotel.get(new Iab(ix, iz+1));
+				final HotelData dao_hotel_e = data_hotel.get(new Iab(ix+1, iz));
+				final HotelData dao_hotel_w = data_hotel.get(new Iab(ix-1, iz));
 				// barrier
 				for (int iy=0; iy<this.bedrock_barrier; iy++)
 					chunk.setBlock(ix, this.level_y+iy, iz, Material.BEDROCK);
 				// subfloor
 				for (int iy=0; iy<this.subfloor; iy++)
 					chunk.setBlock(ix, y_base+iy, iz, block_subfloor);
-				final HotelData dao_hotel   = data_hotel.get(new Iab(ix, iz  ));
-				final HotelData dao_hotel_n = data_hotel.get(new Iab(ix, iz-1));
-				final HotelData dao_hotel_s = data_hotel.get(new Iab(ix, iz+1));
-				final HotelData dao_hotel_e = data_hotel.get(new Iab(ix+1, iz));
-				final HotelData dao_hotel_w = data_hotel.get(new Iab(ix-1, iz));
 				if (dao_hotel == null) continue;
 				if (this.enable_top) {
 					for (int iy=0; iy<this.subceiling; iy++)

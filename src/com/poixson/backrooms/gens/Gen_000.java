@@ -176,8 +176,10 @@ public class Gen_000 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final LobbyData dao = new LobbyData(xx, zz);
-				data.put(new Iab(ix, iz), dao);
+				data.put(
+					new Iab(ix, iz),
+					new LobbyData(xx, zz)
+				);
 			}
 		}
 		// find wall distance
@@ -301,10 +303,10 @@ public class Gen_000 extends BackroomsGen {
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
 				final int mod_x = (xx < 0 ? 1-xx : xx) % 7;
+				final LobbyData dao_lobby = data_lobby.get(new Iab(ix, iz));
 				// subfloor
 				for (int iy=0; iy<this.subfloor; iy++)
 					chunk.setBlock(ix, this.level_y+iy, iz, block_subfloor);
-				final LobbyData dao_lobby = data_lobby.get(new Iab(ix, iz));
 				if (dao_lobby == null) continue;
 				// wall
 				if (dao_lobby.isWall) {

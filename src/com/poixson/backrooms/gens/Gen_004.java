@@ -152,8 +152,10 @@ public class Gen_004 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=-1; ix<17; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final DuctData dao = new DuctData(xx, zz);
-				data.put(new Iab(ix, iz), dao);
+				data.put(
+					new Iab(ix, iz),
+					new DuctData(xx, zz)
+				);
 			}
 		}
 		// find walls

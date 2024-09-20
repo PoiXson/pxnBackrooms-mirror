@@ -172,8 +172,10 @@ public class Gen_001 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				final BasementData dao = new BasementData(xx, zz);
-				data.put(new Iab(ix, iz), dao);
+				data.put(
+					new Iab(ix, iz),
+					new BasementData(xx, zz)
+				);
 			}
 		}
 	}

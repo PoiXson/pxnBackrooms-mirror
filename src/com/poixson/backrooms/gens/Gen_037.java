@@ -188,8 +188,10 @@ public class Gen_037 extends BackroomsGen {
 			final int zz = (chunkZ * 16) + (iz * 8) + 4;
 			for (int ix=-1; ix<3; ix++) {
 				final int xx = (chunkX * 16) + (ix * 8) + 4;
-				final PoolData dao = new PoolData(xx, zz);
-				data.put(new Iab(ix, iz), dao);
+				data.put(
+					new Iab(ix, iz),
+					new PoolData(xx, zz)
+				);
 			}
 		}
 	}
