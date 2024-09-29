@@ -38,7 +38,6 @@ public class Level_111 extends BackroomsWorld {
 		this.listener_111 = new Listener_111(plugin);
 		// next hall
 		this.varstore = new VarStore("level_111");
-		this.varstore.start(plugin);
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 111);
@@ -52,6 +51,7 @@ public class Level_111 extends BackroomsWorld {
 	public void register() {
 		super.register();
 		this.listener_111.register();
+		this.varstore.start(this.plugin);
 	}
 	@Override
 	public void unregister() {
