@@ -1,6 +1,6 @@
 package com.poixson.backrooms.gens;
 
-import static com.poixson.utils.NumberUtils.MinMax;
+import static com.poixson.utils.MathUtils.MinMax;
 import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.LinkedList;
