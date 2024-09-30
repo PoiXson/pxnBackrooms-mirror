@@ -31,7 +31,6 @@ import com.poixson.backrooms.gens.Gen_309;
 import com.poixson.backrooms.gens.Pop_001;
 import com.poixson.backrooms.gens.Pop_005;
 import com.poixson.backrooms.gens.Pop_037;
-import com.poixson.backrooms.gens.Pop_309;
 import com.poixson.backrooms.listeners.Listener_023;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
@@ -69,7 +68,7 @@ public class Level_000 extends BackroomsWorld {
 	public final Pop_001 pop_001;
 	public final Pop_005 pop_005;
 	public final Pop_037 pop_037;
-	public final Pop_309 pop_309;
+//	public final Pop_309 pop_309;
 
 	// listeners
 	protected final Listener_023 listener_023;
@@ -112,7 +111,7 @@ public class Level_000 extends BackroomsWorld {
 		this.pop_001 = this.register(new Pop_001(this)); // basement
 		this.pop_005 = this.register(new Pop_005(this)); // hotel
 		this.pop_037 = this.register(new Pop_037(this)); // poolrooms
-		this.pop_309 = this.register(new Pop_309(this)); // radio station
+//		this.pop_309 = this.register(new Pop_309(this)); // radio station
 		// listeners
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
