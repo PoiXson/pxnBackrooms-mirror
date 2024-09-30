@@ -28,6 +28,7 @@ import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.gens.Gen_037.PoolData;
 import com.poixson.backrooms.gens.Gen_188;
 import com.poixson.backrooms.gens.Gen_309;
+import com.poixson.backrooms.gens.Gen_309.RadioPathData;
 import com.poixson.backrooms.gens.Pop_001;
 import com.poixson.backrooms.gens.Pop_005;
 import com.poixson.backrooms.gens.Pop_037;
@@ -343,16 +344,8 @@ public class Level_000 extends BackroomsWorld {
 		case 37: // poolrooms
 		case  5: // hotel
 		case 19: // attic
+		case 309: // radio station
 			return super.getNewSpawnArea(level);
-		// radio station
-		case 309: {
-			final int distance = this.plugin.getSpawnDistance();
-			final int z = this.random.nextInt(0, distance);
-			final int x = this.gen_309.getPathX(z);
-			final World world = this.plugin.getWorldFromLevel(level);
-			if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-			return world.getBlockAt(x, 0, z).getLocation();
-		}
 		// the windows
 		case 188: {
 			final World world = this.plugin.getWorldFromLevel(level);
@@ -388,6 +381,7 @@ public class Level_000 extends BackroomsWorld {
 		public final HashMap<Iab, BasementData> basement = new HashMap<Iab, BasementData>();
 		public final HashMap<Iab, HotelData>    hotel    = new HashMap<Iab, HotelData>();
 		public final HashMap<Iab, PoolData>     pools    = new HashMap<Iab, PoolData>();
+		public final HashMap<Iab, RadioPathData> paths    = new HashMap<Iab, RadioPathData>();
 		public Pregen_Level_000() {}
 	}
 
@@ -396,6 +390,9 @@ public class Level_000 extends BackroomsWorld {
 	@Override
 	protected void generate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
+		// pre-generate
+		final Pregen_Level_000 pregen = new Pregen_Level_000();
+		this.gen_309.pregenerate(pregen.paths, chunkX, chunkZ);
 		// level 188 - the windows
 		if (chunkX >-4 && chunkZ >-4
 		&&  chunkX < 4 && chunkZ < 4) {
@@ -403,7 +400,6 @@ public class Level_000 extends BackroomsWorld {
 		// other levels
 		} else {
 			// pre-generate
-			final Pregen_Level_000 pregen = new Pregen_Level_000();
 			this.gen_000.pregenerate(pregen.lobby,    chunkX, chunkZ); // lobby
 			this.gen_002.pregenerate(pregen.pipes,    chunkX, chunkZ); // pipedreams
 			this.gen_004.pregenerate(pregen.ducts,    chunkX, chunkZ); // ductwork
@@ -421,7 +417,8 @@ public class Level_000 extends BackroomsWorld {
 			this.gen_005.generate(pregen, plots, chunk, chunkX, chunkZ); // hotel
 			this.gen_019.generate(pregen, plots, chunk, chunkX, chunkZ); // attic
 		}
-		this.gen_309.generate(null, null, chunk, chunkX, chunkZ); // radio station
+		// level 309 - radio station paths
+		this.gen_309.generate(pregen, plots, chunk, chunkX, chunkZ);
 	}
 
 
