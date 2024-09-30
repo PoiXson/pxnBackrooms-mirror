@@ -335,15 +335,15 @@ public class Level_000 extends BackroomsWorld {
 	@Override
 	public Location getNewSpawnArea(final int level) {
 		switch (level) {
-		case  1: // basement
-		case 23: // overgrowth
-		case  2: // pipe dreams
-		case  0: // lobby
-		case  4: // ductwork
-		case  6: // lights out
-		case 37: // poolrooms
-		case  5: // hotel
-		case 19: // attic
+		case  1:  // basement
+		case 23:  // overgrowth
+		case  2:  // pipe dreams
+		case  0:  // lobby
+		case  4:  // ductwork
+		case  6:  // lights out
+		case 37:  // poolrooms
+		case  5:  // hotel
+		case 19:  // attic
 		case 309: // radio station
 			return super.getNewSpawnArea(level);
 		// the windows
@@ -375,12 +375,12 @@ public class Level_000 extends BackroomsWorld {
 
 
 	public class Pregen_Level_000 implements PreGenData {
-		public final HashMap<Iab, LobbyData>    lobby    = new HashMap<Iab, LobbyData>();
-		public final HashMap<Iab, PipeData>     pipes    = new HashMap<Iab, PipeData>();
-		public final HashMap<Iab, DuctData>     ducts    = new HashMap<Iab, DuctData>();
-		public final HashMap<Iab, BasementData> basement = new HashMap<Iab, BasementData>();
-		public final HashMap<Iab, HotelData>    hotel    = new HashMap<Iab, HotelData>();
-		public final HashMap<Iab, PoolData>     pools    = new HashMap<Iab, PoolData>();
+		public final HashMap<Iab, LobbyData>     lobby    = new HashMap<Iab, LobbyData>();
+		public final HashMap<Iab, PipeData>      pipes    = new HashMap<Iab, PipeData>();
+		public final HashMap<Iab, DuctData>      ducts    = new HashMap<Iab, DuctData>();
+		public final HashMap<Iab, BasementData>  basement = new HashMap<Iab, BasementData>();
+		public final HashMap<Iab, HotelData>     hotel    = new HashMap<Iab, HotelData>();
+		public final HashMap<Iab, PoolData>      pools    = new HashMap<Iab, PoolData>();
 		public final HashMap<Iab, RadioPathData> paths    = new HashMap<Iab, RadioPathData>();
 		public Pregen_Level_000() {}
 	}

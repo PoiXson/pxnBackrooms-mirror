@@ -3,7 +3,6 @@ package com.poixson.backrooms.commands;
 import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
 import static com.poixson.utils.NumberUtils.IsNumeric;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
