@@ -1,6 +1,6 @@
 {
 	"pack": {
-		"pack_format": 32,
+		"pack_format": 34,
 		"description": "pxnBackrooms by @lorenzop",
 		"pack_version": "{{{VERSION}}}"
 	}
