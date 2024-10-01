@@ -49,21 +49,23 @@ public class Gen_188 extends BackroomsGen {
 	public final String block_ceiling;
 	public final String block_window;
 
+	public final Level_000 level_000;
+
 
 
 	public Gen_188(final BackroomsWorld backworld, final int seed, final int level_y) {
 		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
+		this.level_000 = (Level_000) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
-		final Level_000 level_000 = (Level_000) backworld;
-		final Gen_001 gen_001 = level_000.gen_001;
-		final Gen_309 gen_309 = level_000.gen_309;
+		final Gen_001 gen_001 = this.level_000.gen_001;
+		final Gen_309 gen_309 = this.level_000.gen_309;
 		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
-		this.level_y    = level_000.gen_001.level_y;
+		this.level_y    = this.level_000.gen_001.level_y;
 		this.level_h    = gen_309.level_y - this.level_y - gen_001.bedrock_barrier - gen_001.subfloor;
-		this.subfloor  = level_000.gen_001.subfloor;
+		this.subfloor  = this.level_000.gen_001.subfloor;
 		this.dark_room = cfgParams.getBoolean("Dark-Room");
 		// block types
 		this.block_subfloor         = cfgBlocks.getString("SubFloor"        );
@@ -86,20 +88,20 @@ public class Gen_188 extends BackroomsGen {
 
 	@Override
 	public int getLevelY() {
-		return ((Level_000)this.backworld).gen_001.getLevelY();
+		return this.level_000.gen_001.getLevelY();
 	}
 	@Override
 	public int getOpenY() {
-		return ((Level_000)this.backworld).gen_001.getOpenY();
+		return this.level_000.gen_001.getOpenY();
 	}
 
 	@Override
 	public int getMinY() {
-		return ((Level_000)this.backworld).gen_001.getMinY();
+		return this.level_000.gen_001.getMinY();
 	}
 	@Override
 	public int getMaxY() {
-		return ((Level_000)this.backworld).gen_019.getMaxY();
+		return this.level_000.gen_019.getMaxY();
 	}
 
 
@@ -109,7 +111,6 @@ public class Gen_188 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Level_000 level_000 = (Level_000) this.backworld;
 		final BlockData block_subfloor         = StringToBlockDataDef(this.block_subfloor,         DEFAULT_BLOCK_SUBFLOOR        );
 		final BlockData block_floor            = StringToBlockDataDef(this.block_floor,            DEFAULT_BLOCK_FLOOR           );
 		final BlockData block_floor_path_lines = StringToBlockDataDef(this.block_floor_path_lines, DEFAULT_BLOCK_FLOOR_PATH_LINES);
@@ -124,15 +125,15 @@ public class Gen_188 extends BackroomsGen {
 		if (block_wall             == null) throw new RuntimeException("Invalid block type for level 188 Wall"            );
 		if (block_ceiling          == null) throw new RuntimeException("Invalid block type for level 188 Ceiling"         );
 		if (block_window           == null) throw new RuntimeException("Invalid block type for level 188 Window"          );
-		final Gen_001 gen_001 = level_000.gen_001;
-		final Gen_023 gen_023 = level_000.gen_023;
-		final Gen_002 gen_002 = level_000.gen_002;
-		final Gen_000 gen_000 = level_000.gen_000;
-		final Gen_004 gen_004 = level_000.gen_004;
-		final Gen_006 gen_006 = level_000.gen_006;
-		final Gen_037 gen_037 = level_000.gen_037;
-		final Gen_005 gen_005 = level_000.gen_005;
-		final Gen_019 gen_019 = level_000.gen_019;
+		final Gen_001 gen_001 = this.level_000.gen_001;
+		final Gen_023 gen_023 = this.level_000.gen_023;
+		final Gen_002 gen_002 = this.level_000.gen_002;
+		final Gen_000 gen_000 = this.level_000.gen_000;
+		final Gen_004 gen_004 = this.level_000.gen_004;
+		final Gen_006 gen_006 = this.level_000.gen_006;
+		final Gen_037 gen_037 = this.level_000.gen_037;
+		final Gen_005 gen_005 = this.level_000.gen_005;
+		final Gen_019 gen_019 = this.level_000.gen_019;
 		final BlockData block_water = Bukkit.createBlockData("minecraft:water[level=0]");
 		final BlockData light = Bukkit.createBlockData("light[level=15]");
 		final int y_base  = this.level_y + this.bedrock_barrier;
@@ -229,9 +230,9 @@ public class Gen_188 extends BackroomsGen {
 					// outer walls
 					if (outer > 0) {
 						if (isWindow) {
-							final int lvl = level_000.getLevel(yy);
-							int lvl_min_y = level_000.getMinY(lvl);
-							int lvl_max_y = level_000.getMaxY(lvl);
+							final int lvl = this.level_000.getLevel(yy);
+							int lvl_min_y = this.level_000.getMinY(lvl);
+							int lvl_max_y = this.level_000.getMaxY(lvl);
 							SWITCH_LEVEL:
 							switch(lvl) {
 							case  1: lvl_min_y += gen_001.bedrock_barrier + gen_001.subfloor + 1; lvl_max_y -=                      3; break SWITCH_LEVEL;

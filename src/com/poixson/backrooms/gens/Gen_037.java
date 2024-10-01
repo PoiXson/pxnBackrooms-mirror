@@ -79,11 +79,14 @@ public class Gen_037 extends BackroomsGen {
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
 
+	public final Level_000 level_000;
+
 
 
 	public Gen_037(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
+		this.level_000 = (Level_000) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -213,10 +216,10 @@ public class Gen_037 extends BackroomsGen {
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
-		final Level_000 level_000 = (Level_000) this.backworld;
-		final int portal_000_037_y = (level_000.gen_000.level_y + level_000.gen_000.bedrock_barrier + level_000.gen_000.subfloor) - 1;
-		final int portal_000_037_h = ((this.level_y - level_000.gen_000.level_y) + this.bedrock_barrier + this.subfloor) - level_000.gen_000.bedrock_barrier - 1;
-		final int level_000_h = level_000.gen_000.level_h + level_000.gen_000.subceiling + 1;
+		final Gen_000 gen_000 = this.level_000.gen_000;
+		final int portal_000_037_y = (this.level_000.gen_000.level_y + gen_000.bedrock_barrier + gen_000.subfloor) - 1;
+		final int portal_000_037_h = ((this.level_y - gen_000.level_y) + this.bedrock_barrier + this.subfloor) - gen_000.bedrock_barrier - 1;
+		final int level_000_h = gen_000.level_h + gen_000.subceiling + 1;
 		final Map<Iab, PoolData>  poolData  = ((Pregen_Level_000)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int h_walls = this.level_h + 2;
@@ -433,7 +436,7 @@ public class Gen_037 extends BackroomsGen {
 						if (!foundWall) {
 							final int xx = (chunkX * 16) + (rx * 8);
 							final int zz = (chunkZ * 16) + (rz * 8);
-							level_000.portal_000_to_037.add(xx, zz);
+							this.level_000.portal_000_to_037.add(xx, zz);
 							final int portal_top = portal_000_037_h - 1;
 							final BlockPlotter pp =
 								(new BlockPlotter())

@@ -26,20 +26,22 @@ public class Gen_040 extends BackroomsGen {
 	public final int     subfloor;
 	public final int     subceiling;
 
+	public final Level_122 level_122;
+
 
 
 	public Gen_040(final BackroomsWorld backworld, final int seed, final int level_y) {
 		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
+		this.level_122 = (Level_122) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		// params
-		final Level_122 level_122 = (Level_122) backworld;
 		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
 		this.enable_top = cfgParams.getBoolean("Enable-Top");
-		this.level_y    = level_122.gen_122.level_y;
-		this.level_h    = level_122.gen_122.level_h;
-		this.subfloor   = level_122.gen_122.subfloor;
-		this.subceiling = level_122.gen_122.subceiling;
+		this.level_y    = this.level_122.gen_122.level_y;
+		this.level_h    = this.level_122.gen_122.level_h;
+		this.subfloor   = this.level_122.gen_122.subfloor;
+		this.subceiling = this.level_122.gen_122.subceiling;
 	}
 
 
@@ -51,7 +53,7 @@ public class Gen_040 extends BackroomsGen {
 
 	@Override
 	public int getNextY() {
-		return ((Level_122)this.backworld).gen_122.getNextY();
+		return this.level_122.gen_122.getNextY();
 	}
 
 

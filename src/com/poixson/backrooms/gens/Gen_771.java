@@ -130,6 +130,8 @@ public class Gen_771 extends BackroomsGen {
 	public final FastNoiseLiteD noiseExits;
 	public final FastNoiseLiteD noiseLoot;
 
+	public final Level_771 level_771;
+
 
 
 	public enum PillarType {
@@ -146,6 +148,7 @@ public class Gen_771 extends BackroomsGen {
 	public Gen_771(final BackroomsWorld backworld, final int seed) {
 		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
+		this.level_771 = (Level_771) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -658,10 +661,10 @@ public class Gen_771 extends BackroomsGen {
 					final int zz = (dir.b * 2) + z;
 					final int yy;
 					if (PillarType.PILLAR_LOOT_UPPER.equals(type)) {
-						((Level_771)this.backworld).loot_chests_upper.add((chunkX*16)+xx, (chunkZ*16)+zz);
+						this.level_771.loot_chests_upper.add((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + this.level_h + 1;
 					} else {
-						((Level_771)this.backworld).loot_chests_lower.add((chunkX*16)+xx, (chunkZ*16)+zz);
+						this.level_771.loot_chests_lower.add((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + 1;
 					}
 					final BlockData barrel = Bukkit.createBlockData("barrel[facing=up]");
@@ -674,7 +677,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// ladder shaft
 		case PILLAR_LADDER: {
-			((Level_771)this.backworld).portal_ladder.add((chunkX*16)+x, (chunkZ*16)+z);
+			this.level_771.portal_ladder.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h][0].append("   $");
 			// trapdoor
 			if (x == 0 && z == 0) {
@@ -709,7 +712,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// drop shaft to lower road
 		case PILLAR_DROP: {
-			((Level_771)this.backworld).portal_drop.add((chunkX*16)+x, (chunkZ*16)+z);
+			this.level_771.portal_drop.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {
@@ -726,7 +729,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// void shaft
 		case PILLAR_VOID: {
-			((Level_771)this.backworld).portal_void.add((chunkX*16)+x, (chunkZ*16)+z);
+			this.level_771.portal_void.add((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {
