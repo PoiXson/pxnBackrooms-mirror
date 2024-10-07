@@ -13,7 +13,7 @@ import com.poixson.backrooms.gens.Gen_111;
 import com.poixson.backrooms.listeners.Listener_111;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.worldstore.VarStore;
+import com.poixson.tools.worldstore.WorldKeyStore;
 
 
 // 111 | Run For Your Life!
@@ -26,7 +26,7 @@ public class Level_111 extends BackroomsWorld {
 	// listeners
 	protected final Listener_111 listener_111;
 
-	protected final VarStore varstore;
+	public final WorldKeyStore keystore;
 
 
 
@@ -37,7 +37,7 @@ public class Level_111 extends BackroomsWorld {
 		// listeners
 		this.listener_111 = new Listener_111(plugin);
 		// next hall
-		this.varstore = new VarStore("level_111");
+		this.keystore = new WorldKeyStore(plugin, "level_111");
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 111);
@@ -51,14 +51,14 @@ public class Level_111 extends BackroomsWorld {
 	public void register() {
 		super.register();
 		this.listener_111.register();
-		this.varstore.start(this.plugin);
+		this.keystore.start();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
 		this.listener_111.unregister();
 		try {
-			this.varstore.save();
+			this.keystore.save();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
