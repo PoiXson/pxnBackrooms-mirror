@@ -14,11 +14,12 @@ import com.poixson.backrooms.listeners.Listener_111;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.WorldKeyStore;
+import com.poixson.utils.MathUtils;
 
 
 // 111 | Run For Your Life!
 public class Level_111 extends BackroomsWorld {
-	public static final String KEY_NEXT_HALL_X = "next_hall_x";
+	public static final String KEY_NEXT_HALL_INDEX = "next_hall_index";
 
 	// generators
 	public final Gen_111 gen_111;
@@ -120,13 +121,20 @@ public class Level_111 extends BackroomsWorld {
 
 	@Override
 	public Location getSpawnLocation(final int level) {
+		final int minor = 4; // z-order interleave
+		final int major = 16;
+		final int total = minor * major;
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
-		int x = this.varstore.getInt(KEY_NEXT_HALL_X);
-		if (x == Integer.MIN_VALUE) x = 0;
+		int hall_index = this.keystore.getInt(KEY_NEXT_HALL_INDEX);
+		if (hall_index == Integer.MIN_VALUE) hall_index = 0;
+		if (hall_index % total == 0) hall_index++;
+		this.keystore.set(KEY_NEXT_HALL_INDEX, hall_index+1);
+		final int inter_index = MathUtils.ZOrderInterleave(hall_index, minor, major);
+		this.log().info("Run For Your Life, hall index: "+Integer.toString(inter_index));
+		final int x = (inter_index * 16) + 7;
 		final int y = this.getOpenY(level);
-		this.varstore.set(KEY_NEXT_HALL_X, (Math.floorDiv(x, 16)+1) * 16);
-		return world.getBlockAt(x+7, y, 7).getLocation();
+		return world.getBlockAt(x, y, 7).getLocation();
 	}
 
 
