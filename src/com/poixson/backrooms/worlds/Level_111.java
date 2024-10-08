@@ -1,6 +1,5 @@
 package com.poixson.backrooms.worlds;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import org.bukkit.Location;
@@ -19,7 +18,7 @@ import com.poixson.utils.MathUtils;
 
 // 111 | Run For Your Life!
 public class Level_111 extends BackroomsWorld {
-	public static final String KEY_NEXT_HALL_INDEX = "next_hall_index";
+	public static final String KEY_NEXT_HALL_INDEX = "Next Hall Index";
 
 	// generators
 	public final Gen_111 gen_111;
@@ -53,16 +52,15 @@ public class Level_111 extends BackroomsWorld {
 		super.register();
 		this.listener_111.register();
 		this.keystore.start();
+		// defaults
+		final int hall_index = this.keystore.getInt(KEY_NEXT_HALL_INDEX);
+		this.keystore.set(KEY_NEXT_HALL_INDEX, (hall_index>0 ? hall_index : 0));
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
 		this.listener_111.unregister();
-		try {
-			this.keystore.save();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.keystore.stop();
 	}
 
 
@@ -121,7 +119,7 @@ public class Level_111 extends BackroomsWorld {
 
 	@Override
 	public Location getSpawnLocation(final int level) {
-		final int minor = 4; // z-order interleave
+		final int minor = 8; // z-order interleave
 		final int major = 16;
 		final int total = minor * major;
 		final World world = this.plugin.getWorldFromLevel(level);
@@ -131,9 +129,14 @@ public class Level_111 extends BackroomsWorld {
 		if (hall_index % total == 0) hall_index++;
 		this.keystore.set(KEY_NEXT_HALL_INDEX, hall_index+1);
 		final int inter_index = MathUtils.ZOrderInterleave(hall_index, minor, major);
-		this.log().info("Run For Your Life, hall index: "+Integer.toString(inter_index));
 		final int x = (inter_index * 16) + 7;
 		final int y = this.getOpenY(level);
+		this.log().info(String.format(
+			"Run For Your Life!  index: #%d  hall: #%d  x: %d",
+			Integer.valueOf(hall_index),
+			Integer.valueOf(inter_index),
+			Integer.valueOf(x)
+		));
 		return world.getBlockAt(x, y, 7).getLocation();
 	}
 
