@@ -62,7 +62,7 @@ public class HotelRoom_Guest implements HotelRoom {
 				this.door_guest
 			);
 		if (RoomTheme.CHEESE.equals(specs.theme))
-			this.level_000.cheese_rooms.add(area.a, area.b);
+			this.level_000.cheese_rooms.addLocation(area.a, area.b);
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;

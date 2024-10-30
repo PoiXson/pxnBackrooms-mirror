@@ -436,7 +436,7 @@ public class Gen_037 extends BackroomsGen {
 						if (!foundWall) {
 							final int xx = (chunkX * 16) + (rx * 8);
 							final int zz = (chunkZ * 16) + (rz * 8);
-							this.level_000.portal_000_to_037.add(xx, zz);
+							this.level_000.portal_000_to_037.addLocation(xx, zz);
 							final int portal_top = portal_000_037_h - 1;
 							final BlockPlotter pp =
 								(new BlockPlotter())

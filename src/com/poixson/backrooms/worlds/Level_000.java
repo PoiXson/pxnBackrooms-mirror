@@ -36,7 +36,7 @@ import com.poixson.backrooms.listeners.Listener_023;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.worldstore.LocationStoreManager;
+import com.poixson.tools.worldstore.WorldStore_Locations;
 
 
 // 309 | Radio Station
@@ -75,21 +75,21 @@ public class Level_000 extends BackroomsWorld {
 	protected final Listener_023 listener_023;
 
 	// exit locations
-	public final LocationStoreManager portal_000_to_001;
-	public final LocationStoreManager portal_000_to_002;
-	public final LocationStoreManager portal_000_to_004;
-	public final LocationStoreManager portal_000_to_006;
-	public final LocationStoreManager portal_006_to_111;
-	public final LocationStoreManager portal_000_to_037;
-	public final LocationStoreManager portal_001_well;
-	public final LocationStoreManager portal_005_to_019;
-	public final LocationStoreManager portal_005_to_037;
-	public final LocationStoreManager portal_019_to_309;
-	public final LocationStoreManager portal_309_stairs;
-	public final LocationStoreManager portal_309_doors;
-	public final LocationStoreManager cheese_rooms;
+	public final WorldStore_Locations portal_000_to_001;
+	public final WorldStore_Locations portal_000_to_002;
+	public final WorldStore_Locations portal_000_to_004;
+	public final WorldStore_Locations portal_000_to_006;
+	public final WorldStore_Locations portal_006_to_111;
+	public final WorldStore_Locations portal_000_to_037;
+	public final WorldStore_Locations portal_001_well;
+	public final WorldStore_Locations portal_005_to_019;
+	public final WorldStore_Locations portal_005_to_037;
+	public final WorldStore_Locations portal_019_to_309;
+	public final WorldStore_Locations portal_309_stairs;
+	public final WorldStore_Locations portal_309_doors;
+	public final WorldStore_Locations cheese_rooms;
 	// loot
-	public final LocationStoreManager loot_0;
+	public final WorldStore_Locations loot_0;
 
 
 
@@ -116,21 +116,21 @@ public class Level_000 extends BackroomsWorld {
 		// listeners
 		this.listener_023 = new Listener_023(plugin);
 		// exit locations
-		this.portal_000_to_001 = new LocationStoreManager(plugin, "level_000", "portal_000_to_001"); // lobby to basement
-		this.portal_000_to_002 = new LocationStoreManager(plugin, "level_000", "portal_000_to_002"); // lobby to pipe dreams
-		this.portal_000_to_004 = new LocationStoreManager(plugin, "level_000", "portal_000_to_004"); // lobby to ductwork
-		this.portal_000_to_006 = new LocationStoreManager(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
-		this.portal_006_to_111 = new LocationStoreManager(plugin, "level_000", "portal_006_to_111"); // run for your life button
-		this.portal_000_to_037 = new LocationStoreManager(plugin, "level_000", "portal_000_to_037"); // lobby to poolrooms
-		this.portal_001_well   = new LocationStoreManager(plugin, "level_000", "portal_001_well"  ); // basement well
-		this.portal_005_to_019 = new LocationStoreManager(plugin, "level_000", "portal_005_to_019"); // hotel to attic
-		this.portal_005_to_037 = new LocationStoreManager(plugin, "level_000", "portal_005_to_037"); // hotel to poolrooms
-		this.portal_019_to_309 = new LocationStoreManager(plugin, "level_000", "portal_019_to_309"); // attic to forest
-		this.portal_309_stairs = new LocationStoreManager(plugin, "level_000", "portal_309_stairs"); // stairs in the forest
-		this.portal_309_doors  = new LocationStoreManager(plugin, "level_000", "portal_309_doors" ); // doors in the forest
-		this.cheese_rooms      = new LocationStoreManager(plugin, "level_000", "cheese_rooms"     ); // cheese hotel room
+		this.portal_000_to_001 = new WorldStore_Locations(plugin, "level_000", "portal_000_to_001"); // lobby to basement
+		this.portal_000_to_002 = new WorldStore_Locations(plugin, "level_000", "portal_000_to_002"); // lobby to pipe dreams
+		this.portal_000_to_004 = new WorldStore_Locations(plugin, "level_000", "portal_000_to_004"); // lobby to ductwork
+		this.portal_000_to_006 = new WorldStore_Locations(plugin, "level_000", "portal_000_to_006"); // lobby to lights out
+		this.portal_006_to_111 = new WorldStore_Locations(plugin, "level_000", "portal_006_to_111"); // run for your life button
+		this.portal_000_to_037 = new WorldStore_Locations(plugin, "level_000", "portal_000_to_037"); // lobby to poolrooms
+		this.portal_001_well   = new WorldStore_Locations(plugin, "level_000", "portal_001_well"  ); // basement well
+		this.portal_005_to_019 = new WorldStore_Locations(plugin, "level_000", "portal_005_to_019"); // hotel to attic
+		this.portal_005_to_037 = new WorldStore_Locations(plugin, "level_000", "portal_005_to_037"); // hotel to poolrooms
+		this.portal_019_to_309 = new WorldStore_Locations(plugin, "level_000", "portal_019_to_309"); // attic to forest
+		this.portal_309_stairs = new WorldStore_Locations(plugin, "level_000", "portal_309_stairs"); // stairs in the forest
+		this.portal_309_doors  = new WorldStore_Locations(plugin, "level_000", "portal_309_doors" ); // doors in the forest
+		this.cheese_rooms      = new WorldStore_Locations(plugin, "level_000", "cheese_rooms"     ); // cheese hotel room
 		// loot
-		this.loot_0            = new LocationStoreManager(plugin, "level_000", "loot_000"         ); // loot chests
+		this.loot_0            = new WorldStore_Locations(plugin, "level_000", "loot_000"         ); // loot chests
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 0);

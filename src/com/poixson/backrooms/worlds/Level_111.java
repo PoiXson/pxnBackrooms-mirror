@@ -12,7 +12,7 @@ import com.poixson.backrooms.gens.Gen_111;
 import com.poixson.backrooms.listeners.Listener_111;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.worldstore.WorldKeyStore;
+import com.poixson.tools.worldstore.WorldStore_KeyVal;
 import com.poixson.utils.MathUtils;
 
 
@@ -26,7 +26,7 @@ public class Level_111 extends BackroomsWorld {
 	// listeners
 	protected final Listener_111 listener_111;
 
-	public final WorldKeyStore keystore;
+	public final WorldStore_KeyVal keystore;
 
 
 
@@ -37,7 +37,7 @@ public class Level_111 extends BackroomsWorld {
 		// listeners
 		this.listener_111 = new Listener_111(plugin);
 		// next hall
-		this.keystore = new WorldKeyStore(plugin, "level_111");
+		this.keystore = new WorldStore_KeyVal(plugin, "level_111");
 		// dynmap
 		if (plugin.enableDynmapConfigGen()) {
 			final GeneratorTemplate gen_tpl = new GeneratorTemplate(plugin, 111);

@@ -350,8 +350,7 @@ public class Gen_000 extends BackroomsGen {
 					if (dao_lobby.boxed > 4) {
 						// loot
 						if (dao_lobby.wall_dist == 1) {
-//TODO
-							this.level_000.loot_0.add(xx, zz);
+							this.level_000.loot_0.addLocation(xx, zz);
 							final BlockData barrel = Bukkit.createBlockData("minecraft:barrel[facing=up]");
 							chunk.setBlock(ix, y_floor+1, iz, barrel);
 							chests.add(new Iabc(xx, y_floor+1, zz));
@@ -372,7 +371,7 @@ public class Gen_000 extends BackroomsGen {
 								}
 							}
 							if (!found_basement_wall) {
-								this.level_000.portal_000_to_001.add(xx, zz);
+								this.level_000.portal_000_to_001.addLocation(xx, zz);
 								final int y_exit = gen_001.getMaxY() - 1;
 								final int h_exit = (y_ceil - gen_001.getMaxY()) + 2;
 								final BlockPlotter plot =

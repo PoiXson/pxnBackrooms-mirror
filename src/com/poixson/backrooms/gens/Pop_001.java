@@ -70,7 +70,7 @@ public class Pop_001 implements BackroomsPop {
 				}
 			}
 		}
-		this.level_000.portal_001_well.add(x, z);
+		this.level_000.portal_001_well.addLocation(x, z);
 		// build well
 		{
 			final BlockPlotter plot =

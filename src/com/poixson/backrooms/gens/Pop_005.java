@@ -184,7 +184,7 @@ public class Pop_005 implements BackroomsPop {
 				// attic stairs
 				if (room_area.d == 9) {
 					if (room_stairs.checkAtticWall(region, room_area, direction)) {
-						this.level_000.portal_005_to_019.add(room_area.a, room_area.b);
+						this.level_000.portal_005_to_019.addLocation(room_area.a, room_area.b);
 						room_stairs.build(plots, region, room_area, y, direction);
 						continue LOOP_ROOM_X;
 					}
@@ -192,7 +192,7 @@ public class Pop_005 implements BackroomsPop {
 				// pool room
 				final BlockFace pool_direction = room_pool.canBuildHere(room_area, region);
 				if (pool_direction != null) {
-					this.level_000.portal_005_to_037.add(room_area.a, room_area.b);
+					this.level_000.portal_005_to_037.addLocation(room_area.a, room_area.b);
 					room_pool.build(plots, region, room_area, y, direction);
 					continue LOOP_ROOM_X;
 				}

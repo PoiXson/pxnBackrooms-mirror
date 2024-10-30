@@ -13,7 +13,7 @@ import com.poixson.backrooms.gens.Gen_771;
 import com.poixson.backrooms.listeners.Listener_771;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.tools.worldstore.LocationStoreManager;
+import com.poixson.tools.worldstore.WorldStore_Locations;
 
 
 // 771 | Crossroads
@@ -26,12 +26,12 @@ public class Level_771 extends BackroomsWorld {
 	protected final Listener_771 listener_771;
 
 	// exit locations
-	public final LocationStoreManager portal_ladder;
-	public final LocationStoreManager portal_drop;
-	public final LocationStoreManager portal_void;
+	public final WorldStore_Locations portal_ladder;
+	public final WorldStore_Locations portal_drop;
+	public final WorldStore_Locations portal_void;
 	// loot
-	public final LocationStoreManager loot_chests_upper;
-	public final LocationStoreManager loot_chests_lower;
+	public final WorldStore_Locations loot_chests_upper;
+	public final WorldStore_Locations loot_chests_lower;
 
 
 
@@ -49,12 +49,12 @@ public class Level_771 extends BackroomsWorld {
 		// listeners
 		this.listener_771 = new Listener_771(plugin);
 		// exit locations
-		this.portal_ladder     = new LocationStoreManager(plugin, "level_771", "portal_ladder"); // upper/lower ladder
-		this.portal_drop       = new LocationStoreManager(plugin, "level_771", "portal_drop"  ); // shaft to lower bridge
-		this.portal_void       = new LocationStoreManager(plugin, "level_771", "portal_void"  ); // shaft to void
+		this.portal_ladder     = new WorldStore_Locations(plugin, "level_771", "portal_ladder"); // upper/lower ladder
+		this.portal_drop       = new WorldStore_Locations(plugin, "level_771", "portal_drop"  ); // shaft to lower bridge
+		this.portal_void       = new WorldStore_Locations(plugin, "level_771", "portal_void"  ); // shaft to void
 		// loot
-		this.loot_chests_upper = new LocationStoreManager(plugin, "level_771", "loot_upper"   ); // upper path loot chests
-		this.loot_chests_lower = new LocationStoreManager(plugin, "level_771", "loot_lower"   ); // lower path loot chests
+		this.loot_chests_upper = new WorldStore_Locations(plugin, "level_771", "loot_upper"   ); // upper path loot chests
+		this.loot_chests_lower = new WorldStore_Locations(plugin, "level_771", "loot_lower"   ); // lower path loot chests
 	}
 
 
