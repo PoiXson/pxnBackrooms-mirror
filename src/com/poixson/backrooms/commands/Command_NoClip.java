@@ -1,7 +1,7 @@
 package com.poixson.backrooms.commands;
 
 import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
-import static com.poixson.utils.NumberUtils.IsNumeric;
+import static com.poixson.utils.MathUtils.IsNumeric;
 
 import java.util.LinkedList;
 import java.util.List;
