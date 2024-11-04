@@ -28,7 +28,6 @@ import com.poixson.backrooms.gens.Gen_037;
 import com.poixson.backrooms.gens.Gen_037.PoolData;
 import com.poixson.backrooms.gens.Gen_188;
 import com.poixson.backrooms.gens.Gen_309;
-import com.poixson.backrooms.gens.Gen_309.RadioPathData;
 import com.poixson.backrooms.gens.Pop_001;
 import com.poixson.backrooms.gens.Pop_005;
 import com.poixson.backrooms.gens.Pop_037;
@@ -387,7 +386,6 @@ public class Level_000 extends BackroomsWorld {
 		public final HashMap<Iab, BasementData>  basement = new HashMap<Iab, BasementData>();
 		public final HashMap<Iab, HotelData>     hotel    = new HashMap<Iab, HotelData>();
 		public final HashMap<Iab, PoolData>      pools    = new HashMap<Iab, PoolData>();
-		public final HashMap<Iab, RadioPathData> paths    = new HashMap<Iab, RadioPathData>();
 		public Pregen_Level_000() {}
 	}
 
@@ -398,7 +396,6 @@ public class Level_000 extends BackroomsWorld {
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		// pre-generate
 		final Pregen_Level_000 pregen = new Pregen_Level_000();
-		this.gen_309.pregenerate(pregen.paths, chunkX, chunkZ);
 		// level 188 - the windows
 		if (chunkX >-4 && chunkZ >-4
 		&&  chunkX < 4 && chunkZ < 4) {
