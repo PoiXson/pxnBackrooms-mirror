@@ -161,7 +161,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 				previous.close();
 		}
 		// load quotes
-		this.loadQuotes();
+		try {
+			this.loadQuotes();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		// reconvergence task
 		{
 			final ConfigurationSection cfg = this.config.get().getConfigurationSection("Reconvergence");
@@ -438,14 +442,14 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 
-	public void loadQuotes() {
+	public void loadQuotes() throws IOException {
 		final LinkedList<String> quotes = new LinkedList<String>();
 		final InputStream in = OpenLocalOrResource(
 			this.getClass(),
 			this.getDataFolder()+"/quotes.txt",
 			"quotes.txt"
 		);
-		if (in == null) throw new RuntimeException("Failed to load quotes.txt");
+		if (in == null) throw new IOException("Failed to load quotes.txt");
 		final String data = ReadInputStream(in);
 		SafeClose(in);
 		final String[] array = data.split("\n");
