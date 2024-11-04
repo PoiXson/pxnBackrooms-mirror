@@ -36,6 +36,7 @@ import com.poixson.backrooms.listeners.Listener_023;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.plotter.BlockPlotter;
+import com.poixson.tools.worldstore.WorldStore_LocationMaps;
 import com.poixson.tools.worldstore.WorldStore_Locations;
 
 
@@ -88,6 +89,7 @@ public class Level_000 extends BackroomsWorld {
 	public final WorldStore_Locations portal_309_stairs;
 	public final WorldStore_Locations portal_309_doors;
 	public final WorldStore_Locations cheese_rooms;
+	public final WorldStore_LocationMaps radio_stations;
 	// loot
 	public final WorldStore_Locations loot_0;
 
@@ -129,6 +131,8 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_309_stairs = new WorldStore_Locations(plugin, "level_000", "portal_309_stairs"); // stairs in the forest
 		this.portal_309_doors  = new WorldStore_Locations(plugin, "level_000", "portal_309_doors" ); // doors in the forest
 		this.cheese_rooms      = new WorldStore_Locations(plugin, "level_000", "cheese_rooms"     ); // cheese hotel room
+		this.radio_stations = new WorldStore_LocationMaps(plugin, "level_000", "radio_stations",     // radio stations
+				this.gen_309.region_size, this.gen_309.region_size);
 		// loot
 		this.loot_0            = new WorldStore_Locations(plugin, "level_000", "loot_000"         ); // loot chests
 		// dynmap
@@ -166,6 +170,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_309_stairs.start();
 		this.portal_309_doors .start();
 		this.cheese_rooms     .start();
+		this.radio_stations   .start();
 		this.loot_0           .start();
 		this.listener_023.register();
 	}
@@ -186,6 +191,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_309_stairs.stop();
 		this.portal_309_doors .stop();
 		this.cheese_rooms     .stop();
+		this.radio_stations   .stop();
 		this.loot_0           .stop();
 	}
 
