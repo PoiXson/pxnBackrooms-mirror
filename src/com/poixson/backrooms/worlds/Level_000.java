@@ -130,8 +130,7 @@ public class Level_000 extends BackroomsWorld {
 		this.portal_309_stairs = new WorldStore_Locations(plugin, "level_000", "portal_309_stairs"); // stairs in the forest
 		this.portal_309_doors  = new WorldStore_Locations(plugin, "level_000", "portal_309_doors" ); // doors in the forest
 		this.cheese_rooms      = new WorldStore_Locations(plugin, "level_000", "cheese_rooms"     ); // cheese hotel room
-		this.radio_stations = new WorldStore_LocationMaps(plugin, "level_000", "radio_stations",     // radio stations
-				this.gen_309.region_size, this.gen_309.region_size);
+		this.radio_stations = new WorldStore_LocationMaps(plugin, "level_000", "radio_stations", 32); // radio stations
 		// loot
 		this.loot_0            = new WorldStore_Locations(plugin, "level_000", "loot_000"         ); // loot chests
 		// dynmap
