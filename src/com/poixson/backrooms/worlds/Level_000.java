@@ -348,8 +348,18 @@ public class Level_000 extends BackroomsWorld {
 		case 37:  // poolrooms
 		case  5:  // hotel
 		case 19:  // attic
-		case 309: // radio station
 			return super.getNewSpawnArea(level);
+		case 309: { // radio station
+			final int dist = (this.gen_309.cell_size * this.gen_309.radio_station_distance) + this.plugin.getSpawnDistance();
+			for (int i=0; i<10; i++) {
+				final Location loc = super.getNewSpawnArea(level);
+				if (!this.gen_309.isNear(loc, dist))
+					return loc;
+			}
+			(new RuntimeException("Failed to find a spawn area away from radio stations"))
+				.printStackTrace();
+			return super.getNewSpawnArea(level);
+		}
 		// the windows
 		case 188: {
 			final World world = this.plugin.getWorldFromLevel(level);
