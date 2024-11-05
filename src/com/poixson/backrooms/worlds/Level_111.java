@@ -125,7 +125,7 @@ public class Level_111 extends BackroomsWorld {
 		final World world = this.plugin.getWorldFromLevel(level);
 		if (world == null) throw new RuntimeException("Invalid backrooms level: "+Integer.toString(level));
 		int hall_index = this.keystore.getInt(KEY_NEXT_HALL_INDEX);
-		if (hall_index == Integer.MIN_VALUE) hall_index = 0;
+		if (hall_index < 0) hall_index = 0;
 		if (hall_index % total == 0) hall_index++;
 		this.keystore.set(KEY_NEXT_HALL_INDEX, hall_index+1);
 		final int inter_index = MathUtils.ZOrderInterleave(hall_index, minor, major);

@@ -65,8 +65,8 @@ public class Gen_188 extends BackroomsGen {
 		this.enable_gen = cfgParams.getBoolean("Enable-Gen");
 		this.level_y    = this.level_000.gen_001.level_y;
 		this.level_h    = gen_309.level_y - this.level_y - gen_001.bedrock_barrier - gen_001.subfloor;
-		this.subfloor  = this.level_000.gen_001.subfloor;
-		this.dark_room = cfgParams.getBoolean("Dark-Room");
+		this.subfloor   = this.level_000.gen_001.subfloor;
+		this.dark_room  = cfgParams.getBoolean("Dark-Room");
 		// block types
 		this.block_subfloor         = cfgBlocks.getString("SubFloor"        );
 		this.block_floor            = cfgBlocks.getString("Floor"           );
