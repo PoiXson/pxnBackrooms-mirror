@@ -179,7 +179,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 		final int max_y         = this.getMaxY(level);
 		final int distance_near = this.getSpawnDistanceNear(level);
 		final int distance_min  = Math.floorDiv(distance_near, 3);
-		final float yaw = (float) this.random.nextDbl(0.0, 360.0);
+		final float yaw = (float) this.random.nextDouble(0.0, 360.0);
 		final World world = area.getWorld();
 		final int y = this.getOpenY(level);
 		final int h = max_y - y;

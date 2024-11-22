@@ -141,7 +141,7 @@ public class Level_771 extends BackroomsWorld {
 		final int max_y = this.getMaxY(level);
 		final int distance_near = DEFAULT_SPAWN_NEAR_DISTANCE;
 		final int distance_min  = Math.floorDiv(distance_near, 3);
-		final float yaw = (float) this.random.nextDbl(0.0, 360.0);
+		final float yaw = (float) this.random.nextDouble(0.0, 360.0);
 		final World world = spawn.getWorld();
 		final int y = this.getOpenY(level);
 		final int h = max_y - y;
