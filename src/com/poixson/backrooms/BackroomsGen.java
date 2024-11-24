@@ -6,9 +6,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-import com.poixson.tools.FastNoiseLiteD;
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
+import com.poixson.tools.noise.FastNoiseLiteD;
 import com.poixson.tools.plotter.BlockPlotter;
 
 

@@ -18,9 +18,9 @@ import org.bukkit.generator.LimitedRegion;
 import com.poixson.backrooms.gens.Gen_005;
 import com.poixson.backrooms.gens.hotel.HotelRoom_Specs.RoomTheme;
 import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.tools.FastNoiseLiteD;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
+import com.poixson.tools.noise.FastNoiseLiteD;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.StringUtils;
 

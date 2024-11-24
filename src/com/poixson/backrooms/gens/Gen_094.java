@@ -17,11 +17,11 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.Level_094.PregenLevel94;
-import com.poixson.tools.FastNoiseLiteD;
-import com.poixson.tools.FastNoiseLiteD.FractalType;
-import com.poixson.tools.FastNoiseLiteD.NoiseType;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
+import com.poixson.tools.noise.FastNoiseLiteD;
+import com.poixson.tools.noise.FastNoiseLiteD.FractalType;
+import com.poixson.tools.noise.FastNoiseLiteD.NoiseType;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.StringUtils;
 

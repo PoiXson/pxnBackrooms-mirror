@@ -16,12 +16,12 @@ import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
-import com.poixson.tools.FastNoiseLiteD;
-import com.poixson.tools.FastNoiseLiteD.CellularDistanceFunction;
-import com.poixson.tools.FastNoiseLiteD.FractalType;
-import com.poixson.tools.FastNoiseLiteD.NoiseType;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
+import com.poixson.tools.noise.FastNoiseLiteD;
+import com.poixson.tools.noise.FastNoiseLiteD.CellularDistanceFunction;
+import com.poixson.tools.noise.FastNoiseLiteD.FractalType;
+import com.poixson.tools.noise.FastNoiseLiteD.NoiseType;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.utils.StringUtils;
 
