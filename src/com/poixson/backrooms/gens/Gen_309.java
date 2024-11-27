@@ -121,6 +121,7 @@ public class Gen_309 extends BackroomsGen {
 	public final double  tree_trunk_size_factor;
 	public final double  tree_trunk_size_modify_min;
 	public final double  tree_trunk_size_modify_max;
+	public final double  tree_trunk_size_modify_weight;
 	public final double  tree_branches_from_top;
 	public final double  tree_branch_zone_percent;
 	public final double  tree_branch_length_min;
@@ -228,6 +229,7 @@ public class Gen_309 extends BackroomsGen {
 		this.tree_branch_num_splits_min   = cfgParams.getDouble( "Tree-Branch-Num-Splits-Min",   Double.MIN_VALUE);
 		this.tree_branch_num_splits_max   = cfgParams.getDouble( "Tree-Branch-Num-Splits-Max",   Double.MIN_VALUE);
 		this.tree_leaves_thickness        = cfgParams.getDouble( "Tree-Leaves-Thickness",        Double.MIN_VALUE);
+		this.tree_trunk_size_modify_weight = cfgParams.getDouble( "Tree-Trunk-Size-Modify-Weight", Double.MIN_VALUE);
 		// block types
 		this.block_subfloor    = cfgBlocks.getString("SubFloor"   );
 		this.block_dirt        = cfgBlocks.getString("Dirt"       );

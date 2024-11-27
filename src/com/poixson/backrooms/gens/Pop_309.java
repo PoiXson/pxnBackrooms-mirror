@@ -74,6 +74,7 @@ public class Pop_309 implements BackroomsPop {
 		if (this.gen_309.tree_branch_num_splits_min   != Double.MIN_VALUE) this.builder_trees.setBranchNumSplitsMin(  this.gen_309.tree_branch_num_splits_min  );
 		if (this.gen_309.tree_branch_num_splits_max   != Double.MIN_VALUE) this.builder_trees.setBranchNumSplitsMax(  this.gen_309.tree_branch_num_splits_max  );
 		if (this.gen_309.tree_leaves_thickness        != Double.MIN_VALUE) this.builder_trees.setLeavesThickness(     this.gen_309.tree_leaves_thickness       );
+		if (this.gen_309.tree_trunk_size_modify_weight != Double.MIN_VALUE) this.builder_trees.setTrunkSizeModifyWeight(this.gen_309.tree_trunk_size_modify_weight);
 	}
 
 
