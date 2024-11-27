@@ -246,7 +246,7 @@ public class Gen_309 extends BackroomsGen {
 		this.maze = new RandomMaze(this.plugin, "level_000", "maze_309", this.path_chance);
 		// structures cache
 		final String path_local = this.plugin.getDataFolder().getPath() + "/structures/radiostations/";
-		final String path_res = "structures/309/";
+		final String path_res = "structures/309-radiostations/";
 		this.structures = new PlotterCache(path_local, path_res, this.getClass());
 	}
 
