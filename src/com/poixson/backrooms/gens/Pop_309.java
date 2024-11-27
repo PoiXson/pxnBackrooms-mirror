@@ -1,6 +1,9 @@
 package com.poixson.backrooms.gens;
 
+import static com.poixson.utils.Utils.IsEmpty;
+
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
@@ -128,7 +131,13 @@ public class Pop_309 implements BackroomsPop {
 		}
 		// special structures
 		if (count_trees == 0) {
+			final int maze_x = Math.floorDiv(chunkX*16, this.gen_309.cell_size);
+			final int maze_z = Math.floorDiv(chunkZ*16, this.gen_309.cell_size);
+			final Map<String, Object> keyval = this.level_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);
+			if (keyval != null
+			&& IsEmpty((String)keyval.get("structure"))) {
 //TODO: add stairs, doors, and hatches
+			}
 		}
 	}
 
