@@ -47,6 +47,9 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_PATH_WIDTH_MAX           = 7.4;
 	public static final double DEFAULT_PATH_WONDER              = 24.5;
 	public static final double DEFAULT_PATH_FADE                = 2.9;
+	public static final int    DEFAULT_PATH_BERM_MIN            = 6;
+	public static final int    DEFAULT_PATH_BERM_MAX            = 16;
+	public static final double DEFAULT_PATH_BERM_WEIGHT         = 1.8;
 	// radio stations
 	public static final double DEFAULT_RADIO_STATION_FADE       = 6.3;
 	public static final double DEFAULT_PATH_RADIO_WONDER        = 4.7;
@@ -100,6 +103,9 @@ public class Gen_309 extends BackroomsGen {
 	public final double  path_width_max;
 	public final double  path_wonder;
 	public final double  path_fade;
+	public final int     path_berm_min;
+	public final int     path_berm_max;
+	public final double  path_berm_weight;
 	public final double  radio_station_fade;
 	public final double  path_radio_wonder;
 	public final double  radio_station_chance;
@@ -185,6 +191,9 @@ public class Gen_309 extends BackroomsGen {
 		this.path_fade                    = cfgParams.getDouble( "Path-Fade-Factor"              );
 		this.radio_station_fade           = cfgParams.getDouble( "Radio-Station-Fade-Factor"     );
 		this.path_radio_wonder            = cfgParams.getDouble( "Path-Radio-Wonder"             );
+		this.path_berm_min                = cfgParams.getInt(    "Path-Berm-Min"            );
+		this.path_berm_max                = cfgParams.getInt(    "Path-Berm-Max"            );
+		this.path_berm_weight             = cfgParams.getDouble( "Path-Berm-Weight"         );
 		this.radio_station_chance         = MathUtils.MinMax(cfgParams.getDouble("Radio-Station-Chance"), 1.0, 99.0);
 		this.radio_station_distance       = cfgParams.getInt(    "Radio-Station-Distance"        );
 		this.radio_station_margin         = cfgParams.getDouble( "Radio-Station-Margin"          );
@@ -595,6 +604,9 @@ return "radio_station_1";
 		cfgParams.addDefault("Path-Width-Max",              Double.valueOf( DEFAULT_PATH_WIDTH_MAX          ));
 		cfgParams.addDefault("Path-Wonder-Factor",          Double.valueOf( DEFAULT_PATH_WONDER             ));
 		cfgParams.addDefault("Path-Fade-Factor",            Double.valueOf( DEFAULT_PATH_FADE               ));
+		cfgParams.addDefault("Path-Berm-Min",               Integer.valueOf(DEFAULT_PATH_BERM_MIN           ));
+		cfgParams.addDefault("Path-Berm-Max",               Integer.valueOf(DEFAULT_PATH_BERM_MAX           ));
+		cfgParams.addDefault("Path-Berm-Weight",            Double.valueOf( DEFAULT_PATH_BERM_WEIGHT        ));
 		cfgParams.addDefault("Radio-Station-Fade-Factor",   Double.valueOf( DEFAULT_RADIO_STATION_FADE      ));
 		cfgParams.addDefault("Path-Radio-Wonder",           Double.valueOf( DEFAULT_PATH_RADIO_WONDER       ));
 		cfgParams.addDefault("Radio-Station-Chance",        Double.valueOf( DEFAULT_RADIO_STATION_CHANCE    ));

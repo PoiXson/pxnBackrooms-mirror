@@ -2,15 +2,18 @@ package com.poixson.backrooms.gens;
 
 import java.util.LinkedList;
 
+import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.noise.FastNoiseLiteD;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.plotter.generation.TreeBuilder;
+import com.poixson.tools.plotter.placer.BlockPlacer;
 
 
 // 309 | Radio Station
@@ -23,6 +26,8 @@ public class Pop_309 implements BackroomsPop {
 	protected final TreeBuilder builder_trees;
 
 	protected final FastNoiseLiteD noiseTreePlacement;
+
+	protected final xRand rnd_berm = (new xRand()).seed_time();
 
 
 
@@ -37,8 +42,9 @@ public class Pop_309 implements BackroomsPop {
 			(new TreeBuilder(
 				this.gen_309.tree_style,
 				open_y,
-				open_y + this.gen_309.ground_thickness_max + 5
+				open_y + this.gen_309.ground_thickness_max
 			));
+		this.rnd_berm.weight(this.gen_309.path_berm_weight);
 		if (this.gen_309.tree_height_min              != Double.MIN_VALUE) this.builder_trees.setHeightMin(           this.gen_309.tree_height_min             );
 		if (this.gen_309.tree_height_max              != Double.MIN_VALUE) this.builder_trees.setHeightMax(           this.gen_309.tree_height_max             );
 		if (this.gen_309.tree_height_weight           != Double.MIN_VALUE) this.builder_trees.setHeightWeight(        this.gen_309.tree_height_weight          );
@@ -76,19 +82,44 @@ public class Pop_309 implements BackroomsPop {
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!this.gen_309.enable_gen) return;
+		final int y_min = this.builder_trees.y_min;
+		final int y_max = this.builder_trees.y_max - 5;
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.whd(1, 1, 1);
 		plot.type('|', this.gen_309.block_tree_trunk );
 		plot.type('-', this.gen_309.block_tree_branch);
 		plot.type('#', this.gen_309.block_tree_leaves);
+		final BlockPlacer placer = new BlockPlacer(region);
 		int count_trees = 0;
 		for (int iz=0; iz<16; iz++) {
 			final int zz = (chunkZ * 16) + iz;
+			LOOP_X:
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
 				if (this.isTree(xx, zz)) {
-					plot.xyz(xx, 150, zz);
+					plot.xyz(xx, y_max, zz);
+					// search area for path blocks
+					final int berm_size = this.rnd_berm.nextInt(this.gen_309.path_berm_min, this.gen_309.path_berm_max);
+					final int search_y  = (y_max - y_min) + 5;
+					final int half = Math.ceilDiv(berm_size, 2);
+					for (int layer=0; layer<=half; layer++) {
+						final int max = half - layer;
+						final int min = 0 - max;
+						for (int iy=-1; iy<search_y; iy++) {
+							// west to east
+							for (int i=min; i<=max; i++) {
+								if (plot.isType(placer, i, iy, min, Material.DIRT_PATH)) continue LOOP_X; // north
+								if (plot.isType(placer, i, iy, max, Material.DIRT_PATH)) continue LOOP_X; // south
+							}
+							// north to south
+							for (int i=min+1; i<max; i++) {
+								if (plot.isType(placer, min, iy, i, Material.DIRT_PATH)) continue LOOP_X; // west
+								if (plot.isType(placer, max, iy, i, Material.DIRT_PATH)) continue LOOP_X; // east
+							}
+						}
+					}
+					// place tree
 					if (this.builder_trees.run(plot, region))
 						count_trees++;
 				}
