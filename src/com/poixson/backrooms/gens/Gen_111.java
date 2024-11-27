@@ -219,6 +219,7 @@ public class Gen_111 extends BackroomsGen {
 		cfgParams.addDefault("Enable-Top",         Boolean.TRUE                               );
 		cfgParams.addDefault("Level-Y",            Integer.valueOf(DEFAULT_LEVEL_Y           ));
 		cfgParams.addDefault("Level-Height",       Integer.valueOf(DEFAULT_LEVEL_H           ));
+		// floor noise
 		cfgParams.addDefault("Noise-Floor-Freq",   Double .valueOf(DEFAULT_NOISE_FLOOR_FREQ  ));
 		cfgParams.addDefault("Noise-Floor-Octave", Integer.valueOf(DEFAULT_NOISE_FLOOR_OCTAVE));
 		cfgParams.addDefault("Noise-Floor-Gain",   Double .valueOf(DEFAULT_NOISE_FLOOR_GAIN  ));

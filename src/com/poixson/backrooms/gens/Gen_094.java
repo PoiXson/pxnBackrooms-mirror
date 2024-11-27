@@ -411,10 +411,12 @@ public class Gen_094 extends BackroomsGen {
 		cfgParams.addDefault("Water-Depth",          Integer.valueOf(DEFAULT_WATER_DEPTH         ));
 		cfgParams.addDefault("House-Width",          Integer.valueOf(DEFAULT_HOUSE_WIDTH         ));
 		cfgParams.addDefault("House-Height",         Integer.valueOf(DEFAULT_HOUSE_HEIGHT        ));
+		// hills noise
 		cfgParams.addDefault("Noise-Hills-Freq",     Double .valueOf(DEFAULT_NOISE_HILLS_FREQ    ));
 		cfgParams.addDefault("Noise-Hills-Octave",   Integer.valueOf(DEFAULT_NOISE_HILLS_OCTAVE  ));
 		cfgParams.addDefault("Noise-Hills-Strength", Double .valueOf(DEFAULT_NOISE_HILLS_STRENGTH));
 		cfgParams.addDefault("Noise-Hills-Lacun",    Double .valueOf(DEFAULT_NOISE_HILLS_LACUN   ));
+		// house noise
 		cfgParams.addDefault("Noise-House-Freq",     Double .valueOf(DEFAULT_NOISE_HOUSE_FREQ    ));
 		// block types
 		cfgBlocks.addDefault("Dirt",              DEFAULT_BLOCK_DIRT             );

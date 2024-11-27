@@ -430,13 +430,16 @@ public class Gen_005 extends BackroomsGen {
 		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H          ));
 		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR         ));
 		cfgParams.addDefault("SubCeiling",          Integer.valueOf(DEFAULT_SUBCEILING       ));
+		// wall noise
 		cfgParams.addDefault("Noise-Wall-Freq",     Double .valueOf(DEFAULT_NOISE_WALL_FREQ  ));
 		cfgParams.addDefault("Noise-Wall-Jitter",   Double .valueOf(DEFAULT_NOISE_WALL_JITTER));
+		// room noise
 		cfgParams.addDefault("Noise-Room-Freq",     Double .valueOf(DEFAULT_NOISE_ROOM_FREQ  ));
 		cfgParams.addDefault("Noise-Room-Octave",   Integer.valueOf(DEFAULT_NOISE_ROOM_OCTAVE));
 		cfgParams.addDefault("Noise-Room-Gain",     Double .valueOf(DEFAULT_NOISE_ROOM_GAIN  ));
 		cfgParams.addDefault("Thresh-Room-Or-Hall", Double .valueOf(DEFAULT_THRESH_ROOM_HALL ));
 		cfgParams.addDefault("Nominal-Room-Size",   Integer.valueOf(DEFAULT_NOMINAL_ROOM_SIZE));
+		// stairs noise
 		cfgParams.addDefault("Noise-Stairs-Freq",   Double .valueOf(DEFAULT_NOISE_STAIRS_FREQ));
 		// block types
 		cfgBlocks.addDefault("SubFloor",           DEFAULT_BLOCK_SUBFLOOR          );

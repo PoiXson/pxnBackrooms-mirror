@@ -233,6 +233,7 @@ public class Gen_006 extends BackroomsGen {
 		cfgParams.addDefault("Enable-Top",                Boolean.TRUE                                      );
 		cfgParams.addDefault("Level-Y",                   Integer.valueOf(this.getDefaultY()               ));
 		cfgParams.addDefault("Level-Height",              Integer.valueOf(DEFAULT_LEVEL_H                  ));
+		// light switch
 		cfgParams.addDefault("Noise-ButtonSwitch-Freq",   Double .valueOf(DEFAULT_NOISE_BUTTONSWITCH_FREQ  ));
 		cfgParams.addDefault("Noise-ButtonSwitch-Octave", Integer.valueOf(DEFAULT_NOISE_BUTTONSWITCH_OCTAVE));
 		cfgParams.addDefault("Noise-ButtonSwitch-Gain",   Double .valueOf(DEFAULT_NOISE_BUTTONSWITCH_GAIN  ));

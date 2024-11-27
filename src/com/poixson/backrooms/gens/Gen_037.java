@@ -38,13 +38,13 @@ public class Gen_037 extends BackroomsGen {
 	public static final int    DEFAULT_NOISE_ROOM_OCTAVE         = 2;
 	public static final double DEFAULT_NOISE_ROOM_GAIN           = 0.1;
 	public static final double DEFAULT_NOISE_ROOM_STRENGTH       = 2.8;
-	public static final double DEFAULT_NOISE_TUNNEL_FREQ         = 0.015;
-	public static final double DEFAULT_NOISE_TUNNEL_STRENGTH     = 5.0;
 	public static final double DEFAULT_NOISE_PORTAL_LOBBY_FREQ   = 0.02;
 	public static final int    DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE = 2;
 	public static final double DEFAULT_NOISE_PORTAL_HOTEL_FREQ   = 0.01;
 	public static final double DEFAULT_THRESH_ROOM               = 0.2;
 	public static final double DEFAULT_THRESH_PORTAL             = 0.5;
+	public static final double DEFAULT_NOISE_TUNNEL_FREQ         = 0.015;
+	public static final double DEFAULT_NOISE_TUNNEL_STRENGTH     = 5.0;
 	public static final double DEFAULT_THRESH_TUNNEL             = 0.95;
 
 	// default blocks
@@ -119,7 +119,6 @@ public class Gen_037 extends BackroomsGen {
 	public int getLevelNumber() {
 		return 37;
 	}
-
 
 
 
@@ -217,9 +216,9 @@ public class Gen_037 extends BackroomsGen {
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
 		final Gen_000 gen_000 = this.level_000.gen_000;
-		final int portal_000_037_y = (this.level_000.gen_000.level_y + gen_000.bedrock_barrier + gen_000.subfloor) - 1;
-		final int portal_000_037_h = ((this.level_y - gen_000.level_y) + this.bedrock_barrier + this.subfloor) - gen_000.bedrock_barrier - 1;
-		final int level_000_h = gen_000.level_h + gen_000.subceiling + 1;
+		final int portal_000_037_y = (this.level_000.gen_000.level_y + gen_000.subfloor) - 1;
+		final int portal_000_037_h = (this.getOpenY() - gen_000.getOpenY()) + 2;
+		final int level_000_h = gen_000.level_h + gen_000.subceiling + 2;
 		final Map<Iab, PoolData>  poolData  = ((Pregen_Level_000)pregen).pools;
 		final Map<Iab, LobbyData> lobbyData = ((Pregen_Level_000)pregen).lobby;
 		final int h_walls = this.level_h + 2;
@@ -547,17 +546,19 @@ public class Gen_037 extends BackroomsGen {
 		cfgParams.addDefault("Water-Depth",               Integer.valueOf(DEFAULT_WATER_DEPTH              ));
 		cfgParams.addDefault("SubFloor",                  Integer.valueOf(DEFAULT_SUBFLOOR                 ));
 		cfgParams.addDefault("SubCeiling",                Integer.valueOf(DEFAULT_SUBCEILING               ));
+		// rooms noise
 		cfgParams.addDefault("Noise-Room-Freq",           Double .valueOf(DEFAULT_NOISE_ROOM_FREQ          ));
 		cfgParams.addDefault("Noise-Room-Octave",         Integer.valueOf(DEFAULT_NOISE_ROOM_OCTAVE        ));
 		cfgParams.addDefault("Noise-Room-Gain",           Double .valueOf(DEFAULT_NOISE_ROOM_GAIN          ));
 		cfgParams.addDefault("Noise-Room-Strength",       Double .valueOf(DEFAULT_NOISE_ROOM_STRENGTH      ));
+		cfgParams.addDefault("Thresh-Room",               Double .valueOf(DEFAULT_THRESH_ROOM              ));
+		cfgParams.addDefault("Thresh-Portal",             Double .valueOf(DEFAULT_THRESH_PORTAL            ));
+		// tunnel noise
 		cfgParams.addDefault("Noise-Tunnel-Freq",         Double .valueOf(DEFAULT_NOISE_TUNNEL_FREQ        ));
 		cfgParams.addDefault("Noise-Tunnel-Strength",     Double .valueOf(DEFAULT_NOISE_TUNNEL_STRENGTH    ));
 		cfgParams.addDefault("Noise-Portal-Lobby-Freq",   Double .valueOf(DEFAULT_NOISE_PORTAL_LOBBY_FREQ  ));
 		cfgParams.addDefault("Noise-Portal-Lobby-Octave", Integer.valueOf(DEFAULT_NOISE_PORTAL_LOBBY_OCTAVE));
 		cfgParams.addDefault("Noise-Portal-Hotel-Freq",   Double .valueOf(DEFAULT_NOISE_PORTAL_HOTEL_FREQ  ));
-		cfgParams.addDefault("Thresh-Room",               Double .valueOf(DEFAULT_THRESH_ROOM              ));
-		cfgParams.addDefault("Thresh-Portal",             Double .valueOf(DEFAULT_THRESH_PORTAL            ));
 		cfgParams.addDefault("Thresh-Tunnel",             Double .valueOf(DEFAULT_THRESH_TUNNEL            ));
 		// block types
 		cfgBlocks.addDefault("WallA",      DEFAULT_BLOCK_WALL_A    );

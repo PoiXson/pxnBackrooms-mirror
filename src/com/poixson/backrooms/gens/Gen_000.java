@@ -48,9 +48,9 @@ public class Gen_000 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_WALL_GAIN     = 0.1;
 	public static final double DEFAULT_NOISE_WALL_LACUN    = 0.4;
 	public static final double DEFAULT_NOISE_WALL_STRENGTH = 2.28;
-	public static final double DEFAULT_NOISE_LOOT_FREQ     = 0.1;
 	public static final double DEFAULT_THRESH_WALL_L       = 0.38;
 	public static final double DEFAULT_THRESH_WALL_H       = 0.5;
+	public static final double DEFAULT_NOISE_LOOT_FREQ     = 0.1;
 	public static final double DEFAULT_THRESH_LOOT         = 0.65;
 
 	public static final int WALL_SEARCH_DIST = 6;
@@ -553,14 +553,16 @@ public class Gen_000 extends BackroomsGen {
 		cfgParams.addDefault("Level-Height",        Integer.valueOf(DEFAULT_LEVEL_H            ));
 		cfgParams.addDefault("SubFloor",            Integer.valueOf(DEFAULT_SUBFLOOR           ));
 		cfgParams.addDefault("SubCeiling",          Integer.valueOf(DEFAULT_SUBCEILING         ));
+		// wall noise
 		cfgParams.addDefault("Noise-Wall-Freq",     Double .valueOf(DEFAULT_NOISE_WALL_FREQ    ));
 		cfgParams.addDefault("Noise-Wall-Octave",   Integer.valueOf(DEFAULT_NOISE_WALL_OCTAVE  ));
 		cfgParams.addDefault("Noise-Wall-Gain",     Double .valueOf(DEFAULT_NOISE_WALL_GAIN    ));
 		cfgParams.addDefault("Noise-Wall-Lacun",    Double .valueOf(DEFAULT_NOISE_WALL_LACUN   ));
 		cfgParams.addDefault("Noise-Wall-Strength", Double .valueOf(DEFAULT_NOISE_WALL_STRENGTH));
-		cfgParams.addDefault("Noise-Loot-Freq",     Double .valueOf(DEFAULT_NOISE_LOOT_FREQ    ));
 		cfgParams.addDefault("Thresh-Wall-L",       Double .valueOf(DEFAULT_THRESH_WALL_L      ));
 		cfgParams.addDefault("Thresh-Wall-H",       Double .valueOf(DEFAULT_THRESH_WALL_H      ));
+		// loot noise
+		cfgParams.addDefault("Noise-Loot-Freq",     Double .valueOf(DEFAULT_NOISE_LOOT_FREQ    ));
 		cfgParams.addDefault("Thresh-Loot",         Double .valueOf(DEFAULT_THRESH_LOOT        ));
 		// block types
 		cfgBlocks.addDefault("SubFloor",   DEFAULT_BLOCK_SUBFLOOR  );

@@ -142,6 +142,7 @@ public class Gen_001 extends BackroomsGen {
 	}
 
 
+
 	public class BasementData implements PreGenData {
 
 		public final double value_wall;
@@ -304,16 +305,19 @@ public class Gen_001 extends BackroomsGen {
 		cfgParams.addDefault("Lamp-Y",              Integer.valueOf(DEFAULT_LAMP_Y             ));
 		cfgParams.addDefault("Well-Size",           Integer.valueOf(DEFAULT_WELL_SIZE          ));
 		cfgParams.addDefault("Well-Height",         Integer.valueOf(DEFAULT_WELL_HEIGHT        ));
+		// wall noise
 		cfgParams.addDefault("Noise-Wall-Freq",     Double .valueOf(DEFAULT_NOISE_WALL_FREQ    ));
 		cfgParams.addDefault("Noise-Wall-Octave",   Integer.valueOf(DEFAULT_NOISE_WALL_OCTAVE  ));
 		cfgParams.addDefault("Noise-Wall-Gain",     Double .valueOf(DEFAULT_NOISE_WALL_GAIN    ));
 		cfgParams.addDefault("Noise-Wall-Strength", Double .valueOf(DEFAULT_NOISE_WALL_STRENGTH));
+		cfgParams.addDefault("Thresh-Wall",         Double .valueOf(DEFAULT_THRESH_WALL        ));
+		// moist noise
 		cfgParams.addDefault("Noise-Moist-Freq",    Double .valueOf(DEFAULT_NOISE_MOIST_FREQ   ));
 		cfgParams.addDefault("Noise-Moist-Octave",  Integer.valueOf(DEFAULT_NOISE_MOIST_OCTAVE ));
 		cfgParams.addDefault("Noise-Moist-Gain",    Double .valueOf(DEFAULT_NOISE_MOIST_GAIN   ));
-		cfgParams.addDefault("Noise-Well-Freq",     Double .valueOf(DEFAULT_NOISE_WELL_FREQ    ));
-		cfgParams.addDefault("Thresh-Wall",         Double .valueOf(DEFAULT_THRESH_WALL        ));
 		cfgParams.addDefault("Thresh-Moist",        Double .valueOf(DEFAULT_THRESH_MOIST       ));
+		// well noise
+		cfgParams.addDefault("Noise-Well-Freq",     Double .valueOf(DEFAULT_NOISE_WELL_FREQ    ));
 		// block types
 		cfgBlocks.addDefault("SubFloor-Wet", DEFAULT_BLOCK_SUBFLOOR_WET);
 		cfgBlocks.addDefault("SubFloor-Dry", DEFAULT_BLOCK_SUBFLOOR_DRY);
