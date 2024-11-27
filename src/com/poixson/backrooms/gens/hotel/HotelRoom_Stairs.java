@@ -7,7 +7,7 @@ import static com.poixson.backrooms.gens.Gen_019.DEFAULT_BLOCK_WALL;
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
-import static com.poixson.utils.LocationUtils.FaceToPillarAxisString;
+import static com.poixson.utils.LocationUtils.FaceToPillarAxChar;
 import static com.poixson.utils.LocationUtils.Rotate;
 
 import java.util.LinkedList;
@@ -53,7 +53,7 @@ public class HotelRoom_Stairs implements HotelRoom {
 	// hotel stairs
 	protected void buildHotelRoomStairs(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final Iabcd area, final int y_stairs, final BlockFace facing) {
-		final boolean axis_x = "x".equals(FaceToPillarAxisString(Rotate(facing, 0.25)));
+		final boolean axis_x = (FaceToPillarAxChar(Rotate(facing, 0.25)) == 'x');
 		final BlockData block_hotel_door_border_top = (axis_x
 			? StringToBlockDataDef(this.gen_005.block_door_border_top_x, DEFAULT_BLOCK_DOOR_BORDER_TOP_X)
 			: StringToBlockDataDef(this.gen_005.block_door_border_top_z, DEFAULT_BLOCK_DOOR_BORDER_TOP_Z));

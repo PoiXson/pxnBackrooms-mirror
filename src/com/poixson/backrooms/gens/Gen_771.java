@@ -2,6 +2,7 @@ package com.poixson.backrooms.gens;
 
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.AxToFace;
+import static com.poixson.utils.LocationUtils.FaceToAxChar;
 import static com.poixson.utils.LocationUtils.FaceToAxString;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
@@ -444,7 +445,7 @@ public class Gen_771 extends BackroomsGen {
 		if (block_road_upper_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Upper-Light" );
 		final BlockPlotter plot =
 			(new BlockPlotter())
-			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.axis("u"+FaceToAxChar(direction)+FaceToAxChar(side))
 			.xz(x, z)
 			.y(this.level_y+this.level_h)
 			.whd(16, 3, 16);
@@ -490,7 +491,7 @@ public class Gen_771 extends BackroomsGen {
 		if (block_road_lower_light  == null) throw new RuntimeException("Invalid block type for level 771 Road-Lower-Light" );
 		final BlockPlotter plot =
 			(new BlockPlotter())
-			.axis("u"+FaceToAxString(direction)+FaceToAxString(side))
+			.axis("u"+FaceToAxChar(direction)+FaceToAxChar(side))
 			.xz(x, z)
 			.y(this.level_y-3)
 			.whd(16, 6, 16);
@@ -601,7 +602,7 @@ public class Gen_771 extends BackroomsGen {
 		if (block_shaft_floor          == null) throw new RuntimeException("Invalid block type for level 771 Shaft-Floor"         );
 		final BlockPlotter plot =
 			(new BlockPlotter())
-			.axis("u"+FaceToAxString(facing)+FaceToAxString(side))
+			.axis("u"+FaceToAxChar(facing)+FaceToAxChar(side))
 			.xz(x, z)
 			.y(this.level_y)
 			.whd(2, this.level_h+2, 5);
