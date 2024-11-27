@@ -134,13 +134,13 @@ public class Pop_309 implements BackroomsPop {
 
 
 	protected boolean isTree(final int x, final int z) {
-		final int search = 1;
+		final int search_noise = 1;
 		final double value = this.noiseTreePlacement.getNoise(x, z);
 		if (value < 0.8)
 			return false;
-		for (int iz=0-search; iz<search+1; iz++) {
+		for (int iz=0-search_noise; iz<search_noise+1; iz++) {
 			final int zz = z + iz;
-			for (int ix=0-search; ix<search+1; ix++) {
+			for (int ix=0-search_noise; ix<search_noise+1; ix++) {
 				if (ix != 0 || iz != 0) {
 					if (this.noiseTreePlacement.getNoise(x+ix, zz) >= value)
 						return false;
