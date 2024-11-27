@@ -49,7 +49,7 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_PATH_FADE                = 2.9;
 	public static final int    DEFAULT_PATH_BERM_MIN            = 6;
 	public static final int    DEFAULT_PATH_BERM_MAX            = 16;
-	public static final double DEFAULT_PATH_BERM_WEIGHT         = 1.8;
+	public static final double DEFAULT_PATH_BERM_WEIGHT         = 1.2;
 	// radio stations
 	public static final double DEFAULT_RADIO_STATION_FADE       = 6.3;
 	public static final double DEFAULT_PATH_RADIO_WONDER        = 4.7;
