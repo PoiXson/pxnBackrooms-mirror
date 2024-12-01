@@ -1,11 +1,24 @@
 package com.poixson.backrooms.gens;
 
+import static com.poixson.backrooms.gens.Gen_309.DEBUG_GLASS_GRID;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_FERN_SHORT;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_FERN_TALL_LOWER;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_FERN_TALL_UPPER;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_GRASS_SHORT;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_GRASS_TALL_LOWER;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_GRASS_TALL_UPPER;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_MUSHROOM;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_BRANCH;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_LEAVES;
+import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_TRUNK;
+import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.Utils.IsEmpty;
 
 import java.util.LinkedList;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPlugin;
@@ -13,10 +26,13 @@ import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.worlds.Level_000;
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
+import com.poixson.tools.dao.Iabc;
 import com.poixson.tools.noise.FastNoiseLiteD;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.plotter.generation.TreeBuilder;
 import com.poixson.tools.plotter.placer.BlockPlacer;
+import com.poixson.tools.sequences.InnerToOuterSquareXYZ;
+import com.poixson.utils.MathUtils;
 
 
 // 309 | Radio Station
@@ -31,6 +47,7 @@ public class Pop_309 implements BackroomsPop {
 	protected final FastNoiseLiteD noiseTreePlacement;
 
 	protected final xRand rnd_berm = (new xRand()).seed_time();
+	protected final xRand rnd_grass = (new xRand()).seed_time().weight(0.75);
 
 
 
@@ -86,8 +103,24 @@ public class Pop_309 implements BackroomsPop {
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!this.gen_309.enable_gen) return;
-		final int y_min = this.builder_trees.y_min;
-		final int y_max = this.builder_trees.y_max - 5;
+		final BlockData block_grass_short      = StringToBlockDataDef(this.gen_309.block_grass_short,      DEFAULT_BLOCK_GRASS_SHORT     );
+		final BlockData block_grass_tall_upper = StringToBlockDataDef(this.gen_309.block_grass_tall_upper, DEFAULT_BLOCK_GRASS_TALL_UPPER);
+		final BlockData block_grass_tall_lower = StringToBlockDataDef(this.gen_309.block_grass_tall_lower, DEFAULT_BLOCK_GRASS_TALL_LOWER);
+		final BlockData block_fern_short       = StringToBlockDataDef(this.gen_309.block_fern_short,       DEFAULT_BLOCK_FERN_SHORT      );
+		final BlockData block_fern_tall_upper  = StringToBlockDataDef(this.gen_309.block_fern_tall_upper,  DEFAULT_BLOCK_FERN_TALL_UPPER );
+		final BlockData block_fern_tall_lower  = StringToBlockDataDef(this.gen_309.block_fern_tall_lower,  DEFAULT_BLOCK_FERN_TALL_LOWER );
+		final BlockData block_mushroom         = StringToBlockDataDef(this.gen_309.block_mushroom,         DEFAULT_BLOCK_MUSHROOM        );
+		if (block_grass_short      == null) throw new RuntimeException("Invalid block type for level 309 Grass-Short"      );
+		if (block_grass_tall_upper == null) throw new RuntimeException("Invalid block type for level 309 Grass-Tall-Upper" );
+		if (block_grass_tall_lower == null) throw new RuntimeException("Invalid block type for level 309 Grass-Tall-Lower" );
+		if (block_fern_short       == null) throw new RuntimeException("Invalid block type for level 309 Fern-Short"       );
+		if (block_fern_tall_upper  == null) throw new RuntimeException("Invalid block type for level 309 Fern-Tall-Upper"  );
+		if (block_fern_tall_lower  == null) throw new RuntimeException("Invalid block type for level 309 Fern-Tall-Lower"  );
+		if (block_mushroom         == null) throw new RuntimeException("Invalid block type for level 309 Mushroom"         );
+		final double thresh_grass        = this.gen_309.thresh_grass;
+		final double thresh_mushroom     = this.gen_309.thresh_mushroom;
+		final double grass_weight_factor = this.gen_309.grass_weight_factor;
+		final double grass_berm_percent  = this.gen_309.grass_berm_percent;
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.whd(1, 1, 1);
@@ -127,6 +160,63 @@ public class Pop_309 implements BackroomsPop {
 					if (this.builder_trees.run(plot, region))
 						count_trees++;
 				}
+				// grass
+				if (path_dist > berm_size * grass_berm_percent) {
+					final double value_grass = this.gen_309.noiseGrass.getNoise(xx, zz);
+					LOOP_SURFACE:
+					for (int iy=search_y; iy>=0; iy--) {
+						if (plot.isType(placer, 0, iy, 0, Material.GRASS_BLOCK)) {
+							if (plot.isType(placer, 0, iy+1, 0, Material.AIR)) {
+								// grass
+								if (value_grass > thresh_grass) {
+									final int num_types = 4;
+									// remap weight from noise value
+									this.rnd_grass.weight(
+										MathUtils.Remap(
+											thresh_grass, 1.0,
+											0.0-grass_weight_factor, grass_weight_factor,
+											value_grass
+										)
+									);
+									final int grass_type = this.rnd_grass.nextInt(0, num_types-1);
+									SWITCH_GRASS:
+									switch (grass_type) {
+									// tall fern
+									case 2:
+										if (plot.isType(placer, 0, iy+2, 0, Material.AIR)) {
+											plot.setBlock(placer, 0, iy+2, 0, block_fern_tall_upper);
+											plot.setBlock(placer, 0, iy+1, 0, block_fern_tall_lower);
+											break SWITCH_GRASS;
+										}
+									// short fern
+									case 1:
+										plot.setBlock(placer, 0, iy+1, 0, block_fern_short);
+										break SWITCH_GRASS;
+									// tall grass
+									case 3:
+										if (plot.isType(placer, 0, iy+2, 0, Material.AIR)) {
+											plot.setBlock(placer, 0, iy+2, 0, block_grass_tall_upper);
+											plot.setBlock(placer, 0, iy+1, 0, block_grass_tall_lower);
+											break SWITCH_GRASS;
+										}
+									// short grass
+									case 0:
+									default:
+										plot.setBlock(placer, 0, iy+1, 0, block_grass_short);
+										break SWITCH_GRASS;
+									} // end SWITCH_GRASS
+								// not grass
+								} else
+								if (value_grass < thresh_mushroom) {
+									plot.setBlock(placer, 0, iy+1, 0, 'm');
+								}
+							} // end found air above grass
+							break LOOP_SURFACE;
+						} // end grass block
+					} // end search y loop
+				} // end grass
+			} // end ix
+		} // end iz
 			}
 		}
 		// special structures

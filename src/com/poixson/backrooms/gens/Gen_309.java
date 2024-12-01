@@ -79,6 +79,15 @@ public class Gen_309 extends BackroomsGen {
 	// tree placement
 	public static final double DEFAULT_NOISE_TREES_PLACE_FREQ   = 0.14;
 	public static final String DEFAULT_TREE_STYLE = TreeStyle.FAN_OAK.toString();
+	// grass noise
+	public static final double DEFAULT_NOISE_GRASS_FREQ    =  0.01;
+	public static final int    DEFAULT_NOISE_GRASS_OCTAVE  =  3;
+	public static final double DEFAULT_NOISE_GRASS_GAIN    =  2.0;
+	public static final double DEFAULT_NOISE_GRASS_LACUN   =  4.0;
+	public static final double DEFAULT_THRESH_GRASS        = -0.35;
+	public static final double DEFAULT_THRESH_MUSHROOM     = -0.8;
+	public static final double DEFAULT_GRASS_WEIGHT_FACTOR =  2.0;
+	public static final double DEFAULT_GRASS_BERM_PERCENT  =  0.3;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:stone";
@@ -88,6 +97,13 @@ public class Gen_309 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_TREE_TRUNK  = "minecraft:birch_log";
 	public static final String DEFAULT_BLOCK_TREE_BRANCH = "minecraft:birch_log";
 	public static final String DEFAULT_BLOCK_TREE_LEAVES = "minecraft:birch_leaves";
+	public static final String DEFAULT_BLOCK_GRASS_SHORT      = "minecraft:short_grass";
+	public static final String DEFAULT_BLOCK_GRASS_TALL_UPPER = "minecraft:tall_grass[half=upper]";
+	public static final String DEFAULT_BLOCK_GRASS_TALL_LOWER = "minecraft:tall_grass[half=lower]";
+	public static final String DEFAULT_BLOCK_FERN_SHORT       = "minecraft:fern";
+	public static final String DEFAULT_BLOCK_FERN_TALL_UPPER  = "minecraft:fern[half=upper]";
+	public static final String DEFAULT_BLOCK_FERN_TALL_LOWER  = "minecraft:fern[half=lower]";
+	public static final String DEFAULT_BLOCK_MUSHROOM         = "minecraft:brown_mushroom";
 
 	// params
 	public final boolean enable_gen;
@@ -111,6 +127,10 @@ public class Gen_309 extends BackroomsGen {
 	public final double  radio_station_chance;
 	public final int     radio_station_distance;
 	public final double  radio_station_margin;
+	public final double  thresh_grass;
+	public final double  thresh_mushroom;
+	public final double  grass_weight_factor;
+	public final double  grass_berm_percent;
 	// trees
 	public final String  tree_style;
 	public final double  tree_height_min;
@@ -152,6 +172,13 @@ public class Gen_309 extends BackroomsGen {
 	public final String block_tree_trunk;
 	public final String block_tree_branch;
 	public final String block_tree_leaves;
+	public final String block_grass_short;
+	public final String block_grass_tall_upper;
+	public final String block_grass_tall_lower;
+	public final String block_fern_short;
+	public final String block_fern_tall_upper;
+	public final String block_fern_tall_lower;
+	public final String block_mushroom;
 
 	// noise
 	public final FastNoiseLiteD noiseGround;
@@ -159,6 +186,7 @@ public class Gen_309 extends BackroomsGen {
 	public final FastNoiseLiteD noisePathWidth;
 	public final FastNoiseLiteD noisePathCenter;
 	public final FastNoiseLiteD noiseTreePlacement;
+	public final FastNoiseLiteD noiseGrass;
 
 	public final xRand random_fade = (new xRand()).seed_time();
 
@@ -198,6 +226,10 @@ public class Gen_309 extends BackroomsGen {
 		this.radio_station_chance          = MathUtils.MinMax(cfgParams.getDouble("Radio-Station-Chance"), 1.0, 99.0);
 		this.radio_station_distance        = cfgParams.getInt(    "Radio-Station-Distance"   );
 		this.radio_station_margin          = cfgParams.getDouble( "Radio-Station-Margin"     );
+		this.thresh_grass                  = cfgParams.getDouble( "Thresh-Grass"             );
+		this.thresh_mushroom               = cfgParams.getDouble( "Thresh-Mushroom"          );
+		this.grass_weight_factor           = cfgParams.getDouble( "Grass-Weight-Factor"      );
+		this.grass_berm_percent            = cfgParams.getDouble( "Grass-Berm-Percent"       );
 		// trees
 		this.tree_style                    = cfgParams.getString( "Tree-Style",                    DEFAULT_TREE_STYLE);
 		this.tree_height_min               = cfgParams.getDouble( "Tree-Height-Min",               Double.MIN_VALUE);
@@ -238,12 +270,20 @@ public class Gen_309 extends BackroomsGen {
 		this.block_tree_trunk  = cfgBlocks.getString("Tree-Trunk" );
 		this.block_tree_branch = cfgBlocks.getString("Tree-Branch");
 		this.block_tree_leaves = cfgBlocks.getString("Tree-Leaves");
+		this.block_grass_short       = cfgBlocks.getString("Grass-Short"      );
+		this.block_grass_tall_upper  = cfgBlocks.getString("Grass-Tall-Upper" );
+		this.block_grass_tall_lower  = cfgBlocks.getString("Grass-Tall-Lower" );
+		this.block_fern_short        = cfgBlocks.getString("Fern-Short"       );
+		this.block_fern_tall_upper   = cfgBlocks.getString("Fern-Tall-Upper"  );
+		this.block_fern_tall_lower   = cfgBlocks.getString("Fern-Tall-Lower"  );
+		this.block_mushroom          = cfgBlocks.getString("Mushroom"         );
 		// noise
 		this.noiseGround        = this.register(new FastNoiseLiteD());
 		this.noisePathWonder    = this.register(new FastNoiseLiteD());
 		this.noisePathWidth     = this.register(new FastNoiseLiteD());
 		this.noisePathCenter    = this.register(new FastNoiseLiteD());
 		this.noiseTreePlacement = this.register(new FastNoiseLiteD());
+		this.noiseGrass         = this.register(new FastNoiseLiteD());
 		// path maze
 		this.maze = new RandomMaze(this.plugin, "level_000", "maze_309", this.path_chance);
 		// structures cache
@@ -586,6 +626,12 @@ return "radio_station_1";
 		this.noisePathCenter.setFractalLacunarity( cfgParams.getDouble("Noise-Path-Center-Lacun" ) );
 		// tree placement
 		this.noiseTreePlacement.setFrequency( cfgParams.getDouble("Noise-Tree-Placement-Freq") );
+		// grass noise
+		this.noiseGrass.setFrequency(         cfgParams.getDouble("Noise-Grass-Freq"  ) );
+		this.noiseGrass.setFractalOctaves(    cfgParams.getInt(   "Noise-Grass-Octave") );
+		this.noiseGrass.setFractalGain(       cfgParams.getDouble("Noise-Grass-Gain"  ) );
+		this.noiseGrass.setFractalLacunarity( cfgParams.getDouble("Noise-Grass-Lacun" ) );
+		this.noiseGrass.setFractalType(       FractalType.FBm                           );
 	}
 
 
@@ -636,6 +682,15 @@ return "radio_station_1";
 		cfgParams.addDefault("Noise-Path-Center-Lacun",     Double .valueOf(DEFAULT_NOISE_PATH_CENTER_LACUN ));
 		// tree placement
 		cfgParams.addDefault("Noise-Tree-Placement-Freq",   Double .valueOf(DEFAULT_NOISE_TREES_PLACE_FREQ  ));
+		// grass noise
+		cfgParams.addDefault("Noise-Grass-Freq",            Double .valueOf(DEFAULT_NOISE_GRASS_FREQ        ));
+		cfgParams.addDefault("Noise-Grass-Octave",          Integer.valueOf(DEFAULT_NOISE_GRASS_OCTAVE      ));
+		cfgParams.addDefault("Noise-Grass-Gain",            Double .valueOf(DEFAULT_NOISE_GRASS_GAIN        ));
+		cfgParams.addDefault("Noise-Grass-Lacun",           Double .valueOf(DEFAULT_NOISE_GRASS_LACUN       ));
+		cfgParams.addDefault("Thresh-Grass",                Double .valueOf(DEFAULT_THRESH_GRASS            ));
+		cfgParams.addDefault("Thresh-Mushroom",             Double .valueOf(DEFAULT_THRESH_MUSHROOM         ));
+		cfgParams.addDefault("Grass-Weight-Factor",         Double .valueOf(DEFAULT_GRASS_WEIGHT_FACTOR     ));
+		cfgParams.addDefault("Grass-Berm-Percent",          Double .valueOf(DEFAULT_GRASS_BERM_PERCENT      ));
 		// block types
 		cfgBlocks.addDefault("SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
 		cfgBlocks.addDefault("Dirt",        DEFAULT_BLOCK_DIRT       );
@@ -644,6 +699,13 @@ return "radio_station_1";
 		cfgBlocks.addDefault("Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
 		cfgBlocks.addDefault("Tree-Branch", DEFAULT_BLOCK_TREE_BRANCH);
 		cfgBlocks.addDefault("Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
+		cfgBlocks.addDefault("Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT     );
+		cfgBlocks.addDefault("Grass-Tall-Upper",  DEFAULT_BLOCK_GRASS_TALL_UPPER);
+		cfgBlocks.addDefault("Grass-Tall-Lower",  DEFAULT_BLOCK_GRASS_TALL_LOWER);
+		cfgBlocks.addDefault("Fern-Short",        DEFAULT_BLOCK_FERN_SHORT      );
+		cfgBlocks.addDefault("Fern-Tall-Upper",   DEFAULT_BLOCK_FERN_TALL_UPPER );
+		cfgBlocks.addDefault("Fern-Tall-Lower",   DEFAULT_BLOCK_FERN_TALL_LOWER );
+		cfgBlocks.addDefault("Mushroom",          DEFAULT_BLOCK_MUSHROOM        );
 	}
 
 
