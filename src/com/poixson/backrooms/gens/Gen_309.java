@@ -77,7 +77,7 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_PATH_CENTER_GAIN   = 3.3;
 	public static final double DEFAULT_NOISE_PATH_CENTER_LACUN  = 2.2;
 	// tree placement
-	public static final double DEFAULT_NOISE_TREES_PLACE_FREQ   = 0.14;
+	public static final double DEFAULT_NOISE_TREES_PLACE_FREQ   = 0.093;
 	public static final String DEFAULT_TREE_STYLE = TreeStyle.FAN_OAK.toString();
 	// grass noise
 	public static final double DEFAULT_NOISE_GRASS_FREQ    =  0.01;
