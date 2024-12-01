@@ -131,34 +131,37 @@ public class Pop_309 implements BackroomsPop {
 		int count_trees = 0;
 		for (int iz=0; iz<16; iz++) {
 			final int zz = (chunkZ * 16) + iz;
-			LOOP_X:
 			for (int ix=0; ix<16; ix++) {
 				final int xx = (chunkX * 16) + ix;
-				if (this.isTree(xx, zz)) {
-					plot.xyz(xx, y_max, zz);
-					// search area for path blocks
-					final int berm_size = this.rnd_berm.nextInt(this.gen_309.path_berm_min, this.gen_309.path_berm_max);
-					final int search_y  = (y_max - y_min) + 5;
-					final int half = Math.ceilDiv(berm_size, 2);
-					for (int layer=0; layer<=half; layer++) {
-						final int max = half - layer;
-						final int min = 0 - max;
-						for (int iy=-1; iy<search_y; iy++) {
-							// west to east
-							for (int i=min; i<=max; i++) {
-								if (plot.isType(placer, i, iy, min, Material.DIRT_PATH)) continue LOOP_X; // north
-								if (plot.isType(placer, i, iy, max, Material.DIRT_PATH)) continue LOOP_X; // south
-							}
-							// north to south
-							for (int i=min+1; i<max; i++) {
-								if (plot.isType(placer, min, iy, i, Material.DIRT_PATH)) continue LOOP_X; // west
-								if (plot.isType(placer, max, iy, i, Material.DIRT_PATH)) continue LOOP_X; // east
+				plot.xyz(xx, this.builder_trees.y_min, zz);
+				// search area
+				final int search_xz = this.gen_309.path_berm_max;
+				final int search_y  = this.builder_trees.y_max - this.builder_trees.y_min;
+				final double berm_size = this.rnd_berm.nextDouble(this.gen_309.path_berm_min, this.gen_309.path_berm_max);
+				double path_dist = ((double)search_xz) * 2.0;
+				final InnerToOuterSquareXYZ it = new InnerToOuterSquareXYZ(search_xz, search_y);
+				while (it.hasNext()) {
+					final Iabc loc = it.next();
+					if (plot.isType(placer, loc.a, loc.b, loc.c, Material.DIRT_PATH)) {
+						final double dist = MathUtils.Distance2D(0, 0, loc.a, loc.c);
+						if (path_dist > dist) {
+							path_dist = dist;
+							has_path = true;
+						}
+						it.nextXZ();
+					}
+				}
+				// place tree
+				if (path_dist > berm_size) {
+					if (this.isTree(xx, zz)) {
+						if (this.builder_trees.run(plot, region)) {
+							count_trees++;
+							if (DEBUG_GLASS_GRID) {
+								plot.y(200);
+								plot.setBlock(placer, 0, 0, 0, Material.OBSIDIAN);
 							}
 						}
 					}
-					// place tree
-					if (this.builder_trees.run(plot, region))
-						count_trees++;
 				}
 				// grass
 				if (path_dist > berm_size * grass_berm_percent) {
@@ -217,8 +220,6 @@ public class Pop_309 implements BackroomsPop {
 				} // end grass
 			} // end ix
 		} // end iz
-			}
-		}
 		// special structures
 		if (count_trees == 0) {
 			final int maze_x = Math.floorDiv(chunkX*16, this.gen_309.cell_size);
