@@ -46,7 +46,7 @@ public class Pop_309 implements BackroomsPop {
 
 	protected final FastNoiseLiteD noiseTreePlacement;
 
-	protected final xRand rnd_berm = (new xRand()).seed_time();
+	protected final xRand rnd_berm  = (new xRand()).seed_time();
 	protected final xRand rnd_grass = (new xRand()).seed_time().weight(0.75);
 
 
@@ -61,8 +61,8 @@ public class Pop_309 implements BackroomsPop {
 		this.builder_trees =
 			(new TreeBuilder(
 				this.gen_309.tree_style,
-				open_y,
-				open_y + this.gen_309.ground_thickness_max
+				open_y - 1,
+				open_y + this.gen_309.ground_thickness_max + 2
 			));
 		this.rnd_berm.weight(this.gen_309.path_berm_weight);
 		if (this.gen_309.tree_height_min               != Double.MIN_VALUE) this.builder_trees.setHeightMin(            this.gen_309.tree_height_min              );
@@ -103,6 +103,9 @@ public class Pop_309 implements BackroomsPop {
 	public void populate(final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final LimitedRegion region, final int chunkX, final int chunkZ) {
 		if (!this.gen_309.enable_gen) return;
+		final BlockData block_tree_trunk       = StringToBlockDataDef(this.gen_309.block_tree_trunk,       DEFAULT_BLOCK_TREE_TRUNK      );
+		final BlockData block_tree_branch      = StringToBlockDataDef(this.gen_309.block_tree_branch,      DEFAULT_BLOCK_TREE_BRANCH     );
+		final BlockData block_tree_leaves      = StringToBlockDataDef(this.gen_309.block_tree_leaves,      DEFAULT_BLOCK_TREE_LEAVES     );
 		final BlockData block_grass_short      = StringToBlockDataDef(this.gen_309.block_grass_short,      DEFAULT_BLOCK_GRASS_SHORT     );
 		final BlockData block_grass_tall_upper = StringToBlockDataDef(this.gen_309.block_grass_tall_upper, DEFAULT_BLOCK_GRASS_TALL_UPPER);
 		final BlockData block_grass_tall_lower = StringToBlockDataDef(this.gen_309.block_grass_tall_lower, DEFAULT_BLOCK_GRASS_TALL_LOWER);
@@ -110,6 +113,9 @@ public class Pop_309 implements BackroomsPop {
 		final BlockData block_fern_tall_upper  = StringToBlockDataDef(this.gen_309.block_fern_tall_upper,  DEFAULT_BLOCK_FERN_TALL_UPPER );
 		final BlockData block_fern_tall_lower  = StringToBlockDataDef(this.gen_309.block_fern_tall_lower,  DEFAULT_BLOCK_FERN_TALL_LOWER );
 		final BlockData block_mushroom         = StringToBlockDataDef(this.gen_309.block_mushroom,         DEFAULT_BLOCK_MUSHROOM        );
+		if (block_tree_trunk       == null) throw new RuntimeException("Invalid block type for level 309 Tree-Trunk"       );
+		if (block_tree_branch      == null) throw new RuntimeException("Invalid block type for level 309 Tree-Branch"      );
+		if (block_tree_leaves      == null) throw new RuntimeException("Invalid block type for level 309 Tree-Leaves"      );
 		if (block_grass_short      == null) throw new RuntimeException("Invalid block type for level 309 Grass-Short"      );
 		if (block_grass_tall_upper == null) throw new RuntimeException("Invalid block type for level 309 Grass-Tall-Upper" );
 		if (block_grass_tall_lower == null) throw new RuntimeException("Invalid block type for level 309 Grass-Tall-Lower" );
@@ -124,11 +130,12 @@ public class Pop_309 implements BackroomsPop {
 		final BlockPlotter plot =
 			(new BlockPlotter())
 			.whd(1, 1, 1);
-		plot.type('|', this.gen_309.block_tree_trunk );
-		plot.type('-', this.gen_309.block_tree_branch);
-		plot.type('#', this.gen_309.block_tree_leaves);
+		plot.type('|', block_tree_trunk );
+		plot.type('-', block_tree_branch);
+		plot.type('#', block_tree_leaves);
 		final BlockPlacer placer = new BlockPlacer(region);
 		int count_trees = 0;
+		boolean has_path = false;
 		for (int iz=0; iz<16; iz++) {
 			final int zz = (chunkZ * 16) + iz;
 			for (int ix=0; ix<16; ix++) {
@@ -221,7 +228,8 @@ public class Pop_309 implements BackroomsPop {
 			} // end ix
 		} // end iz
 		// special structures
-		if (count_trees == 0) {
+		if (count_trees == 0
+		&& !has_path) {
 			final int maze_x = Math.floorDiv(chunkX*16, this.gen_309.cell_size);
 			final int maze_z = Math.floorDiv(chunkZ*16, this.gen_309.cell_size);
 			final Map<String, Object> keyval = this.level_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);

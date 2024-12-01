@@ -32,8 +32,8 @@ import com.poixson.utils.StringUtils;
 
 // 309 | Radio Station
 public class Gen_309 extends BackroomsGen {
-	public static final boolean DEBUG_GLASS_GRID = true;
-	public static final String  DEBUG_STRUCTURE  = null;
+	public static final boolean DEBUG_GLASS_GRID = false;
+	public static final String  DEBUG_STRUCTURE  = null; // "radio_station_1"
 
 	// default params
 	public static final int    DEFAULT_LEVEL_H                  = 8;
@@ -90,13 +90,13 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_GRASS_BERM_PERCENT  =  0.3;
 
 	// default blocks
-	public static final String DEFAULT_BLOCK_SUBFLOOR    = "minecraft:stone";
-	public static final String DEFAULT_BLOCK_DIRT        = "minecraft:dirt";
-	public static final String DEFAULT_BLOCK_PATH        = "minecraft:dirt_path";
-	public static final String DEFAULT_BLOCK_GRASS       = "minecraft:grass_block";
-	public static final String DEFAULT_BLOCK_TREE_TRUNK  = "minecraft:birch_log";
-	public static final String DEFAULT_BLOCK_TREE_BRANCH = "minecraft:birch_log";
-	public static final String DEFAULT_BLOCK_TREE_LEAVES = "minecraft:birch_leaves";
+	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:stone";
+	public static final String DEFAULT_BLOCK_DIRT             = "minecraft:dirt";
+	public static final String DEFAULT_BLOCK_PATH             = "minecraft:dirt_path";
+	public static final String DEFAULT_BLOCK_GRASS            = "minecraft:grass_block";
+	public static final String DEFAULT_BLOCK_TREE_TRUNK       = "minecraft:dark_oak_log";
+	public static final String DEFAULT_BLOCK_TREE_BRANCH      = "minecraft:dark_oak_log";
+	public static final String DEFAULT_BLOCK_TREE_LEAVES      = "minecraft:dark_oak_leaves";
 	public static final String DEFAULT_BLOCK_GRASS_SHORT      = "minecraft:short_grass";
 	public static final String DEFAULT_BLOCK_GRASS_TALL_UPPER = "minecraft:tall_grass[half=upper]";
 	public static final String DEFAULT_BLOCK_GRASS_TALL_LOWER = "minecraft:tall_grass[half=lower]";
@@ -263,13 +263,13 @@ public class Gen_309 extends BackroomsGen {
 		this.tree_branch_num_splits_max    = cfgParams.getDouble( "Tree-Branch-Num-Splits-Max",    Double.MIN_VALUE);
 		this.tree_leaves_thickness         = cfgParams.getDouble( "Tree-Leaves-Thickness",         Double.MIN_VALUE);
 		// block types
-		this.block_subfloor    = cfgBlocks.getString("SubFloor"   );
-		this.block_dirt        = cfgBlocks.getString("Dirt"       );
-		this.block_path        = cfgBlocks.getString("Path"       );
-		this.block_grass       = cfgBlocks.getString("Grass"      );
-		this.block_tree_trunk  = cfgBlocks.getString("Tree-Trunk" );
-		this.block_tree_branch = cfgBlocks.getString("Tree-Branch");
-		this.block_tree_leaves = cfgBlocks.getString("Tree-Leaves");
+		this.block_subfloor          = cfgBlocks.getString("SubFloor"         );
+		this.block_dirt              = cfgBlocks.getString("Dirt"             );
+		this.block_path              = cfgBlocks.getString("Path"             );
+		this.block_grass             = cfgBlocks.getString("Grass"            );
+		this.block_tree_trunk        = cfgBlocks.getString("Tree-Trunk"       );
+		this.block_tree_branch       = cfgBlocks.getString("Tree-Branch"      );
+		this.block_tree_leaves       = cfgBlocks.getString("Tree-Leaves"      );
 		this.block_grass_short       = cfgBlocks.getString("Grass-Short"      );
 		this.block_grass_tall_upper  = cfgBlocks.getString("Grass-Tall-Upper" );
 		this.block_grass_tall_lower  = cfgBlocks.getString("Grass-Tall-Lower" );
@@ -692,13 +692,13 @@ return "radio_station_1";
 		cfgParams.addDefault("Grass-Weight-Factor",         Double .valueOf(DEFAULT_GRASS_WEIGHT_FACTOR     ));
 		cfgParams.addDefault("Grass-Berm-Percent",          Double .valueOf(DEFAULT_GRASS_BERM_PERCENT      ));
 		// block types
-		cfgBlocks.addDefault("SubFloor",    DEFAULT_BLOCK_SUBFLOOR   );
-		cfgBlocks.addDefault("Dirt",        DEFAULT_BLOCK_DIRT       );
-		cfgBlocks.addDefault("Path",        DEFAULT_BLOCK_PATH       );
-		cfgBlocks.addDefault("Grass",       DEFAULT_BLOCK_GRASS      );
-		cfgBlocks.addDefault("Tree-Trunk",  DEFAULT_BLOCK_TREE_TRUNK );
-		cfgBlocks.addDefault("Tree-Branch", DEFAULT_BLOCK_TREE_BRANCH);
-		cfgBlocks.addDefault("Tree-Leaves", DEFAULT_BLOCK_TREE_LEAVES);
+		cfgBlocks.addDefault("SubFloor",          DEFAULT_BLOCK_SUBFLOOR        );
+		cfgBlocks.addDefault("Dirt",              DEFAULT_BLOCK_DIRT            );
+		cfgBlocks.addDefault("Path",              DEFAULT_BLOCK_PATH            );
+		cfgBlocks.addDefault("Grass",             DEFAULT_BLOCK_GRASS           );
+		cfgBlocks.addDefault("Tree-Trunk",        DEFAULT_BLOCK_TREE_TRUNK      );
+		cfgBlocks.addDefault("Tree-Branch",       DEFAULT_BLOCK_TREE_BRANCH     );
+		cfgBlocks.addDefault("Tree-Leaves",       DEFAULT_BLOCK_TREE_LEAVES     );
 		cfgBlocks.addDefault("Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT     );
 		cfgBlocks.addDefault("Grass-Tall-Upper",  DEFAULT_BLOCK_GRASS_TALL_UPPER);
 		cfgBlocks.addDefault("Grass-Tall-Lower",  DEFAULT_BLOCK_GRASS_TALL_LOWER);
