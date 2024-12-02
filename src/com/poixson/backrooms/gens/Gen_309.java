@@ -43,8 +43,8 @@ public class Gen_309 extends BackroomsGen {
 	// path
 	public static final int    DEFAULT_CELL_SIZE                = 256;
 	public static final double DEFAULT_PATH_CHANCE              = 1.9;
-	public static final double DEFAULT_PATH_WIDTH_MIN           = 3.3;
-	public static final double DEFAULT_PATH_WIDTH_MAX           = 7.4;
+	public static final double DEFAULT_PATH_WIDTH_MIN           = 1.2;
+	public static final double DEFAULT_PATH_WIDTH_MAX           = 5.6;
 	public static final double DEFAULT_PATH_WONDER              = 24.5;
 	public static final double DEFAULT_PATH_FADE                = 2.9;
 	public static final int    DEFAULT_PATH_BERM_MIN            = 6;
