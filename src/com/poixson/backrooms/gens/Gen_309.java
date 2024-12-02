@@ -589,7 +589,7 @@ keyval.put("y", Integer.valueOf(142));
 
 	public String nextRadioStation(final int maze_x, final int maze_z) {
 //TODO: check nearby structures
-return "radio_station_1";
+return null;
 	}
 
 
