@@ -10,15 +10,14 @@ import com.poixson.tools.abstractions.xStartStop;
 public class FreakOut extends BukkitRunnable implements xStartStop {
 
 	public static final int LEVEL_DEST   = 771;
-
-	public static final int EFFECT_TICKS = 60;
+	public static final int EFFECT_TICKS =  60;
 	public static final int TP_TICKS     = 160;
 
 	protected final BackroomsPlugin plugin;
 
 	protected final Player player;
 
-	protected int index = 0;
+	protected int index       = 0;
 	protected int index_total = 0;
 
 

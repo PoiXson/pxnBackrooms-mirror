@@ -247,7 +247,7 @@ public abstract class BackroomsWorld extends ChunkGenerator {
 
 
 	@Override
-	public BiomeProvider getDefaultBiomeProvider(final WorldInfo worldInfo) {
+	public BiomeProvider getDefaultBiomeProvider(final WorldInfo world_info) {
 		return new BiomeProvider() {
 			private final List<Biome> biomes = new LinkedList<Biome>();
 			{ this.biomes.add(Biome.THE_VOID); }

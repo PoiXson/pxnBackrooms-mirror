@@ -558,8 +558,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 		final BackroomsWorld backworld = this.getBackroomsWorld(level);
 		return (backworld == null ? Integer.MIN_VALUE : backworld.getMainLevel());
 	}
-	public BackroomsWorld getBackroomsWorld(final String worldName) {
-		final int level = this.getWorldLevel(worldName);
+	public BackroomsWorld getBackroomsWorld(final String world_name) {
+		final int level = this.getWorldLevel(world_name);
 		if (level < 0) return null;
 		return this.backworlds.get(Integer.valueOf(level));
 	}
@@ -574,11 +574,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 	public int getWorldLevel(final World world) {
 		return (world == null ? null : this.getWorldLevel(world.getName()));
 	}
-	public int getWorldLevel(final String worldName) {
-		if (!IsEmpty(worldName)) {
-			if (worldName.length() == 9
-			&&  worldName.startsWith("level_")) {
-				final String str = worldName.substring(6);
+	public int getWorldLevel(final String world_name) {
+		if (!IsEmpty(world_name)) {
+			if (world_name.length() == 9
+			&&  world_name.startsWith("level_")) {
+				final String str = world_name.substring(6);
 				if (!IsEmpty(str)) {
 					try {
 						final int level = Integer.parseInt(str);
@@ -717,12 +717,12 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	@Override
-	public ChunkGenerator getDefaultWorldGenerator(final String worldName, final String argsStr) {
+	public ChunkGenerator getDefaultWorldGenerator(final String world_name, final String args) {
 //TODO: https://github.com/Multiverse/Multiverse-Core/blob/17129f68d204438f1d8e134388b72507dc8c1a63/src/main/java/com/onarandombox/MultiverseCore/commands/CreateCommand.java#L117
-		if (worldName.length() != 9
-		|| !worldName.startsWith("level_"))
-			throw new RuntimeException("Invalid world name, must be level_### found: "+worldName);
-		return this.getBackroomsWorld(worldName);
+		if (world_name.length() != 9
+		|| !world_name.startsWith("level_"))
+			throw new RuntimeException("Invalid world name, must be level_### found: "+world_name);
+		return this.getBackroomsWorld(world_name);
 	}
 
 

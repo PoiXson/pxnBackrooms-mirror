@@ -27,9 +27,9 @@ import com.poixson.utils.StringUtils;
 
 public class HotelRoom_Pool implements HotelRoom {
 
-	protected final Gen_000   gen_000;
-	protected final Gen_005   gen_005;
-	protected final Gen_037   gen_037;
+	protected final Gen_000 gen_000;
+	protected final Gen_005 gen_005;
+	protected final Gen_037 gen_037;
 
 
 
