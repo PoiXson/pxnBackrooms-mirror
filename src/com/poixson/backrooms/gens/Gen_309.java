@@ -101,8 +101,8 @@ public class Gen_309 extends BackroomsGen {
 	public static final String DEFAULT_BLOCK_GRASS_TALL_UPPER = "minecraft:tall_grass[half=upper]";
 	public static final String DEFAULT_BLOCK_GRASS_TALL_LOWER = "minecraft:tall_grass[half=lower]";
 	public static final String DEFAULT_BLOCK_FERN_SHORT       = "minecraft:fern";
-	public static final String DEFAULT_BLOCK_FERN_TALL_UPPER  = "minecraft:fern[half=upper]";
-	public static final String DEFAULT_BLOCK_FERN_TALL_LOWER  = "minecraft:fern[half=lower]";
+	public static final String DEFAULT_BLOCK_FERN_TALL_UPPER  = "minecraft:large_fern[half=upper]";
+	public static final String DEFAULT_BLOCK_FERN_TALL_LOWER  = "minecraft:large_fern[half=lower]";
 	public static final String DEFAULT_BLOCK_MUSHROOM         = "minecraft:brown_mushroom";
 
 	// params
