@@ -424,16 +424,18 @@ public class Gen_309 extends BackroomsGen {
 								? DEBUG_STRUCTURE
 								: this.nextRadioStation(maze_x, maze_z)
 							);
-							keyval.put("structure", structure);
-							keyval.put("x", Integer.valueOf(path_center_x));
-							keyval.put("z", Integer.valueOf(path_center_z));
+							if (structure != null) {
+								keyval.put("structure", structure);
+								keyval.put("x", Integer.valueOf(path_center_x));
+								keyval.put("z", Integer.valueOf(path_center_z));
 //TODO: radio_y detect ground height
 keyval.put("y", Integer.valueOf(142));
-							final Triple<BlockPlotter, StringBuilder[][], String> tup = this.structures.get(structure);
-							final BlockPlotter plot = tup.key;
-							// half width plus margin percent
-							final int radius = (int) Math.ceil( ((double)Math.max(plot.w, plot.d)) * (0.5+this.radio_station_margin) );
-							keyval.put("clearing", Integer.valueOf(radius));
+								final Triple<BlockPlotter, StringBuilder[][], String> tup = this.structures.get(structure);
+								final BlockPlotter plot = tup.key;
+								// half width plus margin percent
+								final int radius = (int) Math.ceil( ((double)Math.max(plot.w, plot.d)) * (0.5+this.radio_station_margin) );
+								keyval.put("clearing", Integer.valueOf(radius));
+							}
 						} // end check near
 					} // end radio station chance
 				} // end straight path
