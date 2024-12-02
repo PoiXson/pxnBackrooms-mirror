@@ -284,11 +284,11 @@ public class Gen_001 extends BackroomsGen {
 		this.noiseWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan        );
 		this.noiseWalls.setCellularReturnType(      CellularReturnType.Distance               );
 		// moist noise
-		this.noiseMoist.setFrequency(     cfgParams.getDouble("Noise-Moist-Freq"  ));
-		this.noiseMoist.setFractalOctaves(cfgParams.getInt(   "Noise-Moist-Octave"));
-		this.noiseMoist.setFractalGain(   cfgParams.getDouble("Noise-Moist-Gain"  ));
+		this.noiseMoist.setFrequency(               cfgParams.getDouble("Noise-Moist-Freq"   ));
+		this.noiseMoist.setFractalOctaves(          cfgParams.getInt(   "Noise-Moist-Octave" ));
+		this.noiseMoist.setFractalGain(             cfgParams.getDouble("Noise-Moist-Gain"   ));
 		// well noise
-		this.noiseWell.setFrequency(cfgParams.getDouble("Noise-Well-Freq"));
+		this.noiseWell .setFrequency(               cfgParams.getDouble("Noise-Well-Freq"    ));
 	}
 
 

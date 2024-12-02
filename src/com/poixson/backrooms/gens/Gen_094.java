@@ -391,7 +391,7 @@ public class Gen_094 extends BackroomsGen {
 		this.noiseHills.setNoiseType(              NoiseType.Cellular                         );
 		this.noiseHills.setFractalType(            FractalType.PingPong                       );
 		// house noise
-		this.noiseHouse.setFrequency(cfgParams.getDouble("Noise-House-Freq"));
+		this.noiseHouse.setFrequency(              cfgParams.getDouble("Noise-House-Freq"    ));
 	}
 
 

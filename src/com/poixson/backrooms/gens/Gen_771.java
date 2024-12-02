@@ -787,9 +787,9 @@ public class Gen_771 extends BackroomsGen {
 		// road lanterns
 		this.noiseRoadLights.setFrequency(cfgParams.getDouble("Noise-Lamps-Freq"));
 		// special exits
-		this.noiseExits.setFrequency(cfgParams.getDouble("Noise-Exits-Freq"));
+		this.noiseExits     .setFrequency(cfgParams.getDouble("Noise-Exits-Freq"));
 		// loot noise
-		this.noiseLoot.setFrequency(cfgParams.getDouble("Noise-Loot-Freq"));
+		this.noiseLoot      .setFrequency(cfgParams.getDouble("Noise-Loot-Freq" ));
 	}
 
 

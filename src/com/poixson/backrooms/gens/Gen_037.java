@@ -513,25 +513,25 @@ public class Gen_037 extends BackroomsGen {
 		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// pool rooms
-		this.noisePoolRooms.setFrequency(              cfgParams.getDouble("Noise-Room-Freq"    ));
-		this.noisePoolRooms.setFractalOctaves(         cfgParams.getInt(   "Noise-Room-Octave"  ));
-		this.noisePoolRooms.setFractalGain(            cfgParams.getDouble("Noise-Room-Gain"    ));
-		this.noisePoolRooms.setFractalPingPongStrength(cfgParams.getDouble("Noise-Room-Strength"));
-		this.noisePoolRooms.setNoiseType(              NoiseType.OpenSimplex2                    );
-		this.noisePoolRooms.setFractalType(            FractalType.PingPong                      );
+		this.noisePoolRooms  .setFrequency(               cfgParams.getDouble("Noise-Room-Freq"          ));
+		this.noisePoolRooms  .setFractalOctaves(          cfgParams.getInt(   "Noise-Room-Octave"        ));
+		this.noisePoolRooms  .setFractalGain(             cfgParams.getDouble("Noise-Room-Gain"          ));
+		this.noisePoolRooms  .setFractalPingPongStrength( cfgParams.getDouble("Noise-Room-Strength"      ));
+		this.noisePoolRooms  .setNoiseType(               NoiseType.OpenSimplex2                          );
+		this.noisePoolRooms  .setFractalType(             FractalType.PingPong                            );
 		// tunnels
-		this.noiseTunnels.setAngle(0.25);
-		this.noiseTunnels.setFrequency(               cfgParams.getDouble("Noise-Tunnel-Freq"    ));
-		this.noiseTunnels.setFractalPingPongStrength( cfgParams.getDouble("Noise-Tunnel-Strength"));
-		this.noiseTunnels.setNoiseType(               NoiseType.Cellular                          );
-		this.noiseTunnels.setFractalType(             FractalType.PingPong                        );
-		this.noiseTunnels.setCellularDistanceFunction(CellularDistanceFunction.Manhattan          );
+		this.noiseTunnels    .setAngle(0.25);
+		this.noiseTunnels    .setFrequency(               cfgParams.getDouble("Noise-Tunnel-Freq"        ));
+		this.noiseTunnels    .setFractalPingPongStrength( cfgParams.getDouble("Noise-Tunnel-Strength"    ));
+		this.noiseTunnels    .setNoiseType(               NoiseType.Cellular                              );
+		this.noiseTunnels    .setFractalType(             FractalType.PingPong                            );
+		this.noiseTunnels    .setCellularDistanceFunction(CellularDistanceFunction.Manhattan              );
 		// portal to lobby
-		this.noisePortalLobby.setFrequency(     cfgParams.getDouble("Noise-Portal-Lobby-Freq"  ));
-		this.noisePortalLobby.setFractalOctaves(cfgParams.getInt(   "Noise-Portal-Lobby-Octave"));
-		this.noisePortalLobby.setFractalType(   FractalType.FBm                                 );
+		this.noisePortalLobby.setFrequency(               cfgParams.getDouble("Noise-Portal-Lobby-Freq"  ));
+		this.noisePortalLobby.setFractalOctaves(          cfgParams.getInt(   "Noise-Portal-Lobby-Octave"));
+		this.noisePortalLobby.setFractalType(             FractalType.FBm                                 );
 		// portal to hotel
-		this.noisePortalHotel.setFrequency(cfgParams.getDouble("Noise-Portal-Hotel-Freq"));
+		this.noisePortalHotel.setFrequency(               cfgParams.getDouble("Noise-Portal-Hotel-Freq"  ));
 	}
 
 

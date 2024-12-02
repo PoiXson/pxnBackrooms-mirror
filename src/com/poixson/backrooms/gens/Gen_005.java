@@ -29,17 +29,17 @@ import com.poixson.tools.plotter.BlockPlotter;
 public class Gen_005 extends BackroomsGen {
 
 	// default params
-	public static final int    DEFAULT_LEVEL_H             = 6;
-	public static final int    DEFAULT_SUBFLOOR            = 3;
-	public static final int    DEFAULT_SUBCEILING          = 3;
-	public static final double DEFAULT_NOISE_WALL_FREQ     = 0.02;
-	public static final double DEFAULT_NOISE_WALL_JITTER   = 0.3;
-	public static final double DEFAULT_NOISE_ROOM_FREQ     = 0.01;
-	public static final int    DEFAULT_NOISE_ROOM_OCTAVE   = 2;
-	public static final double DEFAULT_NOISE_ROOM_GAIN     = 0.6;
-	public static final double DEFAULT_THRESH_ROOM_HALL    = 0.65;
-	public static final int    DEFAULT_NOMINAL_ROOM_SIZE   = 8;
-	public static final double DEFAULT_NOISE_STAIRS_FREQ   = 0.5;
+	public static final int    DEFAULT_LEVEL_H           = 6;
+	public static final int    DEFAULT_SUBFLOOR          = 3;
+	public static final int    DEFAULT_SUBCEILING        = 3;
+	public static final double DEFAULT_NOISE_WALL_FREQ   = 0.02;
+	public static final double DEFAULT_NOISE_WALL_JITTER = 0.3;
+	public static final double DEFAULT_NOISE_ROOM_FREQ   = 0.01;
+	public static final int    DEFAULT_NOISE_ROOM_OCTAVE = 2;
+	public static final double DEFAULT_NOISE_ROOM_GAIN   = 0.6;
+	public static final double DEFAULT_THRESH_ROOM_HALL  = 0.65;
+	public static final int    DEFAULT_NOMINAL_ROOM_SIZE = 8;
+	public static final double DEFAULT_NOISE_STAIRS_FREQ = 0.5;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR           = "minecraft:oak_planks";
@@ -413,10 +413,10 @@ public class Gen_005 extends BackroomsGen {
 		this.noiseHotelWalls.setFractalType(             FractalType.PingPong                    );
 		this.noiseHotelWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan      );
 		// hotel rooms
-		this.noiseHotelRooms.setFrequency(     cfgParams.getDouble("Noise-Room-Freq"  ));
-		this.noiseHotelRooms.setFractalOctaves(cfgParams.getInt(   "Noise-Room-Octave"));
-		this.noiseHotelRooms.setFractalGain(   cfgParams.getDouble("Noise-Room-Gain"  ));
-		this.noiseHotelRooms.setFractalType(   FractalType.FBm                         );
+		this.noiseHotelRooms.setFrequency(               cfgParams.getDouble("Noise-Room-Freq"  ));
+		this.noiseHotelRooms.setFractalOctaves(          cfgParams.getInt(   "Noise-Room-Octave"));
+		this.noiseHotelRooms.setFractalGain(             cfgParams.getDouble("Noise-Room-Gain"  ));
+		this.noiseHotelRooms.setFractalType(             FractalType.FBm                         );
 	}
 
 

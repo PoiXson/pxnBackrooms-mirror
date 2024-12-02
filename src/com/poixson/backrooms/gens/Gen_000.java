@@ -539,7 +539,7 @@ public class Gen_000 extends BackroomsGen {
 		this.noiseLobbyWalls.setCellularDistanceFunction(CellularDistanceFunction.Manhattan        );
 		this.noiseLobbyWalls.setCellularReturnType(      CellularReturnType.Distance               );
 		// chest loot
-		this.noiseLoot.setFrequency(cfgParams.getDouble("Noise-Loot-Freq"));
+		this.noiseLoot      .setFrequency(               cfgParams.getDouble("Noise-Loot-Freq"    ));
 	}
 
 

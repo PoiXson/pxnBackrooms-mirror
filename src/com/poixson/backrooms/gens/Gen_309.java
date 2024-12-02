@@ -204,32 +204,32 @@ public class Gen_309 extends BackroomsGen {
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
-		this.enable_gen                    = cfgParams.getBoolean("Enable-Gen"               );
-		this.enable_top                    = cfgParams.getBoolean("Enable-Top"               );
-		this.level_y                       = cfgParams.getInt(    "Level-Y"                  );
-		this.subfloor                      = cfgParams.getInt(    "SubFloor"                 );
-		this.ground_thickness_min          = cfgParams.getInt(    "Ground-Thickness-Min"     );
-		this.ground_thickness_max          = cfgParams.getInt(    "Ground-Thickness-Max"     );
-		final int cfg_cell_size            = cfgParams.getInt(    "Map-Cell-Size"            );
-		this.cell_size                     = MathUtils.MinMax(MathUtils.RoundNormal(cfg_cell_size, 16), 16, 1024*1024);
-		this.cell_half                     = Math.floorDiv(this.cell_size, 2);
-		this.path_chance                   = cfgParams.getDouble( "Path-Chance"              );
-		this.path_width_min                = cfgParams.getDouble( "Path-Width-Min"           );
-		this.path_width_max                = cfgParams.getDouble( "Path-Width-Max"           );
-		this.path_wonder                   = cfgParams.getDouble( "Path-Wonder-Factor"       );
-		this.path_fade                     = cfgParams.getDouble( "Path-Fade-Factor"         );
-		this.path_berm_min                 = cfgParams.getInt(    "Path-Berm-Min"            );
-		this.path_berm_max                 = cfgParams.getInt(    "Path-Berm-Max"            );
-		this.path_berm_weight              = cfgParams.getDouble( "Path-Berm-Weight"         );
-		this.radio_station_fade            = cfgParams.getDouble( "Radio-Station-Fade-Factor");
-		this.path_radio_wonder             = cfgParams.getDouble( "Path-Radio-Wonder"        );
-		this.radio_station_chance          = MathUtils.MinMax(cfgParams.getDouble("Radio-Station-Chance"), 1.0, 99.0);
-		this.radio_station_distance        = cfgParams.getInt(    "Radio-Station-Distance"   );
-		this.radio_station_margin          = cfgParams.getDouble( "Radio-Station-Margin"     );
-		this.thresh_grass                  = cfgParams.getDouble( "Thresh-Grass"             );
-		this.thresh_mushroom               = cfgParams.getDouble( "Thresh-Mushroom"          );
-		this.grass_weight_factor           = cfgParams.getDouble( "Grass-Weight-Factor"      );
-		this.grass_berm_percent            = cfgParams.getDouble( "Grass-Berm-Percent"       );
+		this.enable_gen             = cfgParams.getBoolean("Enable-Gen"               );
+		this.enable_top             = cfgParams.getBoolean("Enable-Top"               );
+		this.level_y                = cfgParams.getInt(    "Level-Y"                  );
+		this.subfloor               = cfgParams.getInt(    "SubFloor"                 );
+		this.ground_thickness_min   = cfgParams.getInt(    "Ground-Thickness-Min"     );
+		this.ground_thickness_max   = cfgParams.getInt(    "Ground-Thickness-Max"     );
+		final int cfg_cell_size     = cfgParams.getInt(    "Map-Cell-Size"            );
+		this.cell_size              = MathUtils.MinMax(MathUtils.RoundNormal(cfg_cell_size, 16), 16, 1024*1024);
+		this.cell_half              = Math.floorDiv(this.cell_size, 2);
+		this.path_chance            = cfgParams.getDouble( "Path-Chance"              );
+		this.path_width_min         = cfgParams.getDouble( "Path-Width-Min"           );
+		this.path_width_max         = cfgParams.getDouble( "Path-Width-Max"           );
+		this.path_wonder            = cfgParams.getDouble( "Path-Wonder-Factor"       );
+		this.path_fade              = cfgParams.getDouble( "Path-Fade-Factor"         );
+		this.path_berm_min          = cfgParams.getInt(    "Path-Berm-Min"            );
+		this.path_berm_max          = cfgParams.getInt(    "Path-Berm-Max"            );
+		this.path_berm_weight       = cfgParams.getDouble( "Path-Berm-Weight"         );
+		this.radio_station_fade     = cfgParams.getDouble( "Radio-Station-Fade-Factor");
+		this.path_radio_wonder      = cfgParams.getDouble( "Path-Radio-Wonder"        );
+		this.radio_station_chance   = MathUtils.MinMax(cfgParams.getDouble("Radio-Station-Chance"), 1.0, 99.0);
+		this.radio_station_distance = cfgParams.getInt(    "Radio-Station-Distance"   );
+		this.radio_station_margin   = cfgParams.getDouble( "Radio-Station-Margin"     );
+		this.thresh_grass           = cfgParams.getDouble( "Thresh-Grass"             );
+		this.thresh_mushroom        = cfgParams.getDouble( "Thresh-Mushroom"          );
+		this.grass_weight_factor    = cfgParams.getDouble( "Grass-Weight-Factor"      );
+		this.grass_berm_percent     = cfgParams.getDouble( "Grass-Berm-Percent"       );
 		// trees
 		this.tree_style                    = cfgParams.getString( "Tree-Style",                    DEFAULT_TREE_STYLE);
 		this.tree_height_min               = cfgParams.getDouble( "Tree-Height-Min",               Double.MIN_VALUE);
@@ -263,20 +263,20 @@ public class Gen_309 extends BackroomsGen {
 		this.tree_branch_num_splits_max    = cfgParams.getDouble( "Tree-Branch-Num-Splits-Max",    Double.MIN_VALUE);
 		this.tree_leaves_thickness         = cfgParams.getDouble( "Tree-Leaves-Thickness",         Double.MIN_VALUE);
 		// block types
-		this.block_subfloor          = cfgBlocks.getString("SubFloor"         );
-		this.block_dirt              = cfgBlocks.getString("Dirt"             );
-		this.block_path              = cfgBlocks.getString("Path"             );
-		this.block_grass             = cfgBlocks.getString("Grass"            );
-		this.block_tree_trunk        = cfgBlocks.getString("Tree-Trunk"       );
-		this.block_tree_branch       = cfgBlocks.getString("Tree-Branch"      );
-		this.block_tree_leaves       = cfgBlocks.getString("Tree-Leaves"      );
-		this.block_grass_short       = cfgBlocks.getString("Grass-Short"      );
-		this.block_grass_tall_upper  = cfgBlocks.getString("Grass-Tall-Upper" );
-		this.block_grass_tall_lower  = cfgBlocks.getString("Grass-Tall-Lower" );
-		this.block_fern_short        = cfgBlocks.getString("Fern-Short"       );
-		this.block_fern_tall_upper   = cfgBlocks.getString("Fern-Tall-Upper"  );
-		this.block_fern_tall_lower   = cfgBlocks.getString("Fern-Tall-Lower"  );
-		this.block_mushroom          = cfgBlocks.getString("Mushroom"         );
+		this.block_subfloor         = cfgBlocks.getString("SubFloor"        );
+		this.block_dirt             = cfgBlocks.getString("Dirt"            );
+		this.block_path             = cfgBlocks.getString("Path"            );
+		this.block_grass            = cfgBlocks.getString("Grass"           );
+		this.block_tree_trunk       = cfgBlocks.getString("Tree-Trunk"      );
+		this.block_tree_branch      = cfgBlocks.getString("Tree-Branch"     );
+		this.block_tree_leaves      = cfgBlocks.getString("Tree-Leaves"     );
+		this.block_grass_short      = cfgBlocks.getString("Grass-Short"     );
+		this.block_grass_tall_upper = cfgBlocks.getString("Grass-Tall-Upper");
+		this.block_grass_tall_lower = cfgBlocks.getString("Grass-Tall-Lower");
+		this.block_fern_short       = cfgBlocks.getString("Fern-Short"      );
+		this.block_fern_tall_upper  = cfgBlocks.getString("Fern-Tall-Upper" );
+		this.block_fern_tall_lower  = cfgBlocks.getString("Fern-Tall-Lower" );
+		this.block_mushroom         = cfgBlocks.getString("Mushroom"        );
 		// noise
 		this.noiseGround        = this.register(new FastNoiseLiteD());
 		this.noisePathWonder    = this.register(new FastNoiseLiteD());
@@ -604,34 +604,34 @@ return "radio_station_1";
 		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// path ground
-		this.noiseGround.setFrequency(         cfgParams.getDouble("Noise-Ground-Freq"  ) );
-		this.noiseGround.setFractalOctaves(    cfgParams.getInt(   "Noise-Ground-Octave") );
-		this.noiseGround.setFractalGain(       cfgParams.getDouble("Noise-Ground-Gain"  ) );
-		this.noiseGround.setFractalLacunarity( cfgParams.getDouble("Noise-Ground-Lacun" ) );
-		this.noiseGround.setFractalType(       FractalType.Ridged                         );
+		this.noiseGround       .setFrequency(        cfgParams.getDouble("Noise-Ground-Freq"        ) );
+		this.noiseGround       .setFractalOctaves(   cfgParams.getInt(   "Noise-Ground-Octave"      ) );
+		this.noiseGround       .setFractalGain(      cfgParams.getDouble("Noise-Ground-Gain"        ) );
+		this.noiseGround       .setFractalLacunarity(cfgParams.getDouble("Noise-Ground-Lacun"       ) );
+		this.noiseGround       .setFractalType(      FractalType.Ridged                               );
 		// path
-		this.noisePathWonder.setFrequency(         cfgParams.getDouble("Noise-Path-Wonder-Freq"  ) );
-		this.noisePathWonder.setFractalOctaves(    cfgParams.getInt(   "Noise-Path-Wonder-Octave") );
-		this.noisePathWonder.setFractalGain(       cfgParams.getDouble("Noise-Path-Wonder-Gain"  ) );
-		this.noisePathWonder.setFractalLacunarity( cfgParams.getDouble("Noise-Path-Wonder-Lacun" ) );
+		this.noisePathWonder   .setFrequency(        cfgParams.getDouble("Noise-Path-Wonder-Freq"   ) );
+		this.noisePathWonder   .setFractalOctaves(   cfgParams.getInt(   "Noise-Path-Wonder-Octave" ) );
+		this.noisePathWonder   .setFractalGain(      cfgParams.getDouble("Noise-Path-Wonder-Gain"   ) );
+		this.noisePathWonder   .setFractalLacunarity(cfgParams.getDouble("Noise-Path-Wonder-Lacun"  ) );
 		// path width
-		this.noisePathWidth.setFrequency(         cfgParams.getDouble("Noise-Path-Width-Freq"  ) );
-		this.noisePathWidth.setFractalOctaves(    cfgParams.getInt(   "Noise-Path-Width-Octave") );
-		this.noisePathWidth.setFractalGain(       cfgParams.getDouble("Noise-Path-Width-Gain"  ) );
-		this.noisePathWidth.setFractalLacunarity( cfgParams.getDouble("Noise-Path-Width-Lacun" ) );
+		this.noisePathWidth    .setFrequency(        cfgParams.getDouble("Noise-Path-Width-Freq"    ) );
+		this.noisePathWidth    .setFractalOctaves(   cfgParams.getInt(   "Noise-Path-Width-Octave"  ) );
+		this.noisePathWidth    .setFractalGain(      cfgParams.getDouble("Noise-Path-Width-Gain"    ) );
+		this.noisePathWidth    .setFractalLacunarity(cfgParams.getDouble("Noise-Path-Width-Lacun"   ) );
 		// path center (radio station)
-		this.noisePathCenter.setFrequency(         cfgParams.getDouble("Noise-Path-Center-Freq"  ) );
-		this.noisePathCenter.setFractalOctaves(    cfgParams.getInt(   "Noise-Path-Center-Octave") );
-		this.noisePathCenter.setFractalGain(       cfgParams.getDouble("Noise-Path-Center-Gain"  ) );
-		this.noisePathCenter.setFractalLacunarity( cfgParams.getDouble("Noise-Path-Center-Lacun" ) );
+		this.noisePathCenter   .setFrequency(        cfgParams.getDouble("Noise-Path-Center-Freq"   ) );
+		this.noisePathCenter   .setFractalOctaves(   cfgParams.getInt(   "Noise-Path-Center-Octave" ) );
+		this.noisePathCenter   .setFractalGain(      cfgParams.getDouble("Noise-Path-Center-Gain"   ) );
+		this.noisePathCenter   .setFractalLacunarity(cfgParams.getDouble("Noise-Path-Center-Lacun"  ) );
 		// tree placement
-		this.noiseTreePlacement.setFrequency( cfgParams.getDouble("Noise-Tree-Placement-Freq") );
+		this.noiseTreePlacement.setFrequency(        cfgParams.getDouble("Noise-Tree-Placement-Freq") );
 		// grass noise
-		this.noiseGrass.setFrequency(         cfgParams.getDouble("Noise-Grass-Freq"  ) );
-		this.noiseGrass.setFractalOctaves(    cfgParams.getInt(   "Noise-Grass-Octave") );
-		this.noiseGrass.setFractalGain(       cfgParams.getDouble("Noise-Grass-Gain"  ) );
-		this.noiseGrass.setFractalLacunarity( cfgParams.getDouble("Noise-Grass-Lacun" ) );
-		this.noiseGrass.setFractalType(       FractalType.FBm                           );
+		this.noiseGrass        .setFrequency(        cfgParams.getDouble("Noise-Grass-Freq"         ) );
+		this.noiseGrass        .setFractalOctaves(   cfgParams.getInt(   "Noise-Grass-Octave"       ) );
+		this.noiseGrass        .setFractalGain(      cfgParams.getDouble("Noise-Grass-Gain"         ) );
+		this.noiseGrass        .setFractalLacunarity(cfgParams.getDouble("Noise-Grass-Lacun"        ) );
+		this.noiseGrass        .setFractalType(      FractalType.FBm                                  );
 	}
 
 
@@ -639,73 +639,73 @@ return "radio_station_1";
 	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		// params
-		cfgParams.addDefault("Enable-Gen",                  Boolean.TRUE                                     );
-		cfgParams.addDefault("Enable-Top",                  Boolean.TRUE                                     );
-		cfgParams.addDefault("Level-Y",                     Integer.valueOf(this.getDefaultY()              ));
-		cfgParams.addDefault("SubFloor",                    Integer.valueOf(DEFAULT_SUBFLOOR                ));
-		cfgParams.addDefault("Ground-Thickness-Min",        Integer.valueOf(DEFAULT_GROUND_THICKNESS_MIN    ));
-		cfgParams.addDefault("Ground-Thickness-Max",        Integer.valueOf(DEFAULT_GROUND_THICKNESS_MAX    ));
-		cfgParams.addDefault("Map-Cell-Size",               Integer.valueOf(DEFAULT_CELL_SIZE               ));
+		cfgParams.addDefault("Enable-Gen",                Boolean.TRUE                                     );
+		cfgParams.addDefault("Enable-Top",                Boolean.TRUE                                     );
+		cfgParams.addDefault("Level-Y",                   Integer.valueOf(this.getDefaultY()              ));
+		cfgParams.addDefault("SubFloor",                  Integer.valueOf(DEFAULT_SUBFLOOR                ));
+		cfgParams.addDefault("Ground-Thickness-Min",      Integer.valueOf(DEFAULT_GROUND_THICKNESS_MIN    ));
+		cfgParams.addDefault("Ground-Thickness-Max",      Integer.valueOf(DEFAULT_GROUND_THICKNESS_MAX    ));
+		cfgParams.addDefault("Map-Cell-Size",             Integer.valueOf(DEFAULT_CELL_SIZE               ));
 		// path
-		cfgParams.addDefault("Path-Chance",                 Double.valueOf( DEFAULT_PATH_CHANCE             ));
-		cfgParams.addDefault("Path-Width-Min",              Double.valueOf( DEFAULT_PATH_WIDTH_MIN          ));
-		cfgParams.addDefault("Path-Width-Max",              Double.valueOf( DEFAULT_PATH_WIDTH_MAX          ));
-		cfgParams.addDefault("Path-Wonder-Factor",          Double.valueOf( DEFAULT_PATH_WONDER             ));
-		cfgParams.addDefault("Path-Fade-Factor",            Double.valueOf( DEFAULT_PATH_FADE               ));
-		cfgParams.addDefault("Path-Berm-Min",               Integer.valueOf(DEFAULT_PATH_BERM_MIN           ));
-		cfgParams.addDefault("Path-Berm-Max",               Integer.valueOf(DEFAULT_PATH_BERM_MAX           ));
-		cfgParams.addDefault("Path-Berm-Weight",            Double.valueOf( DEFAULT_PATH_BERM_WEIGHT        ));
-		cfgParams.addDefault("Radio-Station-Fade-Factor",   Double.valueOf( DEFAULT_RADIO_STATION_FADE      ));
-		cfgParams.addDefault("Path-Radio-Wonder",           Double.valueOf( DEFAULT_PATH_RADIO_WONDER       ));
-		cfgParams.addDefault("Radio-Station-Chance",        Double.valueOf( DEFAULT_RADIO_STATION_CHANCE    ));
-		cfgParams.addDefault("Radio-Station-Distance",      Integer.valueOf(DEFAULT_RADIO_STATION_DISTANCE  ));
-		cfgParams.addDefault("Radio-Station-Margin",        Double.valueOf( DEFAULT_RADIO_STATION_MARGIN    ));
+		cfgParams.addDefault("Path-Chance",               Double.valueOf( DEFAULT_PATH_CHANCE             ));
+		cfgParams.addDefault("Path-Width-Min",            Double.valueOf( DEFAULT_PATH_WIDTH_MIN          ));
+		cfgParams.addDefault("Path-Width-Max",            Double.valueOf( DEFAULT_PATH_WIDTH_MAX          ));
+		cfgParams.addDefault("Path-Wonder-Factor",        Double.valueOf( DEFAULT_PATH_WONDER             ));
+		cfgParams.addDefault("Path-Fade-Factor",          Double.valueOf( DEFAULT_PATH_FADE               ));
+		cfgParams.addDefault("Path-Berm-Min",             Integer.valueOf(DEFAULT_PATH_BERM_MIN           ));
+		cfgParams.addDefault("Path-Berm-Max",             Integer.valueOf(DEFAULT_PATH_BERM_MAX           ));
+		cfgParams.addDefault("Path-Berm-Weight",          Double.valueOf( DEFAULT_PATH_BERM_WEIGHT        ));
+		cfgParams.addDefault("Radio-Station-Fade-Factor", Double.valueOf( DEFAULT_RADIO_STATION_FADE      ));
+		cfgParams.addDefault("Path-Radio-Wonder",         Double.valueOf( DEFAULT_PATH_RADIO_WONDER       ));
+		cfgParams.addDefault("Radio-Station-Chance",      Double.valueOf( DEFAULT_RADIO_STATION_CHANCE    ));
+		cfgParams.addDefault("Radio-Station-Distance",    Integer.valueOf(DEFAULT_RADIO_STATION_DISTANCE  ));
+		cfgParams.addDefault("Radio-Station-Margin",      Double.valueOf( DEFAULT_RADIO_STATION_MARGIN    ));
 		// ground noise
-		cfgParams.addDefault("Noise-Ground-Freq",           Double .valueOf(DEFAULT_NOISE_GROUND_FREQ       ));
-		cfgParams.addDefault("Noise-Ground-Octave",         Integer.valueOf(DEFAULT_NOISE_GROUND_OCTAVE     ));
-		cfgParams.addDefault("Noise-Ground-Gain",           Double .valueOf(DEFAULT_NOISE_GROUND_GAIN       ));
-		cfgParams.addDefault("Noise-Ground-Lacun",          Double .valueOf(DEFAULT_NOISE_GROUND_LACUN      ));
+		cfgParams.addDefault("Noise-Ground-Freq",         Double .valueOf(DEFAULT_NOISE_GROUND_FREQ       ));
+		cfgParams.addDefault("Noise-Ground-Octave",       Integer.valueOf(DEFAULT_NOISE_GROUND_OCTAVE     ));
+		cfgParams.addDefault("Noise-Ground-Gain",         Double .valueOf(DEFAULT_NOISE_GROUND_GAIN       ));
+		cfgParams.addDefault("Noise-Ground-Lacun",        Double .valueOf(DEFAULT_NOISE_GROUND_LACUN      ));
 		// path wonder
-		cfgParams.addDefault("Noise-Path-Wonder-Freq",      Double .valueOf(DEFAULT_NOISE_PATH_WONDER_FREQ  ));
-		cfgParams.addDefault("Noise-Path-Wonder-Octave",    Integer.valueOf(DEFAULT_NOISE_PATH_WONDER_OCTAVE));
-		cfgParams.addDefault("Noise-Path-Wonder-Gain",      Double .valueOf(DEFAULT_NOISE_PATH_WONDER_GAIN  ));
-		cfgParams.addDefault("Noise-Path-Wonder-Lacun",     Double .valueOf(DEFAULT_NOISE_PATH_WONDER_LACUN ));
+		cfgParams.addDefault("Noise-Path-Wonder-Freq",    Double .valueOf(DEFAULT_NOISE_PATH_WONDER_FREQ  ));
+		cfgParams.addDefault("Noise-Path-Wonder-Octave",  Integer.valueOf(DEFAULT_NOISE_PATH_WONDER_OCTAVE));
+		cfgParams.addDefault("Noise-Path-Wonder-Gain",    Double .valueOf(DEFAULT_NOISE_PATH_WONDER_GAIN  ));
+		cfgParams.addDefault("Noise-Path-Wonder-Lacun",   Double .valueOf(DEFAULT_NOISE_PATH_WONDER_LACUN ));
 		// path width
-		cfgParams.addDefault("Noise-Path-Width-Freq",       Double .valueOf(DEFAULT_NOISE_PATH_WIDTH_FREQ   ));
-		cfgParams.addDefault("Noise-Path-Width-Octave",     Integer.valueOf(DEFAULT_NOISE_PATH_WIDTH_OCTAVE ));
-		cfgParams.addDefault("Noise-Path-Width-Gain",       Double .valueOf(DEFAULT_NOISE_PATH_WIDTH_GAIN   ));
-		cfgParams.addDefault("Noise-Path-Width-Lacun",      Double .valueOf(DEFAULT_NOISE_PATH_WIDTH_LACUN  ));
+		cfgParams.addDefault("Noise-Path-Width-Freq",     Double .valueOf(DEFAULT_NOISE_PATH_WIDTH_FREQ   ));
+		cfgParams.addDefault("Noise-Path-Width-Octave",   Integer.valueOf(DEFAULT_NOISE_PATH_WIDTH_OCTAVE ));
+		cfgParams.addDefault("Noise-Path-Width-Gain",     Double .valueOf(DEFAULT_NOISE_PATH_WIDTH_GAIN   ));
+		cfgParams.addDefault("Noise-Path-Width-Lacun",    Double .valueOf(DEFAULT_NOISE_PATH_WIDTH_LACUN  ));
 		// radio station clearing
-		cfgParams.addDefault("Noise-Path-Center-Freq",      Double .valueOf(DEFAULT_NOISE_PATH_CENTER_FREQ  ));
-		cfgParams.addDefault("Noise-Path-Center-Octave",    Integer.valueOf(DEFAULT_NOISE_PATH_CENTER_OCTAVE));
-		cfgParams.addDefault("Noise-Path-Center-Gain",      Double .valueOf(DEFAULT_NOISE_PATH_CENTER_GAIN  ));
-		cfgParams.addDefault("Noise-Path-Center-Lacun",     Double .valueOf(DEFAULT_NOISE_PATH_CENTER_LACUN ));
+		cfgParams.addDefault("Noise-Path-Center-Freq",    Double .valueOf(DEFAULT_NOISE_PATH_CENTER_FREQ  ));
+		cfgParams.addDefault("Noise-Path-Center-Octave",  Integer.valueOf(DEFAULT_NOISE_PATH_CENTER_OCTAVE));
+		cfgParams.addDefault("Noise-Path-Center-Gain",    Double .valueOf(DEFAULT_NOISE_PATH_CENTER_GAIN  ));
+		cfgParams.addDefault("Noise-Path-Center-Lacun",   Double .valueOf(DEFAULT_NOISE_PATH_CENTER_LACUN ));
 		// tree placement
-		cfgParams.addDefault("Noise-Tree-Placement-Freq",   Double .valueOf(DEFAULT_NOISE_TREES_PLACE_FREQ  ));
+		cfgParams.addDefault("Noise-Tree-Placement-Freq", Double .valueOf(DEFAULT_NOISE_TREES_PLACE_FREQ  ));
 		// grass noise
-		cfgParams.addDefault("Noise-Grass-Freq",            Double .valueOf(DEFAULT_NOISE_GRASS_FREQ        ));
-		cfgParams.addDefault("Noise-Grass-Octave",          Integer.valueOf(DEFAULT_NOISE_GRASS_OCTAVE      ));
-		cfgParams.addDefault("Noise-Grass-Gain",            Double .valueOf(DEFAULT_NOISE_GRASS_GAIN        ));
-		cfgParams.addDefault("Noise-Grass-Lacun",           Double .valueOf(DEFAULT_NOISE_GRASS_LACUN       ));
-		cfgParams.addDefault("Thresh-Grass",                Double .valueOf(DEFAULT_THRESH_GRASS            ));
-		cfgParams.addDefault("Thresh-Mushroom",             Double .valueOf(DEFAULT_THRESH_MUSHROOM         ));
-		cfgParams.addDefault("Grass-Weight-Factor",         Double .valueOf(DEFAULT_GRASS_WEIGHT_FACTOR     ));
-		cfgParams.addDefault("Grass-Berm-Percent",          Double .valueOf(DEFAULT_GRASS_BERM_PERCENT      ));
+		cfgParams.addDefault("Noise-Grass-Freq",          Double .valueOf(DEFAULT_NOISE_GRASS_FREQ        ));
+		cfgParams.addDefault("Noise-Grass-Octave",        Integer.valueOf(DEFAULT_NOISE_GRASS_OCTAVE      ));
+		cfgParams.addDefault("Noise-Grass-Gain",          Double .valueOf(DEFAULT_NOISE_GRASS_GAIN        ));
+		cfgParams.addDefault("Noise-Grass-Lacun",         Double .valueOf(DEFAULT_NOISE_GRASS_LACUN       ));
+		cfgParams.addDefault("Thresh-Grass",              Double .valueOf(DEFAULT_THRESH_GRASS            ));
+		cfgParams.addDefault("Thresh-Mushroom",           Double .valueOf(DEFAULT_THRESH_MUSHROOM         ));
+		cfgParams.addDefault("Grass-Weight-Factor",       Double .valueOf(DEFAULT_GRASS_WEIGHT_FACTOR     ));
+		cfgParams.addDefault("Grass-Berm-Percent",        Double .valueOf(DEFAULT_GRASS_BERM_PERCENT      ));
 		// block types
-		cfgBlocks.addDefault("SubFloor",          DEFAULT_BLOCK_SUBFLOOR        );
-		cfgBlocks.addDefault("Dirt",              DEFAULT_BLOCK_DIRT            );
-		cfgBlocks.addDefault("Path",              DEFAULT_BLOCK_PATH            );
-		cfgBlocks.addDefault("Grass",             DEFAULT_BLOCK_GRASS           );
-		cfgBlocks.addDefault("Tree-Trunk",        DEFAULT_BLOCK_TREE_TRUNK      );
-		cfgBlocks.addDefault("Tree-Branch",       DEFAULT_BLOCK_TREE_BRANCH     );
-		cfgBlocks.addDefault("Tree-Leaves",       DEFAULT_BLOCK_TREE_LEAVES     );
-		cfgBlocks.addDefault("Grass-Short",       DEFAULT_BLOCK_GRASS_SHORT     );
-		cfgBlocks.addDefault("Grass-Tall-Upper",  DEFAULT_BLOCK_GRASS_TALL_UPPER);
-		cfgBlocks.addDefault("Grass-Tall-Lower",  DEFAULT_BLOCK_GRASS_TALL_LOWER);
-		cfgBlocks.addDefault("Fern-Short",        DEFAULT_BLOCK_FERN_SHORT      );
-		cfgBlocks.addDefault("Fern-Tall-Upper",   DEFAULT_BLOCK_FERN_TALL_UPPER );
-		cfgBlocks.addDefault("Fern-Tall-Lower",   DEFAULT_BLOCK_FERN_TALL_LOWER );
-		cfgBlocks.addDefault("Mushroom",          DEFAULT_BLOCK_MUSHROOM        );
+		cfgBlocks.addDefault("SubFloor",         DEFAULT_BLOCK_SUBFLOOR        );
+		cfgBlocks.addDefault("Dirt",             DEFAULT_BLOCK_DIRT            );
+		cfgBlocks.addDefault("Path",             DEFAULT_BLOCK_PATH            );
+		cfgBlocks.addDefault("Grass",            DEFAULT_BLOCK_GRASS           );
+		cfgBlocks.addDefault("Tree-Trunk",       DEFAULT_BLOCK_TREE_TRUNK      );
+		cfgBlocks.addDefault("Tree-Branch",      DEFAULT_BLOCK_TREE_BRANCH     );
+		cfgBlocks.addDefault("Tree-Leaves",      DEFAULT_BLOCK_TREE_LEAVES     );
+		cfgBlocks.addDefault("Grass-Short",      DEFAULT_BLOCK_GRASS_SHORT     );
+		cfgBlocks.addDefault("Grass-Tall-Upper", DEFAULT_BLOCK_GRASS_TALL_UPPER);
+		cfgBlocks.addDefault("Grass-Tall-Lower", DEFAULT_BLOCK_GRASS_TALL_LOWER);
+		cfgBlocks.addDefault("Fern-Short",       DEFAULT_BLOCK_FERN_SHORT      );
+		cfgBlocks.addDefault("Fern-Tall-Upper",  DEFAULT_BLOCK_FERN_TALL_UPPER );
+		cfgBlocks.addDefault("Fern-Tall-Lower",  DEFAULT_BLOCK_FERN_TALL_LOWER );
+		cfgBlocks.addDefault("Mushroom",         DEFAULT_BLOCK_MUSHROOM        );
 	}
 
 
