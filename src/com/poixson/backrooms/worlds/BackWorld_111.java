@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsWorld;
@@ -51,10 +52,15 @@ public class BackWorld_111 extends BackroomsWorld {
 	public void register() {
 		super.register();
 		this.listener_111.register();
-		this.keystore.start();
+		this.keystore.startLater(this.plugin);
 		// defaults
-		final int hall_index = this.keystore.getInt(KEY_NEXT_HALL_INDEX);
-		this.keystore.set(KEY_NEXT_HALL_INDEX, (hall_index>0 ? hall_index : 0));
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				final int hall_index = BackWorld_111.this.keystore.getInt(KEY_NEXT_HALL_INDEX);
+				BackWorld_111.this.keystore.set(KEY_NEXT_HALL_INDEX, (hall_index>0 ? hall_index : 0));
+			}
+		}.runTask(this.plugin);
 	}
 	@Override
 	public void unregister() {

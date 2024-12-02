@@ -156,22 +156,22 @@ public class BackWorld_000 extends BackroomsWorld {
 	@Override
 	public void register() {
 		super.register();
-		this.portal_000_to_001.start();
-		this.portal_000_to_002.start();
-		this.portal_000_to_004.start();
-		this.portal_000_to_006.start();
-		this.portal_006_to_111.start();
-		this.portal_000_to_037.start();
-		this.portal_001_well  .start();
-		this.portal_005_to_019.start();
-		this.portal_005_to_037.start();
-		this.portal_019_to_309.start();
-		this.portal_309_stairs.start();
-		this.portal_309_doors .start();
-		this.cheese_rooms     .start();
-		this.radio_stations   .start();
-		this.loot_0           .start();
 		this.listener_023.register();
+		this.portal_000_to_001.startLater(this.plugin);
+		this.portal_000_to_002.startLater(this.plugin);
+		this.portal_000_to_004.startLater(this.plugin);
+		this.portal_000_to_006.startLater(this.plugin);
+		this.portal_006_to_111.startLater(this.plugin);
+		this.portal_000_to_037.startLater(this.plugin);
+		this.portal_001_well  .startLater(this.plugin);
+		this.portal_005_to_019.startLater(this.plugin);
+		this.portal_005_to_037.startLater(this.plugin);
+		this.portal_019_to_309.startLater(this.plugin);
+		this.portal_309_stairs.startLater(this.plugin);
+		this.portal_309_doors .startLater(this.plugin);
+		this.cheese_rooms     .startLater(this.plugin);
+		this.radio_stations   .startLater(this.plugin);
+		this.loot_0           .startLater(this.plugin);
 	}
 	@Override
 	public void unregister() {

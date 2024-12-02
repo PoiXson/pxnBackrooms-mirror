@@ -62,11 +62,11 @@ public class BackWorld_771 extends BackroomsWorld {
 	@Override
 	public void register() {
 		super.register();
-		this.portal_ladder    .start();
-		this.portal_drop      .start();
-		this.portal_void      .start();
-		this.loot_chests_upper.start();
-		this.loot_chests_lower.start();
+		this.portal_ladder    .startLater(this.plugin);
+		this.portal_drop      .startLater(this.plugin);
+		this.portal_void      .startLater(this.plugin);
+		this.loot_chests_upper.startLater(this.plugin);
+		this.loot_chests_lower.startLater(this.plugin);
 		this.listener_771.register();
 	}
 	@Override
