@@ -80,14 +80,14 @@ public class Gen_309 extends BackroomsGen {
 	public static final double DEFAULT_NOISE_TREES_PLACE_FREQ   = 0.093;
 	public static final String DEFAULT_TREE_STYLE = TreeStyle.FAN_OAK.toString();
 	// grass noise
-	public static final double DEFAULT_NOISE_GRASS_FREQ    =  0.01;
-	public static final int    DEFAULT_NOISE_GRASS_OCTAVE  =  3;
-	public static final double DEFAULT_NOISE_GRASS_GAIN    =  2.0;
-	public static final double DEFAULT_NOISE_GRASS_LACUN   =  4.0;
-	public static final double DEFAULT_THRESH_GRASS        = -0.35;
-	public static final double DEFAULT_THRESH_MUSHROOM     = -0.8;
-	public static final double DEFAULT_GRASS_WEIGHT_FACTOR =  2.0;
-	public static final double DEFAULT_GRASS_BERM_PERCENT  =  0.3;
+	public static final double DEFAULT_NOISE_GRASS_FREQ         =  0.01;
+	public static final int    DEFAULT_NOISE_GRASS_OCTAVE       =  3;
+	public static final double DEFAULT_NOISE_GRASS_GAIN         =  2.0;
+	public static final double DEFAULT_NOISE_GRASS_LACUN        =  4.0;
+	public static final double DEFAULT_THRESH_GRASS             = -0.35;
+	public static final double DEFAULT_THRESH_MUSHROOM          = -0.8;
+	public static final double DEFAULT_GRASS_WEIGHT_FACTOR      =  2.0;
+	public static final double DEFAULT_GRASS_BERM_PERCENT       =  0.3;
 
 	// default blocks
 	public static final String DEFAULT_BLOCK_SUBFLOOR         = "minecraft:stone";
