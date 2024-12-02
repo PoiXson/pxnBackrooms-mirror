@@ -13,7 +13,7 @@ import com.poixson.backrooms.BackroomsPop;
 import com.poixson.backrooms.gens.hotel.HotelRoom_Guest;
 import com.poixson.backrooms.gens.hotel.HotelRoom_Pool;
 import com.poixson.backrooms.gens.hotel.HotelRoom_Stairs;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
@@ -22,14 +22,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 5 | Hotel
 public class Pop_005 implements BackroomsPop {
 
-	protected final Level_000 level_000;
-	protected final Gen_005   gen_005;
+	protected final BackWorld_000 world_000;
+	protected final Gen_005       gen_005;
 
 
 
-	public Pop_005(final Level_000 level_000) {
-		this.level_000 = level_000;
-		this.gen_005   = level_000.gen_005;
+	public Pop_005(final BackWorld_000 world_000) {
+		this.world_000 = world_000;
+		this.gen_005   = world_000.gen_005;
 	}
 
 
@@ -107,9 +107,9 @@ public class Pop_005 implements BackroomsPop {
 		final Material door_guest = Material.matchMaterial(this.gen_005.door_guest);
 		if (door_guest == null) throw new RuntimeException("Invalid block type for level 5 Door-Guest");
 		// room builders
-		final HotelRoom_Guest  room_guest  = new HotelRoom_Guest( this.level_000, this.gen_005.noiseHotelRooms, door_guest);
-		final HotelRoom_Pool   room_pool   = new HotelRoom_Pool(  this.level_000);
-		final HotelRoom_Stairs room_stairs = new HotelRoom_Stairs(this.level_000);
+		final HotelRoom_Guest  room_guest  = new HotelRoom_Guest( this.world_000, this.gen_005.noiseHotelRooms, door_guest);
+		final HotelRoom_Pool   room_pool   = new HotelRoom_Pool(  this.world_000);
+		final HotelRoom_Stairs room_stairs = new HotelRoom_Stairs(this.world_000);
 		// area = x z w d
 		final int num_rooms_wide = Math.floorDiv(area.c, room_size);
 		final int num_rooms_deep = Math.floorDiv(area.d, room_size);
@@ -184,7 +184,7 @@ public class Pop_005 implements BackroomsPop {
 				// attic stairs
 				if (room_area.d == 9) {
 					if (room_stairs.checkAtticWall(region, room_area, direction)) {
-						this.level_000.portal_005_to_019.addLocation(room_area.a, room_area.b);
+						this.world_000.portal_005_to_019.addLocation(room_area.a, room_area.b);
 						room_stairs.build(plots, region, room_area, y, direction);
 						continue LOOP_ROOM_X;
 					}
@@ -192,7 +192,7 @@ public class Pop_005 implements BackroomsPop {
 				// pool room
 				final BlockFace pool_direction = room_pool.canBuildHere(room_area, region);
 				if (pool_direction != null) {
-					this.level_000.portal_005_to_037.addLocation(room_area.a, room_area.b);
+					this.world_000.portal_005_to_037.addLocation(room_area.a, room_area.b);
 					room_pool.build(plots, region, room_area, y, direction);
 					continue LOOP_ROOM_X;
 				}

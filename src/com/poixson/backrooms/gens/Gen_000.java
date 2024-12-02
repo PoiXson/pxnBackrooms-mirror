@@ -21,8 +21,8 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_001.BasementData;
-import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
+import com.poixson.backrooms.worlds.BackWorld_000.Pregen_Level_000;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.abstractions.Tuple;
@@ -86,7 +86,7 @@ public class Gen_000 extends BackroomsGen {
 	public final FastNoiseLiteD noiseLobbyWalls;
 	public final FastNoiseLiteD noiseLoot;
 
-	public final Level_000 level_000;
+	public final BackWorld_000 world_000;
 
 
 
@@ -94,7 +94,7 @@ public class Gen_000 extends BackroomsGen {
 			throws InvalidConfigurationException {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
-		this.level_000 = (Level_000) backworld;
+		this.world_000 = (BackWorld_000) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -273,9 +273,9 @@ public class Gen_000 extends BackroomsGen {
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
 			final ChunkData chunk, final int chunkX, final int chunkZ) {
 		if (!this.enable_gen) return;
-		final Gen_001 gen_001 = this.level_000.gen_001;
-		final Gen_023 gen_023 = this.level_000.gen_023;
-		final Gen_002 gen_002 = this.level_000.gen_002;
+		final Gen_001 gen_001 = this.world_000.gen_001;
+		final Gen_023 gen_023 = this.world_000.gen_023;
+		final Gen_002 gen_002 = this.world_000.gen_002;
 		final BlockData block_subfloor        = StringToBlockDataDef(this.block_subfloor,   DEFAULT_BLOCK_SUBFLOOR  );
 		final BlockData block_subceiling      = StringToBlockDataDef(this.block_subceiling, DEFAULT_BLOCK_SUBCEILING);
 		final BlockData block_carpet          = StringToBlockDataDef(this.block_carpet,     DEFAULT_BLOCK_CARPET    );
@@ -350,7 +350,7 @@ public class Gen_000 extends BackroomsGen {
 					if (dao_lobby.boxed > 4) {
 						// loot
 						if (dao_lobby.wall_dist == 1) {
-							this.level_000.loot_0.addLocation(xx, zz);
+							this.world_000.loot_0.addLocation(xx, zz);
 							final BlockData barrel = Bukkit.createBlockData("minecraft:barrel[facing=up]");
 							chunk.setBlock(ix, y_floor+1, iz, barrel);
 							chests.add(new Iabc(xx, y_floor+1, zz));
@@ -371,7 +371,7 @@ public class Gen_000 extends BackroomsGen {
 								}
 							}
 							if (!found_basement_wall) {
-								this.level_000.portal_000_to_001.addLocation(xx, zz);
+								this.world_000.portal_000_to_001.addLocation(xx, zz);
 								final int y_exit = gen_001.getMaxY() - 1;
 								final int h_exit = (y_ceil - gen_001.getMaxY()) + 2;
 								final BlockPlotter plot =

@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.DelayedLever;
 import com.poixson.tools.xListener;
 
@@ -31,8 +31,8 @@ public class Listener_Interact implements xListener {
 
 	public Listener_Interact(final BackroomsPlugin plugin) {
 		this.plugin = plugin;
-		final Level_000 level_000 = (Level_000) plugin.getBackroomsWorld(0);
-		this.tp_range = level_000.gen_006.tp_range;
+		final BackWorld_000 world_000 = (BackWorld_000) plugin.getBackroomsWorld(0);
+		this.tp_range = world_000.gen_006.tp_range;
 	}
 
 
@@ -53,9 +53,9 @@ public class Listener_Interact implements xListener {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		final Level_000 level_000 = (Level_000) this.plugin.getBackroomsWorld(0);
-		final int level_000_lever_y = level_000.gen_000.level_y + level_000.gen_000.bedrock_barrier + level_000.gen_000.subfloor + 2;
-		final int level_006_lever_y = level_000.gen_006.level_y + level_000.gen_006.bedrock_barrier + 1;
+		final BackWorld_000 world_000 = (BackWorld_000) this.plugin.getBackroomsWorld(0);
+		final int level_000_lever_y = world_000.gen_000.level_y + world_000.gen_000.bedrock_barrier + world_000.gen_000.subfloor + 2;
+		final int level_006_lever_y = world_000.gen_006.level_y + world_000.gen_006.bedrock_barrier + 1;
 		final Block block = event.getClickedBlock();
 		final int y = block.getY();
 		if (y == level_000_lever_y

@@ -16,8 +16,8 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
-import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
+import com.poixson.backrooms.worlds.BackWorld_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.noise.FastNoiseLiteD;
@@ -60,14 +60,14 @@ public class Gen_006 extends BackroomsGen {
 	// noise
 	public final FastNoiseLiteD noiseButtonSwitch;
 
-	public final Level_000 level_000;
+	public final BackWorld_000 world_000;
 
 
 
 	public Gen_006(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
-		this.level_000 = (Level_000) backworld;
+		this.world_000 = (BackWorld_000) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -175,10 +175,10 @@ public class Gen_006 extends BackroomsGen {
 			&&  value > this.noiseButtonSwitch.getNoise(xx, zz+1)
 			&&  value > this.noiseButtonSwitch.getNoise(xx+1, zz)
 			&&  value > this.noiseButtonSwitch.getNoise(xx-1, zz) ) {
-				final Gen_000 gen_000 = this.level_000.gen_000;
+				final Gen_000 gen_000 = this.world_000.gen_000;
 				// switch
 				if (value > this.thresh_switch) {
-					this.level_000.portal_000_to_006.addLocation(xx, zz);
+					this.world_000.portal_000_to_006.addLocation(xx, zz);
 					// level 0 light switch
 					{
 						final int y = gen_000.level_y + gen_000.bedrock_barrier + gen_000.subfloor + 2;
@@ -193,7 +193,7 @@ public class Gen_006 extends BackroomsGen {
 					}
 				// button
 				} else {
-					this.level_000.portal_006_to_111.addLocation(xx, zz);
+					this.world_000.portal_006_to_111.addLocation(xx, zz);
 					// level 6 game button
 					{
 						final int y = this.level_y + this.bedrock_barrier + 1;

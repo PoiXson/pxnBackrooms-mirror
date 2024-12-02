@@ -19,7 +19,7 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.gens.Gen_005;
 import com.poixson.backrooms.gens.Gen_019;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabcd;
@@ -34,9 +34,9 @@ public class HotelRoom_Stairs implements HotelRoom {
 
 
 
-	public HotelRoom_Stairs(final Level_000 level_000) {
-		this.gen_005 = level_000.gen_005;
-		this.gen_019 = level_000.gen_019;
+	public HotelRoom_Stairs(final BackWorld_000 world_000) {
+		this.gen_005 = world_000.gen_005;
+		this.gen_019 = world_000.gen_019;
 	}
 
 

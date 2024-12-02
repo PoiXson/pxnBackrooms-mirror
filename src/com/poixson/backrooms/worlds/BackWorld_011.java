@@ -20,7 +20,7 @@ import com.poixson.tools.plotter.BlockPlotter;
 
 //  11 | City - Concrete Jungle
 //  39 | Metro
-public class Level_011 extends BackroomsWorld {
+public class BackWorld_011 extends BackroomsWorld {
 
 	// generators
 	public final Gen_039 gen_039;
@@ -31,7 +31,7 @@ public class Level_011 extends BackroomsWorld {
 
 
 
-	public Level_011(final BackroomsPlugin plugin)
+	public BackWorld_011(final BackroomsPlugin plugin)
 			throws InvalidConfigurationException {
 		super(plugin);
 		// generators

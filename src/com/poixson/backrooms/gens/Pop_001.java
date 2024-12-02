@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 
@@ -17,14 +17,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 // 1 | Basement
 public class Pop_001 implements BackroomsPop {
 
-	protected final Level_000 level_000;
+	protected final BackWorld_000 world_000;
 	protected final Gen_001   gen_001;
 
 
 
-	public Pop_001(final Level_000 level_000) {
-		this.level_000 = level_000;
-		this.gen_001   = level_000.gen_001;
+	public Pop_001(final BackWorld_000 world_000) {
+		this.world_000 = world_000;
+		this.gen_001   = world_000.gen_001;
 	}
 
 
@@ -70,7 +70,7 @@ public class Pop_001 implements BackroomsPop {
 				}
 			}
 		}
-		this.level_000.portal_001_well.addLocation(x, z);
+		this.world_000.portal_001_well.addLocation(x, z);
 		// build well
 		{
 			final BlockPlotter plot =

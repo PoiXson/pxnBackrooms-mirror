@@ -17,7 +17,7 @@ import com.poixson.tools.worldstore.WorldStore_Locations;
 
 
 // 771 | Crossroads
-public class Level_771 extends BackroomsWorld {
+public class BackWorld_771 extends BackroomsWorld {
 
 	// generators
 	public final Gen_771 gen_771;
@@ -35,7 +35,7 @@ public class Level_771 extends BackroomsWorld {
 
 
 
-	public Level_771(final BackroomsPlugin plugin)
+	public BackWorld_771(final BackroomsPlugin plugin)
 			throws InvalidConfigurationException {
 		super(plugin);
 		// dynmap

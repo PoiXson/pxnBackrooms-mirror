@@ -17,14 +17,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 
 
 // 94 | Motion
-public class Level_094 extends BackroomsWorld {
+public class BackWorld_094 extends BackroomsWorld {
 
 	// generators
 	public final Gen_094 gen_094;
 
 
 
-	public Level_094(final BackroomsPlugin plugin)
+	public BackWorld_094(final BackroomsPlugin plugin)
 			throws InvalidConfigurationException {
 		super(plugin);
 		// generators

@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.gens.Gen_771;
-import com.poixson.backrooms.worlds.Level_771;
+import com.poixson.backrooms.worlds.BackWorld_771;
 import com.poixson.tools.SeriesBlockChanger;
 import com.poixson.tools.xListener;
 
@@ -45,8 +45,8 @@ public class Listener_771 implements xListener {
 
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		final Level_771 level_771 = (Level_771) this.plugin.getBackroomsWorld(771);
-		final Gen_771 gen_771 = level_771.gen_771;
+		final BackWorld_771 world_771 = (BackWorld_771) this.plugin.getBackroomsWorld(771);
+		final Gen_771 gen_771 = world_771.gen_771;
 		final int level_771_y = gen_771.level_y;
 		final int level_771_h = gen_771.level_h;
 		final Block block = event.getClickedBlock();
@@ -68,9 +68,9 @@ public class Listener_771 implements xListener {
 
 	public void triggerSecretDoor() {
 		if (this.block_changer.get() == null) {
-			final Level_771 level_771 = (Level_771) this.plugin.getBackroomsWorld(771);
-			final int level_771_y = level_771.gen_771.level_y;
-			final int level_771_h = level_771.gen_771.level_h;
+			final BackWorld_771 world_771 = (BackWorld_771) this.plugin.getBackroomsWorld(771);
+			final int level_771_y = world_771.gen_771.level_y;
+			final int level_771_h = world_771.gen_771.level_h;
 			final int y = level_771_y + level_771_h;
 			final BlockData block_air   = Bukkit.createBlockData("minecraft:air"                         );
 			final BlockData block_solid = Bukkit.createBlockData("minecraft:chiseled_polished_blackstone");

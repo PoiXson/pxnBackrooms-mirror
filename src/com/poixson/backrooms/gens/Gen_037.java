@@ -14,8 +14,8 @@ import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.gens.Gen_000.LobbyData;
-import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_000.Pregen_Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
+import com.poixson.backrooms.worlds.BackWorld_000.Pregen_Level_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.noise.FastNoiseLiteD;
@@ -79,14 +79,14 @@ public class Gen_037 extends BackroomsGen {
 	public final FastNoiseLiteD noisePortalLobby;
 	public final FastNoiseLiteD noisePortalHotel;
 
-	public final Level_000 level_000;
+	public final BackWorld_000 world_000;
 
 
 
 	public Gen_037(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
-		this.level_000 = (Level_000) backworld;
+		this.world_000 = (BackWorld_000) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -215,8 +215,8 @@ public class Gen_037 extends BackroomsGen {
 		if (block_subfloor   == null) throw new RuntimeException("Invalid block type for level 37 SubFloor"  );
 		if (block_subceiling == null) throw new RuntimeException("Invalid block type for level 37 SubCeiling");
 		if (block_ceiling    == null) throw new RuntimeException("Invalid block type for level 37 Ceiling"   );
-		final Gen_000 gen_000 = this.level_000.gen_000;
-		final int portal_000_037_y = (this.level_000.gen_000.level_y + gen_000.subfloor) - 1;
+		final Gen_000 gen_000 = this.world_000.gen_000;
+		final int portal_000_037_y = (this.world_000.gen_000.level_y + gen_000.subfloor) - 1;
 		final int portal_000_037_h = (this.getOpenY() - gen_000.getOpenY()) + 2;
 		final int level_000_h = gen_000.level_h + gen_000.subceiling + 2;
 		final Map<Iab, PoolData>  poolData  = ((Pregen_Level_000)pregen).pools;
@@ -435,7 +435,7 @@ public class Gen_037 extends BackroomsGen {
 						if (!foundWall) {
 							final int xx = (chunkX * 16) + (rx * 8);
 							final int zz = (chunkZ * 16) + (rz * 8);
-							this.level_000.portal_000_to_037.addLocation(xx, zz);
+							this.world_000.portal_000_to_037.addLocation(xx, zz);
 							final int portal_top = portal_000_037_h - 1;
 							final BlockPlotter pp =
 								(new BlockPlotter())

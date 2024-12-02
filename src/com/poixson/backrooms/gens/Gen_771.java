@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.backrooms.worlds.Level_771;
+import com.poixson.backrooms.worlds.BackWorld_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.abstractions.Tuple;
@@ -131,7 +131,7 @@ public class Gen_771 extends BackroomsGen {
 	public final FastNoiseLiteD noiseExits;
 	public final FastNoiseLiteD noiseLoot;
 
-	public final Level_771 level_771;
+	public final BackWorld_771 world_771;
 
 
 
@@ -149,7 +149,7 @@ public class Gen_771 extends BackroomsGen {
 	public Gen_771(final BackroomsWorld backworld, final int seed) {
 		super(backworld, null, seed);
 		final int level_number = this.getLevelNumber();
-		this.level_771 = (Level_771) backworld;
+		this.world_771 = (BackWorld_771) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -662,10 +662,10 @@ public class Gen_771 extends BackroomsGen {
 					final int zz = (dir.b * 2) + z;
 					final int yy;
 					if (PillarType.PILLAR_LOOT_UPPER.equals(type)) {
-						this.level_771.loot_chests_upper.addLocation((chunkX*16)+xx, (chunkZ*16)+zz);
+						this.world_771.loot_chests_upper.addLocation((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + this.level_h + 1;
 					} else {
-						this.level_771.loot_chests_lower.addLocation((chunkX*16)+xx, (chunkZ*16)+zz);
+						this.world_771.loot_chests_lower.addLocation((chunkX*16)+xx, (chunkZ*16)+zz);
 						yy = this.level_y + 1;
 					}
 					final BlockData barrel = Bukkit.createBlockData("barrel[facing=up]");
@@ -678,7 +678,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// ladder shaft
 		case PILLAR_LADDER: {
-			this.level_771.portal_ladder.addLocation((chunkX*16)+x, (chunkZ*16)+z);
+			this.world_771.portal_ladder.addLocation((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h][0].append("   $");
 			// trapdoor
 			if (x == 0 && z == 0) {
@@ -713,7 +713,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// drop shaft to lower road
 		case PILLAR_DROP: {
-			this.level_771.portal_drop.addLocation((chunkX*16)+x, (chunkZ*16)+z);
+			this.world_771.portal_drop.addLocation((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {
@@ -730,7 +730,7 @@ public class Gen_771 extends BackroomsGen {
 		}
 		// void shaft
 		case PILLAR_VOID: {
-			this.level_771.portal_void.addLocation((chunkX*16)+x, (chunkZ*16)+z);
+			this.world_771.portal_void.addLocation((chunkX*16)+x, (chunkZ*16)+z);
 			matrix[h+1][1].append("_"   );
 			matrix[  h][0].append("~  $");
 			for (int iy=0; iy<h; iy++) {

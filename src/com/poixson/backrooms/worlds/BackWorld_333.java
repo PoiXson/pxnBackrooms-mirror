@@ -11,14 +11,14 @@ import com.poixson.tools.plotter.BlockPlotter;
 
 
 // 333 | Cubes
-public class Level_333 extends BackroomsWorld {
+public class BackWorld_333 extends BackroomsWorld {
 
 	// generators
 	public final Gen_333 gen_333;
 
 
 
-	public Level_333(final BackroomsPlugin plugin) {
+	public BackWorld_333(final BackroomsPlugin plugin) {
 		super(plugin);
 		// generators
 		this.gen_333 = this.register(new Gen_333(this, this.seed));

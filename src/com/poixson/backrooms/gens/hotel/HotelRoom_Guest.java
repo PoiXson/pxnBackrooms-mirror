@@ -17,7 +17,7 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.gens.Gen_005;
 import com.poixson.backrooms.gens.hotel.HotelRoom_Specs.RoomTheme;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.noise.FastNoiseLiteD;
@@ -27,8 +27,8 @@ import com.poixson.utils.StringUtils;
 
 public class HotelRoom_Guest implements HotelRoom {
 
-	protected final Level_000 level_000;
-	protected final Gen_005   gen_005;
+	protected final BackWorld_000 world_000;
+	protected final Gen_005       gen_005;
 
 	protected final FastNoiseLiteD noise;
 
@@ -36,10 +36,10 @@ public class HotelRoom_Guest implements HotelRoom {
 
 
 
-	public HotelRoom_Guest(final Level_000 level_000, final FastNoiseLiteD noise,
+	public HotelRoom_Guest(final BackWorld_000 world_000, final FastNoiseLiteD noise,
 			final Material door_guest) {
-		this.level_000  = level_000;
-		this.gen_005    = level_000.gen_005;
+		this.world_000  = world_000;
+		this.gen_005    = world_000.gen_005;
 		this.noise      = noise;
 		this.door_guest = door_guest;
 	}
@@ -62,7 +62,7 @@ public class HotelRoom_Guest implements HotelRoom {
 				this.door_guest
 			);
 		if (RoomTheme.CHEESE.equals(specs.theme))
-			this.level_000.cheese_rooms.addLocation(area.a, area.b);
+			this.world_000.cheese_rooms.addLocation(area.a, area.b);
 		final int x = area.a;
 		final int z = area.b;
 		final int w = area.c;

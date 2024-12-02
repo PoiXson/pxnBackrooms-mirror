@@ -51,7 +51,7 @@ import com.poixson.tools.worldstore.WorldStore_Locations;
 //  23 | Overgrowth
 //   1 | Basement
 // 188 | The Windows
-public class Level_000 extends BackroomsWorld {
+public class BackWorld_000 extends BackroomsWorld {
 
 	// generators
 	public final Gen_001 gen_001;
@@ -95,7 +95,7 @@ public class Level_000 extends BackroomsWorld {
 
 
 
-	public Level_000(final BackroomsPlugin plugin)
+	public BackWorld_000(final BackroomsPlugin plugin)
 			throws InvalidConfigurationException {
 		super(plugin);
 		// generators

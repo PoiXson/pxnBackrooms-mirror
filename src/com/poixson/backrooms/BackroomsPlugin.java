@@ -41,11 +41,11 @@ import com.poixson.backrooms.listeners.Listener_OutOfWorld;
 import com.poixson.backrooms.tasks.FreakOut;
 import com.poixson.backrooms.tasks.TaskInvisiblePlayers;
 import com.poixson.backrooms.tasks.TaskReconvergence;
-import com.poixson.backrooms.worlds.Level_000;
-import com.poixson.backrooms.worlds.Level_094;
-import com.poixson.backrooms.worlds.Level_111;
-import com.poixson.backrooms.worlds.Level_333;
-import com.poixson.backrooms.worlds.Level_771;
+import com.poixson.backrooms.worlds.BackWorld_000;
+import com.poixson.backrooms.worlds.BackWorld_094;
+import com.poixson.backrooms.worlds.BackWorld_111;
+import com.poixson.backrooms.worlds.BackWorld_333;
+import com.poixson.backrooms.worlds.BackWorld_771;
 import com.poixson.tools.DelayedChestFiller;
 import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.xRand;
@@ -123,11 +123,11 @@ public class BackroomsPlugin extends xJavaPlugin {
 		this.economy.set(SetupVaultEconomy());
 		// backrooms levels
 		try {
-			new Level_000(this); // lobby, pipe dreams, ductwork, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
-			new Level_094(this); // motion
-			new Level_111(this); // run for your life
-			new Level_333(this); // cubes
-			new Level_771(this); // crossroads
+			new BackWorld_000(this); // lobby, pipe dreams, ductwork, windows, overgrowth, lights out, basement, hotel, attic, poolrooms, radio station
+			new BackWorld_094(this); // motion
+			new BackWorld_111(this); // run for your life
+			new BackWorld_333(this); // cubes
+			new BackWorld_771(this); // crossroads
 		} catch (InvalidConfigurationException e) {
 			throw new RuntimeException(e);
 		}
@@ -140,8 +140,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 				public void run() {
 					// setup worlds
 					for (final int level : BackroomsPlugin.this.getMainLevels()) {
-						final BackroomsWorld backlevel = BackroomsPlugin.this.getBackroomsWorld(level);
-						backlevel.setup();
+						final BackroomsWorld backworld = BackroomsPlugin.this.getBackroomsWorld(level);
+						backworld.setup();
 					}
 					// update spawn locations
 					final TaskReconvergence task = BackroomsPlugin.this.task_reconvergence.get();
@@ -151,8 +151,8 @@ public class BackroomsPlugin extends xJavaPlugin {
 			};
 		runCreateWorlds.runTask(this);
 		// register levels
-		for (final BackroomsWorld level : this.backworlds.values())
-			level.register();
+		for (final BackroomsWorld backworld : this.backworlds.values())
+			backworld.register();
 		// commands
 		{
 			final Commands commands = new Commands(this);

@@ -16,7 +16,7 @@ public class Pop_308 implements BackroomsPop {
 
 
 
-	public Pop_308(final Level_011 level_011) {
+	public Pop_308(final BackWorld_011 world_011) {
 		super();
 	}
 

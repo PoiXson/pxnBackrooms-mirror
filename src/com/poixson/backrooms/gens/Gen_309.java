@@ -15,7 +15,7 @@ import org.bukkit.generator.ChunkGenerator.ChunkData;
 import com.poixson.backrooms.BackroomsGen;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Triple;
 import com.poixson.tools.abstractions.Tuple;
@@ -193,14 +193,14 @@ public class Gen_309 extends BackroomsGen {
 	public final RandomMaze maze;
 	public final PlotterCache structures;
 
-	public final Level_000 level_000;
+	public final BackWorld_000 world_000;
 
 
 
 	public Gen_309(final BackroomsWorld backworld, final int seed, final BackroomsGen gen_below) {
 		super(backworld, gen_below, seed);
 		final int level_number = this.getLevelNumber();
-		this.level_000 = (Level_000) backworld;
+		this.world_000 = (BackWorld_000) backworld;
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(level_number);
 		final ConfigurationSection cfgBlocks = this.plugin.getConfigLevelBlocks(level_number);
 		// params
@@ -326,7 +326,7 @@ public class Gen_309 extends BackroomsGen {
 		final int dist = MathUtils.MinMax(Math.floorDiv(distance, this.cell_size), 1, 99);
 		// nearest radio station
 		final Tuple<Iab, Map<String, Object>>[] near =
-			this.level_000.radio_stations
+			this.world_000.radio_stations
 				.near(maze_x, maze_z, dist, false, false);
 		if (!IsEmpty(near)) {
 			for (final Tuple<Iab, Map<String, Object>> entry : near) {
@@ -375,7 +375,7 @@ public class Gen_309 extends BackroomsGen {
 		final int maze_x = Math.floorDiv(chunkX*16, this.cell_size);
 		final int maze_z = Math.floorDiv(chunkZ*16, this.cell_size);
 		final boolean is_debug_structure = !IsEmpty(DEBUG_STRUCTURE);
-		final Map<String, Object> keyval = this.level_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);
+		final Map<String, Object> keyval = this.world_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);
 		if (keyval == null) throw new NullPointerException("Failed to get region keyval map");
 		final double maze_value = this.maze.getMazeEntry(maze_x, maze_z, false, true);
 		final double maze_value_n = this.maze.getMazeEntry(maze_x,   maze_z-1, false, true);

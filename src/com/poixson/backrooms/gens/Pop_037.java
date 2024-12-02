@@ -12,7 +12,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPop;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.LineTracer;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
@@ -28,9 +28,9 @@ public class Pop_037 implements BackroomsPop {
 
 
 
-	public Pop_037(final Level_000 level_000) {
+	public Pop_037(final BackWorld_000 world_000) {
 		super();
-		this.gen_037 = level_000.gen_037;
+		this.gen_037 = world_000.gen_037;
 		// find starting points
 		{
 			final LinkedList<Iab> list = new LinkedList<Iab>();

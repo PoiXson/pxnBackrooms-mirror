@@ -17,7 +17,7 @@ import com.poixson.utils.MathUtils;
 
 
 // 111 | Run For Your Life!
-public class Level_111 extends BackroomsWorld {
+public class BackWorld_111 extends BackroomsWorld {
 	public static final String KEY_NEXT_HALL_INDEX = "Next Hall Index";
 
 	// generators
@@ -30,7 +30,7 @@ public class Level_111 extends BackroomsWorld {
 
 
 
-	public Level_111(final BackroomsPlugin plugin) {
+	public BackWorld_111(final BackroomsPlugin plugin) {
 		super(plugin);
 		// generators
 		this.gen_111 = this.register(new Gen_111(this, this.seed));

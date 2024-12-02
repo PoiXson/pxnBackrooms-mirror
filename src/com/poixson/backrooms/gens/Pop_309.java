@@ -23,7 +23,7 @@ import org.bukkit.generator.LimitedRegion;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsPop;
-import com.poixson.backrooms.worlds.Level_000;
+import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.xRand;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabc;
@@ -39,7 +39,7 @@ import com.poixson.utils.MathUtils;
 public class Pop_309 implements BackroomsPop {
 
 	protected final BackroomsPlugin plugin;
-	protected final Level_000 level_000;
+	protected final BackWorld_000 world_000;
 	protected final Gen_309 gen_309;
 
 	protected final TreeBuilder builder_trees;
@@ -51,10 +51,10 @@ public class Pop_309 implements BackroomsPop {
 
 
 
-	public Pop_309(final Level_000 level_000) {
-		this.plugin    = level_000.getPlugin();
-		this.level_000 = level_000;
-		this.gen_309   = level_000.gen_309;
+	public Pop_309(final BackWorld_000 world_000) {
+		this.plugin    = world_000.getPlugin();
+		this.world_000 = world_000;
+		this.gen_309   = world_000.gen_309;
 		this.noiseTreePlacement = this.gen_309.noiseTreePlacement;
 		// tree builder
 		final int open_y = this.gen_309.getOpenY();
@@ -232,7 +232,7 @@ public class Pop_309 implements BackroomsPop {
 		&& !has_path) {
 			final int maze_x = Math.floorDiv(chunkX*16, this.gen_309.cell_size);
 			final int maze_z = Math.floorDiv(chunkZ*16, this.gen_309.cell_size);
-			final Map<String, Object> keyval = this.level_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);
+			final Map<String, Object> keyval = this.world_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);
 			if (keyval != null
 			&& IsEmpty((String)keyval.get("structure"))) {
 //TODO: add stairs, doors, and hatches
