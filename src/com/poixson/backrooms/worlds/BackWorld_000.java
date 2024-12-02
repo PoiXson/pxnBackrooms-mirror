@@ -156,7 +156,6 @@ public class BackWorld_000 extends BackroomsWorld {
 	@Override
 	public void register() {
 		super.register();
-		this.listener_023.register();
 		this.portal_000_to_001.startLater(this.plugin);
 		this.portal_000_to_002.startLater(this.plugin);
 		this.portal_000_to_004.startLater(this.plugin);
@@ -172,11 +171,12 @@ public class BackWorld_000 extends BackroomsWorld {
 		this.cheese_rooms     .startLater(this.plugin);
 		this.radio_stations   .startLater(this.plugin);
 		this.loot_0           .startLater(this.plugin);
+		this.listener_023     .register();
 	}
 	@Override
 	public void unregister() {
 		super.unregister();
-		this.listener_023.unregister();
+		this.listener_023     .unregister();
 		this.portal_000_to_001.stop();
 		this.portal_000_to_002.stop();
 		this.portal_000_to_004.stop();
