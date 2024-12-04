@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.util.Vector;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.tools.xListener;
@@ -81,8 +82,18 @@ public class Listener_OutOfWorld implements xListener {
 		case 333: {
 			final Player player = event.getPlayer();
 			switch (event.getOutsideWhere()) {
-			case SKY:  player.teleport(player.getLocation().add(0.0, -382.0, 0.0)); break;
-			case VOID: player.teleport(player.getLocation().add(0.0,  381.0, 0.0)); break;
+			case SKY: {
+				final Vector velocity = player.getVelocity();
+				player.teleport(player.getLocation().add(0.0, -382.0, 0.0));
+				player.setVelocity(velocity);
+				break;
+			}
+			case VOID: {
+				final Vector velocity = player.getVelocity();
+				player.teleport(player.getLocation().add(0.0, 381.0, 0.0));
+				player.setVelocity(velocity);
+				break;
+			}
 			default: break;
 			}
 			break SWITCH_LEVEL;
