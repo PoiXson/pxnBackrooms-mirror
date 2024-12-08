@@ -3,9 +3,12 @@ Hello
 Goodbye
 I'm sorry
 I love you
-WAKE UP
 You need to wake up
-Keep out
+WAKE UP
+KEEP OUT
+DANGER
+Don't go in
+Don't go inside
 Enter here
 Restricted area
 The end is near
@@ -21,6 +24,10 @@ Don't look behind
 Don't look inside
 Don't open the box
 Don't open the door
+The portal is opening
+Open the door
+Don't open the door!
+Don't do it
 You don't belong here
 Hush
 Oops
@@ -49,6 +56,15 @@ It goes on forever
 It never ends
 This place never ends
 I don't remember coming this way before
+Do you remember?
+Do you remember me?
+Do you remember yet?
+Did you forget?
+Forgotten
+I have been forgotten
+You have been forgotten
+Forget something?
+Did you forget something?
 Continue this way
 You're not alone in here
 The buzzing never stops
@@ -90,6 +106,9 @@ Watch your step
 Did you hear that too?
 I hear something moving
 I can hear your every step
+Find it
+Can you find it
+Gone but not forgotten
 Let me in
 Let me out
 Let me protect you
@@ -147,6 +166,7 @@ Jar of thumbs
 Jar of eyeballs
 I didn't do it
 Sleep at your own risk
+GO TO SLEEP
 The exit is d...
 The corners hide nightmares
 How old is this place
