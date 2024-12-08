@@ -1,6 +1,5 @@
 package com.poixson.backrooms;
 
-import static com.poixson.utils.BukkitUtils.FormatColors;
 import static com.poixson.utils.FileUtils.OpenLocalOrResource;
 import static com.poixson.utils.FileUtils.ReadInputStream;
 import static com.poixson.utils.Utils.IsEmpty;
@@ -51,6 +50,7 @@ import com.poixson.tools.xJavaPlugin;
 import com.poixson.tools.xRand;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 
@@ -58,7 +58,7 @@ import net.kyori.adventure.util.Ticks;
 public class BackroomsPlugin extends xJavaPlugin {
 	@Override public int getSpigotPluginID() { return 108148; }
 	@Override public int getBStatsID() {       return 17231;  }
-	public static final String CHAT_PREFIX = FormatColors("<DARK_AQUA>[Backrooms] <WHITE>");
+	public static final Component CHAT_PREFIX = Component.text("[Backrooms] ").color(NamedTextColor.AQUA);
 
 	public static final String GENERATOR_NAME = "pxnBackrooms";
 	protected static final String DEFAULT_RESOURCE_PACK = "https://dl.poixson.com/mcplugins/pxnBackrooms/pxnBackrooms-resourcepack-{VERSION}.zip";
