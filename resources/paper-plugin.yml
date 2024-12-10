@@ -3,14 +3,14 @@ main: com.poixson.backrooms.BackroomsPlugin
 version: '${project.version}'
 api-version: '${bukkit-short-version}'
 load: STARTUP
-depend:
+depends:
   - pxnPluginLib
   - Multiverse-Core
-softdepend:
+soft-depends:
   - MoreFoods
   - dynmap
   - Vault
-authors: [ lorenzop ]
+authors: lorenzop
 website: ${project.url}
 description: ${project.description}
 permissions:
