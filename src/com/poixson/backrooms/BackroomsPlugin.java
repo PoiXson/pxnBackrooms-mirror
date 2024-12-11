@@ -56,8 +56,7 @@ import net.kyori.adventure.util.Ticks;
 
 
 public class BackroomsPlugin extends xJavaPlugin {
-	@Override public int getSpigotPluginID() { return 108148; }
-	@Override public int getBStatsID() {       return 17231;  }
+	@Override public int getBStatsID() { return 17231; }
 	public static final Component CHAT_PREFIX = Component.text("[Backrooms] ").color(NamedTextColor.AQUA);
 
 	public static final String GENERATOR_NAME = "pxnBackrooms";
