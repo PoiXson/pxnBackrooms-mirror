@@ -183,43 +183,47 @@ public class Pop_309 implements BackroomsPop {
 									// remap weight from noise value
 									this.rnd_grass.weight(
 										MathUtils.Remap(
-											thresh_grass, 1.0,
-											0.0-grass_weight_factor, grass_weight_factor,
+											this.gen_309.thresh_grass, 1.0,
+											this.gen_309.grass_weight_factor*2.0, 0.0,
 											value_grass
 										)
 									);
-									final int grass_type = this.rnd_grass.nextInt(0, num_types-1);
+									final int grass_type = this.rnd_grass.nextInt(0, this.gen_309.grass_short_bias+3);
 									SWITCH_GRASS:
 									switch (grass_type) {
+									// tall grass
+									case 0:
+										if (plot.isType(placer, 0, iy+2, 0, Material.AIR)) {
+											plot.setBlock(placer, 0, iy+2, 0, block_grass_tall_upper);
+											plot.setBlock(placer, 0, iy+1, 0, block_grass_tall_lower);
+											break SWITCH_GRASS;
+										}
 									// tall fern
-									case 2:
+									case 1:
 										if (plot.isType(placer, 0, iy+2, 0, Material.AIR)) {
 											plot.setBlock(placer, 0, iy+2, 0, block_fern_tall_upper);
 											plot.setBlock(placer, 0, iy+1, 0, block_fern_tall_lower);
 											break SWITCH_GRASS;
 										}
 									// short fern
-									case 1:
+									case 2:
 										plot.setBlock(placer, 0, iy+1, 0, block_fern_short);
 										break SWITCH_GRASS;
-									// tall grass
-									case 3:
-										if (plot.isType(placer, 0, iy+2, 0, Material.AIR)) {
-											plot.setBlock(placer, 0, iy+2, 0, block_grass_tall_upper);
-											plot.setBlock(placer, 0, iy+1, 0, block_grass_tall_lower);
-											break SWITCH_GRASS;
+									default: {
+										final double value_mushroom = this.gen_309.noiseMushroom.getNoise(xx, zz);
+										// brown mushroom
+										if (value_mushroom > this.gen_309.thresh_mushrooms) {
+											final int mod_mush = ((int)Math.floor(value_mushroom * 1000.0)) % 42;
+											if (mod_mush == 0)
+												plot.setBlock(placer, 0, iy+1, 0, block_mushroom);
+										// short grass
+										} else {
+											plot.setBlock(placer, 0, iy+1, 0, block_grass_short);
 										}
-									// short grass
-									case 0:
-									default:
-										plot.setBlock(placer, 0, iy+1, 0, block_grass_short);
 										break SWITCH_GRASS;
+									}
 									} // end SWITCH_GRASS
-								// not grass
-								} else
-								if (value_grass < thresh_mushroom) {
-									plot.setBlock(placer, 0, iy+1, 0, 'm');
-								}
+								} // end grass thresh
 							} // end found air above grass
 							break LOOP_SURFACE;
 						} // end grass block
