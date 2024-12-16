@@ -1,12 +1,15 @@
 package com.poixson.backrooms.commands;
 
-import static com.poixson.utils.BukkitUtils.FormatColors;
+import static com.poixson.backrooms.BackroomsPlugin.CHAT_PREFIX;
 
 import org.bukkit.command.CommandSender;
 
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.tasks.TaskReconvergence;
 import com.poixson.tools.commands.pxnCommandRoot;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 
 // reconvergence
@@ -38,7 +41,8 @@ public class Command_Reconvergence extends pxnCommandRoot {
 			return false;
 		final TaskReconvergence task = this.plugin.getReconvergenceTask();
 		task.update();
-		sender.sendMessage(FormatColors("<GOLD>Triggered a reconvergence event"));
+		sender.sendMessage(CHAT_PREFIX.append(Component.text(
+			"Triggered a reconvergence event").color(NamedTextColor.GOLD)));
 		return true;
 	}
 

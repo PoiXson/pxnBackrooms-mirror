@@ -14,6 +14,9 @@ import org.bukkit.entity.Player;
 import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.tools.commands.pxnCommandRoot;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 
 // /noclip
 public class Command_NoClip extends pxnCommandRoot {
@@ -78,7 +81,8 @@ public class Command_NoClip extends pxnCommandRoot {
 				return false;
 			final int lvl = Integer.parseInt(args[0]);
 			if (!this.plugin.isValidLevel(lvl)) {
-				sender.sendMessage(String.format("%sInvalid backrooms level: %s", CHAT_PREFIX, args[0]));
+				sender.sendMessage(CHAT_PREFIX.append(Component.text(
+					"Invalid backrooms level: "+args[0]).color(NamedTextColor.RED)));
 				return true;
 			}
 			level = lvl;
@@ -118,8 +122,12 @@ public class Command_NoClip extends pxnCommandRoot {
 				index++;
 			for (; index<num_args; index++) {
 				final Player p = Bukkit.getPlayer(args[index]);
-				if (p == null) sender.sendMessage(String.format("%sUnknown player: %s", CHAT_PREFIX, args[index]));
-				else           this.plugin.noclip(p, level);
+				if (p == null) {
+					sender.sendMessage(CHAT_PREFIX.append(Component.text(
+						"Unknown player: "+args[index]).color(NamedTextColor.RED)));
+				} else {
+					this.plugin.noclip(p, level);
+				}
 			}
 		}
 		return true;
