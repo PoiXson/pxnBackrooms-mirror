@@ -3,7 +3,7 @@ package com.poixson.backrooms.gens;
 import static com.poixson.backrooms.gens.Gen_037.DEFAULT_BLOCK_WALL_A;
 import static com.poixson.backrooms.gens.Gen_037.DEFAULT_BLOCK_WALL_B;
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
-import static com.poixson.utils.MathUtils.DistanceFast2D;
+import static com.poixson.utils.MathUtils.DistanceLinear;
 
 import java.util.LinkedList;
 
@@ -171,7 +171,7 @@ public class Pop_037 implements BackroomsPop {
 					xx = x_low + ix;
 					int distance = Integer.MAX_VALUE;
 					for (final Iab loc : tracer.points) {
-						final int dist = (int) DistanceFast2D(xx, zz, loc.a, loc.b);
+						final int dist = (int) DistanceLinear(xx, zz, loc.a, loc.b);
 						if (dist >= 0
 						&&  distance > dist)
 							distance = dist;

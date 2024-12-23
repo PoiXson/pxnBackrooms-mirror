@@ -12,6 +12,7 @@ import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_BRANCH;
 import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_LEAVES;
 import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_TRUNK;
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
+import static com.poixson.utils.MathUtils.DistanceRadial;
 import static com.poixson.utils.Utils.IsEmpty;
 
 import java.util.LinkedList;
@@ -150,7 +151,7 @@ public class Pop_309 implements BackroomsPop {
 				while (it.hasNext()) {
 					final Iabc loc = it.next();
 					if (plot.isType(placer, loc.a, loc.b, loc.c, Material.DIRT_PATH)) {
-						final double dist = MathUtils.Distance2D(0, 0, loc.a, loc.c);
+						final double dist = DistanceRadial(0, 0, loc.a, loc.c);
 						if (path_dist > dist) {
 							path_dist = dist;
 							has_path = true;

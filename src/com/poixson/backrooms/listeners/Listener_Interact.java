@@ -1,6 +1,6 @@
 package com.poixson.backrooms.listeners;
 
-import static com.poixson.utils.LocationUtils.DistanceFast2D;
+import static com.poixson.utils.LocationUtils.DistanceLinear;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -114,7 +114,7 @@ public class Listener_Interact implements xListener {
 	protected void doLeverTP(final int to_level, final Location lever_loc, final int y) {
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			final Location player_loc = player.getLocation();
-			final double distance = DistanceFast2D(lever_loc, player_loc);
+			final double distance = DistanceLinear(lever_loc, player_loc);
 			if (distance >= 0.0
 			&&  distance < this.tp_range) {
 				player.teleport( player_loc.add(0.0, y, 0.0) );
