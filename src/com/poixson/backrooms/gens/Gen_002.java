@@ -306,7 +306,6 @@ public class Gen_002 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// tunnels
 		final double noiseTunnelFreq         = cfgParams.getDouble("Noise-Tunnel-Freq"         );

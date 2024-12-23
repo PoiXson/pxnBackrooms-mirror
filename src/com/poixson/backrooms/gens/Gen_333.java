@@ -166,7 +166,6 @@ final BlockPlotter plot = plot_normal;
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 //TODO
 	}
 

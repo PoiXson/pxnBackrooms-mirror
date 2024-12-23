@@ -403,7 +403,6 @@ public class Gen_005 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// hotel walls
 		this.noiseHotelWalls.setAngle(0.25);

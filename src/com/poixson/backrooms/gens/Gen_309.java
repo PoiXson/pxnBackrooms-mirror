@@ -613,7 +613,6 @@ return null;
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// path ground
 		this.noiseGround       .setFrequency(        cfgParams.getDouble("Noise-Ground-Freq"        ) );

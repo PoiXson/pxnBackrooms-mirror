@@ -271,7 +271,6 @@ public class Gen_001 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// basement wall noise
 		this.noiseWalls.setAngle(0.25);

@@ -206,7 +206,6 @@ public class Gen_308 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// ikea walls
 		this.noiseIkeaWalls.setFrequency(               cfgParams.getDouble("Noise-Wall-Freq"  ));

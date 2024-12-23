@@ -236,7 +236,6 @@ public class Gen_004 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// ducts
 		final double noiseDuctFreq         = cfgParams.getDouble("Noise-Duct-Freq"         );

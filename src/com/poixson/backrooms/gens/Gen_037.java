@@ -510,7 +510,6 @@ public class Gen_037 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// pool rooms
 		this.noisePoolRooms  .setFrequency(               cfgParams.getDouble("Noise-Room-Freq"          ));

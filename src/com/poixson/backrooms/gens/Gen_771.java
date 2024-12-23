@@ -782,7 +782,6 @@ public class Gen_771 extends BackroomsGen {
 
 	@Override
 	public void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// road lanterns
 		this.noiseRoadLights.setFrequency(cfgParams.getDouble("Noise-Lamps-Freq"));

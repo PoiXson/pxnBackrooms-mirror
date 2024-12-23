@@ -74,6 +74,12 @@ public class Gen_039 extends BackroomsGen {
 
 
 	@Override
+	protected void initNoise() {
+	}
+
+
+
+	@Override
 	protected void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks) {
 		cfgParams.addDefault("Enable-Gen",   Boolean.TRUE                       );
 		cfgParams.addDefault("Enable-Top",   Boolean.TRUE                       );

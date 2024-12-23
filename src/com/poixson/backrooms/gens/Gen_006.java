@@ -214,7 +214,6 @@ public class Gen_006 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// light switch
 		this.noiseButtonSwitch.setFrequency(        cfgParams.getDouble("Noise-ButtonSwitch-Freq"  ));

@@ -159,7 +159,6 @@ public class Gen_019 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// lanterns
 		this.noiseLamps.setFrequency(cfgParams.getDouble("Noise-Lamps-Freq"));

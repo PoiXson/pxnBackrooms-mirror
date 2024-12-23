@@ -381,7 +381,6 @@ public class Gen_094 extends BackroomsGen {
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// hills noise
 		this.noiseHills.setFrequency(              cfgParams.getDouble("Noise-Hills-Freq"    ));

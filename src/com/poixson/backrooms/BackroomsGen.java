@@ -82,7 +82,7 @@ public abstract class BackroomsGen {
 		return this.seed;
 	}
 
-	protected void initNoise() {}
+	protected abstract void initNoise();
 
 	protected abstract void configDefaults(final ConfigurationSection cfgParams, final ConfigurationSection cfgBlocks);
 

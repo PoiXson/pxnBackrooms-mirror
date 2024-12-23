@@ -178,7 +178,6 @@ if (dao_city.isEdgeBack) chunk.setBlock(ix, y_floor+4, iz, Material.GREEN_WOOL);
 
 	@Override
 	protected void initNoise() {
-		super.initNoise();
 		final ConfigurationSection cfgParams = this.plugin.getConfigLevelParams(this.getLevelNumber());
 		// roads
 		this.noiseRoad.setFrequency(               cfgParams.getDouble("Noise-Road-Freq"  ));
