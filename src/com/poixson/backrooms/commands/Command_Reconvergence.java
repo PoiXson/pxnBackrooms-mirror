@@ -26,9 +26,8 @@ public class Command_Reconvergence extends pxnCommandRoot {
 			"Trigger a reconvergence event.", // desc
 			null, // usage
 			"backrooms.reconvergence", // perm
-			new String[] { // labels
-				"reconvergence"
-			}
+			// labels
+			"reconvergence"
 		);
 		this.plugin = plugin;
 	}

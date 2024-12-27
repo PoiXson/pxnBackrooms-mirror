@@ -31,10 +31,9 @@ public class Command_NoClip extends pxnCommandRoot {
 			"No-Clip into the backrooms.", // desc
 			null, // usage
 			null, // perm
-			new String[] {
-				"noclip",
-				"no-clip"
-			}
+			// labels
+			"noclip",
+			"no-clip"
 		);
 		this.plugin = plugin;
 	}
