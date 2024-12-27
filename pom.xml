@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated: Fri Dec 27 10:33:46 AM EST 2024 -->
+<!-- Generated: Fri Dec 27 10:44:14 AM EST 2024 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -9,7 +9,7 @@
 	<groupId>com.poixson</groupId>
 	<version>0.1.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<url>https://poixson.com</url>
+	<url>https://backrooms.poixson.com</url>
 	<description>Backrooms world generator for minecraft</description>
 	<organization>
 		<name>PoiXson</name>
