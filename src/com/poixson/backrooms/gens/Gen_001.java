@@ -143,6 +143,11 @@ public class Gen_001 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
 	public class BasementData implements PreGenData {
 
 		public final double value_wall;

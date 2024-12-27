@@ -158,6 +158,11 @@ public class Gen_094 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
 	public class HillsData implements PreGenData {
 
 		public final double value_hill;

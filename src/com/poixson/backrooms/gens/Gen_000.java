@@ -149,6 +149,11 @@ public class Gen_000 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
 	public class LobbyData implements PreGenData {
 
 		public final double value_wall;

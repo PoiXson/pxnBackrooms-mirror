@@ -367,6 +367,12 @@ public class Gen_309 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
+//TODO: biomes
 	@Override
 	public void generate(final PreGenData pregen,
 			final LinkedList<Tuple<BlockPlotter, StringBuilder[][]>> plots,
@@ -389,10 +395,9 @@ public class Gen_309 extends BackroomsGen {
 		final int path_center_z = (int)Math.floor( ((double)cell_center_z) + (noise_path_center*this.path_wonder) );
 		final int maze_x = Math.floorDiv(chunkX*16, this.cell_size);
 		final int maze_z = Math.floorDiv(chunkZ*16, this.cell_size);
-		final boolean is_debug_structure = !IsEmpty(DEBUG_STRUCTURE);
 		final Map<String, Object> keyval = this.world_000.radio_stations.getKeyValMap(maze_x, maze_z, false, true);
 		if (keyval == null) throw new NullPointerException("Failed to get region keyval map");
-		final double maze_value = this.maze.getMazeEntry(maze_x, maze_z, false, true);
+		final double maze_value   = this.maze.getMazeEntry(maze_x,   maze_z,   false, true);
 		final double maze_value_n = this.maze.getMazeEntry(maze_x,   maze_z-1, false, true);
 		final double maze_value_s = this.maze.getMazeEntry(maze_x,   maze_z+1, false, true);
 		final double maze_value_e = this.maze.getMazeEntry(maze_x+1, maze_z,   false, true);
@@ -408,6 +413,7 @@ public class Gen_309 extends BackroomsGen {
 			(has_path_e ? 1 : 0) +
 			(has_path_w ? 1 : 0);
 		boolean has_radio_station = false;
+		final boolean is_debug_structure = !IsEmpty(DEBUG_STRUCTURE);
 		// cell has path
 		if (is_debug_structure
 		||  has_path) {
@@ -565,7 +571,7 @@ keyval.put("y", Integer.valueOf(142));
 				}
 			} // end x
 		} // end z
-		// structure
+		// radio station structure
 		if (keyval != null) {
 			final String structure = (String) keyval.get("structure");
 			if (!IsEmpty(structure)) {

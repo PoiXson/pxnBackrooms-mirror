@@ -120,6 +120,11 @@ public class Gen_004 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
 	public class DuctData implements PreGenData {
 
 		public final double value_duct;

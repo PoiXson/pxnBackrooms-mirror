@@ -144,6 +144,11 @@ public class Gen_037 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
 	public enum RoomType {
 		OPEN,
 		SOLID,

@@ -164,6 +164,11 @@ public class Gen_005 extends BackroomsGen {
 
 
 
+	// -------------------------------------------------------------------------------
+	// generate
+
+
+
 	public enum NodeType {
 		HALL,
 		ROOM,
