@@ -100,7 +100,7 @@ public class BackroomsPlugin extends xJavaPlugin {
 
 
 	public BackroomsPlugin() {
-		super(BackroomsPlugin.class);
+		super();
 	}
 
 
