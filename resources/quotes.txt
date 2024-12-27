@@ -69,6 +69,7 @@ Continue this way
 You're not alone in here
 The buzzing never stops
 What is that buzzing?
+The night is infinite
 This place is not meant for the living
 Lost souls wander here forever
 Forgotten souls echo through the halls
@@ -93,11 +94,14 @@ Keep your eyes open
 Don't move
 I see you
 I'm watching
+I'm watching you
 Smile, I'm watching you
 I get so tired of watching you
 I'm behind you
 Something is watching us
 There are things watching
+You are AI
+The AI is watching you
 I want my mommy
 I crave a human name
 The shadows hunger
@@ -108,6 +112,11 @@ I hear something moving
 I can hear your every step
 Find it
 Can you find it
+You'll never find it
+You'll never find my base
+You'll never find answers
+You must find answers!
+You must find the answer!
 Gone but not forgotten
 Let me in
 Let me out
@@ -121,6 +130,8 @@ SO COLD
 I crave a human
 One bite at a time
 Who are you?
+Who was in my room last night?
+Who am I?
 Are you ok?
 They're here
 It's alive
@@ -160,14 +171,43 @@ Spaghetti slide ahead
 The gravy boat is full
 Potato
 The answer is potato
+The answer is egg
 May I borrow your milk
+I like chocolate milk
+I like cereal
+FRY-NIX
+egg
+EGG
+Beaten like a yolk
+Limitless glory of the egg
+Limitless glory of yolk
+Do you have eggs?
+Would you like an egg?
+Give your eggs to me
+I need your eggs
+You better get eggs
+You will need eggs
+Egg-sistential Dread
+Beware of the egg
+Beware of what walks in the dark
+Only 11 toes left
 Only 9 toes left
+Only 8 toes left
+Only 7 toes left
+Only 6 toes left
+Only 5 toes left
+Only 4 toes left
+Only 3 toes left
+Only 2 toes left
+Only 1 toe left
 Jar of thumbs
 Jar of eyeballs
 I didn't do it
 Sleep at your own risk
 GO TO SLEEP
-The exit is d...
+There is no exit
+no eggs-it
+The exit is d
 The corners hide nightmares
 How old is this place
 There simply cannot be enough cheese
@@ -194,3 +234,5 @@ I would love to go in the forest with you
 Do you ever feel like a plastic bag
 I know where you live
 I know your address
+Cthulhu Rises!
+Cluckthulu Rises!
