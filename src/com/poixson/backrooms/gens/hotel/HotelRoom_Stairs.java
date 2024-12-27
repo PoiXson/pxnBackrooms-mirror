@@ -9,6 +9,8 @@ import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToIxz;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxChar;
 import static com.poixson.utils.LocationUtils.Rotate;
+import static com.poixson.utils.StringUtils.Repeat;
+import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.LinkedList;
 
@@ -24,7 +26,6 @@ import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iab;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.StringUtils;
 
 
 public class HotelRoom_Stairs implements HotelRoom {
@@ -90,35 +91,35 @@ public class HotelRoom_Stairs implements HotelRoom {
 					fill = '#';                  // fill under stairs
 				// tall side wall
 				matrix[iy][iz]
-					.append(StringUtils.Repeat(door_x+1,   '#'))
-					.append(StringUtils.Repeat(3,         fill))
-					.append(StringUtils.Repeat(w-door_x-4, '#'));
+					.append(Repeat(door_x+1,   '#'))
+					.append(Repeat(3,         fill))
+					.append(Repeat(w-door_x-4, '#'));
 			}
 			// floor under pressure plate
-			if (iy == 0) matrix[iy][1].append('#').append(StringUtils.Repeat(w-2, '=')).append('#');
+			if (iy == 0) matrix[iy][1].append('#').append(Repeat(w-2, '=')).append('#');
 			// front wall
-			else         matrix[iy][1].append(StringUtils.Repeat(w, '#'));
+			else         matrix[iy][1].append(Repeat(w, '#'));
 			// back wall
 			if (iy < h_stairs-1) {
-				matrix[iy][d-1].append(StringUtils.Repeat(w, '#'));
+				matrix[iy][d-1].append(Repeat(w, '#'));
 			// top steps at hotel level
 			} else {
 				matrix[iy][d-1]
-					.append(StringUtils.Repeat(door_x+1,   '#'))
-					.append(StringUtils.Repeat(3,          'L'))
-					.append(StringUtils.Repeat(w-door_x-4, '#'));
+					.append(Repeat(door_x+1,   '#'))
+					.append(Repeat(3,          'L'))
+					.append(Repeat(w-door_x-4, '#'));
 			}
 		}
 		// door
-		matrix[4][0].append(StringUtils.Repeat(door_x, ' ')).append("&&&&&");
-		matrix[3][0].append(StringUtils.Repeat(door_x, ' ')).append("$...$");
-		matrix[2][0].append(StringUtils.Repeat(door_x, ' ')).append("$.d.$");
-		matrix[1][0].append(StringUtils.Repeat(door_x, ' ')).append("$.D.$");
-		matrix[0][0].append(StringUtils.Repeat(door_x, ' ')).append("$&&&$");
+		matrix[4][0].append(Repeat(door_x, ' ')).append("&&&&&");
+		matrix[3][0].append(Repeat(door_x, ' ')).append("$...$");
+		matrix[2][0].append(Repeat(door_x, ' ')).append("$.d.$");
+		matrix[1][0].append(Repeat(door_x, ' ')).append("$.D.$");
+		matrix[0][0].append(Repeat(door_x, ' ')).append("$&&&$");
 		// front wall
-		StringUtils.ReplaceInString(matrix[3][1], "&&&", door_x+1);
-		StringUtils.ReplaceInString(matrix[2][1], "$.$", door_x+1);
-		StringUtils.ReplaceInString(matrix[1][1], "$_$", door_x+1);
+		ReplaceInString(matrix[3][1], "&&&", door_x+1);
+		ReplaceInString(matrix[2][1], "$.$", door_x+1);
+		ReplaceInString(matrix[1][1], "$_$", door_x+1);
 		plot.run(region, matrix);
 	}
 
@@ -148,16 +149,16 @@ public class HotelRoom_Stairs implements HotelRoom {
 		for (int iy=0; iy<h_stairs; iy++) {
 			// tall side wall
 			matrix[iy][1]
-				.append(StringUtils.Repeat(door_x, ' '))
-				.append(StringUtils.Repeat(5,      '#'));
+				.append(Repeat(door_x, ' '))
+				.append(Repeat(5,      '#'));
 			for (int iz=0; iz<d; iz++) {
 				final char fill;
 				if      (iy == iz+offset) fill = 'L'; // stairs
 				else if (iy >  iz+offset) fill = '.'; // air above stairs
 				else                            fill = '#'; // fill under stairs
 				matrix[iy][iz+2]
-					.append(StringUtils.Repeat(door_x, ' ')).append('#')
-					.append(StringUtils.Repeat(3,     fill)).append('#');
+					.append(Repeat(door_x, ' ')).append('#')
+					.append(Repeat(3,     fill)).append('#');
 			}
 		}
 		plots.add(new Tuple<BlockPlotter, StringBuilder[][]>(plot, matrix));

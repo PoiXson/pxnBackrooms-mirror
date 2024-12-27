@@ -1,6 +1,13 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
+import static com.poixson.utils.MathUtils.CastInt;
+import static com.poixson.utils.MathUtils.DistanceRadial;
+import static com.poixson.utils.MathUtils.FloorNormal;
+import static com.poixson.utils.MathUtils.MinMax;
+import static com.poixson.utils.MathUtils.Remap;
+import static com.poixson.utils.MathUtils.RoundNormal;
+import static com.poixson.utils.StringUtils.MergeStrings;
 import static com.poixson.utils.Utils.IsEmpty;
 
 import java.util.LinkedList;
@@ -26,8 +33,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.plotter.PlotterCache;
 import com.poixson.tools.plotter.generation.TreeStyle;
 import com.poixson.tools.worldstore.RandomMaze;
-import com.poixson.utils.MathUtils;
-import com.poixson.utils.StringUtils;
 
 
 // 309 | Radio Station
@@ -218,7 +223,7 @@ public class Gen_309 extends BackroomsGen {
 		this.ground_thickness_min   = cfgParams.getInt(    "Ground-Thickness-Min"     );
 		this.ground_thickness_max   = cfgParams.getInt(    "Ground-Thickness-Max"     );
 		final int cfg_cell_size     = cfgParams.getInt(    "Map-Cell-Size"            );
-		this.cell_size              = MathUtils.MinMax(MathUtils.RoundNormal(cfg_cell_size, 16), 16, 1024*1024);
+		this.cell_size              = MinMax(RoundNormal(cfg_cell_size, 16), 16, 1024*1024);
 		this.cell_half              = Math.floorDiv(this.cell_size, 2);
 		this.path_chance            = cfgParams.getDouble( "Path-Chance"              );
 		this.path_width_min         = cfgParams.getDouble( "Path-Width-Min"           );
@@ -230,7 +235,7 @@ public class Gen_309 extends BackroomsGen {
 		this.path_berm_weight       = cfgParams.getDouble( "Path-Berm-Weight"         );
 		this.radio_station_fade     = cfgParams.getDouble( "Radio-Station-Fade-Factor");
 		this.path_radio_wonder      = cfgParams.getDouble( "Path-Radio-Wonder"        );
-		this.radio_station_chance   = MathUtils.MinMax(cfgParams.getDouble("Radio-Station-Chance"), 1.0, 99.0);
+		this.radio_station_chance   = MinMax(cfgParams.getDouble("Radio-Station-Chance"), 1.0, 99.0);
 		this.radio_station_distance = cfgParams.getInt(    "Radio-Station-Distance"   );
 		this.radio_station_margin   = cfgParams.getDouble( "Radio-Station-Margin"     );
 		this.thresh_grass           = cfgParams.getDouble( "Thresh-Grass"             );
@@ -238,7 +243,7 @@ public class Gen_309 extends BackroomsGen {
 		this.mod_mushrooms          = cfgParams.getInt(    "Mod-Mushrooms"            );
 		this.grass_weight_factor    = cfgParams.getDouble( "Grass-Weight-Factor"      );
 		this.grass_berm_percent     = cfgParams.getDouble( "Grass-Berm-Percent"       );
-		this.grass_short_bias       = MathUtils.MinMax(cfgParams.getInt("Grass-Short-Bias"), 0, 100);
+		this.grass_short_bias       = MinMax(cfgParams.getInt("Grass-Short-Bias"), 0, 100);
 		// trees
 		this.tree_style                    = cfgParams.getString( "Tree-Style",                    DEFAULT_TREE_STYLE);
 		this.tree_height_min               = cfgParams.getDouble( "Tree-Height-Min",               Double.MIN_VALUE);
@@ -333,7 +338,7 @@ public class Gen_309 extends BackroomsGen {
 	public boolean isNear(final int x, final int z, final int distance) {
 		final int maze_x = Math.floorDiv(x, this.cell_size);
 		final int maze_z = Math.floorDiv(z, this.cell_size);
-		final int dist = MathUtils.MinMax(Math.floorDiv(distance, this.cell_size), 1, 99);
+		final int dist = MinMax(Math.floorDiv(distance, this.cell_size), 1, 99);
 		// nearest radio station
 		final Tuple<Iab, Map<String, Object>>[] near =
 			this.world_000.radio_stations
@@ -377,8 +382,8 @@ public class Gen_309 extends BackroomsGen {
 		if (block_subfloor == null) throw new RuntimeException("Invalid block type for level 309 SubFloor");
 		final int y_base  = this.level_y + this.bedrock_barrier;
 		final int y_floor = y_base + this.subfloor;
-		final int cell_center_x = MathUtils.FloorNormal(chunkX*16, this.cell_size) + this.cell_half;
-		final int cell_center_z = MathUtils.FloorNormal(chunkZ*16, this.cell_size) + this.cell_half;
+		final int cell_center_x = FloorNormal(chunkX*16, this.cell_size) + this.cell_half;
+		final int cell_center_z = FloorNormal(chunkZ*16, this.cell_size) + this.cell_half;
 		final double noise_path_center = Gen_309.this.noisePathWonder.getNoise(cell_center_x, cell_center_z);
 		final int path_center_x = (int)Math.floor( ((double)cell_center_x) + (noise_path_center*this.path_wonder) );
 		final int path_center_z = (int)Math.floor( ((double)cell_center_z) + (noise_path_center*this.path_wonder) );
@@ -482,7 +487,7 @@ keyval.put("y", Integer.valueOf(142));
 					{
 						final double noise_width = this.noisePathWidth.getNoise(xx, zz);
 						final double path_width_percent = (noise_width+1.0)/2.0;
-						path_width = MathUtils.Remap(this.path_width_min, this.path_width_max, path_width_percent);
+						path_width = Remap(this.path_width_min, this.path_width_max, path_width_percent);
 					}
 					// north/south path
 					if (is_debug_structure
@@ -523,7 +528,7 @@ keyval.put("y", Integer.valueOf(142));
 					|| (has_path && path_dirs > 0)) {
 						double center_size = 0.0;
 						if (has_radio_station) {
-							final int w = MathUtils.CastInt(keyval.get("clearing"), Integer.MIN_VALUE);
+							final int w = CastInt(keyval.get("clearing"), Integer.MIN_VALUE);
 							final double wonder_noise = this.noisePathCenter.getNoise(xx, zz);
 							final double dist_wonder = this.path_radio_wonder * wonder_noise;
 							center_size = (w>0 ? (double)w : path_width) + dist_wonder;
@@ -539,7 +544,7 @@ keyval.put("y", Integer.valueOf(142));
 								center_size -= fade;
 							}
 						}
-						final double dist = MathUtils.Distance2D(xx, zz, path_center_x, path_center_z);
+						final double dist = DistanceRadial(xx, zz, path_center_x, path_center_z);
 						if (dist <= center_size)
 							is_center = true;
 					}
@@ -571,9 +576,9 @@ keyval.put("y", Integer.valueOf(142));
 				final String            script = tup.ent;
 				if (plot   == null) throw new NullPointerException("plot");
 				if (matrix == null) throw new NullPointerException("matrix");
-				final int x = MathUtils.CastInt(keyval.get("x"), Integer.MIN_VALUE);
-				final int y = MathUtils.CastInt(keyval.get("y"), Integer.MIN_VALUE);
-				final int z = MathUtils.CastInt(keyval.get("z"), Integer.MIN_VALUE);
+				final int x = CastInt(keyval.get("x"), Integer.MIN_VALUE);
+				final int y = CastInt(keyval.get("y"), Integer.MIN_VALUE);
+				final int z = CastInt(keyval.get("z"), Integer.MIN_VALUE);
 				if (x == Integer.MIN_VALUE
 				||  y == Integer.MIN_VALUE
 				||  z == Integer.MIN_VALUE) {
@@ -581,7 +586,7 @@ keyval.put("y", Integer.valueOf(142));
 					if (x == Integer.MIN_VALUE) missing[0] = 'x';
 					if (y == Integer.MIN_VALUE) missing[1] = 'y';
 					if (z == Integer.MIN_VALUE) missing[2] = 'z';
-					final String str = StringUtils.MergeStrings(", ", missing);
+					final String str = MergeStrings(", ", missing);
 					throw new RuntimeException("Failed to get structure location: "+str);
 				}
 				// place structure

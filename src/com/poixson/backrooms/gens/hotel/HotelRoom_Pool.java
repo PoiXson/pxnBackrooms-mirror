@@ -7,6 +7,8 @@ import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxChar;
 import static com.poixson.utils.LocationUtils.Rotate;
+import static com.poixson.utils.StringUtils.Repeat;
+import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.LinkedList;
 
@@ -22,7 +24,6 @@ import com.poixson.backrooms.worlds.BackWorld_000;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.StringUtils;
 
 
 public class HotelRoom_Pool implements HotelRoom {
@@ -109,82 +110,82 @@ public class HotelRoom_Pool implements HotelRoom {
 		for (int iy=0; iy<h_tunnel; iy++) {
 			// poolrooms exit
 			if (iy == 0) {
-				matrix[iy][0  ].append(StringUtils.Repeat(w, 'g'));
+				matrix[iy][0  ].append(Repeat(w, 'g'));
 				matrix[iy][d-1].append(matrix[0][0].toString());
 				for (int iz=1; iz<d-1; iz++)
-					matrix[iy][iz].append('g').append(StringUtils.Repeat(w-2, '#')).append('g');
+					matrix[iy][iz].append('g').append(Repeat(w-2, '#')).append('g');
 				continue LOOP_Y;
 			}
 			if (iy < water_depth) {
-				matrix[iy][0  ].append('#').append(StringUtils.Repeat(w-2, ',')).append('#');
+				matrix[iy][0  ].append('#').append(Repeat(w-2, ',')).append('#');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				for (int iz=1; iz<d-1; iz++)
-					matrix[iy][iz].append(StringUtils.Repeat(w, ','));
+					matrix[iy][iz].append(Repeat(w, ','));
 				continue LOOP_Y;
 			}
 			if (iy == water_depth) {
-				matrix[iy][0  ].append("#-").append(StringUtils.Repeat(w-4, ',')).append("-#");
-				matrix[iy][1  ].append('-' ).append(StringUtils.Repeat(w-2, ',')).append( '-');
+				matrix[iy][0  ].append("#-").append(Repeat(w-4, ',')).append("-#");
+				matrix[iy][1  ].append('-' ).append(Repeat(w-2, ',')).append( '-');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				matrix[iy][d-2].append(matrix[iy][1].toString());
 				for (int iz=2; iz<d-2; iz++)
-					matrix[iy][iz].append(StringUtils.Repeat(w, ','));
+					matrix[iy][iz].append(Repeat(w, ','));
 				continue LOOP_Y;
 			}
 			if (iy == water_depth+1) {
-				matrix[iy][0  ].append('@').append(StringUtils.Repeat(w-2, '#')).append('@');
+				matrix[iy][0  ].append('@').append(Repeat(w-2, '#')).append('@');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				for (int iz=1; iz<d-1; iz++)
-					matrix[iy][iz].append('#').append(StringUtils.Repeat(w-2, ',')).append('#');
+					matrix[iy][iz].append('#').append(Repeat(w-2, ',')).append('#');
 				continue LOOP_Y;
 			}
 			// tunnel between levels
 			if (iy < y_hotel) {
-				matrix[iy][0  ].append(StringUtils.Repeat(w, '@'));
-				matrix[iy][1  ].append('@').append(StringUtils.Repeat(w-2, 'X')).append('@');
+				matrix[iy][0  ].append(Repeat(w, '@'));
+				matrix[iy][1  ].append('@').append(Repeat(w-2, 'X')).append('@');
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				matrix[iy][d-2].append(matrix[iy][1].toString());
 				for (int iz=2; iz<d-2; iz++)
-					matrix[iy][iz].append("@X").append(StringUtils.Repeat(w-4, ',')).append("X@");
+					matrix[iy][iz].append("@X").append(Repeat(w-4, ',')).append("X@");
 				continue LOOP_Y;
 			}
 			// hotel pool floor
 			if (iy == y_hotel) {
-				matrix[iy][0  ].append(StringUtils.Repeat(w, '@'));
-				matrix[iy][1  ].append('@').append(StringUtils.Repeat(w-2, '#')).append('@');
+				matrix[iy][0  ].append(Repeat(w, '@'));
+				matrix[iy][1  ].append('@').append(Repeat(w-2, '#')).append('@');
 				matrix[iy][2  ].append(matrix[iy][1].toString());
 				matrix[iy][d-1].append(matrix[iy][0].toString());
 				matrix[iy][d-2].append(matrix[iy][1].toString());
 				for (int iz=3; iz<d-2; iz++)
-					matrix[iy][iz].append("@#").append(StringUtils.Repeat(w-4, ',')).append("#@");
+					matrix[iy][iz].append("@#").append(Repeat(w-4, ',')).append("#@");
 				continue LOOP_Y;
 			}
 			// hotel room ceiling
 			if (iy == h_tunnel-1) {
-				matrix[iy][d-1].append(StringUtils.Repeat(w, '@'));
+				matrix[iy][d-1].append(Repeat(w, '@'));
 				for (int iz=1; iz<d-1; iz++)
-					matrix[iy][iz].append('@').append(StringUtils.Repeat(w-2, 'g')).append('@');
+					matrix[iy][iz].append('@').append(Repeat(w-2, 'g')).append('@');
 				continue LOOP_Y;
 			}
 			// hotel room walls
 			{
-				matrix[iy][0  ].append(StringUtils.Repeat(w, ' '));
-				matrix[iy][d-1].append(StringUtils.Repeat(w, '@'));
+				matrix[iy][0  ].append(Repeat(w, ' '));
+				matrix[iy][d-1].append(Repeat(w, '@'));
 				for (int iz=1; iz<d-1; iz++)
-					matrix[iy][iz].append('@').append(StringUtils.Repeat(w-2, '.')).append('@');
+					matrix[iy][iz].append('@').append(Repeat(w-2, '.')).append('@');
 			}
 		} // end LOOP_Y
 		// door
 		final int door_x = Math.floorDiv(w, 2) - 2;
-		StringUtils.ReplaceInString(matrix[y_hotel+4][0], "&&&&&", door_x);
-		StringUtils.ReplaceInString(matrix[y_hotel+3][0], "$...$", door_x);
-		StringUtils.ReplaceInString(matrix[y_hotel+2][0], "$.d.$", door_x);
-		StringUtils.ReplaceInString(matrix[y_hotel+1][0], "$.D.$", door_x);
-		StringUtils.ReplaceInString(matrix[y_hotel  ][0], "$&&&$", door_x);
+		ReplaceInString(matrix[y_hotel+4][0], "&&&&&", door_x);
+		ReplaceInString(matrix[y_hotel+3][0], "$...$", door_x);
+		ReplaceInString(matrix[y_hotel+2][0], "$.d.$", door_x);
+		ReplaceInString(matrix[y_hotel+1][0], "$.D.$", door_x);
+		ReplaceInString(matrix[y_hotel  ][0], "$&&&$", door_x);
 		// front wall
-		StringUtils.ReplaceInString(matrix[y_hotel+3][1], "&&&", door_x+1);
-		StringUtils.ReplaceInString(matrix[y_hotel+2][1], "$.$", door_x+1);
-		StringUtils.ReplaceInString(matrix[y_hotel+1][1], "$_$", door_x+1);
+		ReplaceInString(matrix[y_hotel+3][1], "&&&", door_x+1);
+		ReplaceInString(matrix[y_hotel+2][1], "$.$", door_x+1);
+		ReplaceInString(matrix[y_hotel+1][1], "$_$", door_x+1);
 		plot.run(region, matrix);
 	}
 

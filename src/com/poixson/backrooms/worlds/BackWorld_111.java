@@ -1,5 +1,7 @@
 package com.poixson.backrooms.worlds;
 
+import static com.poixson.utils.MathUtils.ZOrderInterleave;
+
 import java.util.LinkedList;
 
 import org.bukkit.Location;
@@ -14,7 +16,6 @@ import com.poixson.backrooms.listeners.Listener_111;
 import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.worldstore.WorldStore_KeyVal;
-import com.poixson.utils.MathUtils;
 
 
 // 111 | Run For Your Life!
@@ -134,7 +135,7 @@ public class BackWorld_111 extends BackroomsWorld {
 		if (hall_index < 0) hall_index = 0;
 		if (hall_index % total == 0) hall_index++;
 		this.keystore.set(KEY_NEXT_HALL_INDEX, hall_index+1);
-		final int inter_index = MathUtils.ZOrderInterleave(hall_index, minor, major);
+		final int inter_index = ZOrderInterleave(hall_index, minor, major);
 		final int x = (inter_index * 16) + 7;
 		final int y = this.getOpenY(level);
 		this.log().info(String.format(

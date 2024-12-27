@@ -13,6 +13,7 @@ import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_LEAVES;
 import static com.poixson.backrooms.gens.Gen_309.DEFAULT_BLOCK_TREE_TRUNK;
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.MathUtils.DistanceRadial;
+import static com.poixson.utils.MathUtils.Remap;
 import static com.poixson.utils.Utils.IsEmpty;
 
 import java.util.LinkedList;
@@ -33,7 +34,6 @@ import com.poixson.tools.plotter.BlockPlotter;
 import com.poixson.tools.plotter.generation.TreeBuilder;
 import com.poixson.tools.plotter.placer.BlockPlacer;
 import com.poixson.tools.sequences.InnerToOuterSquareXYZ;
-import com.poixson.utils.MathUtils;
 
 
 // 309 | Radio Station
@@ -183,7 +183,7 @@ public class Pop_309 implements BackroomsPop {
 									final int num_types = 4;
 									// remap weight from noise value
 									this.rnd_grass.weight(
-										MathUtils.Remap(
+										Remap(
 											this.gen_309.thresh_grass, 1.0,
 											this.gen_309.grass_weight_factor*2.0, 0.0,
 											value_grass

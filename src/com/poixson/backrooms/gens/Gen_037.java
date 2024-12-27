@@ -1,6 +1,9 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
+import static com.poixson.utils.StringUtils.Repeat;
+import static com.poixson.utils.StringUtils.ReplaceInString;
+import static com.poixson.utils.StringUtils.ReplaceWith;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -23,7 +26,6 @@ import com.poixson.tools.noise.FastNoiseLiteD.CellularDistanceFunction;
 import com.poixson.tools.noise.FastNoiseLiteD.FractalType;
 import com.poixson.tools.noise.FastNoiseLiteD.NoiseType;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.StringUtils;
 
 
 // 37 | Poolrooms
@@ -265,52 +267,52 @@ public class Gen_037 extends BackroomsGen {
 				case SOLID: {
 					for (int iz=0; iz<8; iz++) {
 						for (int iy=0; iy<h_walls; iy++)
-							matrix[iy][iz].append(StringUtils.Repeat(8, '@'));
+							matrix[iy][iz].append(Repeat(8, '@'));
 					}
 					// outside-corner
 					{
 						// north/east outside-corner
 						if (!solid_n && !solid_e && !solid_ne) {
-							StringUtils.ReplaceInString(matrix[0][0], "####", 4);
-							StringUtils.ReplaceInString(matrix[0][1], "##",   6);
-							StringUtils.ReplaceInString(matrix[0][2], "#",    7);
+							ReplaceInString(matrix[0][0], "####", 4);
+							ReplaceInString(matrix[0][1], "##",   6);
+							ReplaceInString(matrix[0][2], "#",    7);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][0], "    ", 4);
-								StringUtils.ReplaceInString(matrix[iy][1], "  ",   6);
-								StringUtils.ReplaceInString(matrix[iy][2], " ",    7);
+								ReplaceInString(matrix[iy][0], "    ", 4);
+								ReplaceInString(matrix[iy][1], "  ",   6);
+								ReplaceInString(matrix[iy][2], " ",    7);
 							}
 						}
 						// north/west outside-corner
 						if (!solid_n && !solid_w && !solid_nw) {
-							StringUtils.ReplaceInString(matrix[0][0], "####", 0);
-							StringUtils.ReplaceInString(matrix[0][1], "##",   0);
-							StringUtils.ReplaceInString(matrix[0][2], "#",    0);
+							ReplaceInString(matrix[0][0], "####", 0);
+							ReplaceInString(matrix[0][1], "##",   0);
+							ReplaceInString(matrix[0][2], "#",    0);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][0], "    ", 0);
-								StringUtils.ReplaceInString(matrix[iy][1], "  ",   0);
-								StringUtils.ReplaceInString(matrix[iy][2], " ",    0);
+								ReplaceInString(matrix[iy][0], "    ", 0);
+								ReplaceInString(matrix[iy][1], "  ",   0);
+								ReplaceInString(matrix[iy][2], " ",    0);
 							}
 						}
 						// south/east outside-corner
 						if (!solid_s && !solid_e && !solid_se) {
-							StringUtils.ReplaceInString(matrix[0][7], "####", 4);
-							StringUtils.ReplaceInString(matrix[0][6], "##",   6);
-							StringUtils.ReplaceInString(matrix[0][5], "#",    7);
+							ReplaceInString(matrix[0][7], "####", 4);
+							ReplaceInString(matrix[0][6], "##",   6);
+							ReplaceInString(matrix[0][5], "#",    7);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][7], "    ", 4);
-								StringUtils.ReplaceInString(matrix[iy][6], "  ",   6);
-								StringUtils.ReplaceInString(matrix[iy][5], " ",    7);
+								ReplaceInString(matrix[iy][7], "    ", 4);
+								ReplaceInString(matrix[iy][6], "  ",   6);
+								ReplaceInString(matrix[iy][5], " ",    7);
 							}
 						}
 						// south/west outside-corner
 						if (!solid_s && !solid_w && !solid_sw) {
-							StringUtils.ReplaceInString(matrix[0][7], "####", 0);
-							StringUtils.ReplaceInString(matrix[0][6], "##",   0);
-							StringUtils.ReplaceInString(matrix[0][5], "#",    0);
+							ReplaceInString(matrix[0][7], "####", 0);
+							ReplaceInString(matrix[0][6], "##",   0);
+							ReplaceInString(matrix[0][5], "#",    0);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][7], "    ", 0);
-								StringUtils.ReplaceInString(matrix[iy][6], "  ",   0);
-								StringUtils.ReplaceInString(matrix[iy][5], " ",    0);
+								ReplaceInString(matrix[iy][7], "    ", 0);
+								ReplaceInString(matrix[iy][6], "  ",   0);
+								ReplaceInString(matrix[iy][5], " ",    0);
 							}
 						}
 					}
@@ -318,62 +320,62 @@ public class Gen_037 extends BackroomsGen {
 					{
 						// north/east cross-corner
 						if (!solid_n && !solid_e && solid_ne) {
-							StringUtils.ReplaceInString(matrix[0][0], "#####", 3);
-							StringUtils.ReplaceInString(matrix[0][1], "###",   5);
-							StringUtils.ReplaceInString(matrix[0][2], "##",    6);
-							StringUtils.ReplaceInString(matrix[0][3], "#",     7);
-							StringUtils.ReplaceInString(matrix[0][4], "#",     7);
+							ReplaceInString(matrix[0][0], "#####", 3);
+							ReplaceInString(matrix[0][1], "###",   5);
+							ReplaceInString(matrix[0][2], "##",    6);
+							ReplaceInString(matrix[0][3], "#",     7);
+							ReplaceInString(matrix[0][4], "#",     7);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][0], "     ", 3);
-								StringUtils.ReplaceInString(matrix[iy][1], "   ",   5);
-								StringUtils.ReplaceInString(matrix[iy][2], "  ",    6);
-								StringUtils.ReplaceInString(matrix[iy][3], " ",     7);
-								StringUtils.ReplaceInString(matrix[iy][4], " ",     7);
+								ReplaceInString(matrix[iy][0], "     ", 3);
+								ReplaceInString(matrix[iy][1], "   ",   5);
+								ReplaceInString(matrix[iy][2], "  ",    6);
+								ReplaceInString(matrix[iy][3], " ",     7);
+								ReplaceInString(matrix[iy][4], " ",     7);
 							}
 						}
 						// north/west cross-corner
 						if (!solid_n && !solid_w && solid_nw) {
-							StringUtils.ReplaceInString(matrix[0][0], "#####", 0);
-							StringUtils.ReplaceInString(matrix[0][1], "###",   0);
-							StringUtils.ReplaceInString(matrix[0][2], "##",    0);
-							StringUtils.ReplaceInString(matrix[0][3], "#",     0);
-							StringUtils.ReplaceInString(matrix[0][4], "#",     0);
+							ReplaceInString(matrix[0][0], "#####", 0);
+							ReplaceInString(matrix[0][1], "###",   0);
+							ReplaceInString(matrix[0][2], "##",    0);
+							ReplaceInString(matrix[0][3], "#",     0);
+							ReplaceInString(matrix[0][4], "#",     0);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][0], "     ", 0);
-								StringUtils.ReplaceInString(matrix[iy][1], "   ",   0);
-								StringUtils.ReplaceInString(matrix[iy][2], "  ",    0);
-								StringUtils.ReplaceInString(matrix[iy][3], " ",     0);
-								StringUtils.ReplaceInString(matrix[iy][4], " ",     0);
+								ReplaceInString(matrix[iy][0], "     ", 0);
+								ReplaceInString(matrix[iy][1], "   ",   0);
+								ReplaceInString(matrix[iy][2], "  ",    0);
+								ReplaceInString(matrix[iy][3], " ",     0);
+								ReplaceInString(matrix[iy][4], " ",     0);
 							}
 						}
 						// south/east cross-corner
 						if (!solid_s && !solid_e && solid_se) {
-							StringUtils.ReplaceInString(matrix[0][7], "#####", 3);
-							StringUtils.ReplaceInString(matrix[0][6], "###",   5);
-							StringUtils.ReplaceInString(matrix[0][5], "##",    6);
-							StringUtils.ReplaceInString(matrix[0][4], "#",     7);
-							StringUtils.ReplaceInString(matrix[0][3], "#",     7);
+							ReplaceInString(matrix[0][7], "#####", 3);
+							ReplaceInString(matrix[0][6], "###",   5);
+							ReplaceInString(matrix[0][5], "##",    6);
+							ReplaceInString(matrix[0][4], "#",     7);
+							ReplaceInString(matrix[0][3], "#",     7);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][7], "     ", 3);
-								StringUtils.ReplaceInString(matrix[iy][6], "   ",   5);
-								StringUtils.ReplaceInString(matrix[iy][5], "  ",    6);
-								StringUtils.ReplaceInString(matrix[iy][4], " ",     7);
-								StringUtils.ReplaceInString(matrix[iy][3], " ",     7);
+								ReplaceInString(matrix[iy][7], "     ", 3);
+								ReplaceInString(matrix[iy][6], "   ",   5);
+								ReplaceInString(matrix[iy][5], "  ",    6);
+								ReplaceInString(matrix[iy][4], " ",     7);
+								ReplaceInString(matrix[iy][3], " ",     7);
 							}
 						}
 						// south/west cross-corner
 						if (!solid_s && !solid_w && solid_sw) {
-							StringUtils.ReplaceInString(matrix[0][7], "#####", 0);
-							StringUtils.ReplaceInString(matrix[0][6], "###",   0);
-							StringUtils.ReplaceInString(matrix[0][5], "##",    0);
-							StringUtils.ReplaceInString(matrix[0][4], "#",     0);
-							StringUtils.ReplaceInString(matrix[0][3], "#",     0);
+							ReplaceInString(matrix[0][7], "#####", 0);
+							ReplaceInString(matrix[0][6], "###",   0);
+							ReplaceInString(matrix[0][5], "##",    0);
+							ReplaceInString(matrix[0][4], "#",     0);
+							ReplaceInString(matrix[0][3], "#",     0);
 							for (int iy=1; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][7], "     ", 0);
-								StringUtils.ReplaceInString(matrix[iy][6], "   ",   0);
-								StringUtils.ReplaceInString(matrix[iy][5], "  ",    0);
-								StringUtils.ReplaceInString(matrix[iy][4], " ",     0);
-								StringUtils.ReplaceInString(matrix[iy][3], " ",     0);
+								ReplaceInString(matrix[iy][7], "     ", 0);
+								ReplaceInString(matrix[iy][6], "   ",   0);
+								ReplaceInString(matrix[iy][5], "  ",    0);
+								ReplaceInString(matrix[iy][4], " ",     0);
+								ReplaceInString(matrix[iy][3], " ",     0);
 							}
 						}
 					}
@@ -381,38 +383,38 @@ public class Gen_037 extends BackroomsGen {
 				}
 				case OPEN: {
 					for (int iz=0; iz<8; iz++) {
-						matrix[0][iz].append(StringUtils.Repeat(8, '#'));
+						matrix[0][iz].append(Repeat(8, '#'));
 						for (int iy=1; iy<h_walls; iy++)
-							matrix[iy][iz].append(StringUtils.Repeat(8, ' '));
+							matrix[iy][iz].append(Repeat(8, ' '));
 					}
 					// inside corner
 					{
 						// north/east inside corner
 						if (solid_n && solid_e && solid_ne) {
 							for (int iy=0; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][0], "@@", 6);
-								StringUtils.ReplaceInString(matrix[iy][1], "@",  7);
+								ReplaceInString(matrix[iy][0], "@@", 6);
+								ReplaceInString(matrix[iy][1], "@",  7);
 							}
 						}
 						// north/west inside corner
 						if (solid_n && solid_w && solid_nw) {
 							for (int iy=0; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][0], "@@", 0);
-								StringUtils.ReplaceInString(matrix[iy][1], "@",  0);
+								ReplaceInString(matrix[iy][0], "@@", 0);
+								ReplaceInString(matrix[iy][1], "@",  0);
 							}
 						}
 						// south/east inside corner
 						if (solid_s && solid_e && solid_se) {
 							for (int iy=0; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][7], "@@", 6);
-								StringUtils.ReplaceInString(matrix[iy][6], "@",  7);
+								ReplaceInString(matrix[iy][7], "@@", 6);
+								ReplaceInString(matrix[iy][6], "@",  7);
 							}
 						}
 						// south/west inside corner
 						if (solid_s && solid_w && solid_sw) {
 							for (int iy=0; iy<h_walls; iy++) {
-								StringUtils.ReplaceInString(matrix[iy][7], "@@", 0);
-								StringUtils.ReplaceInString(matrix[iy][6], "@",  0);
+								ReplaceInString(matrix[iy][7], "@@", 0);
+								ReplaceInString(matrix[iy][6], "@",  0);
 							}
 						}
 					}
@@ -489,12 +491,12 @@ public class Gen_037 extends BackroomsGen {
 				// water
 				for (int iz=0; iz<8; iz++) {
 					for (int iy=0; iy<=this.water_depth; iy++)
-						StringUtils.ReplaceWith(matrix[iy][iz], ' ', 'w');
+						ReplaceWith(matrix[iy][iz], ' ', 'w');
 				}
 				// ceiling
 				if (this.enable_top) {
 					for (int iz=0; iz<8; iz++)
-						StringUtils.ReplaceWith(matrix[h_walls-1][iz], ' ', 'g');
+						ReplaceWith(matrix[h_walls-1][iz], ' ', 'g');
 				}
 				plot.run(chunk, matrix);
 			} // end room x

@@ -7,6 +7,8 @@ import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
 import static com.poixson.utils.LocationUtils.FaceToAxisString;
 import static com.poixson.utils.LocationUtils.FaceToPillarAxChar;
 import static com.poixson.utils.LocationUtils.Rotate;
+import static com.poixson.utils.StringUtils.Repeat;
+import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.LinkedList;
 
@@ -22,7 +24,6 @@ import com.poixson.tools.abstractions.Tuple;
 import com.poixson.tools.dao.Iabcd;
 import com.poixson.tools.noise.FastNoiseLiteD;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.StringUtils;
 
 
 public class HotelRoom_Guest implements HotelRoom {
@@ -87,25 +88,25 @@ public class HotelRoom_Guest implements HotelRoom {
 			for (int iz=2; iz<d-1; iz++) {
 				matrix[iy][iz]
 					.append('#')
-					.append(StringUtils.Repeat(w-2, iy==0 ? ',' : '.'))
+					.append(Repeat(w-2, iy==0 ? ',' : '.'))
 					.append('#');
 			}
 			// front wall
-			matrix[iy][1].append(StringUtils.Repeat(w, '#'));
+			matrix[iy][1].append(Repeat(w, '#'));
 			// back wall
-			matrix[iy][d-1].append(StringUtils.Repeat(w, '#'));
+			matrix[iy][d-1].append(Repeat(w, '#'));
 		}
 		// door
 		final int door_x = Math.floorDiv(w, 2) - 2;
-		matrix[4][0].append(StringUtils.Repeat(door_x, ' ')).append("&&&&&");
-		matrix[3][0].append(StringUtils.Repeat(door_x, ' ')).append("$...$");
-		matrix[2][0].append(StringUtils.Repeat(door_x, ' ')).append("$.d.$");
-		matrix[1][0].append(StringUtils.Repeat(door_x, ' ')).append("$.D.$");
-		matrix[0][0].append(StringUtils.Repeat(door_x, ' ')).append("$&&&$");
+		matrix[4][0].append(Repeat(door_x, ' ')).append("&&&&&");
+		matrix[3][0].append(Repeat(door_x, ' ')).append("$...$");
+		matrix[2][0].append(Repeat(door_x, ' ')).append("$.d.$");
+		matrix[1][0].append(Repeat(door_x, ' ')).append("$.D.$");
+		matrix[0][0].append(Repeat(door_x, ' ')).append("$&&&$");
 		// front wall
-		StringUtils.ReplaceInString(matrix[3][1], "&&&", door_x+1);
-		StringUtils.ReplaceInString(matrix[2][1], "$.$", door_x+1);
-		StringUtils.ReplaceInString(matrix[1][1], "$_$", door_x+1);
+		ReplaceInString(matrix[3][1], "&&&", door_x+1);
+		ReplaceInString(matrix[2][1], "$.$", door_x+1);
+		ReplaceInString(matrix[1][1], "$_$", door_x+1);
 		plot.run(region, matrix);
 	}
 

@@ -1,6 +1,7 @@
 package com.poixson.backrooms.gens;
 
 import static com.poixson.utils.BlockUtils.StringToBlockDataDef;
+import static com.poixson.utils.StringUtils.ReplaceInString;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,7 +24,6 @@ import com.poixson.tools.noise.FastNoiseLiteD;
 import com.poixson.tools.noise.FastNoiseLiteD.FractalType;
 import com.poixson.tools.noise.FastNoiseLiteD.NoiseType;
 import com.poixson.tools.plotter.BlockPlotter;
-import com.poixson.utils.StringUtils;
 
 
 // 94 | Motion
@@ -359,14 +359,14 @@ public class Gen_094 extends BackroomsGen {
 			}
 			// windows
 			for (int iy=2; iy<4; iy++) {
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][0],                  "w", house_half-2      );
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][0],                  "w", house_half+1      );
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][this.house_width-1], "w", house_half-2      );
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][this.house_width-1], "w", house_half+1      );
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half-2],       "w", 0                 );
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half-2],       "w", this.house_width-1);
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half+1],       "w", 0                 );
-				StringUtils.ReplaceInString(matrix[this.house_height-iy][house_half+1],       "w", this.house_width-1);
+				ReplaceInString(matrix[this.house_height-iy][0],                  "w", house_half-2      );
+				ReplaceInString(matrix[this.house_height-iy][0],                  "w", house_half+1      );
+				ReplaceInString(matrix[this.house_height-iy][this.house_width-1], "w", house_half-2      );
+				ReplaceInString(matrix[this.house_height-iy][this.house_width-1], "w", house_half+1      );
+				ReplaceInString(matrix[this.house_height-iy][house_half-2],       "w", 0                 );
+				ReplaceInString(matrix[this.house_height-iy][house_half-2],       "w", this.house_width-1);
+				ReplaceInString(matrix[this.house_height-iy][house_half+1],       "w", 0                 );
+				ReplaceInString(matrix[this.house_height-iy][house_half+1],       "w", this.house_width-1);
 			}
 			plot.run(chunk, matrix);
 		}
