@@ -5,7 +5,7 @@ api-version: '${bukkit-short-version}'
 load: STARTUP
 dependencies:
     server:
-        pxnPluginLib:
+        VitalCore:
             load: BEFORE
             required: true
         Multiverse-Core:
