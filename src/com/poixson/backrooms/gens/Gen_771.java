@@ -22,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.poixson.backrooms.BackroomsGen;
+import com.poixson.backrooms.BackroomsPlugin;
 import com.poixson.backrooms.BackroomsWorld;
 import com.poixson.backrooms.PreGenData;
 import com.poixson.backrooms.worlds.BackWorld_771;
@@ -755,7 +756,7 @@ public class Gen_771 extends BackroomsGen {
 
 	public class ChestFiller_771 extends DelayedChestFiller {
 
-		public ChestFiller_771(final xJavaPlugin plugin,
+		public ChestFiller_771(final xJavaPlugin<BackroomsPlugin> plugin,
 				final String worldName, final int x, final int y, final int z) {
 			super(plugin, worldName, x, y, z);
 		}

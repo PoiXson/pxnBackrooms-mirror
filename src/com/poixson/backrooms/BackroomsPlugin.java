@@ -55,7 +55,7 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 
 
-public class BackroomsPlugin extends xJavaPlugin {
+public class BackroomsPlugin extends xJavaPlugin<BackroomsPlugin> {
 	@Override public int getBStatsID() { return 17231; }
 	public static final Component CHAT_PREFIX = Component.text("[Backrooms] ").color(NamedTextColor.AQUA);
 
