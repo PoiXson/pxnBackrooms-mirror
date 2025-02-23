@@ -6,6 +6,13 @@
 .hg/
 .cvs/
 _*
+*~
+run/
+*.swp
+.*.swp
+*.fifo
+*.sock
+*.socket
 
 debug
 DEBUG
@@ -64,6 +71,7 @@ build-phar/
 dist/
 pkg/
 gen/
+classes/
 tracks/
 Makefile
 Makefile.fragments
@@ -85,6 +93,7 @@ missing
 **/.dirstamp
 .libs/
 .externalToolBuilders/
+*.DS_Store
 
 composer.phar
 auth.json
@@ -116,6 +125,10 @@ auth.json
 *.class
 *.javadoc
 *.iml
+*.ipr
+*.iws
+*.jfr
+*.hprof
 *.idea
 *.rs.bk
 *.pyo
@@ -135,9 +148,3 @@ auth.json
 *.db
 *.out
 *.output
-*.swp
-.*.swp
-*~
-*.fifo
-*.sock
-*.socket
